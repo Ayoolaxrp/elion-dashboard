@@ -47,12 +47,13 @@ body {
   background: rgba(24, 24, 27, 0.8);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(63, 63, 70, 0.5);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
   border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.05);
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Gradient backgrounds */
@@ -152,7 +153,34 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 /* Smooth transitions for all interactive elements */
 button, a, input, select, textarea {
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Better hover lift effect for cards */
+.glass-card:has(> [class*="cursor-pointer"]),
+a .glass-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle inner glow for active elements */
+[class*="bg-primary/10"] {
+  position: relative;
+}
+
+/* Better scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(161, 161, 170, 0.2);
+  border-radius: 2px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(161, 161, 170, 0.4);
 }
 
 /* Better select styling */

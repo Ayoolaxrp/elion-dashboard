@@ -16,6 +16,7 @@ import {
   Activity,
   Globe,
   X,
+  Menu,
 } from "lucide-react";
 import { useState, useRef } from "react";
 
@@ -87,8 +88,8 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile hamburger */}
-      <button onClick={() => setMobileOpen(true)} className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-card border border-border shadow-lg cursor-pointer">
-        <Settings className="w-5 h-5 text-muted-foreground" />
+      <button onClick={() => setMobileOpen(true)} className="md:hidden fixed top-4 left-4 z-50 p-2.5 rounded-xl bg-card/90 backdrop-blur-sm border border-border/50 shadow-lg shadow-black/20 cursor-pointer hover:bg-secondary/80 transition-colors" aria-label="Open menu">
+        <Menu className="w-5 h-5 text-foreground" />
       </button>
 
       {/* Mobile overlay */}

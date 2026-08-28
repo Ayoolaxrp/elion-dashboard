@@ -1,7 +1,32 @@
 "use client";
 import { useState, useCallback } from "react";
-import { Mail, Plus, Play, Pause, Trash2, Clock, CheckCircle, MessageSquare, GripVertical, Users, ArrowRight } from "lucide-react";
+import { Mail, Plus, Play, Pause, Trash2, Clock, CheckCircle, MessageSquare, GripVertical, Users, ArrowRight, Eye, Zap } from "lucide-react";
 import { PageHeader, Card, Badge, Button, Input, Select, Modal, Tabs, StatCard, ProgressBar } from "@/components/ui";
+import { WorkflowVisualizer, WorkflowDefinition } from "@/components/workflow-visualizer";
+
+const followUpFlow: WorkflowDefinition = {
+  id: "followup",
+  name: "Follow-Up Sequence Engine",
+  nodes: [
+    { id: "trigger", label: "Lead Enters CRM", type: "trigger", description: "New or existing lead", icon: <Zap className="w-4 h-4" />, duration: 800 },
+    { id: "qualify", label: "Auto-Qualify", type: "condition", description: "Score check", icon: <CheckCircle className="w-4 h-4" />, duration: 1000 },
+    { id: "email1", label: "Welcome Email", type: "action", description: "Immediate", icon: <Mail className="w-4 h-4" />, duration: 900 },
+    { id: "delay1", label: "Wait 2 Days", type: "delay", description: "Smart delay", icon: <Clock className="w-4 h-4" />, duration: 600 },
+    { id: "whatsapp", label: "WhatsApp Check-in", type: "action", description: "Personal message", icon: <MessageSquare className="w-4 h-4" />, duration: 1000 },
+    { id: "delay2", label: "Wait 3 Days", type: "delay", description: "Smart delay", icon: <Clock className="w-4 h-4" />, duration: 600 },
+    { id: "email2", label: "Value Email", type: "action", description: "Case study / offer", icon: <Mail className="w-4 h-4" />, duration: 900 },
+    { id: "notify", label: "Human Handoff", type: "output", description: "If reply detected", icon: <Users className="w-4 h-4" />, duration: 700 },
+  ],
+  edges: [
+    { from: "trigger", to: "qualify" },
+    { from: "qualify", to: "email1" },
+    { from: "email1", to: "delay1" },
+    { from: "delay1", to: "whatsapp" },
+    { from: "whatsapp", to: "delay2" },
+    { from: "delay2", to: "email2" },
+    { from: "email2", to: "notify" },
+  ],
+};
 
 interface Step { id: string; type: string; label: string; delay: string; }
 interface Seq { id: string; name: string; status: "active" | "paused"; steps: Step[]; enrolled: number; completed: number; replies: number; openRate: number; }
@@ -31,6 +56,7 @@ export default function FollowUpPage() {
   const [steps, setSteps] = useState<Step[]>([{ id: "1", type: "email", label: "First Email", delay: "Immediate" }]);
   const [seqName, setSeqName] = useState("");
   const [notif, setNotif] = useState("");
+  const [showFlow, setShowFlow] = useState(false);
 
   const [campName, setCampName] = useState("");
   const [campSeq, setCampSeq] = useState(initialSeqs[0]?.id || "");
@@ -105,7 +131,20 @@ export default function FollowUpPage() {
   return (
     <div className="animate-fade-in">
       {notif && <div className="fixed top-4 right-4 z-50 px-4 py-3 rounded-lg bg-success/10 border border-success/20 text-success text-sm font-medium animate-fade-in shadow-lg">{notif}</div>}
-      <PageHeader title="Follow-Up Engine" description="Automated multi-channel follow-up sequences that convert" icon={<Mail className="w-6 h-6" />} actions={<Button onClick={() => setShowNew(true)}><Plus className="w-4 h-4" />New Sequence</Button>} />
+      {/* Workflow Visualization */}
+      {showFlow && (
+        <Card className="mb-6">
+          <WorkflowVisualizer
+            workflow={followUpFlow}
+            onRunComplete={(results) => {
+              const ok = Object.values(results).filter((s) => s === "success").length;
+              showNotification(`Follow-up flow completed: ${ok}/${Object.values(results).length} steps`);
+            }}
+          />
+        </Card>
+      )}
+
+      <PageHeader title="Follow-Up Engine" description="Automated multi-channel follow-up sequences that convert" icon={<Mail className="w-6 h-6" />} actions={<div className="flex gap-3"><Button variant="secondary" onClick={() => setShowFlow(!showFlow)}><Eye className="w-4 h-4" />{showFlow ? "Hide Flow" : "View Flow"}</Button><Button onClick={() => setShowNew(true)}><Plus className="w-4 h-4" />New Sequence</Button></div>} />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 stagger-children">
         <StatCard label="Active Sequences" value={seqs.filter((s) => s.status === "active").length} icon={<Mail className="w-5 h-5" />} gradient="primary" />
         <StatCard label="Messages Sent" value={totalSent.toLocaleString()} icon={<MessageSquare className="w-5 h-5" />} gradient="success" />

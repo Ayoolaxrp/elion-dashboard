@@ -1,7 +1,28 @@
 "use client";
 import { useState, useCallback } from "react";
-import { RotateCcw, Plus, Play, Pause, Users, DollarSign, CheckCircle, Trash2, TrendingUp, Target, Clock } from "lucide-react";
+import { RotateCcw, Plus, Play, Pause, Users, DollarSign, CheckCircle, Trash2, TrendingUp, Target, Clock, Eye, Zap, Mail, MessageSquare } from "lucide-react";
 import { PageHeader, Card, Badge, Button, Input, Select, Modal, Tabs, StatCard, ProgressBar } from "@/components/ui";
+import { WorkflowVisualizer, WorkflowDefinition } from "@/components/workflow-visualizer";
+
+const recoveryFlow: WorkflowDefinition = {
+  id: "recovery",
+  name: "Revenue Recovery Pipeline",
+  nodes: [
+    { id: "segment", label: "Segment Database", type: "trigger", description: "Identify dormant contacts", icon: <Users className="w-4 h-4" />, duration: 1000 },
+    { id: "personalize", label: "AI Personalization", type: "action", description: "Tailor message per contact", icon: <Zap className="w-4 h-4" />, duration: 1200 },
+    { id: "multi", label: "Multi-Channel Send", type: "action", description: "Email + WhatsApp + SMS", icon: <MessageSquare className="w-4 h-4" />, duration: 900 },
+    { id: "track", label: "Response Detection", type: "condition", description: "Opened / Replied / Ignored", icon: <Target className="w-4 h-4" />, duration: 800 },
+    { id: "followup", label: "Smart Follow-Up", type: "action", description: "Escalate or nurture", icon: <Mail className="w-4 h-4" />, duration: 900 },
+    { id: "convert", label: "Booking / Payment", type: "output", description: "Convert to revenue", icon: <DollarSign className="w-4 h-4" />, duration: 1000 },
+  ],
+  edges: [
+    { from: "segment", to: "personalize" },
+    { from: "personalize", to: "multi" },
+    { from: "multi", to: "track" },
+    { from: "track", to: "followup" },
+    { from: "followup", to: "convert" },
+  ],
+};
 
 interface Segment { id: string; name: string; desc: string; count: number; avgValue: string; lastActivity: string; recoveryRate: number; }
 interface Campaign { id: string; name: string; segmentId: string; channel: string; offerType: string; status: "sending" | "completed" | "scheduled" | "paused"; sent: number; recovered: number; revenue: string; createdAt: string; }
@@ -26,6 +47,7 @@ export default function RecoveryPage() {
   const [segments, setSegments] = useState<Segment[]>(initialSegs);
   const [campaigns, setCampaigns] = useState<Campaign[]>(initialCamps);
   const [notif, setNotif] = useState("");
+  const [showFlow, setShowFlow] = useState(false);
 
   const [campName, setCampName] = useState("");
   const [campSegment, setCampSegment] = useState(initialSegs[0]?.id || "");
@@ -94,7 +116,20 @@ export default function RecoveryPage() {
   return (
     <div className="animate-fade-in">
       {notif && <div className="fixed top-4 right-4 z-50 px-4 py-3 rounded-lg bg-success/10 border border-success/20 text-success text-sm font-medium animate-fade-in shadow-lg">{notif}</div>}
-      <PageHeader title="Revenue Recovery System" description="Reactivate dormant leads and recover revenue sitting in your database" icon={<RotateCcw className="w-6 h-6" />} actions={<Button onClick={() => setShowNew(true)}><Plus className="w-4 h-4" />New Campaign</Button>} />
+      {/* Workflow Visualization */}
+      {showFlow && (
+        <Card className="mb-6">
+          <WorkflowVisualizer
+            workflow={recoveryFlow}
+            onRunComplete={(results) => {
+              const ok = Object.values(results).filter((s) => s === "success").length;
+              showNotification(`Recovery flow completed: ${ok}/${Object.values(results).length} steps`);
+            }}
+          />
+        </Card>
+      )}
+
+      <PageHeader title="Revenue Recovery System" description="Reactivate dormant leads and recover revenue sitting in your database" icon={<RotateCcw className="w-6 h-6" />} actions={<div className="flex gap-3"><Button variant="secondary" onClick={() => setShowFlow(!showFlow)}><Eye className="w-4 h-4" />{showFlow ? "Hide Flow" : "View Flow"}</Button><Button onClick={() => setShowNew(true)}><Plus className="w-4 h-4" />New Campaign</Button></div>} />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 stagger-children">
         <StatCard label="Dormant Contacts" value={totalDormant.toLocaleString()} icon={<Users className="w-5 h-5" />} gradient="warning" />
         <StatCard label="Recovered" value={totalRecovered.toLocaleString()} icon={<CheckCircle className="w-5 h-5" />} gradient="success" />

@@ -1,7 +1,28 @@
 "use client";
 import { useState, useCallback } from "react";
-import { Calendar, Plus, Clock, CheckCircle, TrendingUp, ChevronLeft, ChevronRight, AlertTriangle, MapPin, Video, Phone, Trash2, Edit3, ExternalLink } from "lucide-react";
+import { Calendar, Plus, Clock, CheckCircle, TrendingUp, ChevronLeft, ChevronRight, AlertTriangle, MapPin, Video, Phone, Trash2, Edit3, ExternalLink, Eye, Zap, Users, MessageSquare, Mail } from "lucide-react";
 import { PageHeader, Card, Badge, Button, Input, Select, Modal, StatCard, Toggle } from "@/components/ui";
+import { WorkflowVisualizer, WorkflowDefinition } from "@/components/workflow-visualizer";
+
+const bookingFlow: WorkflowDefinition = {
+  id: "booking",
+  name: "Booking Engine Pipeline",
+  nodes: [
+    { id: "enquiry", label: "Enquiry Received", type: "trigger", description: "Form / WhatsApp / Call", icon: <MessageSquare className="w-4 h-4" />, duration: 800 },
+    { id: "qualify", label: "AI Qualification", type: "condition", description: "Budget + timeline check", icon: <Zap className="w-4 h-4" />, duration: 1000 },
+    { id: "availability", label: "Check Availability", type: "action", description: "Calendar sync", icon: <Calendar className="w-4 h-4" />, duration: 900 },
+    { id: "book", label: "Book Appointment", type: "action", description: "Auto-confirm slot", icon: <CheckCircle className="w-4 h-4" />, duration: 800 },
+    { id: "remind", label: "Send Reminders", type: "action", description: "24h + 1h before", icon: <Mail className="w-4 h-4" />, duration: 700 },
+    { id: "notify", label: "Notify Team", type: "output", description: "Slack / CRM update", icon: <Users className="w-4 h-4" />, duration: 600 },
+  ],
+  edges: [
+    { from: "enquiry", to: "qualify" },
+    { from: "qualify", to: "availability" },
+    { from: "availability", to: "book" },
+    { from: "book", to: "remind" },
+    { from: "remind", to: "notify" },
+  ],
+};
 
 interface Apt { id: string; title: string; client: string; email: string; phone: string; date: string; time: string; duration: string; type: "in-person" | "video" | "phone"; status: "confirmed" | "pending" | "completed" | "cancelled" | "no-show"; notes: string; autoReminder: boolean; location?: string; }
 
@@ -39,6 +60,7 @@ export default function BookingPage() {
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [showYearPicker, setShowYearPicker] = useState(false);
   const [notif, setNotif] = useState("");
+  const [showFlow, setShowFlow] = useState(false);
   const [autoReminders, setAutoReminders] = useState(true);
   const [maxBookings] = useState(8);
   const [bufferMinutes] = useState(15);
@@ -135,11 +157,25 @@ export default function BookingPage() {
   return (
     <div className="animate-fade-in">
       {notif && <div className="fixed top-4 right-4 z-[100] px-4 py-3 rounded-lg bg-success/10 border border-success/20 text-success text-sm font-medium animate-fade-in shadow-lg">{notif}</div>}
+      {/* Workflow Visualization */}
+      {showFlow && (
+        <Card className="mb-6">
+          <WorkflowVisualizer
+            workflow={bookingFlow}
+            onRunComplete={(results) => {
+              const ok = Object.values(results).filter((s) => s === "success").length;
+              showNotification(`Booking flow completed: ${ok}/${Object.values(results).length} steps`);
+            }}
+          />
+        </Card>
+      )}
+
       <PageHeader title="Booking Engine" description="Turn enquiries into booked appointments without the back-and-forth" icon={<Calendar className="w-6 h-6" />} actions={<div className="flex gap-3">
         <div className="hidden sm:flex items-center gap-1 p-1 bg-secondary/50 rounded-lg">
           <button onClick={() => setView("calendar")} className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${view === "calendar" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>Calendar</button>
           <button onClick={() => setView("list")} className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${view === "list" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>List</button>
         </div>
+        <button onClick={() => setShowFlow(!showFlow)} className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-lg transition-colors cursor-pointer"><Eye className="w-3.5 h-3.5" />{showFlow ? "Hide Flow" : "View Flow"}</button>
         <Button onClick={() => setShowNew(true)}><Plus className="w-4 h-4" />New Booking</Button>
       </div>} />
 
