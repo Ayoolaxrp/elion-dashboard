@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { execSync } from "child_process";
+import path from "path";
 
 // Real industry benchmarks sourced from McKinsey 2025, KPMG Africa SME Report, Google Africa Business Report, HubSpot State of Marketing 2025
 const INDUSTRY_BENCHMARKS: Record<string, {
@@ -111,6 +113,23 @@ interface WebResearch {
   quickWins: string[];
 }
 
+// Scrapling deep analysis — calls Python scraper for enhanced detection
+async function scraplingDeepAnalysis(website: string): Promise<Record<string, unknown> | null> {
+  try {
+    const scriptPath = path.join(process.cwd(), "scripts", "scrape.py");
+    const result = execSync(`python "${scriptPath}" "${website}"`, {
+      timeout: 15000,
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    // Filter out log lines and parse JSON
+    const lines = result.split("\n").filter((l) => l.trim().startsWith("{") || l.trim().startsWith("\"") || l.trim().startsWith("}") || l.trim().startsWith("[") || l.trim().startsWith("]"));
+    return JSON.parse(lines.join("\n"));
+  } catch {
+    return null;
+  }
+}
+
 async function researchBusiness(companyName: string, website: string): Promise<WebResearch> {
   const research: WebResearch = {
     hasWebsite: false, websiteScore: 0, websiteTech: [], hasWhatsApp: false,
@@ -183,6 +202,44 @@ async function researchBusiness(companyName: string, website: string): Promise<W
       }
     } catch {
       research.hasWebsite = false;
+    }
+  }
+
+  // Enhance with Scrapling deep analysis if available
+  if (website) {
+    const deepData = await scraplingDeepAnalysis(website);
+    if (deepData && deepData.status === "success") {
+      // Merge Scrapling findings
+      const deep = deepData as Record<string, unknown>;
+      if (deep.title && !research.websiteTech.includes(String(deep.title))) {
+        // Use Scrapling's title for better scoring
+        research.hasWebsite = true;
+      }
+      if (Array.isArray(deep.tech_stack)) {
+        for (const tech of deep.tech_stack) {
+          if (!research.websiteTech.includes(String(tech))) {
+            research.websiteTech.push(String(tech));
+          }
+        }
+      }
+      if (Array.isArray(deep.social_links)) {
+        for (const platform of deep.social_links) {
+          if (!research.socialPlatforms.includes(String(platform))) {
+            research.socialPlatforms.push(String(platform));
+            research.hasSocialMedia = true;
+          }
+        }
+      }
+      if (deep.has_whatsapp) research.hasWhatsApp = true;
+      if (deep.has_booking) research.hasOnlineBooking = true;
+      if (deep.has_live_chat) research.hasLiveChat = true;
+      if (deep.has_crm) research.hasCRM = true;
+      if (deep.has_email_marketing) research.hasEmailMarketing = true;
+      if (deep.has_ecommerce) research.hasEcommerce = true;
+      if (deep.has_analytics) {
+        // Boost website score for analytics
+        research.websiteScore = Math.min(100, research.websiteScore + 10);
+      }
     }
   }
 
