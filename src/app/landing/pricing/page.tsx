@@ -7,6 +7,7 @@ const plans = [
   {
     name: "Starter",
     price: "100,000",
+    monthlyPrice: "50,000",
     period: "one-time",
     description: "One workflow. Perfect for small businesses testing automation.",
     features: [
@@ -29,6 +30,7 @@ const plans = [
   {
     name: "Growth",
     price: "350,000",
+    monthlyPrice: "120,000",
     period: "one-time",
     description: "Complete lead management system. Our core offer for most businesses.",
     features: [
@@ -51,6 +53,7 @@ const plans = [
   {
     name: "Scale",
     price: "750,000",
+    monthlyPrice: "200,000",
     period: "one-time",
     description: "Multiple interconnected workflows. Full automation suite for growing teams.",
     features: [
@@ -73,6 +76,7 @@ const plans = [
   {
     name: "Custom",
     price: "Let's Talk",
+    monthlyPrice: "350,000+",
     period: "",
     description: "Tailored automation suite built for your specific business processes.",
     features: [
@@ -173,8 +177,12 @@ export default function PricingPage() {
               ) : (
                 <div className="mb-3 flex items-baseline gap-1.5">
                   <span className="text-xs text-zinc-500 font-medium">NGN</span>
-                  <span className="text-3xl font-bold tracking-tight">{plan.price}</span>
-                  {plan.period && <span className="text-xs text-zinc-500">/ {plan.period}</span>}
+                  <span className="text-3xl font-bold tracking-tight">
+                    {billing === "monthly" && plan.monthlyPrice ? plan.monthlyPrice : plan.price}
+                  </span>
+                  <span className="text-xs text-zinc-500">
+                    / {billing === "monthly" && plan.monthlyPrice ? "month" : plan.period}
+                  </span>
                 </div>
               )}
 
