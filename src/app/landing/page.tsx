@@ -16,16 +16,16 @@ import { Search } from "lucide-react";
 
 const useCases = [
   { icon: <MessageSquare className="w-5 h-5" />, title: "Lead Response", desc: "Every lead gets an instant response via WhatsApp or email within 3 seconds.", stat: "40% more conversions" },
-  { icon: <Mail className="w-5 h-5" />, title: "Follow-Up Automation", desc: "Multi-step sequences across email, WhatsApp, and SMS — automatically.", stat: "3x reply rate" },
+  { icon: <Mail className="w-5 h-5" />, title: "Follow-Up Automation", desc: "Multi-step sequences across email, WhatsApp, and SMS, automatically.", stat: "3x reply rate" },
   { icon: <RotateCcw className="w-5 h-5" />, title: "Revenue Recovery", desc: "Reactivate dormant leads and old customers sitting in your database.", stat: "NGN 8M+ recovered" },
   { icon: <Calendar className="w-5 h-5" />, title: "Booking Engine", desc: "Turn enquiries into booked appointments without the back-and-forth.", stat: "92% show-up rate" },
-  { icon: <Settings className="w-5 h-5" />, title: "Operations", desc: "Remove repetitive work — data entry, reports, notifications, onboarding.", stat: "32 hrs/week saved" },
+  { icon: <Settings className="w-5 h-5" />, title: "Operations", desc: "Remove repetitive work, data entry, reports, notifications, onboarding.", stat: "32 hrs/week saved" },
   { icon: <TrendingUp className="w-5 h-5" />, title: "Analytics & Reporting", desc: "Real-time dashboards replace manual weekly report compilation.", stat: "100% automation" },
 ];
 
 const testimonials = [
   { name: "Adebayo Johnson", role: "CEO, TechCorp Nigeria", text: "We were losing 50+ leads per month because nobody responded fast enough. Within 2 weeks of implementing Elion's system, our response time dropped from 4 hours to 3 seconds. Conversion went up 40%.", stars: 5, metric: "40% more conversions" },
-  { name: "Chioma Okafor", role: "Head of Sales, Premier Realty", text: "Our sales team used to spend 3 hours a day just following up with leads manually. Now the system does it for us — and it does it better. We closed 23% more deals last quarter.", stars: 5, metric: "23% more deals" },
+  { name: "Chioma Okafor", role: "Head of Sales, Premier Realty", text: "Our sales team used to spend 3 hours a day just following up with leads manually. Now the system does it for us, and it does it better. We closed 23% more deals last quarter.", stars: 5, metric: "23% more deals" },
   { name: "Gideon Mensah", role: "Managing Director, Swift Logistics", text: "I was skeptical about automation. But after seeing the ROI on just the lead response system, I signed up for the full suite. Best business decision I've made this year.", stars: 5, metric: "3-5x ROI" },
 ];
 
@@ -37,8 +37,8 @@ const guarantees = [
 
 const faqs = [
   { q: "How quickly will I see results?", a: "Most clients see measurable improvement within 2 weeks. Lead response times drop from hours to seconds on day one." },
-  { q: "Do I need to change my existing tools?", a: "No. We integrate with what you already use — WhatsApp, HubSpot, Google Calendar, Slack, and any tool with an API." },
-  { q: "What if I'm not technical?", a: "You don't need to be. We handle everything — setup, integration, testing, and training. You just use the dashboard." },
+  { q: "Do I need to change my existing tools?", a: "No. We integrate with what you already use, WhatsApp, HubSpot, Google Calendar, Slack, and any tool with an API." },
+  { q: "What if I'm not technical?", a: "You don't need to be. We handle everything, setup, integration, testing, and training. You just use the dashboard." },
   { q: "How much does it cost?", a: "Starting from NGN 100,000 for a single workflow. Most businesses start with the Growth plan at NGN 350,000." },
 ];
 
@@ -58,7 +58,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      {/* Hero — Gadzhi-style bold headline */}
+      {/* Hero, Gadzhi-style bold headline */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
@@ -107,14 +107,14 @@ export default function LandingPage() {
 
           {/* Trust indicators */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-500">
-            <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> Free audit — no credit card</span>
+            <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> Free audit, no credit card</span>
             <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> Results in 14 days</span>
             <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> You own everything</span>
           </div>
         </div>
       </section>
 
-      {/* Stats Bar — Brunson-style proof */}
+      {/* Stats Bar, Brunson-style proof */}
       <section className="border-y border-zinc-800/80 bg-zinc-900/30">
         <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
@@ -132,7 +132,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* The Problem — Gadzhi-style pain agitation */}
+      {/* The Problem, Gadzhi-style pain agitation */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Here&apos;s What&apos;s <span className="text-red-400">Actually Happening</span> In Your Business Right Now</h2>
@@ -157,7 +157,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* The Solution — What We Build */}
+      {/* The Solution, What We Build */}
       <section className="py-20 px-6 bg-zinc-900/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -177,7 +177,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How It Works — 4 Steps */}
+      {/* How It Works, 4 Steps */}
       <section id="how-it-works" className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -199,7 +199,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Social Proof — Gadzhi-style testimonials */}
+      {/* Social Proof, Gadzhi-style testimonials */}
       <section className="py-20 px-6 bg-zinc-900/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -226,7 +226,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Guarantee — Brunson-style risk reversal */}
+      {/* Guarantee, Brunson-style risk reversal */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -245,7 +245,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Audit Form — Lead Capture */}
+      {/* Audit Form, Lead Capture */}
       <section id="audit" className="py-20 px-6 bg-zinc-900/20">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
@@ -308,7 +308,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Final CTA — Brunson-style urgency */}
+      {/* Final CTA, Brunson-style urgency */}
       <section className="py-20 px-6 bg-gradient-to-b from-primary/10 via-zinc-950 to-zinc-950">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Every Day You Wait, You&apos;re Losing Money</h2>

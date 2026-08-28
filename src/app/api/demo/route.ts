@@ -1,4 +1,4 @@
-// Demo automation backend — simulates email sending, WhatsApp messages, and CRM updates
+// Demo automation backend, simulates email sending, WhatsApp messages, and CRM updates
 // This runs on the server and stores state in-memory for demo purposes
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,23 +14,23 @@ const demoStore = {
 // Industry benchmarks for realistic demo data
 const demoTemplates = {
   welcome_email: {
-    subject: "Welcome to {{company}} — Here's what happens next",
+    subject: "Welcome to {{company}}, Here's what happens next",
     body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, check out our latest case studies at elion.ng/case-studies\n\nBest regards,\nThe Elion Team",
   },
   followup_email: {
-    subject: "Quick follow-up — {{company}} automation opportunity",
+    subject: "Quick follow-up, {{company}} automation opportunity",
     body: "Hi {{name}},\n\nI wanted to follow up on our previous conversation about automating your lead response process.\n\nBased on our audit, you could be saving approximately NGN 2.4M annually by automating your follow-up sequences.\n\nWould you be available for a 15-minute call this week to discuss implementation?\n\nBest,\nThe Elion Team",
   },
   reactivation_email: {
-    subject: "We miss you, {{name}} — Special offer inside",
+    subject: "We miss you, {{name}}, Special offer inside",
     body: "Hi {{name}},\n\nIt's been a while since you visited us. We've made some exciting updates that we think you'll love.\n\nAs a valued contact, we're offering you a free Automation Leak Audit (worth NGN 100,000) to help identify where your business is losing time and money.\n\nClick here to claim your free audit: elion.ng/audit\n\nCheers,\nThe Elion Team",
   },
   booking_confirmation: {
-    subject: "Your appointment is confirmed — {{date}} at {{time}}",
-    body: "Hi {{name}},\n\nYour appointment has been confirmed:\n\n📅 Date: {{date}}\n⏰ Time: {{time}}\n📍 Location: {{location}}\n\nPlease arrive 5 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!\nThe Elion Team",
+    subject: "Your appointment is confirmed, {{date}} at {{time}}",
+    body: "Hi {{name}},\n\nYour appointment has been confirmed:\n\nDate: {{date}}\nTime: {{time}}\nLocation: {{location}}\n\nPlease arrive 5 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!\nThe Elion Team",
   },
   whatsapp_welcome: {
-    message: "Hi {{name}}! 👋 Thanks for reaching out to Elion. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?",
+    message: "Hi {{name}}! Thanks for reaching out to Elion. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?",
   },
   whatsapp_followup: {
     message: "Hi {{name}}, just checking in! We noticed you were interested in our automation services. Would you like to schedule a quick 15-min call to discuss how we can help {{company}} save time and increase conversions?",
@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
       }
 
       case "run_full_demo": {
-        // Run a complete automation demo — lead capture → email → whatsapp → booking
+        // Run a complete automation demo, lead capture → email → whatsapp → booking
         const demoData = {
           name: data?.name || "Adebayo Johnson",
           email: data?.email || "adebayo@techcorp.ng",
@@ -224,7 +224,7 @@ export async function POST(req: NextRequest) {
             { step: 1, action: "Lead Captured", detail: `${lead.name} from ${lead.source} (Score: ${lead.score})`, status: "completed" },
             { step: 2, action: "Email Sent", detail: `Welcome email to ${email.to}`, status: "completed" },
             { step: 3, action: "WhatsApp Sent", detail: `Auto-greeting to ${whatsapp.to}`, status: "completed" },
-            { step: 4, action: "Booking Created", detail: `${booking.client} — ${booking.date} at ${booking.time}`, status: "completed" },
+            { step: 4, action: "Booking Created", detail: `${booking.client}, ${booking.date} at ${booking.time}`, status: "completed" },
           ],
           lead, email, whatsapp, booking,
         });

@@ -35,8 +35,8 @@ export default function FollowupLanding() {
           <h2 className="text-3xl font-bold text-white text-center mb-12">How it works</h2>
           <div className="max-w-2xl mx-auto space-y-4">
             {[
-              { step: 1, title: "Lead enters your CRM", desc: "From any source — website, ads, referrals" },
-              { step: 2, title: "Automated follow-up begins", desc: "WhatsApp, email, or SMS — your choice" },
+              { step: 1, title: "Lead enters your CRM", desc: "From any source, website, ads, referrals" },
+              { step: 2, title: "Automated follow-up begins", desc: "WhatsApp, email, or SMS, your choice" },
               { step: 3, title: "If they respond, human takes over", desc: "Full context passed to your sales team" },
               { step: 4, title: "If they don't, system continues", desc: "Multi-step sequences that keep nudging" },
               { step: 5, title: "Still inactive? Reactivation campaign", desc: "Targeted re-engagement for cold leads" },

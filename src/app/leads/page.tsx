@@ -31,10 +31,10 @@ const initialLeads: Lead[] = [
   { id: "1", name: "Adebayo Johnson", email: "adebayo@techcorp.ng", phone: "+234 801 234 5678", source: "Meta Ads", company: "TechCorp Nigeria", role: "CTO", status: "qualified", responseTime: "2s", score: 92, createdAt: "2026-08-27 10:23", notes: "Interested in lead response system" },
   { id: "2", name: "Chioma Okafor", email: "chioma@realestate.com", phone: "+234 802 345 6789", source: "Website", company: "Premier Realty", role: "Head of Sales", status: "meeting", responseTime: "3s", score: 87, createdAt: "2026-08-27 09:45", notes: "Real estate lead conversion demo scheduled" },
   { id: "3", name: "Emeka Nwosu", email: "emeka@fintech.io", phone: "+234 803 456 7890", source: "WhatsApp", company: "PayFlow Africa", role: "VP Engineering", status: "contacted", responseTime: "1s", score: 78, createdAt: "2026-08-27 08:12", notes: "Waiting for callback" },
-  { id: "4", name: "Funke Adeyemi", email: "funke@clinic.ng", phone: "+234 804 567 8901", source: "Landing Page", company: "Wellness Clinic", role: "Operations Manager", status: "new", responseTime: "—", score: 65, createdAt: "2026-08-26 16:30", notes: "" },
+  { id: "4", name: "Funke Adeyemi", email: "funke@clinic.ng", phone: "+234 804 567 8901", source: "Landing Page", company: "Wellness Clinic", role: "Operations Manager", status: "new", responseTime: ",", score: 65, createdAt: "2026-08-26 16:30", notes: "" },
   { id: "5", name: "Gideon Mensah", email: "gideon@logistics.com", phone: "+233 24 567 8901", source: "Instagram", company: "Swift Logistics", role: "Managing Director", status: "won", responseTime: "4s", score: 95, createdAt: "2026-08-26 14:15", notes: "Signed up for Growth plan" },
   { id: "6", name: "Halima Bello", email: "halima@edu.ng", phone: "+234 805 678 9012", source: "Referral", company: "Bright Academy", role: "Principal", status: "qualified", responseTime: "2s", score: 82, createdAt: "2026-08-26 11:00", notes: "Referred by Gideon" },
-  { id: "7", name: "Ibrahim Yusuf", email: "ibrahim@trade.ng", phone: "+234 806 789 0123", source: "Meta Ads", company: "TradeZone", role: "Head of Growth", status: "new", responseTime: "—", score: 58, createdAt: "2026-08-25 09:30", notes: "" },
+  { id: "7", name: "Ibrahim Yusuf", email: "ibrahim@trade.ng", phone: "+234 806 789 0123", source: "Meta Ads", company: "TradeZone", role: "Head of Growth", status: "new", responseTime: ",", score: 58, createdAt: "2026-08-25 09:30", notes: "" },
   { id: "8", name: "Janet Okonkwo", email: "janet@salon.com", phone: "+234 807 890 1234", source: "Website", company: "Glamour Salon", role: "Owner", status: "lost", responseTime: "5s", score: 45, createdAt: "2026-08-25 08:00", notes: "Went with competitor" },
 ];
 
@@ -59,7 +59,7 @@ export default function LeadsPage() {
     setFormError("");
     const now = new Date();
     const ts = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
-    const newLead: Lead = { id: String(Date.now()), name: form.name, email: form.email, phone: form.phone, company: form.company, role: form.role, source: form.source.charAt(0).toUpperCase() + form.source.slice(1), status: "new", responseTime: "—", score: generateScore(), createdAt: ts, notes: form.message };
+    const newLead: Lead = { id: String(Date.now()), name: form.name, email: form.email, phone: form.phone, company: form.company, role: form.role, source: form.source.charAt(0).toUpperCase() + form.source.slice(1), status: "new", responseTime: ",", score: generateScore(), createdAt: ts, notes: form.message };
     setLeads((prev) => [newLead, ...prev]);
     setForm({ name: "", email: "", phone: "", company: "", role: "", source: "website", message: "" });
     setShowIntake(false);
@@ -94,7 +94,7 @@ export default function LeadsPage() {
   const counts = { all: leads.length, new: leads.filter((l) => l.status === "new").length, qualified: leads.filter((l) => l.status === "qualified" || l.status === "contacted").length, meetings: leads.filter((l) => l.status === "meeting").length, won: leads.filter((l) => l.status === "won").length };
   const pipelineCounts = statusFlow.reduce((acc, s) => { acc[s] = leads.filter((l) => l.status === s).length; return acc; }, {} as Record<string, number>);
   const maxPipeline = Math.max(...Object.values(pipelineCounts), 1);
-  const avgResponseTime = leads.filter((l) => l.responseTime !== "—").length > 0 ? `${(leads.filter((l) => l.responseTime !== "—").reduce((s, l) => s + parseFloat(l.responseTime), 0) / leads.filter((l) => l.responseTime !== "—").length).toFixed(1)}s` : "—";
+  const avgResponseTime = leads.filter((l) => l.responseTime !== ",").length > 0 ? `${(leads.filter((l) => l.responseTime !== ",").reduce((s, l) => s + parseFloat(l.responseTime), 0) / leads.filter((l) => l.responseTime !== ",").length).toFixed(1)}s` : ",";
   const qualifiedCount = leads.filter((l) => l.status === "qualified" || l.status === "contacted" || l.status === "meeting" || l.status === "won").length;
   const convRate = leads.length > 0 ? `${Math.round((leads.filter((l) => l.status === "won").length / leads.length) * 100)}%` : "0%";
 

@@ -248,13 +248,13 @@ export default function PricingPage() {
                 { feature: "Automation Workflows", starter: "1", growth: "1 full", scale: "All 6", custom: "Unlimited" },
                 { feature: "Contact Limit", starter: "500", growth: "2,000", scale: "10,000", custom: "Unlimited" },
                 { feature: "WhatsApp Integration", starter: "✓", growth: "✓", scale: "✓", custom: "✓" },
-                { feature: "Email Automation", starter: "—", growth: "✓", scale: "✓", custom: "✓" },
-                { feature: "Follow-Up Sequences", starter: "—", growth: "✓", scale: "✓", custom: "✓" },
-                { feature: "Revenue Recovery", starter: "—", growth: "✓", scale: "✓", custom: "✓" },
-                { feature: "Booking Engine", starter: "—", growth: "✓", scale: "✓", custom: "✓" },
+                { feature: "Email Automation", starter: ",", growth: "✓", scale: "✓", custom: "✓" },
+                { feature: "Follow-Up Sequences", starter: ",", growth: "✓", scale: "✓", custom: "✓" },
+                { feature: "Revenue Recovery", starter: ",", growth: "✓", scale: "✓", custom: "✓" },
+                { feature: "Booking Engine", starter: ",", growth: "✓", scale: "✓", custom: "✓" },
                 { feature: "Support Duration", starter: "14 days", growth: "60 days", scale: "90 days", custom: "Ongoing" },
-                { feature: "Monthly Optimization", starter: "—", growth: "—", scale: "✓", custom: "✓" },
-                { feature: "White-Label", starter: "—", growth: "—", scale: "—", custom: "✓" },
+                { feature: "Monthly Optimization", starter: ",", growth: ",", scale: "✓", custom: "✓" },
+                { feature: "White-Label", starter: ",", growth: ",", scale: ",", custom: "✓" },
               ].map((row, i) => (
                 <tr key={row.feature} className={`border-b border-zinc-800/50 ${i % 2 === 0 ? "bg-zinc-900/20" : ""}`}>
                   <td className="py-3 px-4 text-zinc-300 font-medium">{row.feature}</td>

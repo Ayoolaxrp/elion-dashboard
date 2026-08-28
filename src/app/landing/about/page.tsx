@@ -30,7 +30,7 @@ export default function AboutPage() {
         <div>
           <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
           <p className="text-zinc-400 mb-4">We believe every business deserves to operate at peak efficiency. Too many companies lose leads, waste time on manual tasks, and leave money on the table because they don&apos;t have the right systems in place.</p>
-          <p className="text-zinc-400 mb-4">Our mission is to make AI-powered automation accessible to businesses of all sizes. We don&apos;t just build technology — we build operational excellence.</p>
+          <p className="text-zinc-400 mb-4">Our mission is to make AI-powered automation accessible to businesses of all sizes. We don&apos;t just build technology, we build operational excellence.</p>
           <p className="text-zinc-400">We combine deep industry knowledge with cutting-edge AI tools to create systems that actually work. Every automation we build is tested, optimized, and designed to scale with your business.</p>
         </div>
         <div className="p-8 rounded-2xl bg-zinc-900/50 border border-zinc-800">

@@ -113,7 +113,7 @@ interface WebResearch {
   quickWins: string[];
 }
 
-// Scrapling deep analysis — calls Python scraper for enhanced detection
+// Scrapling deep analysis, calls Python scraper for enhanced detection
 async function scraplingDeepAnalysis(website: string): Promise<Record<string, unknown> | null> {
   try {
     const scriptPath = path.join(process.cwd(), "scripts", "scrape.py");

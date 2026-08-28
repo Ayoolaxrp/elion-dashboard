@@ -41,7 +41,7 @@ export default function LeadsLanding() {
               "A lead comes in from Meta ads, Instagram, your website, or WhatsApp",
               "Nobody responds. Or someone responds 3 hours later",
               "The lead gets dumped into a spreadsheet nobody checks",
-              "The business thinks it needs more leads — but the real problem is lead leakage",
+              "The business thinks it needs more leads, but the real problem is lead leakage",
             ].map((p, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 mt-0.5">

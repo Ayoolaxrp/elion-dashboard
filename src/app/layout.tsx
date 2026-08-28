@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
+import { ScrollProgress } from "@/components/scroll-progress";
+import { FloatingContact } from "@/components/floating-contact";
 
 export const metadata: Metadata = {
   title: {
-    default: "Elion — AI Automation Agency",
+    default: "Elion - AI Automation Agency",
     template: "%s | Elion",
   },
   description:
@@ -34,21 +30,21 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://elion.ng",
     siteName: "Elion",
-    title: "Elion — Fix Your Operational Leaks",
+    title: "Elion - Fix Your Operational Leaks",
     description:
-      "AI-powered systems that respond to leads, follow up automatically, recover dormant revenue, and book appointments — so your team only steps in when it matters.",
+      "AI-powered systems that respond to leads, follow up automatically, recover dormant revenue, and book appointments, so your team only steps in when it matters.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Elion — AI Automation Agency",
+        alt: "Elion AI Automation Agency",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elion — Fix Your Operational Leaks",
+    title: "Elion - Fix Your Operational Leaks",
     description:
       "AI-powered lead response, follow-up, revenue recovery, and booking systems for businesses in Nigeria and beyond.",
     images: ["/og-image.png"],
@@ -72,16 +68,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="theme-color" content="#0a0a1a" />
-
+        <meta name="theme-color" content="#09090b" />
       </head>
       <body className="bg-zinc-950 text-white antialiased min-h-screen">
+        <a href="#main-content" className="skip-to-content">
+          Skip to content
+        </a>
+        <ScrollProgress />
         <Sidebar />
-        {/* Desktop: ml-[260px] (expanded) - controlled by CSS. Mobile: no margin (sidebar is overlay) */}
-        <main className="min-h-screen md:ml-[260px] transition-all duration-300 p-4 md:p-6 pt-16 md:pt-6">{children}</main>
+        <main id="main-content" className="min-h-screen md:ml-[260px] transition-all duration-200 p-4 md:p-6 pt-16 md:pt-6">
+          {children}
+        </main>
+        <FloatingContact />
       </body>
     </html>
   );

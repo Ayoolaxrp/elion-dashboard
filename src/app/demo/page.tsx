@@ -57,8 +57,8 @@ export default function DemoPage() {
     } catch {
       // API might not be available, show static demo
       const mockLead: DemoLead = { id: `lead-${Date.now()}`, name: name || "Adebayo Johnson", email: email || "adebayo@techcorp.ng", phone: "+234 801 234 5678", source: "Meta Ads", status: "qualified", score: 92, timestamp: new Date().toISOString() };
-      const mockEmail: EmailMsg = { id: `email-${Date.now()}`, to: mockLead.email, from: "hello@elion.ng", subject: `Welcome to Elion — Here's what happens next`, body: `Hi ${mockLead.name},\n\nThank you for reaching out! We're excited to help transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nBest regards,\nThe Elion Team`, status: "delivered", timestamp: new Date().toISOString() };
-      const mockWA: WhatsAppMsg = { id: `wa-${Date.now()}`, to: mockLead.phone, from: "Elion Business", message: `Hi ${mockLead.name}! 👋 Thanks for reaching out to Elion. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?`, status: "read", timestamp: new Date().toISOString() };
+      const mockEmail: EmailMsg = { id: `email-${Date.now()}`, to: mockLead.email, from: "hello@elion.ng", subject: `Welcome to Elion, Here's what happens next`, body: `Hi ${mockLead.name},\n\nThank you for reaching out! We're excited to help transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nBest regards,\nThe Elion Team`, status: "delivered", timestamp: new Date().toISOString() };
+      const mockWA: WhatsAppMsg = { id: `wa-${Date.now()}`, to: mockLead.phone, from: "Elion Business", message: `Hi ${mockLead.name}! Thanks for reaching out to Elion. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?`, status: "read", timestamp: new Date().toISOString() };
       const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
       const mockBooking: DemoBooking = { id: `bk-${Date.now()}`, client: mockLead.name, date: tomorrow.toISOString().split("T")[0], time: "10:00", type: "video", status: "confirmed", timestamp: new Date().toISOString() };
       setLeads((prev) => [mockLead, ...prev]);
@@ -106,7 +106,7 @@ export default function DemoPage() {
             </div>
             <div>
               <h1 className="text-sm font-bold">Elion Automation Demo</h1>
-              <p className="text-[11px] text-zinc-500">Interactive walkthrough — click to explore</p>
+              <p className="text-[11px] text-zinc-500">Interactive walkthrough, click to explore</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export default function DemoPage() {
         {/* Pipeline animation */}
         {demoSteps.length > 0 && (
           <div className="mb-8 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800">
-            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">Automation Pipeline — Live</h3>
+            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">Automation Pipeline, Live</h3>
             <div className="grid grid-cols-7 gap-3">
               {demoSteps.map((step, i) => (
                 <div key={i} className="relative text-center">
@@ -328,7 +328,7 @@ export default function DemoPage() {
         {/* Footer CTA */}
         <div className="mt-12 p-8 rounded-2xl bg-gradient-to-r from-primary/10 via-zinc-900/50 to-zinc-900/50 border border-primary/20 text-center">
           <h3 className="text-xl font-bold mb-2">This is what we build for your business</h3>
-          <p className="text-zinc-400 mb-4 max-w-lg mx-auto">Every lead gets an instant email + WhatsApp response, gets qualified by AI, and gets a booking scheduled — all in under 5 seconds.</p>
+          <p className="text-zinc-400 mb-4 max-w-lg mx-auto">Every lead gets an instant email + WhatsApp response, gets qualified by AI, and gets a booking scheduled, all in under 5 seconds.</p>
           <a href="/landing/pricing" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors">
             See Pricing <ArrowRight className="w-4 h-4" />
           </a>
