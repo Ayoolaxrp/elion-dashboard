@@ -17,6 +17,7 @@ import {
   Globe,
   X,
   Menu,
+  PlayCircle,
 } from "lucide-react";
 import { useState, useRef } from "react";
 
@@ -28,6 +29,7 @@ const navItems = [
   { label: "Revenue Recovery", href: "/recovery", icon: RotateCcw, description: "Reactivate dormant leads" },
   { label: "Booking Engine", href: "/booking", icon: Calendar, description: "Appointment automation" },
   { label: "Operations", href: "/operations", icon: Settings, description: "Workflow automation" },
+  { label: "Demo", href: "/demo", icon: PlayCircle, description: "Live automation demo" },
   { label: "Landing Pages", href: "/landing", icon: Globe, description: "Public offer pages" },
 ];
 
