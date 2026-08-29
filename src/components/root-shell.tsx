@@ -19,7 +19,7 @@ import {
   X,
   Menu,
   PlayCircle,
-  LifeBuoy,
+  LifeBuoy, LogOut,
 } from "lucide-react";
 
 const sections = [
@@ -53,6 +53,7 @@ const sections = [
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isLanding = pathname.startsWith("/landing") || pathname === "/funnel";
+  const handleLogout = async () => { try { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; } catch { window.location.href = "/login"; } };
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -108,6 +109,13 @@ export function RootShell({ children }: { children: React.ReactNode }) {
         ))}
       </nav>
       <div className="border-t border-[var(--color-border)] p-2.5 shrink-0">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded text-[var(--color-text-muted)] hover:text-[var(--color-error)] hover:bg-[var(--color-surface)] transition-colors text-xs cursor-pointer mb-2"
+        >
+          <LogOut className="w-4 h-4" />
+          {!collapsed && <span>Sign Out</span>}
+        </button>
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="hidden md:flex w-full items-center justify-center gap-2 px-3 py-1.5 rounded text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] transition-colors text-xs cursor-pointer"
