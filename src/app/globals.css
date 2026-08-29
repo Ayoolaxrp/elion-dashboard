@@ -2,48 +2,40 @@
 
 @source "../";
 
-:root {
-  --background: #ffffff;
-  --foreground: #09090b;
-  --card: #ffffff;
-  --card-foreground: #09090b;
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
-  --destructive: #ef4444;
-  --destructive-foreground: #fafafa;
-  --border: #e4e4e7;
-  --ring: #18181b;
-  --success: #16a34a;
-  --warning: #d97706;
-  --info: #2563eb;
-  --radius: 0.375rem;
-}
+/* ---- All custom styles inside @layer base so they don't beat Tailwind utilities ---- */
+@layer base {
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+    border-color: var(--border, #e4e4e7);
+  }
 
-* {
-  border-color: var(--border);
-}
+  body {
+    background: #fafafa;
+    color: #09090b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
 
-body {
-  background: #fafafa;
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Ensure link reset beats browser defaults by being more specific */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 /* ---- Animations ---- */
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.25s ease-out;
+}
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
 }
 
 @keyframes slide-up {
@@ -51,76 +43,31 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-slide-up {
-  animation: slide-up 0.25s ease-out;
-}
-
 /* ---- Scrollbar ---- */
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
 
 /* ---- Print ---- */
-
 @media print {
-  nav, aside, .no-print, button, [data-print-hidden] {
-    display: none !important;
-  }
-  body {
-    background: white;
-  }
-  .print-break {
-    page-break-before: always;
-  }
+  nav, aside, .no-print, button, [data-print-hidden] { display: none !important; }
+  body { background: white; }
+  .print-break { page-break-before: always; }
 }
 
 /* ---- Focus ---- */
-
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
+:focus-visible { outline: 2px solid #18181b; outline-offset: 2px; }
 
 /* ---- Skip to content ---- */
-
 .skip-to-content {
-  position: absolute;
-  left: -9999px;
-  z-index: 999;
-  padding: 1rem;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  text-decoration: none;
-  font-weight: 600;
+  position: absolute; left: -9999px; z-index: 999; padding: 1rem;
+  background: #18181b; color: #fafafa; text-decoration: none; font-weight: 600;
 }
-
-.skip-to-content:focus {
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-}
+.skip-to-content:focus { left: 50%; transform: translateX(-50%); top: 0; }
 
 /* ---- Stagger children ---- */
-
-.stagger-children > * {
-  animation: fade-in 0.3s ease-out both;
-}
-
+.stagger-children > * { animation: fade-in 0.3s ease-out both; }
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
 .stagger-children > *:nth-child(2) { animation-delay: 50ms; }
 .stagger-children > *:nth-child(3) { animation-delay: 100ms; }
@@ -128,13 +75,7 @@ body {
 .stagger-children > *:nth-child(5) { animation-delay: 200ms; }
 .stagger-children > *:nth-child(6) { animation-delay: 250ms; }
 
-/* ---- Responsive sidebar ---- */
-
+/* ---- Sidebar overlay ---- */
 @media (max-width: 1024px) {
-  .sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 40;
-  }
+  .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 40; }
 }
