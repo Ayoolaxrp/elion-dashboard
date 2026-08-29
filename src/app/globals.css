@@ -2,23 +2,23 @@
 
 @source "../";
 
-/* ---- Dark Premium Design System ---- */
+/* ---- ELION Brand System ---- */
 @theme {
-  --color-surface: #0a0a0b;
-  --color-surface-raised: #141416;
-  --color-surface-elevated: #1c1c1f;
-  --color-surface-hover: #242428;
-  --color-border: #2a2a2e;
-  --color-border-light: #3a3a3f;
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-accent-light: #1e40af;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
+  --color-surface: #080A0F;
+  --color-surface-raised: #10131A;
+  --color-surface-elevated: #181C25;
+  --color-surface-hover: #1E2230;
+  --color-border: #202531;
+  --color-border-light: #2A3040;
+  --color-text-primary: #F5F7FA;
+  --color-text-secondary: #9299A8;
+  --color-text-muted: #5A6070;
+  --color-accent: #4F7CFF;
+  --color-accent-hover: #3B66E8;
+  --color-accent-light: #2A50C0;
+  --color-success: #35D07F;
+  --color-warning: #F5B942;
+  --color-error: #FF5C6C;
 }
 
 @layer base {
@@ -53,8 +53,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 20px 4px rgba(59, 130, 246, 0.2); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79, 124, 255, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(79, 124, 255, 0.2); }
 }
 
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
@@ -62,8 +62,8 @@
 /* ---- Scrollbar ---- */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #3a3a3f; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #52525b; }
+::-webkit-scrollbar-thumb { background: #2A3040; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3A4050; }
 
 /* ---- Focus ---- */
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
