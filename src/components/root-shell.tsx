@@ -51,7 +51,7 @@ const sections = [
 
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLanding = pathname.startsWith("/landing");
+  const isLanding = pathname.startsWith("/landing") || pathname === "/funnel";
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
