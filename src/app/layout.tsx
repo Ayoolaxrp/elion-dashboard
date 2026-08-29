@@ -73,7 +73,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="theme-color" content="#09090b" />
       </head>
-      <body className="bg-zinc-950 text-white antialiased min-h-screen">
+      <body className="bg-zinc-50 text-zinc-900 antialiased min-h-screen">
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>

@@ -45,8 +45,8 @@ export function Sidebar() {
 
   const sidebarContent = (
     <>
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-border shrink-0">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+      <div className="flex items-center gap-3 px-4 h-14 border-b border-zinc-200 shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center shrink-0">
           <Activity className="w-4 h-4 text-white" />
         </div>
         {!collapsed && (
@@ -65,10 +65,10 @@ export function Sidebar() {
           const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
           return (
             <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group",
-              isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              "flex items-center gap-3 px-3 py-2 rounded text-sm transition-colors group",
+              isActive ? "bg-zinc-100 text-zinc-900 font-medium" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
             )} title={collapsed ? item.label : undefined}>
-              <item.icon className={cn("w-[18px] h-[18px] shrink-0 transition-colors", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
+              <item.icon className={cn("w-[18px] h-[18px] shrink-0", isActive ? "text-zinc-900" : "text-zinc-400 group-hover:text-zinc-600")} />
               {!collapsed && (
                 <div className="overflow-hidden">
                   <p className="font-medium leading-tight">{item.label}</p>
@@ -80,7 +80,7 @@ export function Sidebar() {
         })}
       </nav>
       <div className="border-t border-border p-3 shrink-0">
-        <button onClick={() => setCollapsed(!collapsed)} className="hidden md:flex w-full items-center justify-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors text-sm cursor-pointer">
+        <button onClick={() => setCollapsed(!collapsed)} className="hidden md:flex w-full items-center justify-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-zinc-900 hover:bg-zinc-50 transition-colors text-sm cursor-pointer">
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <><ChevronLeft className="w-4 h-4" /><span>Collapse</span></>}
         </button>
       </div>
@@ -90,7 +90,7 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile hamburger */}
-      <button onClick={() => setMobileOpen(true)} className="md:hidden fixed top-4 left-4 z-50 p-2.5 rounded-xl bg-card/90 backdrop-blur-sm border border-border/50 shadow-lg shadow-black/20 cursor-pointer hover:bg-secondary/80 transition-colors" aria-label="Open menu">
+      <button onClick={() => setMobileOpen(true)} className="md:hidden fixed top-4 left-4 z-50 p-2.5 rounded-lg bg-white border border-zinc-200 shadow-sm cursor-pointer hover:bg-zinc-50 transition-colors" aria-label="Open menu">
         <Menu className="w-5 h-5 text-foreground" />
       </button>
 
@@ -99,7 +99,7 @@ export function Sidebar() {
 
       {/* Mobile sidebar */}
       <aside className={cn(
-        "md:hidden fixed left-0 top-0 z-50 h-screen border-r border-border bg-card/95 backdrop-blur-xl transition-all duration-300 flex flex-col",
+        "md:hidden fixed left-0 top-0 z-50 h-screen border-r border-zinc-200 bg-white transition-all duration-300 flex flex-col",
         mobileOpen ? "w-[260px] translate-x-0" : "w-[260px] -translate-x-full"
       )}>
         {sidebarContent}
@@ -107,7 +107,7 @@ export function Sidebar() {
 
       {/* Desktop sidebar */}
       <aside className={cn(
-        "hidden md:flex fixed left-0 top-0 z-40 h-screen border-r border-border bg-card/50 backdrop-blur-xl transition-all duration-300 flex-col",
+        "hidden md:flex fixed left-0 top-0 z-40 h-screen border-r border-zinc-200 bg-white transition-all duration-300 flex-col",
         collapsed ? "w-[68px]" : "w-[260px]"
       )}>
         {sidebarContent}
