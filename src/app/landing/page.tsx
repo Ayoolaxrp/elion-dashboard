@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ArrowRight, CheckCircle, Zap, Mail, RotateCcw, Calendar, Settings, Clock, Shield, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import { submitForm } from "@/lib/api";
 
@@ -12,16 +12,16 @@ const steps = [
 ];
 
 const systems = [
-  { icon: <Zap className="w-5 h-5" />, title: "Lead Response", desc: "Capture, qualify, and respond to every lead within seconds across all channels." },
-  { icon: <Mail className="w-5 h-5" />, title: "Follow-Up Engine", desc: "Multi-step follow-up sequences across email, WhatsApp, and SMS, automatically." },
-  { icon: <RotateCcw className="w-5 h-5" />, title: "Revenue Recovery", desc: "Reactivate dormant leads and old customers sitting in your database." },
-  { icon: <Calendar className="w-5 h-5" />, title: "Booking Engine", desc: "Turn enquiries into booked appointments without the back-and-forth." },
-  { icon: <Settings className="w-5 h-5" />, title: "Operations Automation", desc: "Remove repetitive work. Data entry, reports, notifications, onboarding." },
+  { title: "Lead Response", desc: "Capture, qualify, and respond to every lead within seconds across all channels." },
+  { title: "Follow-Up Engine", desc: "Multi-step follow-up sequences across email, WhatsApp, and SMS, automatically." },
+  { title: "Revenue Recovery", desc: "Reactivate dormant leads and old customers sitting in your database." },
+  { title: "Booking Engine", desc: "Turn enquiries into booked appointments without the back-and-forth." },
+  { title: "Operations Automation", desc: "Remove repetitive work. Data entry, reports, notifications, onboarding." },
 ];
 
 const guarantees = [
-  { title: "Results within weeks", desc: "Most clients see measurable improvement within the first two weeks of implementation.", icon: <Clock className="w-5 h-5" /> },
-  { title: "You own everything", desc: "No recurring licensing. No platform lock-in. The automations are yours.", icon: <Shield className="w-5 h-5" /> },
+  { title: "Results within weeks", desc: "Most clients see measurable improvement within the first two weeks of implementation." },
+  { title: "You own everything", desc: "No recurring licensing. No platform lock-in. The automations are yours." },
 ];
 
 const faqs = [
@@ -51,32 +51,34 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="border-b border-zinc-200">
         <div className="max-w-5xl mx-auto px-6 py-16 md:py-24 text-center">
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center">
-              <span className="text-white text-xs font-bold">E</span>
+          <div className="flex items-center justify-center gap-2.5 mb-6">
+            <div className="w-9 h-9 rounded bg-zinc-900 flex items-center justify-center">
+              <span className="text-white text-sm font-bold">E</span>
             </div>
-            <span className="text-lg font-bold text-zinc-900 tracking-tight">ELIAN</span>
+            <span className="text-xl font-bold text-zinc-900 tracking-tight">ELIAN</span>
           </div>
 
+          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Business Automation Systems</p>
+
           <h1 className="text-3xl md:text-5xl font-bold text-zinc-900 tracking-tight mb-4 leading-tight">
-            Your business is losing money<br className="hidden md:block" /> every day through operational leaks
+            Find the leaks in your business.<br />Then automate them.
           </h1>
 
           <p className="text-base md:text-lg text-zinc-500 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Slow lead response. Forgotten follow-ups. Manual data entry. Dormant customers.
-            We build AI-powered systems that fix these leaks.
+            ELIAN identifies where your business is losing time, leads, money, or operational efficiency.
+            Then we build automation systems to fix it.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
             <a
               href="#audit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 transition-colors"
             >
-              Run a Free Leak Audit
+              Run Your Free Leak Audit
             </a>
             <Link
               href="/demo"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-zinc-700 border border-zinc-200 rounded font-semibold text-sm hover:bg-zinc-50 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-zinc-700 border border-zinc-200 rounded font-semibold text-sm hover:bg-zinc-50 transition-colors"
             >
               See How It Works
             </Link>
@@ -89,13 +91,16 @@ export default function LandingPage() {
       {/* The Problem */}
       <section className="border-b border-zinc-200">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-12">The problem</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-4">The problem</h2>
+          <p className="text-sm text-zinc-500 text-center mb-10 max-w-lg mx-auto">
+            Businesses lose money every day through operational leaks they cannot see.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
             {[
               { problem: "A lead fills out your form at 2am", result: "Nobody responds until 10am. By then, they have already contacted your competitor." },
               { problem: "A customer enquires but does not buy", result: "Nobody follows up. The lead goes cold. You spend money generating new ones instead." },
               { problem: "Your team spends hours on data entry", result: "Copying information between systems. Updating spreadsheets. Manually sending reports." },
-              { problem: "You have 2,000 contacts in your database", result: "Nobody contacts them. No reactivation campaigns. No re-engagement. Revenue left on the table." },
+              { problem: "You have 2,000 contacts in your database", result: "Nobody contacts them. No reactivation campaigns. Revenue left on the table." },
             ].map((item, i) => (
               <div key={i} className="border border-zinc-200 rounded-lg p-5">
                 <p className="text-sm font-semibold text-zinc-900 mb-2">{item.problem}</p>
@@ -110,16 +115,12 @@ export default function LandingPage() {
       <section className="border-b border-zinc-200 bg-zinc-50">
         <div className="max-w-5xl mx-auto px-6 py-16">
           <h2 className="text-2xl font-bold text-zinc-900 text-center mb-4">What ELIAN does</h2>
-          <p className="text-sm text-zinc-500 text-center mb-12 max-w-lg mx-auto">
-            ELIAN builds business automations. We identify where your business is losing leads, time, and money, then build the system to fix it.
+          <p className="text-sm text-zinc-500 text-center mb-10 max-w-lg mx-auto">
+            We identify the leak. Then we build the automation to fix it.
           </p>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {systems.map((sys, i) => (
               <div key={i} className="bg-white border border-zinc-200 rounded-lg p-5">
-                <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-600 mb-3">
-                  {sys.icon}
-                </div>
                 <h3 className="text-sm font-semibold text-zinc-900 mb-1">{sys.title}</h3>
                 <p className="text-xs text-zinc-500 leading-relaxed">{sys.desc}</p>
               </div>
@@ -131,7 +132,7 @@ export default function LandingPage() {
       {/* How It Works */}
       <section className="border-b border-zinc-200">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-12">How it works</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-10">How it works</h2>
           <div className="grid md:grid-cols-4 gap-6">
             {steps.map((step) => (
               <div key={step.num} className="text-center">
@@ -149,12 +150,12 @@ export default function LandingPage() {
       {/* Guarantees */}
       <section className="border-b border-zinc-200 bg-zinc-50">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-12">Our guarantees</h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-10">Our guarantees</h2>
+          <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {guarantees.map((g, i) => (
               <div key={i} className="flex items-start gap-3 bg-white border border-zinc-200 rounded-lg p-5">
                 <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
-                  {g.icon}
+                  <CheckCircle className="w-4 h-4" />
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-zinc-900 mb-1">{g.title}</h3>

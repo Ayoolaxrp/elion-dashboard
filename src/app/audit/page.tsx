@@ -404,7 +404,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           {/* ──── Identified Gaps ──── */}
           <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Identified Gaps</h3>
+              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Leak Analysis</h3>
               <div className="flex items-center gap-3 text-[11px]">
                 {auditResult.criticalLeaks > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />{auditResult.criticalLeaks} Critical</span>}
                 {auditResult.highLeaks > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" />{auditResult.highLeaks} High</span>}
@@ -438,31 +438,43 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                     {isExpanded && (
                       <div className="px-4 pb-4 pt-0 ml-5 border-t border-zinc-100 mt-0">
                         <div className="mt-3 space-y-3">
-                          {/* Evidence */}
+                          {/* OBSERVED: Evidence from website analysis */}
                           {leak.evidence && leak.evidence.length > 0 && (
-                            <div className="bg-zinc-50 rounded border border-zinc-100 p-3">
-                              <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1.5">What we found</p>
+                            <div className="bg-blue-50 rounded border border-blue-100 p-3">
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">Observed</span>
+                                <span className="text-[11px] text-blue-600">What we found on your website</span>
+                              </div>
                               <ul className="space-y-1">
                                 {leak.evidence.map((e, i) => (
-                                  <li key={i} className="flex items-start gap-2 text-xs text-zinc-600">
-                                    <span className="w-1 h-1 rounded-full bg-zinc-400 mt-1.5 shrink-0" />
+                                  <li key={i} className="flex items-start gap-2 text-xs text-blue-800">
+                                    <span className="w-1 h-1 rounded-full bg-blue-400 mt-1.5 shrink-0" />
                                     {e}
                                   </li>
                                 ))}
                               </ul>
                             </div>
                           )}
+                          {/* Why it matters */}
                           <div className="bg-white rounded border border-zinc-100 p-3">
-                            <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1">What this means</p>
+                            <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1">Why it matters</p>
                             <p className="text-xs text-zinc-700">{leak.impact}</p>
                           </div>
+                          {/* RECOMMENDED: What to do about it */}
                           <div className="bg-emerald-50 rounded border border-emerald-100 p-3">
-                            <p className="text-[11px] font-semibold text-emerald-700 uppercase mb-1">Recommended action</p>
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">Recommended</span>
+                              <span className="text-[11px] text-emerald-600">Suggested automation opportunity</span>
+                            </div>
                             <p className="text-xs text-emerald-800">{leak.recommendation}</p>
                           </div>
-                          <div className="flex items-center gap-4 text-[11px] text-zinc-400">
+                          <div className="flex items-center gap-3 text-[11px] text-zinc-400">
                             <span>Source: {leak.source}</span>
-                            <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-500 font-medium">Observed from website analysis</span>
+                            <span className={`px-1.5 py-0.5 rounded font-medium ${
+                              leak.severity === "critical" ? "bg-red-50 text-red-600" :
+                              leak.severity === "high" ? "bg-amber-50 text-amber-600" :
+                              "bg-zinc-100 text-zinc-500"
+                            }`}>Priority: {leak.severity}</span>
                           </div>
                         </div>
                       </div>
