@@ -24,7 +24,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
       xmlns="http://www.w3.org/2000/svg"
       className="shrink-0"
     >
-      <rect width="32" height="32" rx="6" fill="#18181b" />
+      <rect width="32" height="32" rx="6" fill="#2563eb" />
       <path
         d="M8 8h4v12H8V8zm0 12h8"
         stroke="white"

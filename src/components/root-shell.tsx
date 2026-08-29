@@ -63,7 +63,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
     <>
       <div className="flex items-center gap-2.5 px-4 h-14 border-b border-zinc-200 shrink-0">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center shrink-0">
+          <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center shrink-0">
             <span className="text-white text-[10px] font-bold">E</span>
           </div>
           {!collapsed && (
@@ -95,11 +95,11 @@ export function RootShell({ children }: { children: React.ReactNode }) {
                     onClick={() => setMobileOpen(false)}
                     className={cn(
                       "flex items-center gap-2.5 px-3 py-2 rounded text-sm transition-colors",
-                      isActive ? "bg-zinc-100 text-zinc-900 font-medium" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
+                      isActive ? "bg-blue-50 text-blue-700 font-medium" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
                     )}
                     title={collapsed ? item.label : undefined}
                   >
-                    <item.icon className={cn("w-4 h-4 shrink-0", isActive ? "text-zinc-900" : "text-zinc-400")} />
+                    <item.icon className={cn("w-4 h-4 shrink-0", isActive ? "text-blue-600" : "text-zinc-400")} />
                     {!collapsed && <span>{item.label}</span>}
                   </Link>
                 );

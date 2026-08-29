@@ -9,7 +9,7 @@ export function FloatingContact() {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {open && (
-        <div className="mb-3 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl p-4 w-64 animate-fade-in">
+        <div className="mb-3 bg-blue-600 border border-zinc-700 rounded-lg shadow-xl p-4 w-64 animate-fade-in">
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-semibold">Contact Us</h4>
             <button onClick={() => setOpen(false)} className="text-zinc-500 hover:text-white cursor-pointer">

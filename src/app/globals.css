@@ -2,7 +2,20 @@
 
 @source "../";
 
-/* ---- All custom styles inside @layer base so they don't beat Tailwind utilities ---- */
+/* ---- Brand colors via CSS custom properties ---- */
+@theme {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+}
+
+/* ---- Custom styles in @layer base so they don't beat Tailwind utilities ---- */
 @layer base {
   *,
   ::after,
@@ -17,7 +30,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
-  /* Ensure link reset beats browser defaults by being more specific */
   a {
     color: inherit;
     text-decoration: none;
@@ -25,13 +37,8 @@
 }
 
 /* ---- Animations ---- */
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.25s ease-out;
-}
+.animate-fade-in { animation: fade-in 0.2s ease-out; }
+.animate-slide-up { animation: slide-up 0.25s ease-out; }
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(4px); }
@@ -57,7 +64,7 @@
 }
 
 /* ---- Focus ---- */
-:focus-visible { outline: 2px solid #18181b; outline-offset: 2px; }
+:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
 
 /* ---- Skip to content ---- */
 .skip-to-content {

@@ -270,7 +270,7 @@ export function TeamIllustration() {
       <text x="220" y="90" textAnchor="middle" fill="#a1a1aa" fontSize="9">Operations</text>
       
       {/* Stats */}
-      <text x="150" y="120" textAnchor="middle" fill="#6366f1" fontSize="11" fontWeight="bold">400+ Teams Automated</text>
+      <text x="150" y="120" textAnchor="middle" fill="#6366f1" fontSize="11" fontWeight="bold">Business Automation Systems</text>
     </svg>
   );
 }

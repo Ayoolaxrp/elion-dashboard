@@ -12,7 +12,7 @@ export default function BookingLanding() {
             <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center"><Zap className="w-4 h-4 text-white" /></div>
             <span className="text-lg font-bold text-white">ELION</span>
           </div>
-          <a href="#cta" className="hidden md:inline-flex px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-lg hover:bg-zinc-800 transition-colors">Get Started</a>
+          <a href="#cta" className="hidden md:inline-flex px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">Get Started</a>
         </div>
       </nav>
 

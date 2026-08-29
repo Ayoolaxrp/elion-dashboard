@@ -85,7 +85,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-zinc-900 flex items-center justify-center">
+          <div className="w-9 h-9 rounded bg-blue-600 flex items-center justify-center">
             <span className="text-white text-sm font-bold tracking-tight">E</span>
           </div>
           <div>
@@ -96,7 +96,7 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2">
           <Link
             href="/audit"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Search className="w-4 h-4" />Run Free Audit
           </Link>
@@ -116,7 +116,7 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/audit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors"
             >
               Run Your Free Leak Audit
             </Link>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
             { step: "04", title: "Go live", desc: "We deploy, test, and hand over. You own everything. Optional support available." },
           ].map((s) => (
             <div key={s.step}>
-              <div className="w-8 h-8 rounded bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-600 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-xs font-bold text-white mb-3">
                 {s.step}
               </div>
               <h3 className="text-sm font-semibold text-zinc-900 mb-1">{s.title}</h3>
@@ -184,19 +184,19 @@ export default function DashboardPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-zinc-900 rounded-lg p-8 text-center">
+      <div className="bg-blue-600 rounded-lg p-8 text-center">
         <h2 className="text-lg font-bold text-white mb-2">Ready to find your leaks?</h2>
-        <p className="text-sm text-zinc-400 mb-5">Every day you wait, you are losing leads, time, and revenue.</p>
+        <p className="text-sm text-blue-100 mb-5">Every day you wait, you are losing leads, time, and revenue.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/audit"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-zinc-900 rounded font-semibold text-sm hover:bg-zinc-100 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold text-sm hover:bg-blue-50 transition-colors"
           >
             Run Free Leak Audit
           </Link>
           <Link
             href="/landing/pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-800 text-zinc-300 rounded font-semibold text-sm hover:bg-zinc-700 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-700 text-white rounded-lg font-semibold text-sm hover:bg-blue-800 transition-colors"
           >
             View Pricing
           </Link>

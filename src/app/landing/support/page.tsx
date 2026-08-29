@@ -150,7 +150,7 @@ export default function SupportPage() {
               </div>
               <button
                 type="submit"
-                className="w-full py-2.5 bg-zinc-900 text-white rounded text-sm font-semibold hover:bg-zinc-800 transition-colors cursor-pointer"
+                className="w-full py-2.5 bg-blue-600 text-white rounded text-sm font-semibold hover:bg-blue-700 transition-colors cursor-pointer"
               >
                 Send Request
               </button>

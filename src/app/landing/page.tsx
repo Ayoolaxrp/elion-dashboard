@@ -52,7 +52,7 @@ export default function LandingPage() {
       <section className="border-b border-zinc-200">
         <div className="max-w-5xl mx-auto px-6 py-16 md:py-24 text-center">
           <div className="flex items-center justify-center gap-2.5 mb-6">
-            <div className="w-9 h-9 rounded bg-zinc-900 flex items-center justify-center">
+            <div className="w-9 h-9 rounded bg-blue-600 flex items-center justify-center">
               <span className="text-white text-sm font-bold">E</span>
             </div>
             <span className="text-xl font-bold text-zinc-900 tracking-tight">ELION</span>
@@ -72,7 +72,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
             <a
               href="#audit"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 text-white rounded font-semibold text-sm hover:bg-blue-700 transition-colors"
             >
               Run Your Free Leak Audit
             </a>
@@ -284,7 +284,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="#audit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-blue-700 transition-colors"
             >
               Run Free Leak Audit
             </a>

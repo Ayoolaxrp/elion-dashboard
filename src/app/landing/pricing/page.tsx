@@ -195,7 +195,7 @@ export default function PricingPage() {
                   className={`block w-full text-center py-2.5 rounded text-sm font-semibold transition-colors ${
                     plan.popular
                       ? "bg-white text-zinc-900 hover:bg-zinc-100"
-                      : "bg-zinc-900 text-white hover:bg-zinc-800"
+                      : "bg-zinc-900 text-white hover:bg-blue-700"
                   }`}
                 >
                   {plan.cta}
@@ -291,7 +291,7 @@ export default function PricingPage() {
           <p className="text-sm text-zinc-500 mb-6">Run a free leak audit to see where your business is losing money.</p>
           <Link
             href="/audit"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors"
           >
             Run Free Leak Audit <ArrowRight className="w-4 h-4" />
           </Link>

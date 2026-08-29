@@ -22,7 +22,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       <nav className="border-b border-zinc-200 sticky top-0 z-40 bg-white">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center">
+            <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center">
               <span className="text-white text-[10px] font-bold">E</span>
             </div>
             <span className="text-sm font-bold text-zinc-900 tracking-tight">ELION</span>
@@ -43,7 +43,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             ))}
             <Link
               href="/audit"
-              className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors"
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
               Free Audit
             </Link>
@@ -78,7 +78,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
               <Link
                 href="/audit"
                 onClick={() => setMobileOpen(false)}
-                className="block w-full text-center py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors"
+                className="block w-full text-center py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
               >
                 Free Audit
               </Link>
@@ -96,7 +96,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center">
+                <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center">
                   <span className="text-white text-[10px] font-bold">E</span>
                 </div>
                 <span className="text-sm font-bold text-zinc-900">ELION</span>
