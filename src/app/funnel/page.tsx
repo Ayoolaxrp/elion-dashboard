@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowLeft, CheckCircle2, Zap, RotateCcw, Calendar, ChevronDown, ChevronUp, Settings, Clock, Shield, ArrowDown } from "lucide-react";
@@ -67,7 +68,7 @@ export default function FunnelPage() {
   return (
     <div className="min-h-screen bg-[var(--color-surface)]">      <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-lg bg-[var(--color-accent)] flex items-center justify-center"><span className="text-white text-[11px] font-bold tracking-tight">E</span></div><span className="font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span></div>
+          <div className="flex items-center gap-2.5"><Image src="/brand/elion-e-icon.svg" alt="ELION" width={32} height={32} priority /><span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span></div>
           <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20">Start Free Audit</a>
         </div>
       </header>
