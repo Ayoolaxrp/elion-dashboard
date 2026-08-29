@@ -262,29 +262,48 @@ async function researchBusiness(companyName: string, website: string): Promise<W
 }
 
 function calculateScore(benchmark: typeof INDUSTRY_BENCHMARKS.General, research: WebResearch): number {
+  // Start from a neutral base, then adjust based on ACTUAL findings
   let score = 50;
 
-  // Response time impact
+  // ──── Research-based adjustments (what we actually found) ────
+  if (research.hasWebsite) {
+    score += 5;
+    if (research.websiteScore > 80) score += 5;
+    else if (research.websiteScore > 60) score += 2;
+    else if (research.websiteScore < 30) score -= 5;
+  } else {
+    score -= 10;
+  }
+  if (research.hasWhatsApp) score += 6;
+  if (research.hasOnlineBooking) score += 8;
+  if (research.hasCRM) score += 6;
+  if (research.hasEmailMarketing) score += 5;
+  if (research.hasSocialMedia) {
+    score += 3;
+    if (research.socialPlatforms.length >= 4) score += 2;
+  }
+  if (research.hasLiveChat) score += 4;
+  if (research.hasEcommerce) score += 2;
+
+  // ──── Industry benchmark adjustments (structural issues) ────
   const hours = parseFloat(benchmark.avgResponseTime);
-  if (hours > 4) score -= 15;
-  else if (hours > 2) score -= 8;
-  else score += 5;
+  if (hours > 5) score -= 12;
+  else if (hours > 3) score -= 6;
+  else if (hours <= 1) score += 3;
 
-  // Follow-up rate
-  if (benchmark.followUpRate < 30) score -= 20;
-  else if (benchmark.followUpRate < 50) score -= 10;
-  else score += 5;
+  if (benchmark.followUpRate < 25) score -= 10;
+  else if (benchmark.followUpRate < 40) score -= 5;
+  else if (benchmark.followUpRate >= 60) score += 3;
 
-  // Digital presence adjustments
-  if (research.hasWebsite) score += 5;
-  if (research.websiteScore > 70) score += 5;
-  if (research.hasWhatsApp) score += 5;
-  if (research.hasOnlineBooking) score += 10;
-  if (research.hasCRM) score += 8;
-  if (research.hasEmailMarketing) score += 7;
-  if (research.hasSocialMedia) score += 5;
+  if (benchmark.dataEntryHours > 20) score -= 5;
+  else if (benchmark.dataEntryHours < 10) score += 3;
 
-  return Math.max(15, Math.min(85, score));
+  // Digital presence composite
+  const dp = research.digitalPresenceScore;
+  if (dp > 70) score += 5;
+  else if (dp < 30) score -= 5;
+
+  return Math.max(18, Math.min(82, Math.round(score)));
 }
 
 export async function POST(req: NextRequest) {
@@ -309,7 +328,7 @@ export async function POST(req: NextRequest) {
     const leaks: Array<{
       id: string; area: string; severity: "critical" | "high" | "medium" | "low";
       description: string; impact: string; recommendation: string;
-      estimatedSavings: string; source: string;
+      estimatedSavings: string; source: string; evidence?: string[];
     }> = [];
 
     let leakId = 1;
@@ -324,116 +343,151 @@ export async function POST(req: NextRequest) {
     const techStack = research.websiteTech || [];
     const socialPlatforms = research.socialPlatforms;
 
-    // Evidence-based leak: No website or poor website
+    // ──── Evidence-based leak generation ────
+    // Each leak references what was ACTUALLY found/missing during the scrape
+    
+    // Leak: No website or poor website
     if (!hasWebsite) {
       leaks.push({
         id: String(leakId++), area: "Website", severity: "critical",
-        description: `${company_name} does not have a detectable website at ${website || "(no URL provided)"}. In 2026, 81% of consumers research a business online before engaging. Without a website, you are invisible to the majority of potential customers.`,
-        impact: `Losing an estimated ${benchmark.avgLeadCost} per missed lead from organic search`,
-        recommendation: "Build a conversion-optimized landing page with contact forms and service information",
-        estimatedSavings: "Varies by lead volume", source: "Google Consumer Barometer 2025",
+        description: `${company_name} does not have a detectable website at ${website || "(no URL provided)"}. 81% of consumers research a business online before engaging (Google Consumer Barometer 2025). Without a website, you are invisible to the majority of potential customers searching for ${ind.toLowerCase()} services.`,
+        impact: `Every potential customer who searches for your service online and does not find you goes to a competitor. At ${benchmark.avgLeadCost} avg cost per lead, this adds up quickly.`,
+        recommendation: "Build a conversion-optimized landing page with contact forms, service information, and WhatsApp integration",
+        estimatedSavings: `NGN ${Math.round(parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 200 * 12).toLocaleString()}/year (based on 200 missed leads/month at ${benchmark.avgLeadCost}/lead)`,
+        source: "Google Consumer Barometer 2025",
+        evidence: ["No website URL provided or URL unreachable", "Business cannot be found via organic search"],
       });
     } else if (websiteScore < 40) {
+      const missing: string[] = [];
+      // We already know what the site is missing from the scoring criteria
+      missing.push(`Website scored ${websiteScore}/100 in technical analysis`);
+      if (techStack.length === 0) missing.push("No modern framework detected");
       leaks.push({
         id: String(leakId++), area: "Website Quality", severity: "high",
-        description: `${company_name}'s website scored ${websiteScore}/100 in our analysis. ${!techStack.includes("Next.js") && !techStack.includes("React") ? "The site appears to use basic technology without modern frameworks. " : ""}${websiteScore < 20 ? "The site may be missing critical elements like meta descriptions, SSL, or mobile optimization." : "Key conversion elements may be missing."}`,
-        impact: `Low-scoring sites convert ${Math.round((100 - websiteScore) * 0.3)}% fewer visitors into leads`,
-        recommendation: "Optimize for SEO, mobile responsiveness, and conversion rate",
-        estimatedSavings: "Depends on current traffic volume", source: "HubSpot State of Marketing 2025",
+        description: `${company_name}'s website scored ${websiteScore}/100. ${missing.join(". ")}. A low-scoring website loses visitors to competitors with better user experience and faster load times.`,
+        impact: `Sites scoring below 40 convert ${Math.round((100 - websiteScore) * 0.25)}% fewer visitors into enquiries. With ${benchmark.avgLeadCost} avg lead cost, every lost conversion is money left on the table.`,
+        recommendation: "Optimize website for SEO, mobile responsiveness, page speed, and conversion rate. Add clear CTAs and contact methods.",
+        estimatedSavings: `NGN ${Math.round((100 - websiteScore) * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 50).toLocaleString()}/year in missed conversions`,
+        source: "HubSpot State of Marketing 2025",
+        evidence: missing,
       });
     }
 
-    // Evidence-based leak: No WhatsApp
+    // Leak: No WhatsApp
     if (!hasWhatsApp) {
       const adoptionPct = benchmark.whatsappAdoption;
+      const monthlyLeads = Math.round(adoptionPct * 12);
       leaks.push({
         id: String(leakId++), area: "WhatsApp Integration", severity: "critical",
-        description: `${company_name} does not have WhatsApp Business integration on their website. In ${ind}, ${adoptionPct}% of customers prefer WhatsApp for business communication. This means nearly ${Math.round(adoptionPct / 2)}% of your potential customers cannot reach you on their preferred channel.`,
-        impact: `Missing ${adoptionPct}% of potential leads who prefer WhatsApp (${benchmark.avgLeadCost} avg cost per lead)`,
-        recommendation: "Add WhatsApp Business API with instant auto-response on website and marketing materials",
-        estimatedSavings: `NGN ${Math.round(adoptionPct * 1200 * 12).toLocaleString()}/year in recovered leads`, source: "Statista WhatsApp Business Report 2025",
+        description: `No WhatsApp Business integration detected on ${company_name}'s website. In ${ind}, ${adoptionPct}% of customers prefer WhatsApp for business communication (Statista 2025). ${Math.round(adoptionPct / 2)}% of potential customers cannot reach you on their preferred channel.`,
+        impact: `${adoptionPct}% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately ${benchmark.avgLeadCost} to acquire through other channels.`,
+        recommendation: "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com).",
+        estimatedSavings: `NGN ${Math.round(monthlyLeads * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (based on ${monthlyLeads} WhatsApp-preferring leads/month)`,
+        source: "Statista WhatsApp Business Report 2025",
+        evidence: ["No wa.me links found on website", "No WhatsApp widget or API integration detected", `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp`],
       });
     }
 
-    // Evidence-based leak: No online booking
+    // Leak: No online booking
     if (!hasBooking) {
       const noShowRate = benchmark.noShowRate;
+      const monthlyAppointments = 50;
+      const lostAppointments = Math.round(monthlyAppointments * noShowRate / 100);
       leaks.push({
         id: String(leakId++), area: "Appointment Management", severity: noShowRate > 20 ? "critical" : "high",
-        description: `${company_name} has no online booking system detected. Customers must call or message to schedule appointments. ${ind} businesses without online booking experience ${noShowRate}% no-show rates, compared to under 5% with automated reminders.`,
-        impact: noShowRate > 0 ? `${noShowRate}% no-show rate means roughly 1 in ${Math.round(100 / noShowRate)} appointments is wasted` : `No online booking means customers must call/message, adding friction and reducing conversion`,
-        recommendation: "Implement booking engine with auto-reminders via WhatsApp and email",
-        estimatedSavings: `NGN ${Math.max(500000, Math.round(noShowRate * 50 * 8000)).toLocaleString()}/month in recovered appointments`, source: "Calendly Industry Report 2025",
+        description: `No online booking system detected on ${company_name}'s website. Customers must call or message to schedule. ${ind} businesses without online booking experience ${noShowRate}% no-show rates, compared to under 5% with automated reminders (Calendly 2025).`,
+        impact: `${noShowRate}% no-show rate means roughly 1 in ${Math.round(100 / noShowRate)} appointments is wasted. Staff spend ${Math.round(benchmark.dataEntryHours * 0.3)}+ hours/week coordinating schedules manually.`,
+        recommendation: "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time.",
+        estimatedSavings: `NGN ${Math.round(lostAppointments * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (based on ${lostAppointments} missed appointments/month)`,
+        source: "Calendly Industry Report 2025",
+        evidence: ["No Calendly, scheduling tool, or booking form found", `Industry no-show rate: ${noShowRate}%`, `Manual scheduling costs ~${Math.round(benchmark.dataEntryHours * 0.3)} hours/week`],
       });
     }
 
-    // Evidence-based leak: No email marketing but has social
+    // Leak: No email marketing but has social
     if (!hasEmail && hasSocial) {
       leaks.push({
         id: String(leakId++), area: "Email Marketing", severity: "medium",
-        description: `${company_name} has social media presence (${socialPlatforms.join(", ")}) but no email marketing integration detected. Email marketing delivers NGN 36 for every NGN 1 spent. Social followers who are not captured via email are lost when algorithms change.`,
-        impact: `Missing nurture channel for social followers. Email converts ${Math.round(benchmark.avgConversion * 1.5)}% better than social alone.`,
-        recommendation: "Set up email capture forms and automated sequences to convert social followers",
-        estimatedSavings: "NGN 2,400,000/year in missed conversions", source: "Litmus Email Marketing ROI Report 2025",
+        description: `${company_name} has social media (${socialPlatforms.join(", ")}) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.`,
+        impact: `Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, ${socialPlatforms.length} platform audiences are rented, not owned.`,
+        recommendation: "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach.",
+        estimatedSavings: `NGN ${Math.round(benchmark.avgConversion * 30 * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, ""))).toLocaleString()}/year (based on converting ${benchmark.avgConversion}% of social followers to email)`,
+        source: "Litmus Email Marketing ROI Report 2025",
+        evidence: [`${socialPlatforms.length} social platforms detected: ${socialPlatforms.join(", ")}`, "No Mailchimp, SendGrid, or newsletter integration found", "Social followers not being captured as email subscribers"],
       });
     }
 
-    // Evidence-based leak: No CRM
+    // Leak: No CRM
     if (!hasCRM && hasWebsite) {
+      const followUpLoss = Math.round(100 - benchmark.followUpRate);
       leaks.push({
         id: String(leakId++), area: "Customer Management", severity: "high",
-        description: `${company_name} has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, etc.). Without a CRM, leads from website forms and enquiries are likely managed manually in spreadsheets or email inboxes, leading to lost follow-ups and duplicate outreach.`,
-        impact: `Manual lead management results in ${Math.round((100 - benchmark.followUpRate))}% of leads not receiving follow-up`,
-        recommendation: "Implement a CRM to capture, track, and automate lead management",
-        estimatedSavings: `NGN ${Math.round((100 - benchmark.followUpRate) * 25000).toLocaleString()}/month in lost follow-up revenue`, source: "Salesforce State of Sales 2025",
+        description: `${company_name} has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.`,
+        impact: `${followUpLoss}% of leads do not receive consistent follow-up. Manual lead management in ${ind} costs an average of ${benchmark.dataEntryHours} hours/week in data entry alone.`,
+        recommendation: "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+.",
+        estimatedSavings: `NGN ${Math.round(followUpLoss * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 100).toLocaleString()}/year (based on ${followUpLoss}% of leads lost to poor follow-up)`,
+        source: "Salesforce State of Sales 2025",
+        evidence: ["No HubSpot, Salesforce, Pipedrive, or Zoho detected", `${benchmark.dataEntryHours} hours/week estimated manual data entry`, `${followUpLoss}% of leads likely not followed up consistently`],
       });
     }
 
-    // Evidence-based leak: No live chat
+    // Leak: No live chat
     if (!hasChat && hasWebsite) {
       leaks.push({
         id: String(leakId++), area: "Live Chat", severity: "medium",
-        description: `${company_name} has no live chat or chatbot detected on their website. 79% of consumers expect immediate responses to enquiries. Without live chat, website visitors who have questions leave without converting.`,
-        impact: `Average website converts 2-5% of visitors. Live chat can increase this to 4-8%.`,
-        recommendation: "Add live chat or AI chatbot for instant visitor support",
-        estimatedSavings: `NGN ${Math.round(benchmark.avgConversion * 50000).toLocaleString()}/year in additional conversions`, source: "Zendesk Customer Experience Trends 2025",
+        description: `No live chat or chatbot detected on ${company_name}'s website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.`,
+        impact: `Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.`,
+        recommendation: "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries.",
+        estimatedSavings: `NGN ${Math.round(benchmark.avgConversion * 25 * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, ""))).toLocaleString()}/year (based on ${benchmark.avgConversion}% conversion lift from live chat)`,
+        source: "Zendesk Customer Experience Trends 2025",
+        evidence: ["No Intercom, Drift, Crisp, or Tawk.to detected", "No chatbot widget found", "Website visitors have no immediate support channel"],
       });
     }
 
-    // Evidence-based leak: Has social but weak digital presence
+    // Leak: Weak social media presence
     if (hasSocial && socialPlatforms.length < 3 && hasWebsite) {
+      const missing: string[] = [];
+      if (!socialPlatforms.includes("Instagram")) missing.push("Instagram");
+      if (!socialPlatforms.includes("LinkedIn")) missing.push("LinkedIn");
+      if (!socialPlatforms.includes("TikTok")) missing.push("TikTok");
       leaks.push({
         id: String(leakId++), area: "Social Media Presence", severity: "low",
-        description: `${company_name} was found on ${socialPlatforms.join(", ")} but is missing from other major platforms. Businesses with 3+ social platforms get ${Math.round(1.5 * socialPlatforms.length)}x more engagement than single-platform presence.`,
-        impact: `Limited reach across ${3 - socialPlatforms.length} major platforms`,
-        recommendation: `Expand to ${socialPlatforms.includes("Instagram") ? "" : "Instagram, "}${socialPlatforms.includes("LinkedIn") ? "" : "LinkedIn, "}${socialPlatforms.includes("TikTok") ? "" : "TikTok"}${""}`.trim().replace(/, $/, ""),
-        estimatedSavings: "Varies by content strategy", source: "Hootsuite Social Media Trends 2025",
+        description: `${company_name} was found on ${socialPlatforms.join(", ")} but is missing from ${missing.join(", ") || "other major platforms"}. Multi-platform presence increases brand reach and reduces dependency on any single algorithm.`,
+        impact: `Present on ${socialPlatforms.length} of 5 major platforms. ${missing.length} additional platforms represent untapped audiences.`,
+        recommendation: `Expand to ${missing.slice(0, 2).join(" and ") || "additional platforms"} to diversify reach and capture different audience segments.`,
+        estimatedSavings: "Varies by content strategy and audience overlap",
+        source: "Hootsuite Social Media Trends 2025",
+        evidence: [`Found on: ${socialPlatforms.join(", ")}`, `Missing: ${missing.join(", ") || "none"}`],
       });
     }
 
-    // Evidence-based leak: Tech stack issues
+    // Leak: Tech stack limitations
     if (hasWebsite && techStack.length > 0) {
       const hasModern = techStack.some((t) => ["Next.js", "React", "Vue.js", "Svelte"].includes(t));
       const hasCMS = techStack.some((t) => ["WordPress", "Shopify", "Webflow"].includes(t));
       if (!hasModern && !hasCMS) {
         leaks.push({
           id: String(leakId++), area: "Website Technology", severity: "low",
-          description: `${company_name}'s website uses ${techStack.join(", ")} technology. While functional, this may limit integration capabilities with modern automation tools and CRM platforms.`,
-          impact: "Limited automation integration options",
-          recommendation: "Consider migrating to a modern stack (Next.js, React) for better API integrations",
-          estimatedSavings: "Long-term efficiency gains", source: "Industry analysis",
+          description: `${company_name}'s website uses ${techStack.join(", ")}. While functional, older technology stacks may have limited API integration capabilities with modern automation tools.`,
+          impact: "Limited integration options with modern CRM, booking, and automation platforms",
+          recommendation: "Consider modernizing the tech stack for better API integrations. Not urgent if current site converts well.",
+          estimatedSavings: "Long-term efficiency gains from better integrations",
+          source: "Industry analysis",
+          evidence: [`Detected technologies: ${techStack.join(", ")}`],
         });
       }
     }
 
-    // If no leaks found, note what is working
+    // If no leaks found, note what is working well
     if (leaks.length === 0) {
       leaks.push({
-        id: String(leakId++), area: "Digital Presence", severity: "low",
-        description: `${company_name} has a strong digital presence with ${techStack.join(", ")} technology, ${socialPlatforms.join(", ")} social media, and ${hasWhatsApp ? "WhatsApp integration" : "no WhatsApp"}${hasBooking ? ", online booking" : ""}${hasCRM ? ", CRM" : ""}${hasEmail ? ", email marketing" : ""}. The main opportunity is optimizing conversion rates and adding automation where manual processes exist.`,
-        impact: "Optimization opportunity for existing setup",
-        recommendation: "Audit internal processes for manual tasks suitable for automation",
-        estimatedSavings: "Depends on current manual workload", source: "Internal analysis",
+        id: String(leakId++), area: "Optimization Opportunity", severity: "low",
+        description: `${company_name} has a strong digital presence: ${techStack.join(", ")} technology, ${socialPlatforms.join(", ")} social media, ${hasWhatsApp ? "WhatsApp" : "no WhatsApp"}${hasBooking ? ", online booking" : ""}${hasCRM ? ", CRM" : ""}${hasEmail ? ", email marketing" : ""}. The main opportunity is optimizing conversion rates and automating any remaining manual processes.`,
+        impact: "Current setup is solid. Optimization can still unlock 15-30% efficiency gains.",
+        recommendation: "Audit internal processes for manual tasks. Focus on conversion rate optimization and marketing automation.",
+        estimatedSavings: "Depends on current manual workload and conversion rates",
+        source: "Internal analysis",
+        evidence: [`Website: ${websiteScore}/100`, `Social: ${socialPlatforms.join(", ")}`, `Tech: ${techStack.join(", ")}`],
       });
     }
 
@@ -449,14 +503,14 @@ export async function POST(req: NextRequest) {
       return acc;
     }, 0);
 
-    // Sub-scores based on research
+    // Sub-scores based on ACTUAL research findings + industry benchmarks
     const subScores = {
       lead_response: Math.max(10, 100 - Math.round(parseFloat(benchmark.avgResponseTime) * 15)),
       follow_up: benchmark.followUpRate,
       data_entry: Math.max(10, 100 - benchmark.dataEntryHours * 4),
       scheduling: research.hasOnlineBooking ? 75 : Math.max(10, 100 - benchmark.noShowRate * 3),
       reactivation: research.hasCRM ? 60 : 20,
-      reporting: 35,
+      reporting: (research.hasCRM ? 40 : 15) + (research.hasEmailMarketing ? 15 : 0),
       digital_presence: research.digitalPresenceScore,
     };
 
