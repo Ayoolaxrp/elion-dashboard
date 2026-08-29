@@ -26,18 +26,7 @@ const bookingFlow: WorkflowDefinition = {
 
 interface Apt { id: string; title: string; client: string; email: string; phone: string; date: string; time: string; duration: string; type: "in-person" | "video" | "phone"; status: "confirmed" | "pending" | "completed" | "cancelled" | "no-show"; notes: string; autoReminder: boolean; location?: string; }
 
-const initialApts: Apt[] = [
-  { id: "1", title: "Consultation", client: "Adebayo Johnson", email: "adebayo@techcorp.ng", phone: "+234 801 234 5678", date: "2026-08-27", time: "10:00", duration: "30 min", type: "video", status: "confirmed", notes: "Interested in lead response system. Wants to see dashboard demo.", autoReminder: true, location: "Zoom" },
-  { id: "2", title: "Demo", client: "Chioma Okafor", email: "chioma@realestate.com", phone: "+234 802 345 6789", date: "2026-08-27", time: "11:30", duration: "45 min", type: "in-person", status: "confirmed", notes: "Real estate lead conversion demo. Bring case studies.", autoReminder: true, location: "Office" },
-  { id: "3", title: "Follow-Up", client: "Emeka Nwosu", email: "emeka@fintech.io", phone: "+234 803 456 7890", date: "2026-08-27", time: "14:00", duration: "20 min", type: "phone", status: "pending", notes: "Discuss pricing. Budget is $5K-10K.", autoReminder: true },
-  { id: "4", title: "Onboarding", client: "Gideon Mensah", email: "gideon@logistics.com", phone: "+233 24 567 8901", date: "2026-08-28", time: "09:00", duration: "60 min", type: "video", status: "confirmed", notes: "New client onboarding. Signed Growth plan.", autoReminder: true, location: "Google Meet" },
-  { id: "5", title: "Consultation", client: "Halima Bello", email: "halima@edu.ng", phone: "+234 805 678 9012", date: "2026-08-28", time: "13:00", duration: "30 min", type: "video", status: "pending", notes: "Education sector automation. Interested in booking engine.", autoReminder: true },
-  { id: "6", title: "Demo", client: "Ibrahim Yusuf", email: "ibrahim@trade.ng", phone: "+234 806 789 0123", date: "2026-08-26", time: "15:00", duration: "45 min", type: "in-person", status: "no-show", notes: "Did not attend. Rescheduled to 08/29.", autoReminder: false },
-  { id: "7", title: "Strategy", client: "Janet Okonkwo", email: "janet@salon.com", phone: "+234 807 890 1234", date: "2026-08-26", time: "10:00", duration: "30 min", type: "phone", status: "completed", notes: "Discussed booking engine. Very interested.", autoReminder: true },
-  { id: "8", title: "Strategy", client: "Kemi Adekunle", email: "kemi@agency.ng", phone: "+234 808 901 2345", date: "2026-08-29", time: "11:00", duration: "30 min", type: "video", status: "confirmed", notes: "SMMA owner. Wants full automation suite.", autoReminder: true },
-  { id: "9", title: "Consultation", client: "Lola Abiodun", email: "lola@clinic.com", phone: "+234 809 012 3456", date: "2026-08-29", time: "14:30", duration: "30 min", type: "phone", status: "pending", notes: "Healthcare automation. Patient booking system.", autoReminder: true },
-  { id: "10", title: "Demo", client: "Mike Osei", email: "mike@startup.gh", phone: "+233 20 123 4567", date: "2026-08-30", time: "10:00", duration: "45 min", type: "video", status: "confirmed", notes: "Ghana-based startup. Lead response system demo.", autoReminder: true },
-];
+const initialApts: Apt[] = [];
 
 const typeIcons: Record<string, typeof Video> = { "in-person": MapPin, video: Video, phone: Phone };
 const statusColors: Record<string, "default" | "success" | "warning" | "danger" | "info" | "outline"> = { confirmed: "success", pending: "warning", completed: "info", cancelled: "danger", "no-show": "danger" };

@@ -35,17 +35,9 @@ interface Campaign { id: string; name: string; seqId: string; status: "sending" 
 const stepColor: Record<string, string> = { email: "border-primary/30 text-primary bg-primary/5", whatsapp: "border-success/30 text-success bg-success/5", sms: "border-warning/30 text-warning bg-warning/5", delay: "border-border text-muted-foreground bg-secondary/30" };
 const stepIcon: Record<string, typeof Mail> = { email: Mail, whatsapp: MessageSquare, sms: MessageSquare, delay: Clock };
 
-const initialSeqs: Seq[] = [
-  { id: "1", name: "New Lead Welcome", status: "active", steps: [{ id: "1", type: "email", label: "Welcome Email", delay: "Immediate" }, { id: "2", type: "delay", label: "Wait", delay: "2 days" }, { id: "3", type: "whatsapp", label: "WhatsApp Check-in", delay: "Day 3" }, { id: "4", type: "delay", label: "Wait", delay: "3 days" }, { id: "5", type: "email", label: "Value Email", delay: "Day 6" }], enrolled: 342, completed: 287, replies: 89, openRate: 67.3 },
-  { id: "2", name: "Post-Meeting Follow-Up", status: "active", steps: [{ id: "1", type: "email", label: "Thank You", delay: "1hr after" }, { id: "2", type: "delay", label: "Wait", delay: "1 day" }, { id: "3", type: "email", label: "Proposal", delay: "Day 2" }, { id: "4", type: "whatsapp", label: "Gentle Nudge", delay: "Day 5" }], enrolled: 156, completed: 134, replies: 67, openRate: 78.2 },
-  { id: "3", name: "Dormant Reactivation", status: "paused", steps: [{ id: "1", type: "email", label: "We Miss You", delay: "Immediate" }, { id: "2", type: "sms", label: "SMS Reminder", delay: "Day 4" }], enrolled: 890, completed: 756, replies: 45, openRate: 34.1 },
-];
+const initialSeqs: Seq[] = [];
 
-const initialCampaigns: Campaign[] = [
-  { id: "1", name: "Q3 Fintech Outreach", seqId: "1", status: "completed", sent: 234, replied: 42, createdAt: "2026-08-10" },
-  { id: "2", name: "August Reactivation", seqId: "3", status: "sending", sent: 456, replied: 23, createdAt: "2026-08-15" },
-  { id: "3", name: "Post-Demo Follow-Up", seqId: "2", status: "scheduled", sent: 0, replied: 0, createdAt: "2026-08-27" },
-];
+const initialCampaigns: Campaign[] = [];
 
 export default function FollowUpPage() {
   const [tab, setTab] = useState("sequences");

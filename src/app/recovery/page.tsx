@@ -27,19 +27,9 @@ const recoveryFlow: WorkflowDefinition = {
 interface Segment { id: string; name: string; desc: string; count: number; avgValue: string; lastActivity: string; recoveryRate: number; }
 interface Campaign { id: string; name: string; segmentId: string; channel: string; offerType: string; status: "sending" | "completed" | "scheduled" | "paused"; sent: number; recovered: number; revenue: string; createdAt: string; }
 
-const initialSegs: Segment[] = [
-  { id: "1", name: "Dormant Customers (90+ days)", desc: "Haven't purchased in 90+ days", count: 1240, avgValue: "NGN 45,000", lastActivity: "3-6 months ago", recoveryRate: 12.4 },
-  { id: "2", name: "Abandoned Carts", desc: "Started checkout but didn't complete", count: 680, avgValue: "NGN 28,000", lastActivity: "1-7 days ago", recoveryRate: 24.8 },
-  { id: "3", name: "Unconverted Leads", desc: "Enquired but never became customers", count: 890, avgValue: "NGN 62,000", lastActivity: "30-90 days ago", recoveryRate: 8.2 },
-  { id: "4", name: "Past Quotation Holders", desc: "Received quote but didn't proceed", count: 340, avgValue: "NGN 125,000", lastActivity: "14-60 days ago", recoveryRate: 18.6 },
-  { id: "5", name: "Lapsed Subscribers", desc: "Subscription expired, not renewed", count: 270, avgValue: "NGN 15,000/mo", lastActivity: "1-3 months ago", recoveryRate: 31.2 },
-];
+const initialSegs: Segment[] = [];
 
-const initialCamps: Campaign[] = [
-  { id: "1", name: "Q3 Win-Back Campaign", segmentId: "1", channel: "multi", offerType: "discount", status: "completed", sent: 1240, recovered: 154, revenue: "NGN 6,930,000", createdAt: "2026-07-15" },
-  { id: "2", name: "Cart Recovery August", segmentId: "2", channel: "email", offerType: "discount", status: "sending", sent: 340, recovered: 84, revenue: "NGN 2,352,000", createdAt: "2026-08-01" },
-  { id: "3", name: "Quote Follow-Up", segmentId: "4", channel: "whatsapp", offerType: "consultation", status: "sending", sent: 180, recovered: 33, revenue: "NGN 4,125,000", createdAt: "2026-08-10" },
-];
+const initialCamps: Campaign[] = [];
 
 export default function RecoveryPage() {
   const [tab, setTab] = useState("segments");
