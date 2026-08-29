@@ -206,7 +206,7 @@ export default function DemoPage() {
                 {whatsapps.map((wa) => (
                   <div key={wa.id} className="px-5 py-3 hover:bg-zinc-50 transition-colors">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-zinc-500">ELIAN Business</span>
+                      <span className="text-xs font-semibold text-zinc-500">ELION Business</span>
                       <span className="text-[10px] text-zinc-400">{wa.timestamp}</span>
                     </div>
                     <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-3 max-w-[85%]">

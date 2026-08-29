@@ -55,7 +55,7 @@ export default function LandingPage() {
             <div className="w-9 h-9 rounded bg-zinc-900 flex items-center justify-center">
               <span className="text-white text-sm font-bold">E</span>
             </div>
-            <span className="text-xl font-bold text-zinc-900 tracking-tight">ELIAN</span>
+            <span className="text-xl font-bold text-zinc-900 tracking-tight">ELION</span>
           </div>
 
           <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Business Automation Systems</p>
@@ -65,7 +65,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-base md:text-lg text-zinc-500 max-w-2xl mx-auto mb-8 leading-relaxed">
-            ELIAN identifies where your business is losing time, leads, money, or operational efficiency.
+            ELION identifies where your business is losing time, leads, money, or operational efficiency.
             Then we build automation systems to fix it.
           </p>
 
@@ -111,10 +111,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* What ELIAN Does */}
+      {/* What ELION Does */}
       <section className="border-b border-zinc-200 bg-zinc-50">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-4">What ELIAN does</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-4">What ELION does</h2>
           <p className="text-sm text-zinc-500 text-center mb-10 max-w-lg mx-auto">
             We identify the leak. Then we build the automation to fix it.
           </p>

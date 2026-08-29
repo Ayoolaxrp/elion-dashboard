@@ -29,7 +29,7 @@ export default function SupportPage() {
             <div className="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center">
               <span className="text-white text-xs font-bold">E</span>
             </div>
-            <span className="text-lg font-bold text-zinc-900 tracking-tight">ELIAN</span>
+            <span className="text-lg font-bold text-zinc-900 tracking-tight">ELION</span>
           </div>
           <h1 className="text-3xl font-bold text-zinc-900 tracking-tight mb-2">Support</h1>
           <p className="text-sm text-zinc-500">We are here to help. Contact us through any of the channels below.</p>
@@ -56,7 +56,7 @@ export default function SupportPage() {
             </a>
 
             <a
-              href="mailto:support@elian.ng"
+              href="mailto:support@elion.ng"
               className="border border-zinc-200 rounded-lg p-5 hover:border-zinc-300 transition-colors"
             >
               <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-3">
@@ -64,7 +64,7 @@ export default function SupportPage() {
               </div>
               <h3 className="text-sm font-semibold text-zinc-900 mb-1">Email</h3>
               <p className="text-xs text-zinc-500 mb-2">For detailed enquiries and support requests.</p>
-              <p className="text-xs text-zinc-400">support@elian.ng</p>
+              <p className="text-xs text-zinc-400">support@elion.ng</p>
             </a>
 
             <div className="border border-zinc-200 rounded-lg p-5">

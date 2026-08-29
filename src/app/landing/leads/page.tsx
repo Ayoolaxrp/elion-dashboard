@@ -56,7 +56,7 @@ export default function LeadsLanding() {
       {/* Solution */}
       <section className="border-b border-zinc-200">
         <div className="max-w-4xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-8">What ELIAN does</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-8">What ELION does</h2>
           <div className="max-w-2xl mx-auto space-y-3">
             {[
               "Lead comes in, instant response via WhatsApp or email",

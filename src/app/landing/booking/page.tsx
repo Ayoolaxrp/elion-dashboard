@@ -10,7 +10,7 @@ export default function BookingLanding() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center"><Zap className="w-4 h-4 text-white" /></div>
-            <span className="text-lg font-bold text-white">ELIAN</span>
+            <span className="text-lg font-bold text-white">ELION</span>
           </div>
           <a href="#cta" className="hidden md:inline-flex px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-lg hover:bg-zinc-800 transition-colors">Get Started</a>
         </div>
@@ -101,8 +101,8 @@ export default function BookingLanding() {
 
       <footer className="py-8 px-6 border-t border-zinc-200 bg-zinc-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <span className="text-sm font-semibold text-zinc-900">ELIAN</span>
-          <p className="text-xs text-zinc-500">&copy; 2026 ELIAN. All rights reserved.</p>
+          <span className="text-sm font-semibold text-zinc-900">ELION</span>
+          <p className="text-xs text-zinc-500">&copy; 2026 ELION. All rights reserved.</p>
         </div>
       </footer>
     </div>

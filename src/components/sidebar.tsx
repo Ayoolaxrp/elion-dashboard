@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ElionLogo } from "@/components/elion-logo";
 import {
   LayoutDashboard,
   Search,
@@ -61,14 +62,7 @@ export function Sidebar() {
     <>
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-4 h-14 border-b border-zinc-200 shrink-0">
-        <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center shrink-0">
-          <span className="text-white text-[10px] font-bold">E</span>
-        </div>
-        {!collapsed && (
-          <div className="overflow-hidden flex-1">
-            <p className="text-sm font-bold text-zinc-900 tracking-tight">ELIAN</p>
-          </div>
-        )}
+        <ElionLogo size={collapsed ? "sm" : "md"} variant={collapsed ? "symbol" : "full"} />
         <button onClick={() => setMobileOpen(false)} className="md:hidden p-1 rounded hover:bg-zinc-100 text-zinc-400 cursor-pointer">
           <X className="w-4 h-4" />
         </button>

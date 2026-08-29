@@ -89,7 +89,7 @@ export default function DashboardPage() {
             <span className="text-white text-sm font-bold tracking-tight">E</span>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-zinc-900 tracking-tight">ELIAN</h1>
+            <h1 className="text-lg font-bold text-zinc-900 tracking-tight">ELION</h1>
             <p className="text-[11px] text-zinc-400 -mt-0.5">Business Automation Systems</p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
             Find the leaks in your business.<br />Then automate them.
           </h2>
           <p className="text-base text-zinc-500 mb-6 leading-relaxed">
-            ELIAN identifies where your business is losing time, leads, money, or operational efficiency.
+            ELION identifies where your business is losing time, leads, money, or operational efficiency.
             Then we build automation systems to fix it.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -130,13 +130,13 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* What ELIAN Does */}
+      {/* What ELION Does */}
       <div className="mb-8">
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-zinc-900">What ELIAN does</h2>
+          <h2 className="text-lg font-bold text-zinc-900">What ELION does</h2>
           <p className="text-sm text-zinc-500 mt-1">
             Businesses lose money through slow follow-up, missed leads, inefficient operations, and dormant customers.
-            ELIAN identifies the leak and builds the automation.
+            ELION identifies the leak and builds the automation.
           </p>
         </div>
 

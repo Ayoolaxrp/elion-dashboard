@@ -95,7 +95,7 @@ const supportPlans = [
       { text: "Email support", included: true },
       { text: "Minor workflow adjustments", included: true },
     ],
-    note: "Requires an existing ELIAN automation implementation.",
+    note: "Requires an existing ELION automation implementation.",
   },
   {
     name: "Growth Support",
@@ -140,7 +140,7 @@ export default function PricingPage() {
             <div className="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center">
               <span className="text-white text-xs font-bold">E</span>
             </div>
-            <span className="text-lg font-bold text-zinc-900 tracking-tight">ELIAN</span>
+            <span className="text-lg font-bold text-zinc-900 tracking-tight">ELION</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 tracking-tight mb-3">Pricing</h1>
           <p className="text-sm text-zinc-500 max-w-lg mx-auto">
@@ -214,7 +214,7 @@ export default function PricingPage() {
             <p className="text-sm text-zinc-500">
               Optional. For businesses that want ongoing monitoring, maintenance, and improvements after launch.
             </p>
-            <p className="text-xs text-zinc-400 mt-1">Requires an existing ELIAN automation implementation.</p>
+            <p className="text-xs text-zinc-400 mt-1">Requires an existing ELION automation implementation.</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4 max-w-3xl">

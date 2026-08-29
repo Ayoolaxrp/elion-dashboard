@@ -25,7 +25,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center">
               <span className="text-white text-[10px] font-bold">E</span>
             </div>
-            <span className="text-sm font-bold text-zinc-900 tracking-tight">ELIAN</span>
+            <span className="text-sm font-bold text-zinc-900 tracking-tight">ELION</span>
           </Link>
 
           {/* Desktop nav */}
@@ -99,7 +99,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
                 <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center">
                   <span className="text-white text-[10px] font-bold">E</span>
                 </div>
-                <span className="text-sm font-bold text-zinc-900">ELIAN</span>
+                <span className="text-sm font-bold text-zinc-900">ELION</span>
               </div>
               <p className="text-xs text-zinc-500 leading-relaxed">
                 business automation for SMEs in Nigeria and beyond.
@@ -126,13 +126,13 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             <div>
               <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Contact</h4>
               <div className="space-y-2">
-                <a href="mailto:hello@elian.ng" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">hello@elian.ng</a>
+                <a href="mailto:hello@elion.ng" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">hello@elion.ng</a>
                 <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">WhatsApp</a>
               </div>
             </div>
           </div>
           <div className="mt-8 pt-6 border-t border-zinc-200">
-            <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} ELIAN. All rights reserved.</p>
+            <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} ELION. All rights reserved.</p>
           </div>
         </div>
       </footer>

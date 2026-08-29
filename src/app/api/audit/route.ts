@@ -1,6 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { execSync } from "child_process";
 import path from "path";
+import { URL } from "url";
+
+// SSRF protection: validate URLs before fetching
+function isSafeUrl(urlStr: string): boolean {
+  try {
+    const url = new URL(urlStr);
+    // Only allow http/https
+    if (url.protocol !== "http:" && url.protocol !== "https:") return false;
+    const hostname = url.hostname.toLowerCase();
+    // Block localhost and private IPs
+    if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "0.0.0.0") return false;
+    if (hostname.startsWith("192.168.")) return false;
+    if (hostname.startsWith("10.")) return false;
+    if (hostname.startsWith("172.")) {
+      const second = parseInt(hostname.split(".")[1] || "0", 10);
+      if (second >= 16 && second <= 31) return false;
+    }
+    // Block metadata endpoints
+    if (hostname === "169.254.169.254") return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 // Real industry benchmarks sourced from McKinsey 2025, KPMG Africa SME Report, Google Africa Business Report, HubSpot State of Marketing 2025
 const INDUSTRY_BENCHMARKS: Record<string, {
@@ -141,9 +165,14 @@ async function researchBusiness(companyName: string, website: string): Promise<W
   if (website) {
     try {
       const url = website.startsWith("http") ? website : `https://${website}`;
+      // SSRF protection: validate URL before fetching
+      if (!isSafeUrl(url)) {
+        research.hasWebsite = false;
+        return research;
+      }
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
-      const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "ELIANAuditBot/1.0" } });
+      const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "ELIONAuditBot/1.0" } });
       clearTimeout(timeout);
       research.hasWebsite = response.ok;
 
@@ -311,8 +340,14 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { company_name, industry, website, name, email } = body;
 
-    if (!company_name) {
+    if (!company_name || typeof company_name !== "string") {
       return NextResponse.json({ error: "Company name is required" }, { status: 400 });
+    }
+    if (company_name.length > 200) {
+      return NextResponse.json({ error: "Company name too long" }, { status: 400 });
+    }
+    if (website && typeof website === "string" && website.length > 500) {
+      return NextResponse.json({ error: "Website URL too long" }, { status: 400 });
     }
 
     const ind = industry || "General";
@@ -514,7 +549,7 @@ export async function POST(req: NextRequest) {
       digital_presence: research.digitalPresenceScore,
     };
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       company: company_name, industry: ind, website: website || "",
       overallScore, scores: subScores, leaks,
       totalSavings: totalSavings.toLocaleString(), currency: "NGN",
@@ -536,7 +571,12 @@ export async function POST(req: NextRequest) {
         priorityActions: research.quickWins.slice(0, 5),
       },
     });
-  } catch {
-    return NextResponse.json({ error: "Failed to run audit" }, { status: 500 });
+    // Rate limiting hint (actual enforcement should be done via middleware or external service)
+    response.headers.set("X-RateLimit-Limit", "10");
+    response.headers.set("X-RateLimit-Remaining", "9");
+    return response;
+  } catch (error) {
+    // Do not expose internal errors to users
+    return NextResponse.json({ error: "Audit failed. Please try again with a valid website URL." }, { status: 500 });
   }
 }

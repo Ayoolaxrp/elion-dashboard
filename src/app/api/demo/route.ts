@@ -15,22 +15,22 @@ const demoStore = {
 const demoTemplates = {
   welcome_email: {
     subject: "Welcome to {{company}}, Here's what happens next",
-    body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, learn more about our services at elian.ng\n\nBest regards,\nThe ELIAN Team",
+    body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, learn more about our services at elion.ng\n\nBest regards,\nThe ELION Team",
   },
   followup_email: {
     subject: "Quick follow-up, {{company}} automation opportunity",
-    body: "Hi {{name}},\n\nI wanted to follow up on our previous conversation about automating your lead response process.\n\nBased on our audit, you could be saving approximately NGN 2.4M annually by automating your follow-up sequences.\n\nWould you be available for a 15-minute call this week to discuss implementation?\n\nBest,\nThe ELIAN Team",
+    body: "Hi {{name}},\n\nI wanted to follow up on our previous conversation about automating your lead response process.\n\nBased on our audit, you could be saving approximately NGN 2.4M annually by automating your follow-up sequences.\n\nWould you be available for a 15-minute call this week to discuss implementation?\n\nBest,\nThe ELION Team",
   },
   reactivation_email: {
     subject: "We miss you, {{name}}, Special offer inside",
-    body: "Hi {{name}},\n\nIt's been a while since you visited us. We've made some exciting updates that we think you'll love.\n\nAs a valued contact, we're offering you a free Automation Leak Audit (worth NGN 100,000) to help identify where your business is losing time and money.\n\nClick here to claim your free audit: elian.ng/audit\n\nCheers,\nThe ELIAN Team",
+    body: "Hi {{name}},\n\nIt's been a while since you visited us. We've made some exciting updates that we think you'll love.\n\nAs a valued contact, we're offering you a free Automation Leak Audit (worth NGN 100,000) to help identify where your business is losing time and money.\n\nClick here to claim your free audit: elion.ng/audit\n\nCheers,\nThe ELION Team",
   },
   booking_confirmation: {
     subject: "Your appointment is confirmed, {{date}} at {{time}}",
-    body: "Hi {{name}},\n\nYour appointment has been confirmed:\n\nDate: {{date}}\nTime: {{time}}\nLocation: {{location}}\n\nPlease arrive 5 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!\nThe ELIAN Team",
+    body: "Hi {{name}},\n\nYour appointment has been confirmed:\n\nDate: {{date}}\nTime: {{time}}\nLocation: {{location}}\n\nPlease arrive 5 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!\nThe ELION Team",
   },
   whatsapp_welcome: {
-    message: "Hi {{name}}! Thanks for reaching out to ELIAN. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?",
+    message: "Hi {{name}}! Thanks for reaching out to ELION. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?",
   },
   whatsapp_followup: {
     message: "Hi {{name}}, just checking in! We noticed you were interested in our automation services. Would you like to schedule a quick 15-min call to discuss how we can help {{company}} save time and increase conversions?",
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         const email = {
           id: generateId("email"),
           to: data.to || "demo@example.com",
-          from: "hello@elian.ng",
+          from: "hello@elion.ng",
           subject: replacePlaceholders(emailTmpl.subject || "Welcome", data.placeholders || {}),
           body: replacePlaceholders(emailTmpl.body || "", data.placeholders || {}),
           status: "sent" as string,
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
         const msg = {
           id: generateId("wa"),
           to: data.to || "+234 801 234 5678",
-          from: "ELIAN Business",
+          from: "ELION Business",
           message: replacePlaceholders((template as { message: string }).message, data.placeholders || {}),
           status: "sent" as string,
           timestamp: new Date().toISOString(),
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
         const email = {
           id: generateId("email"),
           to: demoData.email,
-          from: "hello@elian.ng",
+          from: "hello@elion.ng",
           subject: replacePlaceholders(demoTemplates.welcome_email.subject, { company: demoData.company, name: demoData.name }),
           body: replacePlaceholders(demoTemplates.welcome_email.body, { company: demoData.company, name: demoData.name }),
           status: "sent" as string,
@@ -190,7 +190,7 @@ export async function POST(req: NextRequest) {
         const whatsapp = {
           id: generateId("wa"),
           to: demoData.phone,
-          from: "ELIAN Business",
+          from: "ELION Business",
           message: replacePlaceholders(demoTemplates.whatsapp_welcome.message, { name: demoData.name }),
           status: "sent" as string,
           timestamp: new Date().toISOString(),

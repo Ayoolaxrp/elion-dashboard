@@ -72,7 +72,7 @@ export default function PrivacyPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">9. Contact</h2>
-          <p>For privacy-related inquiries, contact us at <a href="mailto:privacy@elian.ng" className="text-primary hover:underline">privacy@elian.ng</a>.</p>
+          <p>For privacy-related inquiries, contact us at <a href="mailto:privacy@elion.ng" className="text-primary hover:underline">privacy@elion.ng</a>.</p>
         </section>
       </div>
     </div>
