@@ -44,11 +44,6 @@ export async function POST(request: NextRequest) {
 
     // In production, forward to n8n webhook, send email, or store in database
     // For now, store in memory and return success
-    console.log("Implementation request received:", {
-      name: payload.name,
-      business: payload.businessName,
-      automation: payload.selectedAutomation,
-    });
 
     return NextResponse.json({
       success: true,
