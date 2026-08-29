@@ -98,6 +98,12 @@ export default function AuditPage() {
   const [error, setError] = useState("");
   const [selectedLeak, setSelectedLeak] = useState<Leak | null>(null);
   const [auditHistory, setAuditHistory] = useState<AuditResult[]>([]);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [requestAutomation, setRequestAutomation] = useState("");
+  const [requestPhone, setRequestPhone] = useState("");
+  const [requestMessage, setRequestMessage] = useState("");
+  const [requestSubmitting, setRequestSubmitting] = useState(false);
+  const [requestSubmitted, setRequestSubmitted] = useState(false);
   const [expandedLeakId, setExpandedLeakId] = useState<string | null>(null);
   const findingCounter = useRef(0);
 
@@ -108,6 +114,39 @@ export default function AuditPage() {
     },
     [],
   );
+
+    /* ──── Request Implementation ──── */
+
+  const submitImplementationRequest = async () => {
+    if (!contactName || !contactEmail || !requestAutomation) return;
+    setRequestSubmitting(true);
+    try {
+      const res = await fetch("/api/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: contactName,
+          businessName: companyName,
+          email: contactEmail,
+          phone: requestPhone,
+          website,
+          selectedAutomation: requestAutomation,
+          preferredContact: "email",
+          message: requestMessage,
+          auditId: auditResult ? `${companyName}-${auditResult.score}` : undefined,
+          auditFindings: auditResult ? auditResult.leaks.map(l => `${l.area}: ${l.description}`).join("; ") : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setRequestSubmitted(true);
+      }
+    } catch {
+      setRequestSubmitted(true);
+    } finally {
+      setRequestSubmitting(false);
+    }
+  };
 
   /* ──── Run Audit ──── */
 
@@ -568,6 +607,12 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               Book a free 15-minute call. We will implement the top priority automation for your business.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => setShowRequestModal(true)}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-zinc-900 text-sm font-medium rounded hover:bg-zinc-100 transition-colors"
+              >
+                <ClipboardList className="w-4 h-4" /> Request Implementation
+              </button>
               <a
                 href={`https://wa.me/2348012345678?text=Hi%20ELION%2C%20I%20just%20completed%20an%20audit%20for%20${encodeURIComponent(auditResult.companyName)}`}
                 target="_blank" rel="noopener noreferrer"
@@ -689,6 +734,60 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           </div>
         </div>
       )}
+
+      {/* ──── Implementation Request Modal ──── */}
+      <Modal open={showRequestModal} onClose={() => { setShowRequestModal(false); setRequestSubmitted(false); }} title="Request Implementation">
+        {requestSubmitted ? (
+          <div className="text-center py-6">
+            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-6 h-6 text-emerald-600" />
+            </div>
+            <h3 className="text-lg font-bold text-zinc-900 mb-1">Request Received</h3>
+            <p className="text-sm text-zinc-500 mb-4">We will contact you within 24 hours to discuss your automation needs.</p>
+            <button onClick={() => { setShowRequestModal(false); setRequestSubmitted(false); }} className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors">Done</button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <p className="text-sm text-zinc-500">Based on your audit for <strong>{companyName}</strong>, tell us which automation you want to implement.</p>
+            <Input label="Your Name" placeholder="Your name" value={contactName} onChange={setContactName} />
+            <Input label="Email" placeholder="you@company.com" value={contactEmail} onChange={setContactEmail} />
+            <Input label="Phone / WhatsApp" placeholder="e.g. 08012345678" value={requestPhone} onChange={setRequestPhone} />
+            <Select
+              label="Which automation?"
+              value={requestAutomation}
+              onChange={setRequestAutomation}
+              options={[
+                { value: "", label: "Select automation" },
+                { value: "Lead Response System", label: "Lead Response System" },
+                { value: "Follow-Up Engine", label: "Follow-Up Engine" },
+                { value: "Revenue Recovery System", label: "Revenue Recovery System" },
+                { value: "Booking Engine", label: "Booking Engine" },
+                { value: "Operations Automation", label: "Operations Automation" },
+                { value: "Full Audit Package", label: "Full Audit Package (all recommended)" },
+              ]}
+            />
+            <div>
+              <label className="block text-xs font-medium text-zinc-600 mb-1">Additional message (optional)</label>
+              <textarea
+                rows={3}
+                value={requestMessage}
+                onChange={(e) => setRequestMessage(e.target.value)}
+                placeholder="Anything else we should know?"
+                className="w-full px-3 py-2 text-sm border border-zinc-200 rounded bg-white text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 resize-none"
+              />
+            </div>
+            <button
+              onClick={submitImplementationRequest}
+              disabled={requestSubmitting || !contactName || !contactEmail || !requestAutomation}
+              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {requestSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
+              {requestSubmitting ? "Submitting..." : "Request Implementation"}
+            </button>
+          </div>
+        )}
+      </Modal>
+
     </div>
   );
 }
