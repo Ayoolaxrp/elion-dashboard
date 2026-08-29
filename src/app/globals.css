@@ -2,87 +2,81 @@
 
 @source "../";
 
-/* ---- Brand colors via CSS custom properties ---- */
+/* ---- Dark Premium Design System ---- */
 @theme {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
+  --color-surface: #0a0a0b;
+  --color-surface-raised: #141416;
+  --color-surface-elevated: #1c1c1f;
+  --color-surface-hover: #242428;
+  --color-border: #2a2a2e;
+  --color-border-light: #3a3a3f;
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-accent-light: #1e40af;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 }
 
-/* ---- Custom styles in @layer base so they don't beat Tailwind utilities ---- */
 @layer base {
-  *,
-  ::after,
-  ::before {
+  *, ::after, ::before {
     box-sizing: border-box;
-    border-color: var(--border, #e4e4e7);
+    border-color: var(--color-border);
   }
 
   body {
-    background: #fafafa;
-    color: #09090b;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+  a { color: inherit; text-decoration: none; }
 }
 
 /* ---- Animations ---- */
-.animate-fade-in { animation: fade-in 0.2s ease-out; }
-.animate-slide-up { animation: slide-up 0.25s ease-out; }
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-slide-up { animation: slide-up 0.4s ease-out; }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-up {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(59, 130, 246, 0.2); }
+}
+
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
 /* ---- Scrollbar ---- */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
-
-/* ---- Print ---- */
-@media print {
-  nav, aside, .no-print, button, [data-print-hidden] { display: none !important; }
-  body { background: white; }
-  .print-break { page-break-before: always; }
-}
+::-webkit-scrollbar-thumb { background: #3a3a3f; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
 
 /* ---- Focus ---- */
-:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 
 /* ---- Skip to content ---- */
 .skip-to-content {
   position: absolute; left: -9999px; z-index: 999; padding: 1rem;
-  background: #18181b; color: #fafafa; text-decoration: none; font-weight: 600;
+  background: var(--color-accent); color: white; font-weight: 600;
 }
 .skip-to-content:focus { left: 50%; transform: translateX(-50%); top: 0; }
 
-/* ---- Stagger children ---- */
-.stagger-children > * { animation: fade-in 0.3s ease-out both; }
-.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
-.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
-
-/* ---- Sidebar overlay ---- */
-@media (max-width: 1024px) {
-  .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 40; }
+/* ---- Print ---- */
+@media print {
+  nav, aside, .no-print, button, [data-print-hidden] { display: none !important; }
+  body { background: white; color: black; }
 }
