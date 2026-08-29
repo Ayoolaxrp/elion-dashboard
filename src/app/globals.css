@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "../";
 
 :root {
   --background: #ffffff;
@@ -35,7 +35,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ──── Animations ──── */
+/* ---- Animations ---- */
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(4px); }
@@ -55,7 +55,7 @@ body {
   animation: slide-up 0.25s ease-out;
 }
 
-/* ──── Scrollbar ──── */
+/* ---- Scrollbar ---- */
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -75,7 +75,7 @@ body {
   background: #a1a1aa;
 }
 
-/* ──── Print ──── */
+/* ---- Print ---- */
 
 @media print {
   nav, aside, .no-print, button, [data-print-hidden] {
@@ -89,14 +89,14 @@ body {
   }
 }
 
-/* ──── Focus ──── */
+/* ---- Focus ---- */
 
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
-/* ──── Skip to content ──── */
+/* ---- Skip to content ---- */
 
 .skip-to-content {
   position: absolute;
@@ -115,7 +115,7 @@ body {
   top: 0;
 }
 
-/* ──── Stagger children ──── */
+/* ---- Stagger children ---- */
 
 .stagger-children > * {
   animation: fade-in 0.3s ease-out both;
@@ -128,7 +128,7 @@ body {
 .stagger-children > *:nth-child(5) { animation-delay: 200ms; }
 .stagger-children > *:nth-child(6) { animation-delay: 250ms; }
 
-/* ──── Responsive sidebar ──── */
+/* ---- Responsive sidebar ---- */
 
 @media (max-width: 1024px) {
   .sidebar-overlay {
