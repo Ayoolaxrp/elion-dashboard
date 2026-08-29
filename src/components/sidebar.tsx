@@ -51,7 +51,7 @@ export function Sidebar() {
         </div>
         {!collapsed && (
           <div className="overflow-hidden flex-1">
-            <p className="text-sm font-semibold text-foreground tracking-tight">Elion</p>
+            <p className="text-sm font-semibold text-foreground tracking-tight">ELIAN</p>
             <p className="text-[11px] text-muted-foreground">Automations</p>
           </div>
         )}

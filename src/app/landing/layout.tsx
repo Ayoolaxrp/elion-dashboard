@@ -1,110 +1,138 @@
 "use client";
 
 import Link from "next/link";
-import { Zap, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { UtmTracker } from "@/components/utm-tracker";
+import { Menu, X } from "lucide-react";
 
-const navLinks = [
+const landingNav = [
   { label: "Home", href: "/landing" },
-  { label: "Audit", href: "/landing/audit" },
-  { label: "Lead Response", href: "/landing/leads" },
-  { label: "Follow-Up", href: "/landing/followup" },
-  { label: "Recovery", href: "/landing/recovery" },
-  { label: "Booking", href: "/landing/booking" },
   { label: "Pricing", href: "/landing/pricing" },
+  { label: "About", href: "/landing/about" },
+  { label: "Support", href: "/landing/support" },
 ];
 
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <UtmTracker />
-
+    <div className="min-h-screen bg-white">
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950 border-b border-zinc-800">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav className="border-b border-zinc-200 sticky top-0 z-40 bg-white">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center"><Zap className="w-4 h-4 text-white" /></div>
-            <span className="text-lg font-bold">Elion</span>
+            <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center">
+              <span className="text-white text-[10px] font-bold">E</span>
+            </div>
+            <span className="text-sm font-bold text-zinc-900 tracking-tight">ELIAN</span>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-6 text-sm text-zinc-400">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
+          <div className="hidden md:flex items-center gap-6">
+            {landingNav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`text-sm font-medium transition-colors ${
+                  pathname === item.href ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+                }`}
+              >
+                {item.label}
+              </Link>
             ))}
+            <Link
+              href="/audit"
+              className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors"
+            >
+              Free Audit
+            </Link>
           </div>
 
-          <div className="flex items-center gap-3">
-            <a href="#audit" className="hidden sm:inline-flex px-5 py-2 bg-primary text-white rounded text-sm font-medium hover:bg-primary/90 transition-colors">Free Audit</a>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-zinc-400 hover:text-white cursor-pointer" aria-label="Toggle menu">
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden p-2 rounded hover:bg-zinc-100 transition-colors cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="w-5 h-5 text-zinc-600" /> : <Menu className="w-5 h-5 text-zinc-600" />}
+          </button>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-zinc-800 bg-zinc-950">
+          <div className="md:hidden border-t border-zinc-200 bg-white">
             <div className="px-6 py-4 space-y-3">
-              {navLinks.map((link) => (
-                <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className="block text-sm text-zinc-400 hover:text-white transition-colors py-2">{link.label}</Link>
+              {landingNav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block text-sm font-medium ${
+                    pathname === item.href ? "text-zinc-900" : "text-zinc-500"
+                  }`}
+                >
+                  {item.label}
+                </Link>
               ))}
-              <a href="#audit" onClick={() => setMobileOpen(false)} className="block w-full text-center px-5 py-2.5 bg-primary text-white rounded text-sm font-medium hover:bg-primary/90 transition-colors mt-2">Free Audit</a>
+              <Link
+                href="/audit"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full text-center py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors"
+              >
+                Free Audit
+              </Link>
             </div>
           </div>
         )}
       </nav>
 
-      <main className="pt-16">{children}</main>
+      {/* Content */}
+      <main>{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-800 bg-zinc-950">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <footer className="border-t border-zinc-200 bg-zinc-50">
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded bg-primary flex items-center justify-center"><Zap className="w-4 h-4 text-white" /></div>
-                <span className="text-lg font-bold">Elion</span>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-7 h-7 rounded bg-zinc-900 flex items-center justify-center">
+                  <span className="text-white text-[10px] font-bold">E</span>
+                </div>
+                <span className="text-sm font-bold text-zinc-900">ELIAN</span>
               </div>
-              <p className="text-sm text-zinc-500 leading-relaxed">AI-powered business automation for companies in Nigeria and beyond.</p>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                AI-powered business automation for SMEs in Nigeria and beyond.
+              </p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-3">Services</h4>
+              <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Product</h4>
               <div className="space-y-2">
-                <Link href="/landing/audit" className="block text-sm text-zinc-500 hover:text-white transition-colors">Automation Audit</Link>
-                <Link href="/landing/leads" className="block text-sm text-zinc-500 hover:text-white transition-colors">Lead Response</Link>
-                <Link href="/landing/followup" className="block text-sm text-zinc-500 hover:text-white transition-colors">Follow-Up Engine</Link>
-                <Link href="/landing/recovery" className="block text-sm text-zinc-500 hover:text-white transition-colors">Revenue Recovery</Link>
-                <Link href="/landing/booking" className="block text-sm text-zinc-500 hover:text-white transition-colors">Booking Engine</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold mb-3">Company</h4>
-              <div className="space-y-2">
-                <Link href="/landing/about" className="block text-sm text-zinc-500 hover:text-white transition-colors">About</Link>
-                <Link href="/landing/pricing" className="block text-sm text-zinc-500 hover:text-white transition-colors">Pricing</Link>
-                <Link href="/demo" className="block text-sm text-zinc-500 hover:text-white transition-colors">Demo</Link>
+                <Link href="/landing" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Home</Link>
+                <Link href="/landing/pricing" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Pricing</Link>
+                <Link href="/demo" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Demo</Link>
+                <Link href="/audit" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Free Audit</Link>
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-3">Legal</h4>
+              <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Company</h4>
               <div className="space-y-2">
-                <Link href="/landing/terms" className="block text-sm text-zinc-500 hover:text-white transition-colors">Terms of Service</Link>
-                <Link href="/landing/privacy" className="block text-sm text-zinc-500 hover:text-white transition-colors">Privacy Policy</Link>
-                <a href="mailto:hello@elion.ng" className="block text-sm text-zinc-500 hover:text-white transition-colors">Contact</a>
+                <Link href="/landing/about" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">About</Link>
+                <Link href="/landing/support" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Support</Link>
+                <Link href="/landing/privacy" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Privacy Policy</Link>
+                <Link href="/landing/terms" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Terms of Service</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Contact</h4>
+              <div className="space-y-2">
+                <a href="mailto:hello@elian.ng" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">hello@elian.ng</a>
+                <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">WhatsApp</a>
               </div>
             </div>
           </div>
-          <div className="pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-zinc-600">&copy; 2026 Elion. All rights reserved.</p>
-            <div className="flex items-center gap-4 text-xs text-zinc-600">
-              <Link href="/landing/terms" className="hover:text-zinc-400 transition-colors">Terms</Link>
-              <Link href="/landing/privacy" className="hover:text-zinc-400 transition-colors">Privacy</Link>
-              <a href="mailto:hello@elion.ng" className="hover:text-zinc-400 transition-colors">hello@elion.ng</a>
-            </div>
+          <div className="mt-8 pt-6 border-t border-zinc-200">
+            <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} ELIAN. All rights reserved.</p>
           </div>
         </div>
       </footer>

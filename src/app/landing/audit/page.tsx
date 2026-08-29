@@ -41,7 +41,7 @@ export default function AuditLanding() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center"><Zap className="w-4 h-4 text-white" /></div>
-            <span className="text-lg font-bold text-white">Elion</span>
+            <span className="text-lg font-bold text-white">ELIAN</span>
           </div>
           <a href="#cta" className="hidden md:inline-flex px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors">Get Free Audit</a>
         </div>
@@ -188,8 +188,8 @@ export default function AuditLanding() {
 
       <footer className="py-8 px-6 border-t border-zinc-800/50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <span className="text-sm font-semibold text-white">Elion</span>
-          <p className="text-xs text-zinc-500">&copy; 2026 Elion. All rights reserved.</p>
+          <span className="text-sm font-semibold text-white">ELIAN</span>
+          <p className="text-xs text-zinc-500">&copy; 2026 ELIAN. All rights reserved.</p>
         </div>
       </footer>
     </div>

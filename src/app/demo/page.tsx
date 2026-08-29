@@ -57,8 +57,8 @@ export default function DemoPage() {
     } catch {
       const now = new Date().toISOString();
       const mockLead: DemoLead = { id: `l-${Date.now()}`, name: "Chioma Okafor", email: "chioma@premierrealty.com", phone: "+234 802 345 6789", source: "Meta Ads", status: "qualified", score: 92, timestamp: now };
-      const mockEmail: EmailMsg = { id: `e-${Date.now()}`, to: mockLead.email, from: "hello@elion.ng", subject: "Welcome to Elion, Chioma", body: "Hi Chioma,\n\nThank you for reaching out to Elion. We help businesses automate their lead response, follow-ups, and operations.\n\nHere is what happens next:\n1. Our team will review your requirements within 24 hours\n2. We will schedule a brief call to understand your needs\n3. You will receive a custom automation roadmap\n\nBest regards,\nThe Elion Team", status: "delivered", timestamp: now };
-      const mockWA: WhatsAppMsg = { id: `w-${Date.now()}`, to: mockLead.phone, from: "Elion Business", message: "Hi Chioma, thanks for reaching out to Elion. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?", status: "read", timestamp: now };
+      const mockEmail: EmailMsg = { id: `e-${Date.now()}`, to: mockLead.email, from: "hello@elian.ng", subject: "Welcome to ELIAN, Chioma", body: "Hi Chioma,\n\nThank you for reaching out to ELIAN. We help businesses automate their lead response, follow-ups, and operations.\n\nHere is what happens next:\n1. Our team will review your requirements within 24 hours\n2. We will schedule a brief call to understand your needs\n3. You will receive a custom automation roadmap\n\nBest regards,\nThe ELIAN Team", status: "delivered", timestamp: now };
+      const mockWA: WhatsAppMsg = { id: `w-${Date.now()}`, to: mockLead.phone, from: "ELIAN Business", message: "Hi Chioma, thanks for reaching out to ELIAN. We help businesses automate their lead response, follow-ups, and operations. How can we help you today?", status: "read", timestamp: now };
       const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
       const mockBk: DemoBooking = { id: `b-${Date.now()}`, client: mockLead.name, date: tomorrow.toISOString().split("T")[0], time: "10:00", type: "video", status: "confirmed", timestamp: now };
       setLeads((prev) => [mockLead, ...prev]);
@@ -78,7 +78,7 @@ export default function DemoPage() {
       <div className="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-sm font-bold">Elion Automation Demo</h1>
+            <h1 className="text-sm font-bold">ELIAN Automation Demo</h1>
             <p className="text-[11px] text-zinc-500">See exactly what your business automation looks like in action</p>
           </div>
           <button
@@ -205,7 +205,7 @@ export default function DemoPage() {
                   {whatsapps.map((wa) => (
                     <div key={wa.id} onClick={() => setSelectedWA(selectedWA?.id === wa.id ? null : wa)} className={`p-4 rounded border transition-all cursor-pointer ${selectedWA?.id === wa.id ? "border-emerald-500/40 bg-emerald-500/5" : "border-zinc-800 bg-zinc-900/30 hover:border-zinc-700"}`}>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold">Elion Business</span>
+                        <span className="text-xs font-semibold">ELIAN Business</span>
                         <div className="flex items-center gap-2">
                           <span className={`text-[10px] ${wa.status === "read" ? "text-emerald-400" : wa.status === "delivered" ? "text-zinc-400" : "text-amber-400"}`}>
                             {wa.status === "read" ? "Read" : wa.status === "delivered" ? "Delivered" : "Sent"}

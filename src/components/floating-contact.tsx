@@ -18,7 +18,7 @@ export function FloatingContact() {
           </div>
           <div className="space-y-2">
             <a
-              href="https://wa.me/2348012345678?text=Hi%20Elion%2C%20I%27m%20interested%20in%20your%20automation%20services"
+              href="https://wa.me/2348012345678?text=Hi%20ELIAN%2C%20I%27m%20interested%20in%20your%20automation%20services"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium hover:bg-emerald-500/20 transition-colors"
@@ -27,7 +27,7 @@ export function FloatingContact() {
               WhatsApp
             </a>
             <a
-              href="mailto:hello@elion.ng?subject=Automation%20Inquiry"
+              href="mailto:hello@elian.ng?subject=Automation%20Inquiry"
               className="flex items-center gap-3 p-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 text-sm font-medium hover:bg-zinc-700 transition-colors"
             >
               <Mail className="w-4 h-4" />

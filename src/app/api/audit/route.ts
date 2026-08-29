@@ -143,7 +143,7 @@ async function researchBusiness(companyName: string, website: string): Promise<W
       const url = website.startsWith("http") ? website : `https://${website}`;
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
-      const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "ElionAuditBot/1.0" } });
+      const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "ELIANAuditBot/1.0" } });
       clearTimeout(timeout);
       research.hasWebsite = response.ok;
 

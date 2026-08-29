@@ -21,7 +21,7 @@ export default function AboutPage() {
       {/* Hero */}
       <div className="text-center mb-24">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">We Fix Operational Leaks That Cost Businesses Time, Leads, and Revenue</h1>
-        <p className="text-xl text-zinc-400 max-w-3xl mx-auto mb-8">Elion is an AI automation agency that helps businesses in Nigeria and beyond eliminate manual work, respond to leads instantly, and recover dormant revenue.</p>
+        <p className="text-xl text-zinc-400 max-w-3xl mx-auto mb-8">ELIAN is an AI automation agency that helps businesses in Nigeria and beyond eliminate manual work, respond to leads instantly, and recover dormant revenue.</p>
         <div className="max-w-lg mx-auto"><AutomationFlowIllustration /></div>
       </div>
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
 
       {/* Values */}
       <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12">Why Choose Elion</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Why Choose ELIAN</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {values.map((v) => (
             <div key={v.title} className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-primary/30 transition-all">

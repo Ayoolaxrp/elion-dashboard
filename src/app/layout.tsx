@@ -6,8 +6,8 @@ import { FloatingContact } from "@/components/floating-contact";
 
 export const metadata: Metadata = {
   title: {
-    default: "Elion - AI Automation Agency",
-    template: "%s | Elion",
+    default: "ELIAN - AI Automation Agency",
+    template: "%s | ELIAN",
   },
   description:
     "We find and fix operational leaks that cost businesses time, leads, and revenue. AI-powered lead response, follow-up automation, revenue recovery, and booking systems.",
@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     "business automation",
     "WhatsApp automation",
   ],
-  authors: [{ name: "Elion" }],
-  creator: "Elion",
+  authors: [{ name: "ELIAN" }],
+  creator: "ELIAN",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://elion.ng",
-    siteName: "Elion",
-    title: "Elion - Fix Your Operational Leaks",
+    url: "https://elian.ng",
+    siteName: "ELIAN",
+    title: "ELIAN - Fix Your Operational Leaks",
     description:
       "AI-powered systems that respond to leads, follow up automatically, recover dormant revenue, and book appointments, so your team only steps in when it matters.",
     images: [
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Elion AI Automation Agency",
+        alt: "ELIAN AI Automation Agency",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elion - Fix Your Operational Leaks",
+    title: "ELIAN - Fix Your Operational Leaks",
     description:
       "AI-powered lead response, follow-up, revenue recovery, and booking systems for businesses in Nigeria and beyond.",
     images: ["/og-image.png"],

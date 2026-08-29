@@ -7,13 +7,13 @@ export default function TermsPage() {
       <div className="space-y-8 text-sm text-zinc-400 leading-relaxed">
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">1. Acceptance of Terms</h2>
-          <p>By accessing or using the services provided by Elion (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), including our website, automation platforms, and related services (collectively, the &quot;Services&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;).</p>
+          <p>By accessing or using the services provided by ELIAN (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), including our website, automation platforms, and related services (collectively, the &quot;Services&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;).</p>
           <p className="mt-2">If you do not agree to these Terms, you must not access or use our Services.</p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">2. Services Description</h2>
-          <p>Elion provides AI-powered business automation services including but not limited to:</p>
+          <p>ELIAN provides AI-powered business automation services including but not limited to:</p>
           <ul className="mt-2 space-y-1 list-disc list-inside">
             <li>Lead response automation systems</li>
             <li>Follow-up sequence automation</li>
@@ -31,7 +31,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">4. Ownership and Intellectual Property</h2>
-          <p>Upon full payment, you own all automation workflows, configurations, and custom code built specifically for your business. Elion retains ownership of any pre-built components, frameworks, or tools used in the development process.</p>
+          <p>Upon full payment, you own all automation workflows, configurations, and custom code built specifically for your business. ELIAN retains ownership of any pre-built components, frameworks, or tools used in the development process.</p>
         </section>
 
         <section>
@@ -41,7 +41,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">6. Limitation of Liability</h2>
-          <p>To the maximum extent permitted by law, Elion shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenue, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of the Services.</p>
+          <p>To the maximum extent permitted by law, ELIAN shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenue, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of the Services.</p>
         </section>
 
         <section>
@@ -56,7 +56,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">9. Contact</h2>
-          <p>For questions about these Terms, contact us at <a href="mailto:hello@elion.ng" className="text-primary hover:underline">hello@elion.ng</a>.</p>
+          <p>For questions about these Terms, contact us at <a href="mailto:hello@elian.ng" className="text-primary hover:underline">hello@elian.ng</a>.</p>
         </section>
       </div>
     </div>
