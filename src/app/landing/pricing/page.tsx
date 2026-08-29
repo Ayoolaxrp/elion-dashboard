@@ -184,7 +184,7 @@ export default function PricingPage() {
                       ) : (
                         <X className={`w-3.5 h-3.5 shrink-0 ${plan.popular ? "text-[var(--color-text-secondary)]" : "text-[var(--color-text-muted)]"}`} />
                       )}
-                      <span className={`text-xs ${f.included ? (plan.popular ? "text-zinc-200" : "text-[var(--color-text-secondary)]") : (plan.popular ? "text-[var(--color-text-secondary)]" : "text-[var(--color-text-muted)]")}`}>
+                      <span className={`text-xs ${f.included ? (plan.popular ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)]") : (plan.popular ? "text-[var(--color-text-secondary)]" : "text-[var(--color-text-muted)]")}`}>
                         {f.text}
                       </span>
                     </div>
