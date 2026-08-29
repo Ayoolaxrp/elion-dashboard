@@ -438,6 +438,20 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                     {isExpanded && (
                       <div className="px-4 pb-4 pt-0 ml-5 border-t border-zinc-100 mt-0">
                         <div className="mt-3 space-y-3">
+                          {/* Evidence */}
+                          {leak.evidence && leak.evidence.length > 0 && (
+                            <div className="bg-zinc-50 rounded border border-zinc-100 p-3">
+                              <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1.5">What we found</p>
+                              <ul className="space-y-1">
+                                {leak.evidence.map((e, i) => (
+                                  <li key={i} className="flex items-start gap-2 text-xs text-zinc-600">
+                                    <span className="w-1 h-1 rounded-full bg-zinc-400 mt-1.5 shrink-0" />
+                                    {e}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                           <div className="bg-white rounded border border-zinc-100 p-3">
                             <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1">What this means</p>
                             <p className="text-xs text-zinc-700">{leak.impact}</p>
@@ -446,7 +460,10 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                             <p className="text-[11px] font-semibold text-emerald-700 uppercase mb-1">Recommended action</p>
                             <p className="text-xs text-emerald-800">{leak.recommendation}</p>
                           </div>
-                          <p className="text-[11px] text-zinc-400">Source: {leak.source}</p>
+                          <div className="flex items-center gap-4 text-[11px] text-zinc-400">
+                            <span>Source: {leak.source}</span>
+                            <span className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-500 font-medium">Observed from website analysis</span>
+                          </div>
                         </div>
                       </div>
                     )}

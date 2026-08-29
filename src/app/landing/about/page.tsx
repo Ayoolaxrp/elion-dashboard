@@ -21,7 +21,7 @@ export default function AboutPage() {
       {/* Hero */}
       <div className="text-center mb-24">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">We Fix Operational Leaks That Cost Businesses Time, Leads, and Revenue</h1>
-        <p className="text-xl text-zinc-400 max-w-3xl mx-auto mb-8">ELIAN is an AI automation agency that helps businesses in Nigeria and beyond eliminate manual work, respond to leads instantly, and recover dormant revenue.</p>
+        <p className="text-xl text-zinc-500 max-w-3xl mx-auto mb-8">ELIAN is an AI automation agency that helps businesses in Nigeria and beyond eliminate manual work, respond to leads instantly, and recover dormant revenue.</p>
         <div className="max-w-lg mx-auto"><AutomationFlowIllustration /></div>
       </div>
 
@@ -29,11 +29,11 @@ export default function AboutPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
         <div>
           <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-          <p className="text-zinc-400 mb-4">We believe every business deserves to operate at peak efficiency. Too many companies lose leads, waste time on manual tasks, and leave money on the table because they don&apos;t have the right systems in place.</p>
-          <p className="text-zinc-400 mb-4">Our mission is to make AI-powered automation accessible to businesses of all sizes. We don&apos;t just build technology, we build operational excellence.</p>
-          <p className="text-zinc-400">We combine deep industry knowledge with cutting-edge AI tools to create systems that actually work. Every automation we build is tested, optimized, and designed to scale with your business.</p>
+          <p className="text-zinc-500 mb-4">We believe every business deserves to operate at peak efficiency. Too many companies lose leads, waste time on manual tasks, and leave money on the table because they don&apos;t have the right systems in place.</p>
+          <p className="text-zinc-500 mb-4">Our mission is to make AI-powered automation accessible to businesses of all sizes. We don&apos;t just build technology, we build operational excellence.</p>
+          <p className="text-zinc-500">We combine deep industry knowledge with cutting-edge AI tools to create systems that actually work. Every automation we build is tested, optimized, and designed to scale with your business.</p>
         </div>
-        <div className="p-8 rounded-2xl bg-zinc-900/50 border border-zinc-800">
+        <div className="p-8 rounded-2xl bg-zinc-900/50 border border-zinc-200">
           <div className="grid grid-cols-2 gap-6">
             {[
               { value: "400+", label: "Clients Automated" },
@@ -55,10 +55,10 @@ export default function AboutPage() {
         <h2 className="text-3xl font-bold text-center mb-12">Why Choose ELIAN</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {values.map((v) => (
-            <div key={v.title} className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-primary/30 transition-all">
+            <div key={v.title} className="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-200 hover:border-primary/30 transition-all">
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">{v.icon}</div>
               <h3 className="text-lg font-semibold mb-2">{v.title}</h3>
-              <p className="text-sm text-zinc-400">{v.desc}</p>
+              <p className="text-sm text-zinc-500">{v.desc}</p>
             </div>
           ))}
         </div>
@@ -77,7 +77,7 @@ export default function AboutPage() {
             <div key={s.step} className="text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-2xl font-bold mx-auto mb-4">{s.step}</div>
               <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
-              <p className="text-sm text-zinc-400">{s.desc}</p>
+              <p className="text-sm text-zinc-500">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -88,8 +88,8 @@ export default function AboutPage() {
         <h2 className="text-3xl font-bold text-center mb-12">Trusted by Businesses Across Industries</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {clients.map((c) => (
-            <div key={c} className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 text-center">
-              <p className="text-sm font-medium text-zinc-300">{c}</p>
+            <div key={c} className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-200 text-center">
+              <p className="text-sm font-medium text-zinc-700">{c}</p>
             </div>
           ))}
         </div>
@@ -98,7 +98,7 @@ export default function AboutPage() {
       {/* CTA */}
       <div className="text-center p-12 rounded-2xl bg-primary/5 border border-primary/20">
         <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Business?</h2>
-        <p className="text-zinc-400 mb-8 max-w-xl mx-auto">Get your free automation audit and see where we can help you save time, recover revenue, and grow faster.</p>
+        <p className="text-zinc-500 mb-8 max-w-xl mx-auto">Get your free automation audit and see where we can help you save time, recover revenue, and grow faster.</p>
         <Link href="/landing" className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-semibold text-lg hover:bg-primary/90 transition-colors">
           Get Free Audit <ArrowRight className="w-5 h-5" />
         </Link>
