@@ -84,21 +84,9 @@ const workflowVisuals: Record<string, WorkflowDefinition> = {
 
 // Need MessageSquare import
 
-const initialWfs: WF[] = [
-  { id: "1", name: "New Client Onboarding", description: "Automate onboarding: welcome email, CRM setup, task assignment, team notification.", category: "Client Management", status: "active", triggers: 23, tasksCompleted: 184, timeSaved: "46 hours", lastRun: "2 hours ago", steps: [{ type: "trigger", label: "New client signed" }, { type: "action", label: "Create CRM record" }, { type: "action", label: "Send welcome email" }, { type: "action", label: "Assign tasks" }, { type: "action", label: "Notify team" }], visual: workflowVisuals["1"] },
-  { id: "2", name: "Weekly Report Generator", description: "Auto-generate and distribute weekly performance reports every Monday.", category: "Reporting", status: "active", triggers: 12, tasksCompleted: 48, timeSaved: "24 hours", lastRun: "3 days ago", steps: [{ type: "trigger", label: "Every Monday 8AM" }, { type: "action", label: "Pull metrics" }, { type: "action", label: "Generate PDF" }, { type: "action", label: "Email stakeholders" }], visual: workflowVisuals["2"] },
-  { id: "3", name: "Invoice Processing", description: "Extract data from invoices, match with POs, route for approval.", category: "Finance", status: "active", triggers: 67, tasksCompleted: 268, timeSaved: "52 hours", lastRun: "1 hour ago", steps: [{ type: "trigger", label: "Invoice received" }, { type: "action", label: "Extract OCR" }, { type: "action", label: "Match PO" }, { type: "action", label: "Route approval" }], visual: workflowVisuals["3"] },
-  { id: "4", name: "Employee Leave Manager", description: "Handle leave requests: approval, calendar update, coverage assignment.", category: "HR", status: "paused", triggers: 8, tasksCompleted: 32, timeSaved: "16 hours", lastRun: "1 week ago", steps: [{ type: "trigger", label: "Leave request" }, { type: "action", label: "Check balance" }, { type: "action", label: "Notify manager" }, { type: "action", label: "Update calendar" }], visual: workflowVisuals["4"] },
-  { id: "5", name: "Data Sync Pipeline", description: "Keep CRM, email marketing, and analytics in sync. Runs every 6 hours.", category: "Data", status: "active", triggers: 120, tasksCompleted: 2400, timeSaved: "80 hours", lastRun: "6 hours ago", steps: [{ type: "trigger", label: "Every 6 hours" }, { type: "action", label: "Pull CRM" }, { type: "action", label: "Transform" }, { type: "action", label: "Push to platforms" }], visual: workflowVisuals["5"] },
-];
+const initialWfs: WF[] = [];
 
-const initialLogs: LogEntry[] = [
-  { id: "1", workflow: "Invoice Processing", action: "Processed invoice #INV-2847", status: "success", timestamp: "10 min ago", duration: "3.2s" },
-  { id: "2", workflow: "Data Sync Pipeline", action: "Synced 234 records to Mailchimp", status: "success", timestamp: "1 hour ago", duration: "12.4s" },
-  { id: "3", workflow: "Weekly Report Generator", action: "Generated report for Week 34", status: "success", timestamp: "3 days ago", duration: "8.7s" },
-  { id: "4", workflow: "Invoice Processing", action: "Failed to match PO for #INV-2845", status: "failed", timestamp: "5 hours ago", duration: "2.1s" },
-  { id: "5", workflow: "New Client Onboarding", action: "Onboarding for Swift Logistics", status: "success", timestamp: "2 hours ago", duration: "4.3s" },
-];
+const initialLogs: LogEntry[] = [];
 
 const cats = ["All", "Client Management", "Reporting", "Finance", "HR", "Data"];
 
