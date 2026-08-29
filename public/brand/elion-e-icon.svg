@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="eGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E56CC"/>
+      <stop offset="50%" stop-color="#4F7CFF"/>
+      <stop offset="100%" stop-color="#00D4FF"/>
+    </linearGradient>
+  </defs>
+  <!-- Top bar - wide parallelogram angled right -->
+  <polygon points="12,10 52,10 48,22 8,22" fill="url(#eGrad)"/>
+  <!-- Middle bar - shorter, offset right -->
+  <polygon points="12,28 44,28 40,40 8,40" fill="url(#eGrad)" opacity="0.85"/>
+  <!-- Bottom bar - wide parallelogram angled right -->
+  <polygon points="12,46 52,46 48,58 8,58" fill="url(#eGrad)"/>
+</svg>

@@ -24,24 +24,19 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
       xmlns="http://www.w3.org/2000/svg"
       className="shrink-0"
     >
-      <rect width="32" height="32" rx="6" fill="#4F7CFF" />
-      <path
-        d="M8 8h4v12H8V8zm0 12h8"
-        stroke="white"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      <path
-        d="M18 12h4v8h-4"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        opacity="0.5"
-      />
+      <defs>
+        <linearGradient id="elionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#2E56CC" />
+          <stop offset="50%" stopColor="#4F7CFF" />
+          <stop offset="100%" stopColor="#00D4FF" />
+        </linearGradient>
+      </defs>
+      {/* Top bar */}
+      <polygon points="6,5 26,5 24,11 4,11" fill="url(#elionGrad)" />
+      {/* Middle bar */}
+      <polygon points="6,14 22,14 20,20 4,20" fill="url(#elionGrad)" opacity="0.85" />
+      {/* Bottom bar */}
+      <polygon points="6,23 26,23 24,29 4,29" fill="url(#elionGrad)" />
     </svg>
   );
 
@@ -51,7 +46,12 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
     <div className={`flex items-center ${s.gap} ${className}`}>
       {symbol}
       {variant === "full" && (
-        <span className={`font-bold text-[var(--color-text-primary)] tracking-tight ${s.text}`}>ELION</span>
+        <span
+          className={`font-bold text-[var(--color-text-primary)] tracking-wider ${s.text}`}
+          style={{ fontFamily: "Space Grotesk, Geist, sans-serif" }}
+        >
+          ELION
+        </span>
       )}
     </div>
   );

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="eGradFull" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E56CC"/>
+      <stop offset="50%" stop-color="#4F7CFF"/>
+      <stop offset="100%" stop-color="#00D4FF"/>
+    </linearGradient>
+  </defs>
+  <!-- E Icon -->
+  <polygon points="10,10 50,10 46,22 6,22" fill="url(#eGradFull)"/>
+  <polygon points="10,28 42,28 38,40 6,40" fill="url(#eGradFull)" opacity="0.85"/>
+  <polygon points="10,46 50,46 46,58 6,58" fill="url(#eGradFull)"/>
+  <!-- ELION Wordmark -->
+  <text x="70" y="48" font-family="Space Grotesk, Geist, sans-serif" font-size="42" font-weight="700" fill="#F8FAFC" letter-spacing="6">ELION</text>
+</svg>

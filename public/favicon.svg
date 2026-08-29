@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#4F7CFF"/>
-  <path d="M8 8h4v12H8V8zm0 12h8" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <path d="M18 12h4v8h-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+  <defs>
+    <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E56CC"/>
+      <stop offset="50%" stop-color="#4F7CFF"/>
+      <stop offset="100%" stop-color="#00D4FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="#0A0D14"/>
+  <polygon points="6,5 26,5 24,11 4,11" fill="url(#fg)"/>
+  <polygon points="6,14 22,14 20,20 4,20" fill="url(#fg)" opacity="0.85"/>
+  <polygon points="6,23 26,23 24,29 4,29" fill="url(#fg)"/>
 </svg>

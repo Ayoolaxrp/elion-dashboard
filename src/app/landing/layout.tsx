@@ -22,9 +22,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       <nav className="border-b border-[var(--color-border)] sticky top-0 z-40 bg-[var(--color-surface-raised)]">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded bg-[var(--color-accent)] flex items-center justify-center">
-              <span className="text-white text-[10px] font-bold">E</span>
-            </div>
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" className="shrink-0"><defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#2E56CC"/><stop offset="50%" stopColor="#4F7CFF"/><stop offset="100%" stopColor="#00D4FF"/></linearGradient></defs><polygon points="6,5 26,5 24,11 4,11" fill="url(#lg)"/><polygon points="6,14 22,14 20,20 4,20" fill="url(#lg)" opacity="0.85"/><polygon points="6,23 26,23 24,29 4,29" fill="url(#lg)"/></svg>
             <span className="text-sm font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </Link>
 
@@ -96,9 +94,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded bg-[var(--color-accent)] flex items-center justify-center">
-                  <span className="text-white text-[10px] font-bold">E</span>
-                </div>
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" className="shrink-0"><defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#2E56CC"/><stop offset="50%" stopColor="#4F7CFF"/><stop offset="100%" stopColor="#00D4FF"/></linearGradient></defs><polygon points="6,5 26,5 24,11 4,11" fill="url(#lg)"/><polygon points="6,14 22,14 20,20 4,20" fill="url(#lg)" opacity="0.85"/><polygon points="6,23 26,23 24,29 4,29" fill="url(#lg)"/></svg>
                 <span className="text-sm font-bold text-[var(--color-text-primary)]">ELION</span>
               </div>
               <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">

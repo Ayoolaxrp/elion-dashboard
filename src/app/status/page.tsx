@@ -153,9 +153,7 @@ export default async function StatusPage() {
       <div className="max-w-2xl mx-auto px-4 py-16">
         <div className="mb-12">
           <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-7 h-7 rounded-lg bg-[var(--color-accent)] flex items-center justify-center">
-              <span className="text-white text-[10px] font-bold">E</span>
-            </div>
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" className="shrink-0"><defs><linearGradient id="statusGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#2E56CC"/><stop offset="50%" stopColor="#4F7CFF"/><stop offset="100%" stopColor="#00D4FF"/></linearGradient></defs><polygon points="6,5 26,5 24,11 4,11" fill="url(#statusGrad)"/><polygon points="6,14 22,14 20,20 4,20" fill="url(#statusGrad)" opacity="0.85"/><polygon points="6,23 26,23 24,29 4,29" fill="url(#statusGrad)"/></svg>
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">
               ELION
             </span>
