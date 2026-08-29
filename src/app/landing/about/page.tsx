@@ -99,7 +99,7 @@ export default function AboutPage() {
       <div className="text-center p-12 rounded-2xl bg-primary/5 border border-primary/20">
         <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Business?</h2>
         <p className="text-zinc-500 mb-8 max-w-xl mx-auto">Get your free automation audit and see where we can help you save time, recover revenue, and grow faster.</p>
-        <Link href="/landing" className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-semibold text-lg hover:bg-primary/90 transition-colors">
+        <Link href="/landing" className="inline-flex items-center gap-2 px-8 py-4 bg-zinc-900 text-white rounded-xl font-semibold text-lg hover:bg-zinc-800 transition-colors">
           Get Free Audit <ArrowRight className="w-5 h-5" />
         </Link>
       </div>
