@@ -51,7 +51,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
     <div className={`flex items-center ${s.gap} ${className}`}>
       {symbol}
       {variant === "full" && (
-        <span className={`font-bold text-zinc-900 tracking-tight ${s.text}`}>ELION</span>
+        <span className={`font-bold text-[var(--color-text-primary)] tracking-tight ${s.text}`}>ELION</span>
       )}
     </div>
   );

@@ -11,8 +11,8 @@ const systems = [
     description: "Analyse your business and identify where you are losing leads, time, and revenue.",
     icon: Search,
     href: "/audit",
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
+    color: "text-[var(--color-accent)]",
+    bgColor: "bg-[var(--color-accent)]/10",
     problem: "You know something is inefficient, but you cannot pinpoint where the leaks are.",
   },
   {
@@ -21,8 +21,8 @@ const systems = [
     description: "Capture, qualify, and respond to every lead within seconds across all channels.",
     icon: Zap,
     href: "/leads",
-    color: "text-amber-600",
-    bgColor: "bg-amber-50",
+    color: "text-[var(--color-warning)]",
+    bgColor: "bg-[var(--color-warning)]/10",
     problem: "A lead comes in. Nobody responds. By the time someone does, they have already gone to a competitor.",
   },
   {
@@ -31,8 +31,8 @@ const systems = [
     description: "Automated multi-channel follow-up sequences that convert enquiries into customers.",
     icon: Mail,
     href: "/followup",
-    color: "text-emerald-600",
-    bgColor: "bg-emerald-50",
+    color: "text-[var(--color-success)]",
+    bgColor: "bg-[var(--color-success)]/10",
     problem: "Your sales team says they will call them tomorrow. Tomorrow never comes.",
   },
   {
@@ -77,7 +77,7 @@ export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto">
       {notif && (
-        <div className="fixed top-4 right-4 z-[100] px-4 py-2.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium rounded-lg animate-fade-in">
+        <div className="fixed top-4 right-4 z-[100] px-4 py-2.5 bg-[var(--color-success)]/10 border border-[var(--color-success)]/30 text-[var(--color-success)] text-sm font-medium rounded-lg animate-fade-in">
           {notif}
         </div>
       )}
@@ -85,18 +85,18 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-blue-600 flex items-center justify-center">
+          <div className="w-9 h-9 rounded bg-[var(--color-accent)] flex items-center justify-center">
             <span className="text-white text-sm font-bold tracking-tight">E</span>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-zinc-900 tracking-tight">ELION</h1>
-            <p className="text-[11px] text-zinc-400 -mt-0.5">Business Automation Systems</p>
+            <h1 className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight">ELION</h1>
+            <p className="text-[11px] text-[var(--color-text-muted)] -mt-0.5">Business Automation Systems</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/audit"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-medium rounded-lg hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             <Search className="w-4 h-4" />Run Free Audit
           </Link>
@@ -104,25 +104,25 @@ export default function DashboardPage() {
       </div>
 
       {/* Hero */}
-      <div className="bg-white border border-zinc-200 rounded-lg p-8 md:p-12 mb-8">
+      <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-8 md:p-12 mb-8">
         <div className="max-w-2xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight mb-3 leading-tight">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] tracking-tight mb-3 leading-tight">
             Find the leaks in your business.<br />Then automate them.
           </h2>
-          <p className="text-base text-zinc-500 mb-6 leading-relaxed">
+          <p className="text-base text-[var(--color-text-muted)] mb-6 leading-relaxed">
             ELION identifies where your business is losing time, leads, money, or operational efficiency.
             Then we build automation systems to fix it.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/audit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-white rounded-lg font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
             >
               Run Your Free Leak Audit
             </Link>
             <Link
               href="/demo"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-zinc-700 border border-zinc-200 rounded font-semibold text-sm hover:bg-zinc-50 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded font-semibold text-sm hover:bg-[var(--color-surface)] transition-colors"
             >
               See How It Works
             </Link>
@@ -133,8 +133,8 @@ export default function DashboardPage() {
       {/* What ELION Does */}
       <div className="mb-8">
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-zinc-900">What ELION does</h2>
-          <p className="text-sm text-zinc-500 mt-1">
+          <h2 className="text-lg font-bold text-[var(--color-text-primary)]">What ELION does</h2>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">
             Businesses lose money through slow follow-up, missed leads, inefficient operations, and dormant customers.
             ELION identifies the leak and builds the automation.
           </p>
@@ -143,18 +143,18 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
           {systems.map((sys) => (
             <Link key={sys.id} href={sys.href}>
-              <div className="bg-white border border-zinc-200 rounded-lg p-5 hover:border-zinc-300 transition-colors cursor-pointer h-full">
+              <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors cursor-pointer h-full">
                 <div className="flex items-start gap-3 mb-3">
                   <div className={`w-9 h-9 rounded-lg ${sys.bgColor} flex items-center justify-center shrink-0`}>
                     <sys.icon className={`w-4 h-4 ${sys.color}`} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-zinc-900">{sys.title}</h3>
-                    <p className="text-xs text-zinc-500 leading-relaxed mt-0.5">{sys.description}</p>
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">{sys.title}</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">{sys.description}</p>
                   </div>
                 </div>
-                <div className="pt-3 border-t border-zinc-100">
-                  <p className="text-[11px] text-zinc-400 italic">"{sys.problem}"</p>
+                <div className="pt-3 border-t border-[var(--color-border)]">
+                  <p className="text-[11px] text-[var(--color-text-muted)] italic">"{sys.problem}"</p>
                 </div>
               </div>
             </Link>
@@ -163,8 +163,8 @@ export default function DashboardPage() {
       </div>
 
       {/* How It Works */}
-      <div className="bg-white border border-zinc-200 rounded-lg p-8 mb-8">
-        <h2 className="text-lg font-bold text-zinc-900 mb-6">How it works</h2>
+      <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-8 mb-8">
+        <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-6">How it works</h2>
         <div className="grid md:grid-cols-4 gap-6">
           {[
             { step: "01", title: "Run a free audit", desc: "Enter your business information. We analyse your website and digital presence." },
@@ -173,30 +173,30 @@ export default function DashboardPage() {
             { step: "04", title: "Go live", desc: "We deploy, test, and hand over. You own everything. Optional support available." },
           ].map((s) => (
             <div key={s.step}>
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-xs font-bold text-white mb-3">
+              <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)] flex items-center justify-center text-xs font-bold text-white mb-3">
                 {s.step}
               </div>
-              <h3 className="text-sm font-semibold text-zinc-900 mb-1">{s.title}</h3>
-              <p className="text-xs text-zinc-500 leading-relaxed">{s.desc}</p>
+              <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{s.title}</h3>
+              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* CTA */}
-      <div className="bg-blue-600 rounded-lg p-8 text-center">
+      <div className="bg-[var(--color-accent)] rounded-lg p-8 text-center">
         <h2 className="text-lg font-bold text-white mb-2">Ready to find your leaks?</h2>
         <p className="text-sm text-blue-100 mb-5">Every day you wait, you are losing leads, time, and revenue.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/audit"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold text-sm hover:bg-blue-50 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-accent)] rounded-lg font-semibold text-sm hover:bg-[var(--color-accent)]/10 transition-colors"
           >
             Run Free Leak Audit
           </Link>
           <Link
             href="/landing/pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-700 text-white rounded-lg font-semibold text-sm hover:bg-blue-800 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-accent-hover)] text-white rounded-lg font-semibold text-sm hover:bg-blue-800 transition-colors"
           >
             View Pricing
           </Link>

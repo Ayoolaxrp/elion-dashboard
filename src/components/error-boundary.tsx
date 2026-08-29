@@ -31,9 +31,9 @@ export class ErrorBoundary extends React.Component<
         this.props.fallback || (
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center space-y-4">
-              <AlertTriangle className="w-12 h-12 text-amber-400 mx-auto" />
+              <AlertTriangle className="w-12 h-12 text-[var(--color-warning)] mx-auto" />
               <h3 className="text-lg font-medium text-white">Something went wrong</h3>
-              <p className="text-sm text-zinc-400 max-w-md">
+              <p className="text-sm text-[var(--color-text-muted)] max-w-md">
                 {this.state.error?.message || "An unexpected error occurred."}
               </p>
               <button
@@ -41,7 +41,7 @@ export class ErrorBoundary extends React.Component<
                   this.setState({ hasError: false, error: null });
                   window.location.reload();
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
                 Try Again

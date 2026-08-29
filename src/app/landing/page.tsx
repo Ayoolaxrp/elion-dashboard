@@ -47,24 +47,24 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--color-surface-raised)]">
       {/* Hero */}
-      <section className="border-b border-zinc-200">
+      <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16 md:py-24 text-center">
           <div className="flex items-center justify-center gap-2.5 mb-6">
-            <div className="w-9 h-9 rounded bg-blue-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded bg-[var(--color-accent)] flex items-center justify-center">
               <span className="text-white text-sm font-bold">E</span>
             </div>
-            <span className="text-xl font-bold text-zinc-900 tracking-tight">ELION</span>
+            <span className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </div>
 
-          <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Business Automation Systems</p>
+          <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Business Automation Systems</p>
 
-          <h1 className="text-3xl md:text-5xl font-bold text-zinc-900 tracking-tight mb-4 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight mb-4 leading-tight">
             Find the leaks in your business.<br />Then automate them.
           </h1>
 
-          <p className="text-base md:text-lg text-zinc-500 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-base md:text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto mb-8 leading-relaxed">
             ELION identifies where your business is losing time, leads, money, or operational efficiency.
             Then we build automation systems to fix it.
           </p>
@@ -72,27 +72,27 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
             <a
               href="#audit"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 text-white rounded font-semibold text-sm hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[var(--color-accent)] text-white rounded font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
             >
               Run Your Free Leak Audit
             </a>
             <Link
               href="/demo"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-zinc-700 border border-zinc-200 rounded font-semibold text-sm hover:bg-zinc-50 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded font-semibold text-sm hover:bg-[var(--color-surface)] transition-colors"
             >
               See How It Works
             </Link>
           </div>
 
-          <p className="text-xs text-zinc-400">No credit card required. Free audit takes 2 minutes.</p>
+          <p className="text-xs text-[var(--color-text-muted)]">No credit card required. Free audit takes 2 minutes.</p>
         </div>
       </section>
 
       {/* The Problem */}
-      <section className="border-b border-zinc-200">
+      <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-4">The problem</h2>
-          <p className="text-sm text-zinc-500 text-center mb-10 max-w-lg mx-auto">
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-4">The problem</h2>
+          <p className="text-sm text-[var(--color-text-muted)] text-center mb-10 max-w-lg mx-auto">
             Businesses lose money every day through operational leaks they cannot see.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -102,9 +102,9 @@ export default function LandingPage() {
               { problem: "Your team spends hours on data entry", result: "Copying information between systems. Updating spreadsheets. Manually sending reports." },
               { problem: "You have 2,000 contacts in your database", result: "Nobody contacts them. No reactivation campaigns. Revenue left on the table." },
             ].map((item, i) => (
-              <div key={i} className="border border-zinc-200 rounded-lg p-5">
-                <p className="text-sm font-semibold text-zinc-900 mb-2">{item.problem}</p>
-                <p className="text-sm text-zinc-500 leading-relaxed">{item.result}</p>
+              <div key={i} className="border border-[var(--color-border)] rounded-lg p-5">
+                <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">{item.problem}</p>
+                <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{item.result}</p>
               </div>
             ))}
           </div>
@@ -112,17 +112,17 @@ export default function LandingPage() {
       </section>
 
       {/* What ELION Does */}
-      <section className="border-b border-zinc-200 bg-zinc-50">
+      <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-4">What ELION does</h2>
-          <p className="text-sm text-zinc-500 text-center mb-10 max-w-lg mx-auto">
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-4">What ELION does</h2>
+          <p className="text-sm text-[var(--color-text-muted)] text-center mb-10 max-w-lg mx-auto">
             We identify the leak. Then we build the automation to fix it.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {systems.map((sys, i) => (
-              <div key={i} className="bg-white border border-zinc-200 rounded-lg p-5">
-                <h3 className="text-sm font-semibold text-zinc-900 mb-1">{sys.title}</h3>
-                <p className="text-xs text-zinc-500 leading-relaxed">{sys.desc}</p>
+              <div key={i} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5">
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{sys.title}</h3>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{sys.desc}</p>
               </div>
             ))}
           </div>
@@ -130,17 +130,17 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="border-b border-zinc-200">
+      <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-10">How it works</h2>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-10">How it works</h2>
           <div className="grid md:grid-cols-4 gap-6">
             {steps.map((step) => (
               <div key={step.num} className="text-center">
-                <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center text-sm font-bold text-zinc-600 mx-auto mb-3">
+                <div className="w-10 h-10 rounded-lg bg-[var(--color-surface-elevated)] flex items-center justify-center text-sm font-bold text-[var(--color-text-secondary)] mx-auto mb-3">
                   {step.num}
                 </div>
-                <h3 className="text-sm font-semibold text-zinc-900 mb-1">{step.title}</h3>
-                <p className="text-xs text-zinc-500 leading-relaxed">{step.desc}</p>
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{step.title}</h3>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -148,18 +148,18 @@ export default function LandingPage() {
       </section>
 
       {/* Guarantees */}
-      <section className="border-b border-zinc-200 bg-zinc-50">
+      <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-10">Our guarantees</h2>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-10">Our guarantees</h2>
           <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {guarantees.map((g, i) => (
-              <div key={i} className="flex items-start gap-3 bg-white border border-zinc-200 rounded-lg p-5">
-                <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
+              <div key={i} className="flex items-start gap-3 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5">
+                <div className="w-9 h-9 rounded-lg bg-[var(--color-success)]/10 flex items-center justify-center text-[var(--color-success)] shrink-0">
                   <CheckCircle className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-zinc-900 mb-1">{g.title}</h3>
-                  <p className="text-xs text-zinc-500 leading-relaxed">{g.desc}</p>
+                  <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{g.title}</h3>
+                  <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{g.desc}</p>
                 </div>
               </div>
             ))}
@@ -168,58 +168,58 @@ export default function LandingPage() {
       </section>
 
       {/* Audit Form */}
-      <section id="audit" className="border-b border-zinc-200">
+      <section id="audit" className="border-b border-[var(--color-border)]">
         <div className="max-w-2xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-2">Run a free leak audit</h2>
-          <p className="text-sm text-zinc-500 text-center mb-8">
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-2">Run a free leak audit</h2>
+          <p className="text-sm text-[var(--color-text-muted)] text-center mb-8">
             We will analyse your business and identify where you are losing leads, time, and money.
           </p>
 
           {submitted ? (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 text-center">
-              <CheckCircle className="w-8 h-8 text-emerald-600 mx-auto mb-3" />
-              <h3 className="text-base font-semibold text-zinc-900 mb-1">Audit request submitted</h3>
-              <p className="text-sm text-zinc-500">We will be in touch within 24 hours with your results.</p>
+            <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/30 rounded-lg p-6 text-center">
+              <CheckCircle className="w-8 h-8 text-[var(--color-success)] mx-auto mb-3" />
+              <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">Audit request submitted</h3>
+              <p className="text-sm text-[var(--color-text-muted)]">We will be in touch within 24 hours with your results.</p>
             </div>
           ) : (
-            <div className="bg-white border border-zinc-200 rounded-lg p-6">
+            <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6">
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs font-semibold text-zinc-600 block mb-1">Your name</label>
+                  <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Your name</label>
                   <input
                     type="text"
                     placeholder="Full name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-zinc-200 rounded text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
+                    className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-zinc-600 block mb-1">Email</label>
+                  <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Email</label>
                   <input
                     type="email"
                     placeholder="you@company.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-zinc-200 rounded text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
+                    className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-zinc-600 block mb-1">Phone (optional)</label>
+                  <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Phone (optional)</label>
                   <input
                     type="tel"
                     placeholder="+234 800 000 0000"
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-zinc-200 rounded text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
+                    className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-zinc-600 block mb-1">Industry</label>
+                  <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Industry</label>
                   <select
                     value={form.industry}
                     onChange={(e) => setForm({ ...form, industry: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-zinc-200 rounded text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 appearance-none cursor-pointer"
+                    className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 appearance-none cursor-pointer"
                   >
                     <option value="">Select industry</option>
                     <option value="Real Estate">Real Estate</option>
@@ -235,7 +235,7 @@ export default function LandingPage() {
                 <button
                   onClick={handleSubmit}
                   disabled={loading || !form.name || !form.email}
-                  className="w-full py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  className="w-full py-3 bg-[var(--color-surface)] text-white rounded font-semibold text-sm hover:bg-[var(--color-surface-raised)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   {loading ? "Submitting..." : "Run Free Audit"}
                 </button>
@@ -246,26 +246,26 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-b border-zinc-200 bg-zinc-50">
+      <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-2xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-bold text-zinc-900 text-center mb-8">Frequently asked questions</h2>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] text-center mb-8">Frequently asked questions</h2>
           <div className="space-y-2">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-white border border-zinc-200 rounded-lg">
+              <div key={i} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer"
                 >
-                  <span className="text-sm font-semibold text-zinc-900">{faq.q}</span>
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{faq.q}</span>
                   {openFaq === i ? (
-                    <ChevronUp className="w-4 h-4 text-zinc-400 shrink-0" />
+                    <ChevronUp className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />
+                    <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
                   )}
                 </button>
                 {openFaq === i && (
                   <div className="px-5 pb-4">
-                    <p className="text-sm text-zinc-500 leading-relaxed">{faq.a}</p>
+                    <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </div>
@@ -277,20 +277,20 @@ export default function LandingPage() {
       {/* Final CTA */}
       <section>
         <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold text-zinc-900 mb-3">Ready to fix your operational leaks?</h2>
-          <p className="text-sm text-zinc-500 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">Ready to fix your operational leaks?</h2>
+          <p className="text-sm text-[var(--color-text-muted)] mb-6">
             Every day you wait, you are losing leads, time, and revenue. Start with a free audit.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="#audit"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded font-semibold text-sm hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface)] text-white rounded font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
             >
               Run Free Leak Audit
             </a>
             <Link
               href="/landing/pricing"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-zinc-700 border border-zinc-200 rounded font-semibold text-sm hover:bg-zinc-50 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] border border-[var(--color-border)] rounded font-semibold text-sm hover:bg-[var(--color-surface)] transition-colors"
             >
               View Pricing
             </Link>

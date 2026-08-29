@@ -75,10 +75,10 @@ interface AuditResult {
 /* ──────────── Helper: severity config ──────────── */
 
 const SEVERITY_CONFIG = {
-  critical: { color: "text-red-600", bg: "bg-red-50", border: "border-red-200", dot: "bg-red-500" },
-  high: { color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200", dot: "bg-amber-500" },
-  medium: { color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-200", dot: "bg-blue-500" },
-  low: { color: "text-zinc-500", bg: "bg-zinc-50", border: "border-zinc-200", dot: "bg-zinc-400" },
+  critical: { color: "text-[var(--color-error)]", bg: "bg-[var(--color-error)]/10", border: "border-[var(--color-error)]/30", dot: "bg-[var(--color-error)]/100" },
+  high: { color: "text-[var(--color-warning)]", bg: "bg-[var(--color-warning)]/10", border: "border-[var(--color-warning)]/30", dot: "bg-[var(--color-warning)]/100" },
+  medium: { color: "text-[var(--color-accent)]", bg: "bg-[var(--color-accent)]/10", border: "border-[var(--color-accent)]/30", dot: "bg-[var(--color-accent)]/100" },
+  low: { color: "text-[var(--color-text-muted)]", bg: "bg-[var(--color-surface)]", border: "border-[var(--color-border)]", dot: "bg-zinc-400" },
 };
 
 /* ──────────── Component ──────────── */
@@ -264,7 +264,7 @@ export default function AuditPage() {
 
   /* ──── Helpers ──── */
 
-  const getScoreColor = (s: number) => (s < 40 ? "text-red-600" : s < 65 ? "text-amber-600" : "text-emerald-600");
+  const getScoreColor = (s: number) => (s < 40 ? "text-[var(--color-error)]" : s < 65 ? "text-[var(--color-warning)]" : "text-[var(--color-success)]");
   const getScoreRing = (s: number) => {
     const circumference = 2 * Math.PI * 45;
     const offset = circumference - (s / 100) * circumference;
@@ -312,20 +312,20 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Automation Audit</h1>
-          <p className="text-sm text-zinc-500 mt-1">Real web research with actionable assessment</p>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">Real web research with actionable assessment</p>
         </div>
         <div className="flex gap-2">
           {auditResult && (
             <>
-              <button onClick={exportReport} className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 rounded hover:bg-zinc-50 transition-colors">
+              <button onClick={exportReport} className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded hover:bg-[var(--color-surface)] transition-colors">
                 <Download className="w-4 h-4" /> Export
               </button>
-              <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 rounded hover:bg-zinc-50 transition-colors">
+              <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded hover:bg-[var(--color-surface)] transition-colors">
                 <Printer className="w-4 h-4" /> Print
               </button>
             </>
           )}
-          <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded hover:bg-zinc-800 transition-colors">
+          <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-[var(--color-surface)] rounded hover:bg-[var(--color-surface-raised)] transition-colors">
             <Search className="w-4 h-4" /> New Audit
           </button>
         </div>
@@ -333,37 +333,37 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
       {/* ──── Scanning Animation ──── */}
       {isScanning && (
-        <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
           <div className="flex items-center gap-4 mb-5">
-            <div className="w-10 h-10 bg-zinc-100 rounded flex items-center justify-center">
-              <Loader2 className="w-5 h-5 text-zinc-600 animate-spin" />
+            <div className="w-10 h-10 bg-[var(--color-surface-elevated)] rounded flex items-center justify-center">
+              <Loader2 className="w-5 h-5 text-[var(--color-text-secondary)] animate-spin" />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-zinc-900">Scanning {companyName}</h3>
-              <p className="text-xs text-zinc-500 mt-0.5">{scanPhase}</p>
+              <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Scanning {companyName}</h3>
+              <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{scanPhase}</p>
             </div>
-            <span className="text-sm font-mono font-bold text-zinc-900">{scanProgress}%</span>
+            <span className="text-sm font-mono font-bold text-[var(--color-text-primary)]">{scanProgress}%</span>
           </div>
-          <div className="w-full bg-zinc-100 rounded-full h-1.5 mb-5">
-            <div className="bg-zinc-900 h-1.5 rounded-full transition-all duration-300" style={{ width: `${scanProgress}%` }} />
+          <div className="w-full bg-[var(--color-surface-elevated)] rounded-full h-1.5 mb-5">
+            <div className="bg-[var(--color-surface)] h-1.5 rounded-full transition-all duration-300" style={{ width: `${scanProgress}%` }} />
           </div>
           <div className="space-y-1.5 max-h-[320px] overflow-y-auto pr-1">
             {findings.map((f) => (
-              <div key={f.id} className="flex items-center gap-3 py-2 px-3 rounded bg-zinc-50 border border-zinc-100 animate-fade-in">
+              <div key={f.id} className="flex items-center gap-3 py-2 px-3 rounded bg-[var(--color-surface)] border border-[var(--color-border)] animate-fade-in">
                 <div className={`w-5 h-5 rounded flex items-center justify-center shrink-0 ${
-                  f.status === "found" ? "bg-emerald-50" : f.status === "missing" ? "bg-red-50" : "bg-amber-50"
+                  f.status === "found" ? "bg-[var(--color-success)]/10" : f.status === "missing" ? "bg-[var(--color-error)]/10" : "bg-[var(--color-warning)]/10"
                 }`}>
                   {f.status === "found" ? (
-                    <CheckCircle className="w-3 h-3 text-emerald-600" />
+                    <CheckCircle className="w-3 h-3 text-[var(--color-success)]" />
                   ) : f.status === "missing" ? (
-                    <X className="w-3 h-3 text-red-500" />
+                    <X className="w-3 h-3 text-[var(--color-error)]" />
                   ) : (
-                    <AlertTriangle className="w-3 h-3 text-amber-500" />
+                    <AlertTriangle className="w-3 h-3 text-[var(--color-warning)]" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-xs font-medium text-zinc-800">{f.label}</span>
-                  <p className="text-[11px] text-zinc-500 truncate">{f.detail}</p>
+                  <span className="text-xs font-medium text-[var(--color-text-primary)]">{f.label}</span>
+                  <p className="text-[11px] text-[var(--color-text-muted)] truncate">{f.detail}</p>
                 </div>
               </div>
             ))}
@@ -375,7 +375,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       {auditResult && !isScanning && (
         <>
           {/* Score Card */}
-          <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               {/* Circular score */}
               <div className="relative shrink-0">
@@ -394,46 +394,46 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className={`text-2xl font-bold ${getScoreColor(auditResult.score)}`}>{auditResult.score}</span>
-                  <span className="text-[10px] text-zinc-400">/100</span>
+                  <span className="text-[10px] text-[var(--color-text-muted)]">/100</span>
                 </div>
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-zinc-900">{auditResult.companyName}</h2>
-                <p className="text-sm text-zinc-500 mt-0.5">{auditResult.industry} &bull; {auditResult.date}</p>
-                <p className="text-sm text-zinc-600 mt-2">
-                  {auditResult.criticalLeaks > 0 && <span className="text-red-600 font-medium">{auditResult.criticalLeaks} critical</span>}
-                  {auditResult.criticalLeaks > 0 && auditResult.highLeaks > 0 && <span className="text-zinc-400"> and </span>}
-                  {auditResult.highLeaks > 0 && <span className="text-amber-600 font-medium">{auditResult.highLeaks} high</span>}
-                  {(auditResult.criticalLeaks > 0 || auditResult.highLeaks > 0) && <span className="text-zinc-400"> gaps identified</span>}
-                  {auditResult.criticalLeaks === 0 && auditResult.highLeaks === 0 && <span className="text-emerald-600 font-medium">Strong digital presence</span>}
+                <h2 className="text-xl font-bold text-[var(--color-text-primary)]">{auditResult.companyName}</h2>
+                <p className="text-sm text-[var(--color-text-muted)] mt-0.5">{auditResult.industry} &bull; {auditResult.date}</p>
+                <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+                  {auditResult.criticalLeaks > 0 && <span className="text-[var(--color-error)] font-medium">{auditResult.criticalLeaks} critical</span>}
+                  {auditResult.criticalLeaks > 0 && auditResult.highLeaks > 0 && <span className="text-[var(--color-text-muted)]"> and </span>}
+                  {auditResult.highLeaks > 0 && <span className="text-[var(--color-warning)] font-medium">{auditResult.highLeaks} high</span>}
+                  {(auditResult.criticalLeaks > 0 || auditResult.highLeaks > 0) && <span className="text-[var(--color-text-muted)]"> gaps identified</span>}
+                  {auditResult.criticalLeaks === 0 && auditResult.highLeaks === 0 && <span className="text-[var(--color-success)] font-medium">Strong digital presence</span>}
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <p className="text-2xl font-bold text-zinc-900">{auditResult.estimatedAnnualSavings}</p>
-                <p className="text-xs text-zinc-500">potential annual savings (estimate)</p>
+                <p className="text-2xl font-bold text-[var(--color-text-primary)]">{auditResult.estimatedAnnualSavings}</p>
+                <p className="text-xs text-[var(--color-text-muted)]">potential annual savings (estimate)</p>
               </div>
             </div>
           </div>
 
           {/* ──── What We Found ──── */}
-          <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
-            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Research Findings</h3>
+          <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
+            <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Research Findings</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {findings.filter((f) => f.category !== "Assessment" && f.category !== "Industry").map((f) => (
-                <div key={f.id} className="flex items-center gap-3 py-2.5 px-3 rounded border border-zinc-100">
+                <div key={f.id} className="flex items-center gap-3 py-2.5 px-3 rounded border border-[var(--color-border)]">
                   <div className={`w-6 h-6 rounded flex items-center justify-center shrink-0 ${
-                    f.status === "found" ? "bg-emerald-50" : f.status === "missing" ? "bg-red-50" : "bg-amber-50"
+                    f.status === "found" ? "bg-[var(--color-success)]/10" : f.status === "missing" ? "bg-[var(--color-error)]/10" : "bg-[var(--color-warning)]/10"
                   }`}>
-                    {f.status === "found" ? <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> :
-                     f.status === "missing" ? <X className="w-3.5 h-3.5 text-red-400" /> :
-                     <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />}
+                    {f.status === "found" ? <CheckCircle className="w-3.5 h-3.5 text-[var(--color-success)]" /> :
+                     f.status === "missing" ? <X className="w-3.5 h-3.5 text-[var(--color-error)]" /> :
+                     <AlertTriangle className="w-3.5 h-3.5 text-[var(--color-warning)]" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-zinc-800">{f.label}</p>
-                    <p className="text-[11px] text-zinc-500 truncate">{f.detail}</p>
+                    <p className="text-xs font-medium text-[var(--color-text-primary)]">{f.label}</p>
+                    <p className="text-[11px] text-[var(--color-text-muted)] truncate">{f.detail}</p>
                   </div>
                   <span className={`text-[10px] font-semibold uppercase tracking-wider ${
-                    f.status === "found" ? "text-emerald-600" : f.status === "missing" ? "text-red-500" : "text-amber-600"
+                    f.status === "found" ? "text-[var(--color-success)]" : f.status === "missing" ? "text-[var(--color-error)]" : "text-[var(--color-warning)]"
                   }`}>{f.status === "found" ? "Found" : f.status === "missing" ? "Missing" : "Partial"}</span>
                 </div>
               ))}
@@ -441,12 +441,12 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           </div>
 
           {/* ──── Identified Gaps ──── */}
-          <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
+          <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Leak Analysis</h3>
+              <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Leak Analysis</h3>
               <div className="flex items-center gap-3 text-[11px]">
-                {auditResult.criticalLeaks > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />{auditResult.criticalLeaks} Critical</span>}
-                {auditResult.highLeaks > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" />{auditResult.highLeaks} High</span>}
+                {auditResult.criticalLeaks > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[var(--color-error)]/100" />{auditResult.criticalLeaks} Critical</span>}
+                {auditResult.highLeaks > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[var(--color-warning)]/100" />{auditResult.highLeaks} High</span>}
               </div>
             </div>
             <div className="space-y-2">
@@ -454,7 +454,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                 const sc = SEVERITY_CONFIG[leak.severity];
                 const isExpanded = expandedLeakId === leak.id;
                 return (
-                  <div key={leak.id} className={`border rounded-lg transition-colors ${sc.border} ${isExpanded ? sc.bg : "bg-white hover:bg-zinc-50"}`}>
+                  <div key={leak.id} className={`border rounded-lg transition-colors ${sc.border} ${isExpanded ? sc.bg : "bg-[var(--color-surface-raised)] hover:bg-[var(--color-surface)]"}`}>
                     <button
                       className="w-full text-left p-4"
                       onClick={() => setExpandedLeakId(isExpanded ? null : leak.id)}
@@ -463,26 +463,26 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                         <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${sc.dot}`} />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="text-sm font-semibold text-zinc-900">{leak.area}</span>
+                            <span className="text-sm font-semibold text-[var(--color-text-primary)]">{leak.area}</span>
                             <div className="flex items-center gap-2 shrink-0">
                               <span className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${sc.bg} ${sc.color}`}>{leak.severity}</span>
-                              <span className="text-xs font-medium text-zinc-600">{leak.estimatedSavings}</span>
-                              {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-zinc-400" /> : <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />}
+                              <span className="text-xs font-medium text-[var(--color-text-secondary)]">{leak.estimatedSavings}</span>
+                              {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-[var(--color-text-muted)]" /> : <ChevronDown className="w-3.5 h-3.5 text-[var(--color-text-muted)]" />}
                             </div>
                           </div>
-                          <p className="text-xs text-zinc-600 mt-1 line-clamp-2">{leak.description}</p>
+                          <p className="text-xs text-[var(--color-text-secondary)] mt-1 line-clamp-2">{leak.description}</p>
                         </div>
                       </div>
                     </button>
                     {isExpanded && (
-                      <div className="px-4 pb-4 pt-0 ml-5 border-t border-zinc-100 mt-0">
+                      <div className="px-4 pb-4 pt-0 ml-5 border-t border-[var(--color-border)] mt-0">
                         <div className="mt-3 space-y-3">
                           {/* OBSERVED: Evidence from website analysis */}
                           {leak.evidence && leak.evidence.length > 0 && (
-                            <div className="bg-blue-50 rounded border border-blue-100 p-3">
+                            <div className="bg-[var(--color-accent)]/10 rounded border border-blue-100 p-3">
                               <div className="flex items-center gap-2 mb-1.5">
-                                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">Observed</span>
-                                <span className="text-[11px] text-blue-600">What we found on your website</span>
+                                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-[var(--color-accent)]">Observed</span>
+                                <span className="text-[11px] text-[var(--color-accent)]">What we found on your website</span>
                               </div>
                               <ul className="space-y-1">
                                 {leak.evidence.map((e, i) => (
@@ -495,24 +495,24 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                             </div>
                           )}
                           {/* Why it matters */}
-                          <div className="bg-white rounded border border-zinc-100 p-3">
-                            <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1">Why it matters</p>
-                            <p className="text-xs text-zinc-700">{leak.impact}</p>
+                          <div className="bg-[var(--color-surface-raised)] rounded border border-[var(--color-border)] p-3">
+                            <p className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase mb-1">Why it matters</p>
+                            <p className="text-xs text-[var(--color-text-secondary)]">{leak.impact}</p>
                           </div>
                           {/* RECOMMENDED: What to do about it */}
-                          <div className="bg-emerald-50 rounded border border-emerald-100 p-3">
+                          <div className="bg-[var(--color-success)]/10 rounded border border-emerald-100 p-3">
                             <div className="flex items-center gap-2 mb-1.5">
-                              <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">Recommended</span>
-                              <span className="text-[11px] text-emerald-600">Suggested automation opportunity</span>
+                              <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-[var(--color-success)]">Recommended</span>
+                              <span className="text-[11px] text-[var(--color-success)]">Suggested automation opportunity</span>
                             </div>
                             <p className="text-xs text-emerald-800">{leak.recommendation}</p>
                           </div>
-                          <div className="flex items-center gap-3 text-[11px] text-zinc-400">
+                          <div className="flex items-center gap-3 text-[11px] text-[var(--color-text-muted)]">
                             <span>Source: {leak.source}</span>
                             <span className={`px-1.5 py-0.5 rounded font-medium ${
-                              leak.severity === "critical" ? "bg-red-50 text-red-600" :
-                              leak.severity === "high" ? "bg-amber-50 text-amber-600" :
-                              "bg-zinc-100 text-zinc-500"
+                              leak.severity === "critical" ? "bg-[var(--color-error)]/10 text-[var(--color-error)]" :
+                              leak.severity === "high" ? "bg-[var(--color-warning)]/10 text-[var(--color-warning)]" :
+                              "bg-[var(--color-surface-elevated)] text-[var(--color-text-muted)]"
                             }`}>Priority: {leak.severity}</span>
                           </div>
                         </div>
@@ -525,8 +525,8 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           </div>
 
           {/* ──── Score Breakdown ──── */}
-          <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
-            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Score Breakdown</h3>
+          <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
+            <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Score Breakdown</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {[
                 { label: "Lead Response", score: auditResult.scores.lead_response },
@@ -539,13 +539,13 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               ].map((item) => (
                 <div key={item.label}>
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-zinc-500">{item.label}</span>
-                    <span className={`font-semibold ${item.score < 40 ? "text-red-600" : item.score < 65 ? "text-amber-600" : "text-emerald-600"}`}>{item.score}%</span>
+                    <span className="text-[var(--color-text-muted)]">{item.label}</span>
+                    <span className={`font-semibold ${item.score < 40 ? "text-[var(--color-error)]" : item.score < 65 ? "text-[var(--color-warning)]" : "text-[var(--color-success)]"}`}>{item.score}%</span>
                   </div>
-                  <div className="w-full bg-zinc-100 rounded-full h-1.5">
+                  <div className="w-full bg-[var(--color-surface-elevated)] rounded-full h-1.5">
                     <div
                       className={`h-1.5 rounded-full transition-all duration-500 ${
-                        item.score < 40 ? "bg-red-500" : item.score < 65 ? "bg-amber-500" : "bg-emerald-500"
+                        item.score < 40 ? "bg-[var(--color-error)]/100" : item.score < 65 ? "bg-[var(--color-warning)]/100" : "bg-[var(--color-success)]/100"
                       }`}
                       style={{ width: `${item.score}%` }}
                     />
@@ -557,23 +557,23 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
           {/* ──── Recommended Automations ──── */}
           {auditResult.automationRecommendations && (
-            <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Recommended Automations</h3>
+            <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
+              <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Recommended Automations</h3>
               <div className="flex flex-wrap gap-2 mb-5">
                 {auditResult.automationRecommendations.needs.map((n) => (
-                  <span key={n} className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-zinc-100 text-zinc-700 rounded">
+                  <span key={n} className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-[var(--color-surface-elevated)] text-[var(--color-text-secondary)] rounded">
                     <Zap className="w-3 h-3" />{n}
                   </span>
                 ))}
               </div>
-              <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Role-Based Task Assignments</h4>
+              <h4 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Role-Based Task Assignments</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {auditResult.automationRecommendations.roles.map((role) => (
-                  <div key={role.role} className="p-4 rounded border border-zinc-100 bg-zinc-50">
-                    <h5 className="text-sm font-semibold text-zinc-900 mb-2">{role.role}</h5>
+                  <div key={role.role} className="p-4 rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
+                    <h5 className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">{role.role}</h5>
                     <ul className="space-y-1.5">
                       {role.tasks.map((task, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-zinc-600">
+                        <li key={i} className="flex items-start gap-2 text-xs text-[var(--color-text-secondary)]">
                           <span className="w-1 h-1 rounded-full bg-zinc-400 mt-1.5 shrink-0" />
                           {task}
                         </li>
@@ -587,13 +587,13 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
           {/* ──── Quick Wins ──── */}
           {auditResult.webResearch?.quickWins && auditResult.webResearch.quickWins.length > 0 && (
-            <div className="bg-white border border-zinc-200 rounded-lg p-6 mb-6">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Quick Wins</h3>
+            <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mb-6">
+              <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Quick Wins</h3>
               <div className="space-y-2">
                 {auditResult.webResearch.quickWins.map((qw, i) => (
-                  <div key={i} className="flex items-start gap-3 py-2 px-3 rounded bg-zinc-50 border border-zinc-100">
-                    <TrendingUp className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <p className="text-sm text-zinc-700">{qw}</p>
+                  <div key={i} className="flex items-start gap-3 py-2 px-3 rounded bg-[var(--color-surface)] border border-[var(--color-border)]">
+                    <TrendingUp className="w-4 h-4 text-[var(--color-success)] shrink-0 mt-0.5" />
+                    <p className="text-sm text-[var(--color-text-secondary)]">{qw}</p>
                   </div>
                 ))}
               </div>
@@ -601,15 +601,15 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           )}
 
           {/* ──── CTA ──── */}
-          <div className="bg-zinc-900 rounded-lg p-8 text-center">
+          <div className="bg-[var(--color-surface)] rounded-lg p-8 text-center">
             <h3 className="text-lg font-bold text-white mb-2">Ready to fix these gaps?</h3>
-            <p className="text-sm text-zinc-400 mb-5 max-w-md mx-auto">
+            <p className="text-sm text-[var(--color-text-muted)] mb-5 max-w-md mx-auto">
               Book a free 15-minute call. We will implement the top priority automation for your business.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 onClick={() => setShowRequestModal(true)}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-zinc-900 text-sm font-medium rounded hover:bg-zinc-100 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] text-sm font-medium rounded hover:bg-[var(--color-surface-elevated)] transition-colors"
               >
                 <ClipboardList className="w-4 h-4" /> Request Implementation
               </button>
@@ -622,7 +622,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               </a>
               <a
                 href={`mailto:hello@elion.ng?subject=Audit%20Results%20-%20${encodeURIComponent(auditResult.companyName)}`}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-zinc-900 text-sm font-medium rounded hover:bg-zinc-100 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] text-sm font-medium rounded hover:bg-[var(--color-surface-elevated)] transition-colors"
               >
                 <Mail className="w-4 h-4" /> Email Us
               </a>
@@ -633,15 +633,15 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
       {/* ──── Empty State ──── */}
       {!auditResult && !isScanning && (
-        <div className="bg-white border border-zinc-200 rounded-lg py-16 px-6 text-center">
-          <div className="w-14 h-14 bg-zinc-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <Search className="w-7 h-7 text-zinc-400" />
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg py-16 px-6 text-center">
+          <div className="w-14 h-14 bg-[var(--color-surface-elevated)] rounded-lg flex items-center justify-center mx-auto mb-4">
+            <Search className="w-7 h-7 text-[var(--color-text-muted)]" />
           </div>
-          <h2 className="text-lg font-bold text-zinc-900 mb-1.5">Run your first audit</h2>
-          <p className="text-sm text-zinc-500 max-w-sm mx-auto mb-6">
+          <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-1.5">Run your first audit</h2>
+          <p className="text-sm text-[var(--color-text-muted)] max-w-sm mx-auto mb-6">
             Enter a company name. We search the web, analyze their digital presence, and identify automation opportunities.
           </p>
-          <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors">
+          <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-surface-raised)] transition-colors">
             <Search className="w-4 h-4" /> Start Free Audit
           </button>
         </div>
@@ -651,7 +651,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       <Modal open={showForm} onClose={() => { setShowForm(false); setError(""); }} title="Run Automation Audit">
         <div className="space-y-4">
           {error && (
-            <div className="p-3 rounded bg-red-50 border border-red-200 text-sm text-red-700">{error}</div>
+            <div className="p-3 rounded bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 text-sm text-[var(--color-error)]">{error}</div>
           )}
           <Input label="Company Name" placeholder="e.g. Shoprite Nigeria" value={companyName} onChange={setCompanyName} />
           <Input label="Website (optional)" placeholder="e.g. shoprite.com.ng" value={website} onChange={setWebsite} />
@@ -678,7 +678,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           <button
             onClick={runAudit}
             disabled={isScanning || !companyName.trim()}
-            className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-surface-raised)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isScanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
             {isScanning ? "Scanning..." : "Run Audit"}
@@ -694,40 +694,40 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               <span className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[selectedLeak.severity].bg} ${SEVERITY_CONFIG[selectedLeak.severity].color}`}>
                 {selectedLeak.severity}
               </span>
-              <span className="text-sm font-medium text-zinc-700">{selectedLeak.estimatedSavings}</span>
+              <span className="text-sm font-medium text-[var(--color-text-secondary)]">{selectedLeak.estimatedSavings}</span>
             </div>
-            <p className="text-sm text-zinc-700 leading-relaxed">{selectedLeak.description}</p>
-            <div className="bg-emerald-50 rounded border border-emerald-100 p-3">
-              <p className="text-[11px] font-semibold text-emerald-700 uppercase mb-1">Recommendation</p>
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{selectedLeak.description}</p>
+            <div className="bg-[var(--color-success)]/10 rounded border border-emerald-100 p-3">
+              <p className="text-[11px] font-semibold text-[var(--color-success)] uppercase mb-1">Recommendation</p>
               <p className="text-sm text-emerald-800">{selectedLeak.recommendation}</p>
             </div>
-            <div className="bg-zinc-50 rounded border border-zinc-100 p-3">
-              <p className="text-[11px] font-semibold text-zinc-500 uppercase mb-1">Business Impact</p>
-              <p className="text-sm text-zinc-700">{selectedLeak.impact}</p>
+            <div className="bg-[var(--color-surface)] rounded border border-[var(--color-border)] p-3">
+              <p className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase mb-1">Business Impact</p>
+              <p className="text-sm text-[var(--color-text-secondary)]">{selectedLeak.impact}</p>
             </div>
-            <p className="text-[11px] text-zinc-400">Source: {selectedLeak.source}</p>
+            <p className="text-[11px] text-[var(--color-text-muted)]">Source: {selectedLeak.source}</p>
           </div>
         )}
       </Modal>
 
       {/* ──── Audit History ──── */}
       {auditHistory.length > 1 && (
-        <div className="bg-white border border-zinc-200 rounded-lg p-6 mt-6">
-          <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Previous Audits</h3>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 mt-6">
+          <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Previous Audits</h3>
           <div className="space-y-1.5">
             {auditHistory.slice(1).map((h) => (
               <button
                 key={h.date + h.companyName}
-                className="w-full flex items-center justify-between py-2.5 px-3 rounded border border-zinc-100 hover:bg-zinc-50 transition-colors text-left"
+                className="w-full flex items-center justify-between py-2.5 px-3 rounded border border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors text-left"
                 onClick={() => { setAuditResult(h); setFindings([]); }}
               >
                 <div>
-                  <p className="text-sm font-medium text-zinc-900">{h.companyName}</p>
-                  <p className="text-xs text-zinc-500">{h.industry} &bull; {h.date}</p>
+                  <p className="text-sm font-medium text-[var(--color-text-primary)]">{h.companyName}</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">{h.industry} &bull; {h.date}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className={`text-lg font-bold ${getScoreColor(h.score)}`}>{h.score}</span>
-                  <ArrowRight className="w-4 h-4 text-zinc-300" />
+                  <ArrowRight className="w-4 h-4 text-[var(--color-text-muted)]" />
                 </div>
               </button>
             ))}
@@ -740,15 +740,15 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
         {requestSubmitted ? (
           <div className="text-center py-6">
             <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-6 h-6 text-emerald-600" />
+              <CheckCircle className="w-6 h-6 text-[var(--color-success)]" />
             </div>
-            <h3 className="text-lg font-bold text-zinc-900 mb-1">Request Received</h3>
-            <p className="text-sm text-zinc-500 mb-4">We will contact you within 24 hours to discuss your automation needs.</p>
-            <button onClick={() => { setShowRequestModal(false); setRequestSubmitted(false); }} className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors">Done</button>
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">Request Received</h3>
+            <p className="text-sm text-[var(--color-text-muted)] mb-4">We will contact you within 24 hours to discuss your automation needs.</p>
+            <button onClick={() => { setShowRequestModal(false); setRequestSubmitted(false); }} className="px-4 py-2 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-surface-raised)] transition-colors">Done</button>
           </div>
         ) : (
           <div className="space-y-4">
-            <p className="text-sm text-zinc-500">Based on your audit for <strong>{companyName}</strong>, tell us which automation you want to implement.</p>
+            <p className="text-sm text-[var(--color-text-muted)]">Based on your audit for <strong>{companyName}</strong>, tell us which automation you want to implement.</p>
             <Input label="Your Name" placeholder="Your name" value={contactName} onChange={setContactName} />
             <Input label="Email" placeholder="you@company.com" value={contactEmail} onChange={setContactEmail} />
             <Input label="Phone / WhatsApp" placeholder="e.g. 08012345678" value={requestPhone} onChange={setRequestPhone} />
@@ -767,19 +767,19 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               ]}
             />
             <div>
-              <label className="block text-xs font-medium text-zinc-600 mb-1">Additional message (optional)</label>
+              <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">Additional message (optional)</label>
               <textarea
                 rows={3}
                 value={requestMessage}
                 onChange={(e) => setRequestMessage(e.target.value)}
                 placeholder="Anything else we should know?"
-                className="w-full px-3 py-2 text-sm border border-zinc-200 rounded bg-white text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900 resize-none"
+                className="w-full px-3 py-2 text-sm border border-[var(--color-border)] rounded bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-1 focus:ring-zinc-900 resize-none"
               />
             </div>
             <button
               onClick={submitImplementationRequest}
               disabled={requestSubmitting || !contactName || !contactEmail || !requestAutomation}
-              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-surface-raised)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {requestSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
               {requestSubmitting ? "Submitting..." : "Request Implementation"}

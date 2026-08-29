@@ -87,20 +87,20 @@ export default function DemoPage() {
   }, []);
 
   const stepColor = (status: string) => {
-    if (status === "completed") return "bg-emerald-50 border-emerald-200 text-emerald-700";
-    if (status === "running") return "bg-amber-50 border-amber-200 text-amber-700";
-    return "bg-zinc-50 border-zinc-200 text-zinc-500";
+    if (status === "completed") return "bg-[var(--color-success)]/10 border-[var(--color-success)]/30 text-[var(--color-success)]";
+    if (status === "running") return "bg-[var(--color-warning)]/10 border-[var(--color-warning)]/30 text-[var(--color-warning)]";
+    return "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)]";
   };
 
   return (
     <div className="max-w-6xl mx-auto">
       {/* Demo Banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+      <div className="bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/30 rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-amber-500" />
+          <div className="w-2 h-2 rounded-full bg-[var(--color-warning)]/100" />
           <p className="text-sm font-semibold text-amber-800">Interactive Demo</p>
         </div>
-        <p className="text-xs text-amber-700 mt-1">
+        <p className="text-xs text-[var(--color-warning)] mt-1">
           This is a simulated demonstration using sample data. No real messages are sent. No real leads are processed.
         </p>
       </div>
@@ -108,13 +108,13 @@ export default function DemoPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-zinc-900 tracking-tight">Automation Demo</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">See how the automation works with sample data</p>
+          <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Automation Demo</h1>
+          <p className="text-sm text-[var(--color-text-muted)] mt-0.5">See how the automation works with sample data</p>
         </div>
         <button
           onClick={runFullDemo}
           disabled={isRunning}
-          className="inline-flex items-center gap-1.5 px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-surface-raised)] transition-colors cursor-pointer disabled:opacity-50"
         >
           {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
           {isRunning ? "Running..." : "Run Full Demo"}
@@ -123,21 +123,21 @@ export default function DemoPage() {
 
       {/* Pipeline */}
       {demoSteps.length > 0 && (
-        <div className="bg-white border border-zinc-200 rounded-lg p-5 mb-6">
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Automation Pipeline</h3>
-            {demoComplete && <span className="text-xs text-emerald-600 font-medium">Complete</span>}
+            <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Automation Pipeline</h3>
+            {demoComplete && <span className="text-xs text-[var(--color-success)] font-medium">Complete</span>}
           </div>
           <div className="grid grid-cols-7 gap-2">
             {demoSteps.map((step, i) => (
               <div key={i} className={`p-3 rounded border text-center transition-all ${stepColor(step.status)}`}>
                 <div className="flex items-center justify-center mb-2">
                   {step.status === "completed" ? (
-                    <CheckCircle className="w-5 h-5 text-emerald-600" />
+                    <CheckCircle className="w-5 h-5 text-[var(--color-success)]" />
                   ) : step.status === "running" ? (
-                    <Loader2 className="w-5 h-5 text-amber-600 animate-spin" />
+                    <Loader2 className="w-5 h-5 text-[var(--color-warning)] animate-spin" />
                   ) : (
-                    <Clock className="w-5 h-5 text-zinc-400" />
+                    <Clock className="w-5 h-5 text-[var(--color-text-muted)]" />
                   )}
                 </div>
                 <p className="text-xs font-semibold">{step.action}</p>
@@ -152,13 +152,13 @@ export default function DemoPage() {
       <div className="flex gap-2 mb-6">
         <button
           onClick={runTestEmail}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-zinc-200 text-zinc-700 text-sm font-medium rounded hover:bg-zinc-50 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer"
         >
           <Mail className="w-4 h-4" />Test Email
         </button>
         <button
           onClick={runTestWhatsApp}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-zinc-200 text-zinc-700 text-sm font-medium rounded hover:bg-zinc-50 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer"
         >
           <MessageSquare className="w-4 h-4" />Test WhatsApp
         </button>
@@ -167,24 +167,24 @@ export default function DemoPage() {
       {/* Results Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Email Inbox */}
-        <div className="bg-white border border-zinc-200 rounded-lg">
-          <div className="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-900">Email Inbox</h3>
-            <span className="text-xs text-zinc-400">{emails.length} messages</span>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
+          <div className="px-5 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Email Inbox</h3>
+            <span className="text-xs text-[var(--color-text-muted)]">{emails.length} messages</span>
           </div>
           <div className="max-h-[400px] overflow-y-auto">
             {emails.length === 0 ? (
-              <div className="p-8 text-center text-sm text-zinc-400">No emails yet. Run the demo to see sample emails.</div>
+              <div className="p-8 text-center text-sm text-[var(--color-text-muted)]">No emails yet. Run the demo to see sample emails.</div>
             ) : (
               <div className="divide-y divide-zinc-100">
                 {emails.map((email) => (
-                  <div key={email.id} className="px-5 py-3 hover:bg-zinc-50 transition-colors">
+                  <div key={email.id} className="px-5 py-3 hover:bg-[var(--color-surface)] transition-colors">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-zinc-900">{email.subject}</span>
-                      <span className="text-[10px] text-zinc-400">{email.timestamp}</span>
+                      <span className="text-sm font-medium text-[var(--color-text-primary)]">{email.subject}</span>
+                      <span className="text-[10px] text-[var(--color-text-muted)]">{email.timestamp}</span>
                     </div>
-                    <p className="text-xs text-zinc-500 mb-1">To: {email.to}</p>
-                    <p className="text-xs text-zinc-400 line-clamp-2">{email.body}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] mb-1">To: {email.to}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] line-clamp-2">{email.body}</p>
                   </div>
                 ))}
               </div>
@@ -193,27 +193,27 @@ export default function DemoPage() {
         </div>
 
         {/* WhatsApp Chat */}
-        <div className="bg-white border border-zinc-200 rounded-lg">
-          <div className="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-900">WhatsApp Messages</h3>
-            <span className="text-xs text-zinc-400">{whatsapps.length} messages</span>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
+          <div className="px-5 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">WhatsApp Messages</h3>
+            <span className="text-xs text-[var(--color-text-muted)]">{whatsapps.length} messages</span>
           </div>
           <div className="max-h-[400px] overflow-y-auto">
             {whatsapps.length === 0 ? (
-              <div className="p-8 text-center text-sm text-zinc-400">No WhatsApp messages yet. Run the demo to see sample messages.</div>
+              <div className="p-8 text-center text-sm text-[var(--color-text-muted)]">No WhatsApp messages yet. Run the demo to see sample messages.</div>
             ) : (
               <div className="divide-y divide-zinc-100">
                 {whatsapps.map((wa) => (
-                  <div key={wa.id} className="px-5 py-3 hover:bg-zinc-50 transition-colors">
+                  <div key={wa.id} className="px-5 py-3 hover:bg-[var(--color-surface)] transition-colors">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-zinc-500">ELION Business</span>
-                      <span className="text-[10px] text-zinc-400">{wa.timestamp}</span>
+                      <span className="text-xs font-semibold text-[var(--color-text-muted)]">ELION Business</span>
+                      <span className="text-[10px] text-[var(--color-text-muted)]">{wa.timestamp}</span>
                     </div>
-                    <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-3 max-w-[85%]">
-                      <p className="text-sm text-zinc-800">{wa.message}</p>
+                    <div className="bg-[var(--color-success)]/10 border border-emerald-100 rounded-lg p-3 max-w-[85%]">
+                      <p className="text-sm text-[var(--color-text-primary)]">{wa.message}</p>
                       <div className="flex items-center justify-end gap-1 mt-1">
-                        <span className="text-[10px] text-emerald-600">{wa.status}</span>
-                        {wa.status === "read" && <span className="text-[10px] text-emerald-600">✓✓</span>}
+                        <span className="text-[10px] text-[var(--color-success)]">{wa.status}</span>
+                        {wa.status === "read" && <span className="text-[10px] text-[var(--color-success)]">✓✓</span>}
                       </div>
                     </div>
                   </div>
@@ -224,27 +224,27 @@ export default function DemoPage() {
         </div>
 
         {/* Captured Leads */}
-        <div className="bg-white border border-zinc-200 rounded-lg">
-          <div className="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-900">Captured Leads</h3>
-            <span className="text-xs text-zinc-400">{leads.length} leads</span>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
+          <div className="px-5 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Captured Leads</h3>
+            <span className="text-xs text-[var(--color-text-muted)]">{leads.length} leads</span>
           </div>
           <div className="max-h-[300px] overflow-y-auto">
             {leads.length === 0 ? (
-              <div className="p-8 text-center text-sm text-zinc-400">No leads yet. Run the demo to see sample lead capture.</div>
+              <div className="p-8 text-center text-sm text-[var(--color-text-muted)]">No leads yet. Run the demo to see sample lead capture.</div>
             ) : (
               <div className="divide-y divide-zinc-100">
                 {leads.map((lead) => (
                   <div key={lead.id} className="px-5 py-3 flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-zinc-900">{lead.name}</p>
-                      <p className="text-xs text-zinc-500">{lead.email} &bull; {lead.source}</p>
+                      <p className="text-sm font-medium text-[var(--color-text-primary)]">{lead.name}</p>
+                      <p className="text-xs text-[var(--color-text-muted)]">{lead.email} &bull; {lead.source}</p>
                     </div>
                     <div className="text-right">
-                      <span className={`text-sm font-bold ${lead.score >= 80 ? "text-emerald-600" : lead.score >= 60 ? "text-amber-600" : "text-red-600"}`}>
+                      <span className={`text-sm font-bold ${lead.score >= 80 ? "text-[var(--color-success)]" : lead.score >= 60 ? "text-[var(--color-warning)]" : "text-[var(--color-error)]"}`}>
                         {lead.score}
                       </span>
-                      <p className="text-[10px] text-zinc-400">score</p>
+                      <p className="text-[10px] text-[var(--color-text-muted)]">score</p>
                     </div>
                   </div>
                 ))}
@@ -254,14 +254,14 @@ export default function DemoPage() {
         </div>
 
         {/* Bookings */}
-        <div className="bg-white border border-zinc-200 rounded-lg">
-          <div className="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-900">Bookings</h3>
-            <span className="text-xs text-zinc-400">{bookings.length} bookings</span>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
+          <div className="px-5 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Bookings</h3>
+            <span className="text-xs text-[var(--color-text-muted)]">{bookings.length} bookings</span>
           </div>
           <div className="max-h-[300px] overflow-y-auto">
             {bookings.length === 0 ? (
-              <div className="p-8 text-center text-sm text-zinc-400">No bookings yet. Run the demo to see sample booking creation.</div>
+              <div className="p-8 text-center text-sm text-[var(--color-text-muted)]">No bookings yet. Run the demo to see sample booking creation.</div>
             ) : (
               <div className="divide-y divide-zinc-100">
                 {bookings.map((b) => (
@@ -271,11 +271,11 @@ export default function DemoPage() {
                         <Calendar className="w-4 h-4 text-violet-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-zinc-900">{b.client}</p>
-                        <p className="text-xs text-zinc-500">{b.date} at {b.time} &bull; {b.type}</p>
+                        <p className="text-sm font-medium text-[var(--color-text-primary)]">{b.client}</p>
+                        <p className="text-xs text-[var(--color-text-muted)]">{b.date} at {b.time} &bull; {b.type}</p>
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">{b.status}</span>
+                    <span className="text-xs font-semibold text-[var(--color-success)] bg-[var(--color-success)]/10 px-2 py-0.5 rounded">{b.status}</span>
                   </div>
                 ))}
               </div>
@@ -285,12 +285,12 @@ export default function DemoPage() {
       </div>
 
       {/* CTA */}
-      <div className="mt-8 bg-zinc-900 rounded-lg p-6 text-center">
+      <div className="mt-8 bg-[var(--color-surface)] rounded-lg p-6 text-center">
         <h3 className="text-base font-semibold text-white mb-2">Ready to see this in your business?</h3>
-        <p className="text-sm text-zinc-400 mb-4">Run a free leak audit to identify where your business is losing leads and money.</p>
+        <p className="text-sm text-[var(--color-text-muted)] mb-4">Run a free leak audit to identify where your business is losing leads and money.</p>
         <a
           href="/audit"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-zinc-900 text-sm font-semibold rounded hover:bg-zinc-100 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] text-sm font-semibold rounded hover:bg-[var(--color-surface-elevated)] transition-colors"
         >
           Run Free Audit <ArrowRight className="w-4 h-4" />
         </a>

@@ -3,7 +3,7 @@
 export function Skeleton({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`animate-pulse rounded-lg bg-zinc-800/50 ${className}`}
+      className={`animate-pulse rounded-lg bg-[var(--color-surface)]/80 ${className}`}
       aria-hidden="true"
     />
   );
@@ -21,7 +21,7 @@ export function StatSkeleton() {
 
 export function CardSkeleton() {
   return (
-    <div className="rounded-2xl border border-zinc-800/60 bg-zinc-900/40 p-6 space-y-4">
+    <div className="rounded-2xl border border-zinc-800/60 bg-[var(--color-surface)]/40 p-6 space-y-4">
       <Skeleton className="h-10 w-10 rounded-xl" />
       <Skeleton className="h-5 w-32" />
       <Skeleton className="h-3 w-full" />

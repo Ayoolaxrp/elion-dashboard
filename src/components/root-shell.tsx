@@ -61,18 +61,18 @@ export function RootShell({ children }: { children: React.ReactNode }) {
 
   const sidebarContent = (
     <>
-      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-zinc-200 shrink-0">
+      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-[var(--color-border)] shrink-0">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center shrink-0">
+          <div className="w-7 h-7 rounded bg-[var(--color-accent)] flex items-center justify-center shrink-0">
             <span className="text-white text-[10px] font-bold">E</span>
           </div>
           {!collapsed && (
-            <span className="font-bold text-zinc-900 tracking-tight text-sm">ELION</span>
+            <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">ELION</span>
           )}
         </div>
         <button
           onClick={() => setMobileOpen(false)}
-          className="md:hidden ml-auto p-1 rounded hover:bg-zinc-100 text-zinc-400 cursor-pointer"
+          className="md:hidden ml-auto p-1 rounded hover:bg-[var(--color-surface-elevated)] text-[var(--color-text-muted)] cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -81,7 +81,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
         {sections.map((section) => (
           <div key={section.label} className="mb-3">
             {!collapsed && (
-              <p className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider px-3 mb-1.5">
+              <p className="text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider px-3 mb-1.5">
                 {section.label}
               </p>
             )}
@@ -95,11 +95,11 @@ export function RootShell({ children }: { children: React.ReactNode }) {
                     onClick={() => setMobileOpen(false)}
                     className={cn(
                       "flex items-center gap-2.5 px-3 py-2 rounded text-sm transition-colors",
-                      isActive ? "bg-blue-50 text-blue-700 font-medium" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
+                      isActive ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-medium" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface)]"
                     )}
                     title={collapsed ? item.label : undefined}
                   >
-                    <item.icon className={cn("w-4 h-4 shrink-0", isActive ? "text-blue-600" : "text-zinc-400")} />
+                    <item.icon className={cn("w-4 h-4 shrink-0", isActive ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)]")} />
                     {!collapsed && <span>{item.label}</span>}
                   </Link>
                 );
@@ -108,10 +108,10 @@ export function RootShell({ children }: { children: React.ReactNode }) {
           </div>
         ))}
       </nav>
-      <div className="border-t border-zinc-200 p-2.5 shrink-0">
+      <div className="border-t border-[var(--color-border)] p-2.5 shrink-0">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="hidden md:flex w-full items-center justify-center gap-2 px-3 py-1.5 rounded text-zinc-400 hover:text-zinc-600 hover:bg-zinc-50 transition-colors text-xs cursor-pointer"
+          className="hidden md:flex w-full items-center justify-center gap-2 px-3 py-1.5 rounded text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] transition-colors text-xs cursor-pointer"
         >
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <><ChevronLeft className="w-4 h-4" /><span>Collapse</span></>}
         </button>
@@ -120,22 +120,22 @@ export function RootShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-[var(--color-surface)]">
       <button
         onClick={() => setMobileOpen(true)}
-        className="md:hidden fixed top-3 left-3 z-50 p-2 rounded-lg bg-white border border-zinc-200 shadow-sm cursor-pointer hover:bg-zinc-50 transition-colors"
+        className="md:hidden fixed top-3 left-3 z-50 p-2 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] shadow-sm cursor-pointer hover:bg-[var(--color-surface)] transition-colors"
         aria-label="Open menu"
       >
-        <Menu className="w-5 h-5 text-zinc-600" />
+        <Menu className="w-5 h-5 text-[var(--color-text-secondary)]" />
       </button>
 
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black/30" onClick={() => setMobileOpen(false)} />
+        <div className="md:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setMobileOpen(false)} />
       )}
 
       <aside
         className={cn(
-          "md:hidden fixed left-0 top-0 z-50 h-screen border-r border-zinc-200 bg-white transition-all duration-200 flex flex-col",
+          "md:hidden fixed left-0 top-0 z-50 h-screen border-r border-[var(--color-border)] bg-[var(--color-surface-raised)] transition-all duration-200 flex flex-col",
           mobileOpen ? "w-[256px] translate-x-0" : "w-[256px] -translate-x-full"
         )}
       >
@@ -144,7 +144,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
 
       <aside
         className={cn(
-          "hidden md:flex fixed left-0 top-0 z-40 h-screen border-r border-zinc-200 bg-white transition-all duration-200 flex-col",
+          "hidden md:flex fixed left-0 top-0 z-40 h-screen border-r border-[var(--color-border)] bg-[var(--color-surface-raised)] transition-all duration-200 flex-col",
           collapsed ? "w-[64px]" : "w-[256px]"
         )}
       >

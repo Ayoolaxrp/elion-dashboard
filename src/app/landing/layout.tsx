@@ -17,15 +17,15 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--color-surface-raised)]">
       {/* Nav */}
-      <nav className="border-b border-zinc-200 sticky top-0 z-40 bg-white">
+      <nav className="border-b border-[var(--color-border)] sticky top-0 z-40 bg-[var(--color-surface-raised)]">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center">
+            <div className="w-7 h-7 rounded bg-[var(--color-accent)] flex items-center justify-center">
               <span className="text-white text-[10px] font-bold">E</span>
             </div>
-            <span className="text-sm font-bold text-zinc-900 tracking-tight">ELION</span>
+            <span className="text-sm font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </Link>
 
           {/* Desktop nav */}
@@ -35,7 +35,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
                 key={item.href}
                 href={item.href}
                 className={`text-sm font-medium transition-colors ${
-                  pathname === item.href ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-900"
+                  pathname === item.href ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"
                 }`}
               >
                 {item.label}
@@ -43,7 +43,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             ))}
             <Link
               href="/audit"
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-medium rounded-lg hover:bg-[var(--color-accent-hover)] transition-colors"
             >
               Free Audit
             </Link>
@@ -52,16 +52,16 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded hover:bg-zinc-100 transition-colors cursor-pointer"
+            className="md:hidden p-2 rounded hover:bg-[var(--color-surface-elevated)] transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X className="w-5 h-5 text-zinc-600" /> : <Menu className="w-5 h-5 text-zinc-600" />}
+            {mobileOpen ? <X className="w-5 h-5 text-[var(--color-text-secondary)]" /> : <Menu className="w-5 h-5 text-[var(--color-text-secondary)]" />}
           </button>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-zinc-200 bg-white">
+          <div className="md:hidden border-t border-[var(--color-border)] bg-[var(--color-surface-raised)]">
             <div className="px-6 py-4 space-y-3">
               {landingNav.map((item) => (
                 <Link
@@ -69,7 +69,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={`block text-sm font-medium ${
-                    pathname === item.href ? "text-zinc-900" : "text-zinc-500"
+                    pathname === item.href ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-muted)]"
                   }`}
                 >
                   {item.label}
@@ -78,7 +78,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
               <Link
                 href="/audit"
                 onClick={() => setMobileOpen(false)}
-                className="block w-full text-center py-2.5 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
+                className="block w-full text-center py-2.5 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-accent-hover)] transition-colors"
               >
                 Free Audit
               </Link>
@@ -91,48 +91,48 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       <main>{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-200 bg-zinc-50">
+      <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto px-6 py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center">
+                <div className="w-7 h-7 rounded bg-[var(--color-accent)] flex items-center justify-center">
                   <span className="text-white text-[10px] font-bold">E</span>
                 </div>
-                <span className="text-sm font-bold text-zinc-900">ELION</span>
+                <span className="text-sm font-bold text-[var(--color-text-primary)]">ELION</span>
               </div>
-              <p className="text-xs text-zinc-500 leading-relaxed">
+              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                 business automation for SMEs in Nigeria and beyond.
               </p>
             </div>
             <div>
-              <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Product</h4>
+              <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Product</h4>
               <div className="space-y-2">
-                <Link href="/landing" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Home</Link>
-                <Link href="/landing/pricing" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Pricing</Link>
-                <Link href="/demo" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Demo</Link>
-                <Link href="/audit" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Free Audit</Link>
+                <Link href="/landing" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Home</Link>
+                <Link href="/landing/pricing" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Pricing</Link>
+                <Link href="/demo" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Demo</Link>
+                <Link href="/audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Free Audit</Link>
               </div>
             </div>
             <div>
-              <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Company</h4>
+              <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Company</h4>
               <div className="space-y-2">
-                <Link href="/landing/about" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">About</Link>
-                <Link href="/landing/support" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Support</Link>
-                <Link href="/landing/privacy" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Privacy Policy</Link>
-                <Link href="/landing/terms" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">Terms of Service</Link>
+                <Link href="/landing/about" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">About</Link>
+                <Link href="/landing/support" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Support</Link>
+                <Link href="/landing/privacy" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Privacy Policy</Link>
+                <Link href="/landing/terms" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Terms of Service</Link>
               </div>
             </div>
             <div>
-              <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-3">Contact</h4>
+              <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Contact</h4>
               <div className="space-y-2">
-                <a href="mailto:hello@elion.ng" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">hello@elion.ng</a>
-                <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="block text-xs text-zinc-500 hover:text-zinc-900 transition-colors">WhatsApp</a>
+                <a href="mailto:hello@elion.ng" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">hello@elion.ng</a>
+                <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">WhatsApp</a>
               </div>
             </div>
           </div>
-          <div className="mt-8 pt-6 border-t border-zinc-200">
-            <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} ELION. All rights reserved.</p>
+          <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
+            <p className="text-xs text-[var(--color-text-muted)]">&copy; {new Date().getFullYear()} ELION. All rights reserved.</p>
           </div>
         </div>
       </footer>

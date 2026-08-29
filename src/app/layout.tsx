@@ -43,7 +43,7 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#09090b" />
       </head>
-      <body className="bg-zinc-50 text-zinc-900 antialiased min-h-screen">
+      <body className="bg-[var(--color-surface)] text-[var(--color-text-primary)] antialiased min-h-screen">
         <RootShell>{children}</RootShell>
       </body>
     </html>

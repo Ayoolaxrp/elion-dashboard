@@ -26,11 +26,11 @@ export default function AboutPage() {
     <div className="max-w-6xl mx-auto px-6 py-24">
       {/* Hero */}
       <div className="text-center mb-20">
-        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">About ELION</p>
-        <h1 className="text-3xl md:text-5xl font-bold text-zinc-900 tracking-tight mb-6 leading-tight">
+        <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">About ELION</p>
+        <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight mb-6 leading-tight">
           We Fix Operational Leaks<br className="hidden md:block" /> That Cost Businesses Money
         </h1>
-        <p className="text-lg text-zinc-500 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto leading-relaxed">
           ELION is a business automation agency. We identify where your business loses leads, time, and revenue, then build systems to fix those gaps.
         </p>
       </div>
@@ -38,19 +38,19 @@ export default function AboutPage() {
       {/* What We Do */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-24">
         <div>
-          <h2 className="text-2xl font-bold text-zinc-900 mb-4">What ELION Does</h2>
-          <p className="text-zinc-500 mb-4 leading-relaxed">
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">What ELION Does</h2>
+          <p className="text-[var(--color-text-muted)] mb-4 leading-relaxed">
             Too many businesses lose leads because nobody responds fast enough. They lose revenue because follow-ups never happen. They waste hours on tasks that should be automated.
           </p>
-          <p className="text-zinc-500 mb-4 leading-relaxed">
+          <p className="text-[var(--color-text-muted)] mb-4 leading-relaxed">
             ELION builds automation systems that fix these problems. We don&apos;t sell software subscriptions. We build, deploy, and hand over systems that your business owns.
           </p>
-          <p className="text-zinc-500 leading-relaxed">
+          <p className="text-[var(--color-text-muted)] leading-relaxed">
             Every engagement starts with a free audit. We look at your digital presence, identify operational gaps, and recommend the specific automation that will have the biggest impact on your business.
           </p>
         </div>
-        <div className="bg-white border border-zinc-200 rounded-lg p-8">
-          <h3 className="text-sm font-semibold text-zinc-900 uppercase tracking-wider mb-4">Our Approach</h3>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-8">
+          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-4">Our Approach</h3>
           <div className="space-y-4">
             {[
               { label: "Free audit first", desc: "No commitment required. We analyse your business and show you the gaps." },
@@ -59,10 +59,10 @@ export default function AboutPage() {
               { label: "You own everything", desc: "No platform lock-in. The automations we build belong to your business." },
             ].map((item) => (
               <div key={item.label} className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                <CheckCircle className="w-4 h-4 text-[var(--color-success)] mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-sm font-medium text-zinc-900">{item.label}</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">{item.desc}</p>
+                  <p className="text-sm font-medium text-[var(--color-text-primary)]">{item.label}</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -72,15 +72,15 @@ export default function AboutPage() {
 
       {/* Values */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-zinc-900 mb-8 text-center">Our Values</h2>
+        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-8 text-center">Our Values</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((v) => (
-            <div key={v.title} className="bg-white border border-zinc-200 rounded-lg p-6">
-              <div className="w-10 h-10 bg-zinc-100 rounded-lg flex items-center justify-center text-zinc-600 mb-3">
+            <div key={v.title} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6">
+              <div className="w-10 h-10 bg-[var(--color-surface-elevated)] rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] mb-3">
                 {v.icon}
               </div>
-              <h3 className="text-sm font-semibold text-zinc-900 mb-1">{v.title}</h3>
-              <p className="text-xs text-zinc-500 leading-relaxed">{v.desc}</p>
+              <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{v.title}</h3>
+              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{v.desc}</p>
             </div>
           ))}
         </div>
@@ -88,15 +88,15 @@ export default function AboutPage() {
 
       {/* How It Works */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-zinc-900 mb-8 text-center">How We Work</h2>
+        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-8 text-center">How We Work</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {process_steps.map((s) => (
-            <div key={s.step} className="bg-white border border-zinc-200 rounded-lg p-6 text-center">
-              <div className="w-10 h-10 bg-zinc-900 text-white rounded-lg flex items-center justify-center text-sm font-bold mx-auto mb-3">
+            <div key={s.step} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 text-center">
+              <div className="w-10 h-10 bg-[var(--color-surface)] text-white rounded-lg flex items-center justify-center text-sm font-bold mx-auto mb-3">
                 {s.step}
               </div>
-              <h3 className="text-sm font-semibold text-zinc-900 mb-1">{s.title}</h3>
-              <p className="text-xs text-zinc-500 leading-relaxed">{s.desc}</p>
+              <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{s.title}</h3>
+              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -104,13 +104,13 @@ export default function AboutPage() {
 
       {/* Technology */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-zinc-900 mb-4 text-center">Technology We Use</h2>
-        <p className="text-sm text-zinc-500 text-center mb-8 max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 text-center">Technology We Use</h2>
+        <p className="text-sm text-[var(--color-text-muted)] text-center mb-8 max-w-xl mx-auto">
           We work with the tools that make sense for your business. No unnecessary complexity.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           {tech.map((t) => (
-            <span key={t} className="px-4 py-2 bg-white border border-zinc-200 rounded-lg text-sm text-zinc-700 font-medium">
+            <span key={t} className="px-4 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-secondary)] font-medium">
               {t}
             </span>
           ))}
@@ -118,21 +118,21 @@ export default function AboutPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-zinc-900 rounded-lg p-8 md:p-12 text-center">
+      <div className="bg-[var(--color-surface)] rounded-lg p-8 md:p-12 text-center">
         <h2 className="text-2xl font-bold text-white mb-3">Ready to find your leaks?</h2>
-        <p className="text-sm text-zinc-400 mb-6 max-w-md mx-auto">
+        <p className="text-sm text-[var(--color-text-muted)] mb-6 max-w-md mx-auto">
           Run a free audit. See exactly where your business is losing leads, time, and money.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/audit"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-zinc-900 rounded font-semibold text-sm hover:bg-zinc-100 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] rounded font-semibold text-sm hover:bg-[var(--color-surface-elevated)] transition-colors"
           >
             Run Free Audit
           </Link>
           <Link
             href="/landing/pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-800 text-zinc-300 rounded font-semibold text-sm hover:bg-zinc-700 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-muted)] rounded font-semibold text-sm hover:bg-zinc-700 transition-colors"
           >
             View Pricing
           </Link>

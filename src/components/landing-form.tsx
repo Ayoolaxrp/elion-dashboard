@@ -77,15 +77,15 @@ export function LandingForm({
 
   if (status === "success") {
     return (
-      <div className={`bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-6 text-center space-y-3 ${className}`}>
-        <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-        <h4 className="font-medium text-emerald-400">Submitted successfully!</h4>
-        <p className="text-sm text-zinc-400">
+      <div className={`bg-[var(--color-success)]/10 border border-emerald-500/20 rounded-xl p-6 text-center space-y-3 ${className}`}>
+        <CheckCircle2 className="w-10 h-10 text-[var(--color-success)] mx-auto" />
+        <h4 className="font-medium text-[var(--color-success)]">Submitted successfully!</h4>
+        <p className="text-sm text-[var(--color-text-muted)]">
           {String(result?.data?.message || "We will be in touch within 24 hours.")}
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+          className="text-sm text-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
         >
           Submit another
         </button>
@@ -104,12 +104,12 @@ export function LandingForm({
             value={form[f.name] || ""}
             onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
             required={f.required}
-            className={`w-full px-4 py-3 bg-zinc-800/50 border rounded-lg text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-colors ${
-              errors[f.name] ? "border-red-500/50" : "border-zinc-700/50"
+            className={`w-full px-4 py-3 bg-[var(--color-surface)]/80 border rounded-lg text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors ${
+              errors[f.name] ? "border-[var(--color-error)]/40" : "border-[var(--color-border)]"
             }`}
           />
           {errors[f.name] && (
-            <p className="text-xs text-red-400 flex items-center gap-1">
+            <p className="text-xs text-[var(--color-error)] flex items-center gap-1">
               <AlertCircle className="w-3 h-3" />
               {errors[f.name]}
             </p>
@@ -118,9 +118,9 @@ export function LandingForm({
       ))}
 
       {status === "error" && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
-          <p className="text-xs text-red-400">
+        <div className="bg-[var(--color-error)]/100/10 border border-[var(--color-error)]/20 rounded-lg p-3 flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-[var(--color-error)] shrink-0" />
+          <p className="text-xs text-[var(--color-error)]">
             {result?.error || "Something went wrong. Please try again."}
           </p>
         </div>
@@ -129,7 +129,7 @@ export function LandingForm({
       <button
         type="submit"
         disabled={status === "loading" || !isValid}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-indigo-600 text-white font-medium text-sm hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+        className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[var(--color-accent)] text-white font-medium text-sm hover:bg-[var(--color-accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
       >
         {status === "loading" ? (
           <>

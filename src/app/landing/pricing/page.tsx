@@ -132,29 +132,29 @@ export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--color-surface-raised)]">
       {/* Header */}
-      <section className="border-b border-zinc-200">
+      <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16 text-center">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center">
+            <div className="w-8 h-8 rounded bg-[var(--color-surface)] flex items-center justify-center">
               <span className="text-white text-xs font-bold">E</span>
             </div>
-            <span className="text-lg font-bold text-zinc-900 tracking-tight">ELION</span>
+            <span className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 tracking-tight mb-3">Pricing</h1>
-          <p className="text-sm text-zinc-500 max-w-lg mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] tracking-tight mb-3">Pricing</h1>
+          <p className="text-sm text-[var(--color-text-muted)] max-w-lg mx-auto">
             Transparent pricing. No hidden fees. You own everything we build.
           </p>
         </div>
       </section>
 
       {/* One-Time Setup */}
-      <section className="border-b border-zinc-200">
+      <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-zinc-900 mb-1">One-time setup</h2>
-            <p className="text-sm text-zinc-500">
+            <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">One-time setup</h2>
+            <p className="text-sm text-[var(--color-text-muted)]">
               Pay once to design, build, configure, and deploy your automation. The automation is yours to keep.
             </p>
           </div>
@@ -164,27 +164,27 @@ export default function PricingPage() {
               <div
                 key={plan.name}
                 className={`rounded-lg p-5 border ${
-                  plan.popular ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 bg-white"
+                  plan.popular ? "border-zinc-900 bg-[var(--color-surface)] text-white" : "border-[var(--color-border)] bg-[var(--color-surface-raised)]"
                 }`}
               >
                 {plan.popular && (
-                  <div className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider mb-3">Most popular</div>
+                  <div className="text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Most popular</div>
                 )}
-                <h3 className={`text-base font-bold mb-1 ${plan.popular ? "text-white" : "text-zinc-900"}`}>{plan.name}</h3>
+                <h3 className={`text-base font-bold mb-1 ${plan.popular ? "text-white" : "text-[var(--color-text-primary)]"}`}>{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className={`text-2xl font-bold ${plan.popular ? "text-white" : "text-zinc-900"}`}>{plan.price}</span>
-                  {plan.period && <span className={`text-xs ${plan.popular ? "text-zinc-400" : "text-zinc-500"}`}>{plan.period}</span>}
+                  <span className={`text-2xl font-bold ${plan.popular ? "text-white" : "text-[var(--color-text-primary)]"}`}>{plan.price}</span>
+                  {plan.period && <span className={`text-xs ${plan.popular ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-muted)]"}`}>{plan.period}</span>}
                 </div>
-                <p className={`text-xs leading-relaxed mb-4 ${plan.popular ? "text-zinc-400" : "text-zinc-500"}`}>{plan.description}</p>
+                <p className={`text-xs leading-relaxed mb-4 ${plan.popular ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-muted)]"}`}>{plan.description}</p>
                 <div className="space-y-2 mb-5">
                   {plan.features.map((f, i) => (
                     <div key={i} className="flex items-center gap-2">
                       {f.included ? (
-                        <Check className={`w-3.5 h-3.5 shrink-0 ${plan.popular ? "text-emerald-400" : "text-emerald-600"}`} />
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${plan.popular ? "text-[var(--color-success)]" : "text-[var(--color-success)]"}`} />
                       ) : (
-                        <X className={`w-3.5 h-3.5 shrink-0 ${plan.popular ? "text-zinc-600" : "text-zinc-300"}`} />
+                        <X className={`w-3.5 h-3.5 shrink-0 ${plan.popular ? "text-[var(--color-text-secondary)]" : "text-[var(--color-text-muted)]"}`} />
                       )}
-                      <span className={`text-xs ${f.included ? (plan.popular ? "text-zinc-200" : "text-zinc-700") : (plan.popular ? "text-zinc-600" : "text-zinc-400")}`}>
+                      <span className={`text-xs ${f.included ? (plan.popular ? "text-zinc-200" : "text-[var(--color-text-secondary)]") : (plan.popular ? "text-[var(--color-text-secondary)]" : "text-[var(--color-text-muted)]")}`}>
                         {f.text}
                       </span>
                     </div>
@@ -194,8 +194,8 @@ export default function PricingPage() {
                   href={plan.href}
                   className={`block w-full text-center py-2.5 rounded text-sm font-semibold transition-colors ${
                     plan.popular
-                      ? "bg-white text-zinc-900 hover:bg-zinc-100"
-                      : "bg-zinc-900 text-white hover:bg-blue-700"
+                      ? "bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)]"
+                      : "bg-[var(--color-surface)] text-white hover:bg-[var(--color-accent-hover)]"
                   }`}
                 >
                   {plan.cta}
@@ -207,34 +207,34 @@ export default function PricingPage() {
       </section>
 
       {/* Monthly Support */}
-      <section className="border-b border-zinc-200 bg-zinc-50">
+      <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-zinc-900 mb-1">Monthly support</h2>
-            <p className="text-sm text-zinc-500">
+            <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">Monthly support</h2>
+            <p className="text-sm text-[var(--color-text-muted)]">
               Optional. For businesses that want ongoing monitoring, maintenance, and improvements after launch.
             </p>
-            <p className="text-xs text-zinc-400 mt-1">Requires an existing ELION automation implementation.</p>
+            <p className="text-xs text-[var(--color-text-muted)] mt-1">Requires an existing ELION automation implementation.</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
             {supportPlans.map((plan) => (
-              <div key={plan.name} className="bg-white border border-zinc-200 rounded-lg p-5">
-                <h3 className="text-base font-bold text-zinc-900 mb-1">{plan.name}</h3>
+              <div key={plan.name} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5">
+                <h3 className="text-base font-bold text-[var(--color-text-primary)] mb-1">{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-2xl font-bold text-zinc-900">{plan.price}</span>
-                  <span className="text-xs text-zinc-500">{plan.period}</span>
+                  <span className="text-2xl font-bold text-[var(--color-text-primary)]">{plan.price}</span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{plan.period}</span>
                 </div>
-                <p className="text-xs text-zinc-500 leading-relaxed mb-4">{plan.description}</p>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-4">{plan.description}</p>
                 <div className="space-y-2 mb-4">
                   {plan.features.map((f, i) => (
                     <div key={i} className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span className="text-xs text-zinc-700">{f.text}</span>
+                      <Check className="w-3.5 h-3.5 text-[var(--color-success)] shrink-0" />
+                      <span className="text-xs text-[var(--color-text-secondary)]">{f.text}</span>
                     </div>
                   ))}
                 </div>
-                {plan.note && <p className="text-[11px] text-zinc-400 italic">{plan.note}</p>}
+                {plan.note && <p className="text-[11px] text-[var(--color-text-muted)] italic">{plan.note}</p>}
               </div>
             ))}
           </div>
@@ -242,17 +242,17 @@ export default function PricingPage() {
       </section>
 
       {/* Add-Ons */}
-      <section className="border-b border-zinc-200">
+      <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-xl font-bold text-zinc-900 mb-1">Add-ons</h2>
-          <p className="text-sm text-zinc-500 mb-8">Additional services that can be added to any plan.</p>
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">Add-ons</h2>
+          <p className="text-sm text-[var(--color-text-muted)] mb-8">Additional services that can be added to any plan.</p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {addOns.map((addon) => (
-              <div key={addon.name} className="border border-zinc-200 rounded-lg p-4">
-                <h3 className="text-sm font-semibold text-zinc-900 mb-1">{addon.name}</h3>
-                <p className="text-lg font-bold text-zinc-900 mb-2">{addon.price}</p>
-                <p className="text-xs text-zinc-500 leading-relaxed">{addon.desc}</p>
+              <div key={addon.name} className="border border-[var(--color-border)] rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{addon.name}</h3>
+                <p className="text-lg font-bold text-[var(--color-text-primary)] mb-2">{addon.price}</p>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{addon.desc}</p>
               </div>
             ))}
           </div>
@@ -260,22 +260,22 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-b border-zinc-200 bg-zinc-50">
+      <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-2xl mx-auto px-6 py-16">
-          <h2 className="text-xl font-bold text-zinc-900 text-center mb-8">Frequently asked questions</h2>
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)] text-center mb-8">Frequently asked questions</h2>
           <div className="space-y-2">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-white border border-zinc-200 rounded-lg">
+              <div key={i} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer"
                 >
-                  <span className="text-sm font-semibold text-zinc-900">{faq.q}</span>
-                  {openFaq === i ? <ChevronUp className="w-4 h-4 text-zinc-400 shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{faq.q}</span>
+                  {openFaq === i ? <ChevronUp className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" /> : <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />}
                 </button>
                 {openFaq === i && (
                   <div className="px-5 pb-4">
-                    <p className="text-sm text-zinc-500 leading-relaxed">{faq.a}</p>
+                    <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </div>
@@ -287,11 +287,11 @@ export default function PricingPage() {
       {/* CTA */}
       <section>
         <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold text-zinc-900 mb-3">Ready to get started?</h2>
-          <p className="text-sm text-zinc-500 mb-6">Run a free leak audit to see where your business is losing money.</p>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">Ready to get started?</h2>
+          <p className="text-sm text-[var(--color-text-muted)] mb-6">Run a free leak audit to see where your business is losing money.</p>
           <Link
             href="/audit"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-white rounded-lg font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             Run Free Leak Audit <ArrowRight className="w-4 h-4" />
           </Link>

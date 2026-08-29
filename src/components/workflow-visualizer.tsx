@@ -37,19 +37,19 @@ interface WorkflowVisualizerProps {
 
 const nodeTypeStyles: Record<string, { bg: string; border: string; icon: string; activeBg: string; activeBorder: string }> = {
   trigger: { bg: "bg-violet-50", border: "border-violet-200", icon: "text-violet-600", activeBg: "bg-violet-100", activeBorder: "border-violet-400" },
-  action: { bg: "bg-blue-50", border: "border-blue-200", icon: "text-blue-600", activeBg: "bg-blue-100", activeBorder: "border-blue-400" },
-  condition: { bg: "bg-amber-50", border: "border-amber-200", icon: "text-amber-600", activeBg: "bg-amber-100", activeBorder: "border-amber-400" },
-  delay: { bg: "bg-zinc-50", border: "border-zinc-200", icon: "text-zinc-500", activeBg: "bg-zinc-100", activeBorder: "border-zinc-400" },
-  output: { bg: "bg-emerald-50", border: "border-emerald-200", icon: "text-emerald-600", activeBg: "bg-emerald-100", activeBorder: "border-emerald-400" },
-  error: { bg: "bg-red-50", border: "border-red-200", icon: "text-red-600", activeBg: "bg-red-100", activeBorder: "border-red-400" },
+  action: { bg: "bg-[var(--color-accent)]/10", border: "border-[var(--color-accent)]/30", icon: "text-[var(--color-accent)]", activeBg: "bg-blue-100", activeBorder: "border-blue-400" },
+  condition: { bg: "bg-[var(--color-warning)]/10", border: "border-[var(--color-warning)]/30", icon: "text-[var(--color-warning)]", activeBg: "bg-amber-100", activeBorder: "border-amber-400" },
+  delay: { bg: "bg-[var(--color-surface)]", border: "border-[var(--color-border)]", icon: "text-[var(--color-text-muted)]", activeBg: "bg-[var(--color-surface-elevated)]", activeBorder: "border-zinc-400" },
+  output: { bg: "bg-[var(--color-success)]/10", border: "border-[var(--color-success)]/30", icon: "text-[var(--color-success)]", activeBg: "bg-emerald-100", activeBorder: "border-emerald-400" },
+  error: { bg: "bg-[var(--color-error)]/10", border: "border-[var(--color-error)]/30", icon: "text-[var(--color-error)]", activeBg: "bg-red-100", activeBorder: "border-red-400" },
 };
 
 const statusConfig: Record<string, { color: string; label: string }> = {
   idle: { color: "", label: "" },
-  running: { color: "text-amber-600", label: "Running" },
-  success: { color: "text-emerald-600", label: "Done" },
-  error: { color: "text-red-600", label: "Error" },
-  skipped: { color: "text-zinc-400", label: "Skip" },
+  running: { color: "text-[var(--color-warning)]", label: "Running" },
+  success: { color: "text-[var(--color-success)]", label: "Done" },
+  error: { color: "text-[var(--color-error)]", label: "Error" },
+  skipped: { color: "text-[var(--color-text-muted)]", label: "Skip" },
 };
 
 function getLayout(workflow: WorkflowDefinition) {
@@ -153,20 +153,20 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
                 className={cn(
                   "px-3 py-1.5 rounded border text-xs font-medium flex items-center gap-1.5 transition-all duration-300",
                   isActive && `${style.activeBg} ${style.activeBorder} scale-105`,
-                  !isActive && status === "success" && "bg-emerald-50 border-emerald-200",
-                  !isActive && status === "error" && "bg-red-50 border-red-200",
+                  !isActive && status === "success" && "bg-[var(--color-success)]/10 border-[var(--color-success)]/30",
+                  !isActive && status === "error" && "bg-[var(--color-error)]/10 border-[var(--color-error)]/30",
                   !isActive && status === "skipped" && "opacity-40",
                   !isActive && status === "idle" && `${style.bg} ${style.border}`,
                 )}
               >
-                {status === "running" && <Loader2 className="w-3 h-3 animate-spin text-amber-600" />}
-                {status === "success" && <CheckCircle className="w-3 h-3 text-emerald-600" />}
-                {status === "error" && <AlertTriangle className="w-3 h-3 text-red-600" />}
+                {status === "running" && <Loader2 className="w-3 h-3 animate-spin text-[var(--color-warning)]" />}
+                {status === "success" && <CheckCircle className="w-3 h-3 text-[var(--color-success)]" />}
+                {status === "error" && <AlertTriangle className="w-3 h-3 text-[var(--color-error)]" />}
                 {!statusConfig[status]?.color && node.type === "trigger" && <Zap className={cn("w-3 h-3", style.icon)} />}
-                <span className="text-zinc-800">{node.label}</span>
+                <span className="text-[var(--color-text-primary)]">{node.label}</span>
               </div>
               {i < workflow.nodes.length - 1 && (
-                <svg className="w-4 h-4 text-zinc-300 shrink-0" viewBox="0 0 16 16" fill="none">
+                <svg className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" viewBox="0 0 16 16" fill="none">
                   <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
@@ -184,16 +184,16 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h4 className="text-sm font-semibold text-zinc-900">{workflow.name}</h4>
-          <p className="text-xs text-zinc-500">{workflow.nodes.length} steps &bull; {workflow.edges.length} connections</p>
+          <h4 className="text-sm font-semibold text-[var(--color-text-primary)]">{workflow.name}</h4>
+          <p className="text-xs text-[var(--color-text-muted)]">{workflow.nodes.length} steps &bull; {workflow.edges.length} connections</p>
         </div>
         <div className="flex items-center gap-2">
           {isRunning && (
             <div className="flex items-center gap-2">
-              <div className="w-24 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
-                <div className="h-full bg-zinc-900 rounded-full transition-all duration-500" style={{ width: `${(completedCount / totalNodes) * 100}%` }} />
+              <div className="w-24 h-1.5 bg-[var(--color-surface-elevated)] rounded-full overflow-hidden">
+                <div className="h-full bg-[var(--color-surface)] rounded-full transition-all duration-500" style={{ width: `${(completedCount / totalNodes) * 100}%` }} />
               </div>
-              <span className="text-xs text-zinc-500 font-mono">{completedCount}/{totalNodes}</span>
+              <span className="text-xs text-[var(--color-text-muted)] font-mono">{completedCount}/{totalNodes}</span>
             </div>
           )}
           <Button variant="ghost" size="sm" onClick={reset} disabled={isRunning}>
@@ -214,7 +214,7 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
       </div>
 
       {/* Visual Flow */}
-      <div className="bg-zinc-50 rounded-lg p-5 border border-zinc-200">
+      <div className="bg-[var(--color-surface)] rounded-lg p-5 border border-[var(--color-border)]">
         {levels.map((level, levelIdx) => (
           <div key={levelIdx}>
             <div className={cn("flex justify-center gap-3", levelIdx > 0 && "mt-3")}>
@@ -230,27 +230,27 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
                       className={cn(
                         "relative px-4 py-3 rounded-lg border-2 transition-all duration-300 min-w-[140px]",
                         isActive && `scale-105 ${style.activeBg} ${style.activeBorder}`,
-                        !isActive && status === "success" && "bg-emerald-50 border-emerald-200",
-                        !isActive && status === "error" && "bg-red-50 border-red-200",
+                        !isActive && status === "success" && "bg-[var(--color-success)]/10 border-[var(--color-success)]/30",
+                        !isActive && status === "error" && "bg-[var(--color-error)]/10 border-[var(--color-error)]/30",
                         !isActive && status === "skipped" && "opacity-40",
                         !isActive && status === "idle" && `${style.bg} ${style.border}`,
                       )}
                     >
                       <div className="flex items-center gap-2">
                         {status === "running" ? (
-                          <Loader2 className="w-4 h-4 animate-spin text-amber-600" />
+                          <Loader2 className="w-4 h-4 animate-spin text-[var(--color-warning)]" />
                         ) : status === "success" ? (
-                          <CheckCircle className="w-4 h-4 text-emerald-600" />
+                          <CheckCircle className="w-4 h-4 text-[var(--color-success)]" />
                         ) : status === "error" ? (
-                          <AlertTriangle className="w-4 h-4 text-red-600" />
+                          <AlertTriangle className="w-4 h-4 text-[var(--color-error)]" />
                         ) : status === "skipped" ? (
-                          <Clock className="w-4 h-4 text-zinc-400" />
+                          <Clock className="w-4 h-4 text-[var(--color-text-muted)]" />
                         ) : (
                           <span className={style.icon}>{node.icon}</span>
                         )}
                         <div>
-                          <p className="text-sm font-medium text-zinc-900 leading-tight">{node.label}</p>
-                          {node.description && <p className="text-[10px] text-zinc-500 mt-0.5">{node.description}</p>}
+                          <p className="text-sm font-medium text-[var(--color-text-primary)] leading-tight">{node.label}</p>
+                          {node.description && <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{node.description}</p>}
                         </div>
                       </div>
                     </div>
@@ -269,7 +269,7 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
               <div className="flex justify-center my-2">
                 <div className="flex flex-col items-center gap-0.5">
                   <div className="w-px h-2 bg-zinc-300" />
-                  <svg className="w-4 h-4 text-zinc-400" viewBox="0 0 16 16" fill="none">
+                  <svg className="w-4 h-4 text-[var(--color-text-muted)]" viewBox="0 0 16 16" fill="none">
                     <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <div className="w-px h-2 bg-zinc-300" />
@@ -282,27 +282,27 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
 
       {/* Run Log */}
       {runLog.length > 0 && (
-        <div className="bg-white rounded-lg border border-zinc-200 p-4">
-          <h5 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Execution Log</h5>
+        <div className="bg-[var(--color-surface-raised)] rounded-lg border border-[var(--color-border)] p-4">
+          <h5 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Execution Log</h5>
           <div className="space-y-1 max-h-[200px] overflow-y-auto">
             {runLog.map((entry, i) => (
               <div key={i} className="flex items-center gap-3 text-xs py-1">
-                <span className="text-zinc-400 font-mono w-16 shrink-0">{entry.time}</span>
+                <span className="text-[var(--color-text-muted)] font-mono w-16 shrink-0">{entry.time}</span>
                 <span
                   className={cn(
                     "w-2 h-2 rounded-full shrink-0",
-                    entry.status === "running" && "bg-amber-500 animate-pulse",
-                    entry.status === "success" && "bg-emerald-500",
-                    entry.status === "error" && "bg-red-500",
+                    entry.status === "running" && "bg-[var(--color-warning)]/100 animate-pulse",
+                    entry.status === "success" && "bg-[var(--color-success)]/100",
+                    entry.status === "error" && "bg-[var(--color-error)]/100",
                   )}
                 />
-                <span className="text-zinc-800 truncate">{entry.node}</span>
+                <span className="text-[var(--color-text-primary)] truncate">{entry.node}</span>
                 <span
                   className={cn(
                     "ml-auto font-medium shrink-0",
-                    entry.status === "running" && "text-amber-600",
-                    entry.status === "success" && "text-emerald-600",
-                    entry.status === "error" && "text-red-600",
+                    entry.status === "running" && "text-[var(--color-warning)]",
+                    entry.status === "success" && "text-[var(--color-success)]",
+                    entry.status === "error" && "text-[var(--color-error)]",
                   )}
                 >
                   {entry.status}
@@ -310,9 +310,9 @@ export function WorkflowVisualizer({ workflow, onRunComplete, compact = false }:
               </div>
             ))}
             {!isRunning && runLog.length > 0 && (
-              <div className="pt-2 mt-2 border-t border-zinc-100 flex items-center gap-2 text-xs">
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-zinc-500">
+              <div className="pt-2 mt-2 border-t border-[var(--color-border)] flex items-center gap-2 text-xs">
+                <CheckCircle className="w-3.5 h-3.5 text-[var(--color-success)]" />
+                <span className="text-[var(--color-text-muted)]">
                   {runLog.filter((l) => l.status === "success").length}/{runLog.length} steps completed
                 </span>
               </div>

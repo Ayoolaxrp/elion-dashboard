@@ -2,9 +2,9 @@ export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-20">
       <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
-      <p className="text-sm text-zinc-500 mb-8">Last updated: August 28, 2026</p>
+      <p className="text-sm text-[var(--color-text-muted)] mb-8">Last updated: August 28, 2026</p>
 
-      <div className="space-y-8 text-sm text-zinc-400 leading-relaxed">
+      <div className="space-y-8 text-sm text-[var(--color-text-muted)] leading-relaxed">
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">1. Information We Collect</h2>
           <p>We collect information you provide directly to us, such as when you fill out a form, request an audit, or contact us:</p>
