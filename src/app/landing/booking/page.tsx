@@ -28,7 +28,7 @@ export default function BookingLanding() {
             Message, wait, ask availability, reply, confirm, reschedule, remind. We automate the entire back-and-forth.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 pt-8 border-t border-zinc-800/50">
-            {[{v:"312",l:"Bookings made"},{v:"8%",l:"No-show rate"},{v:"96%",l:"Satisfaction"},{v:"Auto",l:"Reminders"}].map(s=><div key={s.l} className="text-center"><p className="text-2xl font-bold text-white">{s.v}</p><p className="text-xs text-zinc-500 mt-1">{s.l}</p></div>)}
+            {[{v:"Auto",l:"Booking flow"},{v:"Reduced",l:"No-show rate"},{v:"Confirmed",l:"Auto-reminders"},{v:"Auto",l:"Reminders"}].map(s=><div key={s.l} className="text-center"><p className="text-2xl font-bold text-white">{s.v}</p><p className="text-xs text-zinc-500 mt-1">{s.l}</p></div>)}
           </div>
         </div>
       </section>

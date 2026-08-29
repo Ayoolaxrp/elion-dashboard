@@ -28,7 +28,7 @@ export default function LeadsLanding() {
             Someone just enquired about your service. What happens in the next 5 minutes decides whether they become a customer or disappear forever.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 pt-8 border-t border-zinc-800/50">
-            {[{v:"&lt;60s",l:"Response time"},{v:"3x",l:"More conversations"},{v:"45%",l:"Higher conversion"},{v:"24/7",l:"Always on"}].map(s=><div key={s.l} className="text-center"><p className="text-2xl font-bold text-white" dangerouslySetInnerHTML={{__html:s.v}} /><p className="text-xs text-zinc-500 mt-1">{s.l}</p></div>)}
+            {[{v:"&lt;60s",l:"Response time"},{v:"Instant",l:"Response time"},{v:"24/7",l:"Always available"},{v:"24/7",l:"Always on"}].map(s=><div key={s.l} className="text-center"><p className="text-2xl font-bold text-white" dangerouslySetInnerHTML={{__html:s.v}} /><p className="text-xs text-zinc-500 mt-1">{s.l}</p></div>)}
           </div>
         </div>
       </section>
