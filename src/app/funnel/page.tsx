@@ -74,8 +74,8 @@ export default function FunnelPage() {
       <section className="pt-20 sm:pt-32 pb-20 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-6">Business Automation Systems</p>
-          <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.1] mb-8">Find the work your business should not be doing manually.</h1>
-          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-12 leading-relaxed">ELION identifies operational bottlenecks, shows you what can be automated, and builds the system to fix them.</p>
+          <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.1] mb-8">Find the leaks in your business. Then automate them.</h1>
+          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-12 leading-relaxed">Find the work your business should not be doing manually. Then let ELION build the system to fix it.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
             <a href="#method" className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] transition-all text-sm">See How It Works</a>
