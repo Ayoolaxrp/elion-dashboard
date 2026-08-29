@@ -283,7 +283,7 @@ h3{font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:#71717a;m
 table{width:100%;border-collapse:collapse;margin-top:8px}td,th{padding:8px 12px;text-align:left;border-bottom:1px solid #e4e4e7;font-size:13px}
 th{background:#f4f4f5;font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:0.05em;color:#71717a}
 .severity{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase}
-.sev-critical{background:#fef2f2;color:#dc2626}.sev-high{background:#fffbeb;color:#d97706}.sev-medium{background:#eff6ff;color:#2563eb}.sev-low{background:#f4f4f5;color:#71717a}
+.sev-critical{background:#fef2f2;color:#dc2626}.sev-high{background:#fffbeb;color:#d97706}.sev-medium{background:#eff6ff;color:#4F7CFF}.sev-low{background:#f4f4f5;color:#71717a}
 .footer{margin-top:40px;padding-top:16px;border-top:1px solid #e4e4e7;font-size:12px;color:#a1a1aa}
 @media print{body{padding:20px}}</style></head><body>
 <h1>${r.companyName}</h1><p style="color:#71717a">${r.industry} &bull; ${r.date} &bull; Automation Leak Audit</p>
