@@ -13,7 +13,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">2. Services Description</h2>
-          <p>ELIAN provides AI-powered business automation services including but not limited to:</p>
+          <p>ELIAN provides business automation services including but not limited to:</p>
           <ul className="mt-2 space-y-1 list-disc list-inside">
             <li>Lead response automation systems</li>
             <li>Follow-up sequence automation</li>

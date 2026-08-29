@@ -24,7 +24,7 @@ export default function DemoPage() {
 
     const steps = [
       { step: 1, action: "Lead Captured", detail: "New lead from Meta Ads landing page", status: "running" },
-      { step: 2, action: "AI Scoring", detail: "Analyzing lead quality and intent signals", status: "pending" },
+      { step: 2, action: "Lead Scoring", detail: "Analyzing lead quality and intent signals", status: "pending" },
       { step: 3, action: "Email Sent", detail: "Instant welcome email", status: "pending" },
       { step: 4, action: "WhatsApp Sent", detail: "Personalized greeting", status: "pending" },
       { step: 5, action: "CRM Updated", detail: "Lead record created", status: "pending" },

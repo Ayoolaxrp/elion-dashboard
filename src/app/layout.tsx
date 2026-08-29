@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | ELIAN",
   },
   description:
-    "We find and fix operational leaks that cost businesses time, leads, and revenue. AI-powered lead response, follow-up automation, revenue recovery, and booking systems.",
+    "We find and fix operational leaks that cost businesses time, leads, and revenue. Lead response, follow-up automation, revenue recovery, and booking systems.",
   keywords: [
     "AI automation",
     "lead response",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "ELIAN",
     title: "ELIAN - Fix Your Operational Leaks",
     description:
-      "AI-powered systems that respond to leads, follow up automatically, recover dormant revenue, and book appointments, so your team only steps in when it matters.",
+      "Systems that respond to leads, follow up automatically, recover dormant revenue, and book appointments, so your team only steps in when it matters.",
     images: [
       {
         url: "/og-image.png",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ELIAN - Fix Your Operational Leaks",
     description:
-      "AI-powered lead response, follow-up, revenue recovery, and booking systems for businesses in Nigeria and beyond.",
+      "Lead response, follow-up, revenue recovery, and booking systems for businesses in Nigeria and beyond.",
     images: ["/og-image.png"],
   },
   robots: {

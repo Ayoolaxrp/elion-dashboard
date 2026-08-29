@@ -102,7 +102,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
                 <span className="text-sm font-bold text-zinc-900">ELIAN</span>
               </div>
               <p className="text-xs text-zinc-500 leading-relaxed">
-                AI-powered business automation for SMEs in Nigeria and beyond.
+                business automation for SMEs in Nigeria and beyond.
               </p>
             </div>
             <div>

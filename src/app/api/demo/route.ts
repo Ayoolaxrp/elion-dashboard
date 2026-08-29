@@ -15,7 +15,7 @@ const demoStore = {
 const demoTemplates = {
   welcome_email: {
     subject: "Welcome to {{company}}, Here's what happens next",
-    body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, check out our latest case studies at elian.ng/case-studies\n\nBest regards,\nThe ELIAN Team",
+    body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, learn more about our services at elian.ng\n\nBest regards,\nThe ELIAN Team",
   },
   followup_email: {
     subject: "Quick follow-up, {{company}} automation opportunity",

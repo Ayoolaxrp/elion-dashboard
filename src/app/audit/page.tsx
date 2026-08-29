@@ -371,7 +371,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               </div>
               <div className="text-right shrink-0">
                 <p className="text-2xl font-bold text-zinc-900">{auditResult.estimatedAnnualSavings}</p>
-                <p className="text-xs text-zinc-500">estimated recoverable/year</p>
+                <p className="text-xs text-zinc-500">potential annual savings (estimate)</p>
               </div>
             </div>
           </div>
