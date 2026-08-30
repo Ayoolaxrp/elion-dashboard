@@ -13,7 +13,7 @@ const setupPlans = [
       { text: "1 automation workflow", included: true },
       { text: "WhatsApp OR email integration", included: true },
       { text: "Basic lead capture and response", included: true },
-      { text: "Dashboard access", included: true },
+      { text: "Dashboard access with live data", included: true },
       { text: "14 days of post-launch support", included: true },
       { text: "Multiple channels", included: false },
       { text: "CRM integration", included: false },
@@ -314,6 +314,31 @@ export default function PricingPage() {
         </div>
       </section>
 
+
+      {/* Ownership & What You Receive */}
+      <section className="border-b border-[var(--color-border)]">
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">What you receive</h3>
+            <div className="grid md:grid-cols-2 gap-3">
+              {[
+                "Custom automation designed for your workflow",
+                "Integration with your existing tools",
+                "Deployment and testing",
+                "Dashboard access to monitor performance",
+                "Documentation and handover",
+                "You own everything - no platform lock-in",
+                "Optional ongoing support and optimization",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <span className="text-[var(--color-success)] mt-0.5 text-xs">✓</span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
       {/* CTA */}
       <section>
         <div className="max-w-2xl mx-auto px-6 py-16 text-center">

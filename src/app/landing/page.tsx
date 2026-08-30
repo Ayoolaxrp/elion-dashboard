@@ -5,10 +5,10 @@ import Link from "next/link";
 import { submitForm } from "@/lib/api";
 
 const steps = [
-  { num: "01", title: "Map your processes", desc: "We create a visual map of all your systems, manual tasks, and apps." },
-  { num: "02", title: "Find automation opportunities", desc: "We audit your workflows to pinpoint opportunities with the highest ROI." },
-  { num: "03", title: "Build and test", desc: "We use custom code, AI tools, n8n, Make.com and your existing tech stack." },
-  { num: "04", title: "Manage and iterate", desc: "Every business grows. We continuously optimise and add new automations." },
+  { num: "01", title: "Free audit", desc: "We inspect your current customer and operational workflow to find where you are losing time, leads, or money." },
+  { num: "02", title: "Find your leaks", desc: "You see specific bottlenecks, missed opportunities, and automation opportunities backed by evidence." },
+  { num: "03", title: "We build your system", desc: "ELION designs, builds, and connects the automation around your existing tools. You get dashboard access to monitor it." },
+  { num: "04", title: "Go live - you own it", desc: "Your system goes live. You own it. Optional ongoing support and optimization is available if you want it." },
 ];
 
 const systems = [
@@ -17,10 +17,11 @@ const systems = [
   { title: "Revenue Recovery", desc: "Reactivate dormant leads and old customers sitting in your database." },
   { title: "Booking Engine", desc: "Turn enquiries into booked appointments without the back-and-forth." },
   { title: "Operations Automation", desc: "Remove repetitive work. Data entry, reports, notifications, onboarding." },
+  { title: "Dashboard Access", desc: "Monitor your automation in real time. See leads, response times, and conversion." },
 ];
 
 const guarantees = [
-  { title: "Built for fast implementation", desc: "Once we understand your workflow, we move from diagnosis to implementation without unnecessary layers." },
+  { title: "You own everything", desc: "No platform lock-in. No recurring licensing. The automations we build belong to your business. Optional support available." },
   { title: "You own everything", desc: "No recurring licensing. No platform lock-in. The automations are yours." },
 ];
 
