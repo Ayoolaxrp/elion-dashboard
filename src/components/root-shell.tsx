@@ -52,7 +52,7 @@ const sections = [
 
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLanding = pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status";
+  const isLanding = !pathname || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status";
   const handleLogout = async () => { try { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; } catch { window.location.href = "/login"; } };
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

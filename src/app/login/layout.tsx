@@ -1,0 +1,11 @@
+export const metadata = {
+  title: "Sign In | ELION",
+};
+
+export default function LoginLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <>{children}</>;
+}
