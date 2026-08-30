@@ -20,7 +20,7 @@ const setupPlans = [
       { text: "Custom workflows", included: false },
     ],
     cta: "Get Started",
-    href: "#audit",
+    href: "/funnel",
     popular: false,
   },
   {
@@ -39,7 +39,7 @@ const setupPlans = [
       { text: "Multiple interconnected systems", included: false },
     ],
     cta: "Get Started",
-    href: "#audit",
+    href: "/funnel",
     popular: true,
   },
   {
@@ -58,7 +58,7 @@ const setupPlans = [
       { text: "Documentation", included: true },
     ],
     cta: "Get Started",
-    href: "#audit",
+    href: "/funnel",
     popular: false,
   },
   {
@@ -77,7 +77,7 @@ const setupPlans = [
       { text: "Scalable architecture", included: true },
     ],
     cta: "Contact Us",
-    href: "#audit",
+    href: "/funnel",
     popular: false,
   },
 ];
@@ -259,6 +259,36 @@ export default function PricingPage() {
         </div>
       </section>
 
+
+      {/* Third-Party Costs Transparency */}
+      <section className="border-b border-[var(--color-border)]">
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">About third-party costs</h3>
+            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-3">
+              ELION implementation fees cover the design, build, configuration, and deployment of your automation systems.
+              Some automations connect to third-party services that have their own pricing:
+            </p>
+            <div className="grid md:grid-cols-2 gap-2">
+              {[
+                "WhatsApp Business API (charged by Meta per conversation)",
+                "Email providers like SendGrid, Resend, or SMTP services",
+                "CRM software (HubSpot, Pipedrive, Zoho) if applicable",
+                "Calendar and scheduling tools",
+                "Hosting for custom endpoints if needed",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <span className="text-[var(--color-text-muted)] mt-0.5">-</span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{item}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-[var(--color-text-muted)] mt-3">
+              We will always clarify which costs are ELION implementation fees and which are third-party service charges before you commit.
+            </p>
+          </div>
+        </div>
+      </section>
       {/* FAQ */}
       <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="max-w-2xl mx-auto px-6 py-16">
@@ -290,7 +320,7 @@ export default function PricingPage() {
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">Ready to get started?</h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-6">Run a free leak audit to see where your business is losing money.</p>
           <Link
-            href="/audit"
+            href="/funnel"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-white rounded-lg font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             Run Free Leak Audit <ArrowRight className="w-4 h-4" />

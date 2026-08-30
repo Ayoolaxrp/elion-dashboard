@@ -20,12 +20,12 @@ const systems = [
 ];
 
 const guarantees = [
-  { title: "Results within weeks", desc: "Most clients see measurable improvement within the first two weeks of implementation." },
+  { title: "Built for fast implementation", desc: "Once we understand your workflow, we move from diagnosis to implementation without unnecessary layers." },
   { title: "You own everything", desc: "No recurring licensing. No platform lock-in. The automations are yours." },
 ];
 
 const faqs = [
-  { q: "How quickly will I see results?", a: "Most clients see measurable improvement within 2 weeks. Lead response times drop from hours to seconds on day one." },
+  { q: "How quickly will I see results?", a: "Implementation timelines depend on the complexity of your workflow. Simple automations can go live within days. Multi-system workflows typically take one to three weeks from diagnosis to launch." },
   { q: "Do I need to change my existing tools?", a: "No. We integrate with what you already use. WhatsApp, HubSpot, Google Calendar, Slack, and any tool with an API." },
   { q: "What if I am not technical?", a: "You do not need to be. We handle everything. Setup, integration, testing, and training. You just use the dashboard." },
   { q: "How much does it cost?", a: "Starting from NGN 100,000 for a single workflow implementation. See pricing for full details." },

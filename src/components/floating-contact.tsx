@@ -27,7 +27,7 @@ export function FloatingContact() {
               WhatsApp
             </a>
             <a
-              href="mailto:hello@elion.ng?subject=Automation%20Inquiry"
+              href="/funnel"
               className="flex items-center gap-3 p-2.5 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-sm font-medium hover:bg-zinc-700 transition-colors"
             >
               <Mail className="w-4 h-4" />

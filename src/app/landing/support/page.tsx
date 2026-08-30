@@ -42,7 +42,7 @@ export default function SupportPage() {
           <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-8">Contact us</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <a
-              href="https://wa.me/2348012345678"
+              href="https://wa.me/2348012345678" // TODO: Replace with real WhatsApp number
               target="_blank"
               rel="noopener noreferrer"
               className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors"
@@ -52,7 +52,7 @@ export default function SupportPage() {
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">WhatsApp</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">Fastest response. Available during business hours.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">+234 801 234 5678</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Contact via WhatsApp</p>
             </a>
 
             <a
@@ -73,14 +73,14 @@ export default function SupportPage() {
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Phone</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">Monday to Friday, 9am to 6pm WAT.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">+234 801 234 5678</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Contact via WhatsApp or email</p>
             </div>
           </div>
 
           <div className="mt-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
             <p className="text-xs text-[var(--color-text-muted)]">
-              <strong>Response expectations:</strong> WhatsApp and phone enquiries are typically answered within 2 hours during business hours.
-              Email enquiries are responded to within 24 hours. For urgent issues, WhatsApp is the fastest channel.
+              <strong>Response expectations:</strong> We aim to respond to all enquiries during business hours (Monday to Friday, 9am to 6pm WAT).
+              WhatsApp is typically the fastest channel. For urgent issues, mention "urgent" in your message.
             </p>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function SupportPage() {
             <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/30 rounded-lg p-6 text-center">
               <CheckCircle className="w-8 h-8 text-[var(--color-success)] mx-auto mb-3" />
               <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">Request submitted</h3>
-              <p className="text-sm text-[var(--color-text-muted)]">We will respond within 24 hours. For urgent issues, contact us via WhatsApp.</p>
+              <p className="text-sm text-[var(--color-text-muted)]">We will respond during business hours. For urgent issues, contact us via WhatsApp.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 space-y-4">

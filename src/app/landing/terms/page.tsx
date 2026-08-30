@@ -26,17 +26,19 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">3. Payment Terms</h2>
-          <p>All pricing is listed in Nigerian Naira (NGN) unless otherwise stated. Payment is due in full before implementation begins unless otherwise agreed in writing. One-time payments grant永久 ownership of the delivered automation workflows. Monthly retainer fees are billed on the 1st of each month.</p>
+          <p>All pricing is listed in Nigerian Naira (NGN) unless otherwise stated. Payment is due in full before implementation begins unless otherwise agreed in writing. One-time payments grantfull ownership of the delivered automation workflows. Monthly retainer fees are billed on the 1st of each month.</p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">4. Ownership and Intellectual Property</h2>
-          <p>Upon full payment, you own all automation workflows, configurations, and custom code built specifically for your business. ELION retains ownership of any pre-built components, frameworks, or tools used in the development process.</p>
+          <p>Upon full payment, you own all automation workflows, configurations, and custom code built specifically for your business. ELION retains ownership of any pre-built components, frameworks, or tools used in the development process. Third-party services (such as WhatsApp Business API, email providers, CRM software, and hosting) are subject to their own terms and pricing, which are the responsibility of the client.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">5. Warranty and Guarantee</h2>
-          <p>We guarantee measurable improvement within 90 days of implementation. If you do not see ROI within this period, we will refund your investment in full. This guarantee applies to the core automation system and does not cover third-party service fees or changes made by you to the system after delivery.</p>
+          <h2 className="text-lg font-semibold text-white mb-3">5. Warranty and Support</h2>
+          <p>ELION warrants that delivered automation systems will function as specified in the agreed scope of work. If a system does not perform as documented within the applicable support period, ELION will address the issue at no additional cost.</p>
+          <p className="mt-2">Results from automation depend on many factors including business processes, data quality, third-party service performance, and team adoption. ELION does not guarantee specific revenue or conversion outcomes.</p>
+          <p className="mt-2">Monthly retainer services are billed on the 1st of each month and may be cancelled with 30 days written notice.</p>
         </section>
 
         <section>
