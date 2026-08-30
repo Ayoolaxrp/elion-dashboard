@@ -52,34 +52,6 @@ export default function DemoPage() {
     setIsRunning(false);
   }, []);
 
-  const runTestEmail = useCallback(async () => {
-    try {
-      const res = await fetch("/api/demo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "send_email", data: { to: "test@example.com", name: "Test User", template: "welcome_email" } }),
-      });
-      const data = await res.json();
-      if (data.email) setEmails((prev) => [data.email, ...prev]);
-    } catch {
-      // Demo API may not be available
-    }
-  }, []);
-
-  const runTestWhatsApp = useCallback(async () => {
-    try {
-      const res = await fetch("/api/demo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "send_whatsapp", data: { to: "+2348012345678", name: "Test User", template: "welcome" } }),
-      });
-      const data = await res.json();
-      if (data.whatsapp) setWhatsapps((prev) => [data.whatsapp, ...prev]);
-    } catch {
-      // Demo API may not be available
-    }
-  }, []);
-
   const reset = useCallback(() => {
     setEmails([]); setWhatsapps([]); setLeads([]); setBookings([]);
     setDemoSteps([]); setDemoComplete(false);
@@ -160,22 +132,6 @@ export default function DemoPage() {
           </div>
         </div>
       )}
-
-      {/* Test Buttons */}
-      <div className="flex gap-2 mb-6">
-        <button
-          onClick={runTestEmail}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer"
-        >
-          <Mail className="w-4 h-4" />Test Email
-        </button>
-        <button
-          onClick={runTestWhatsApp}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer"
-        >
-          <MessageSquare className="w-4 h-4" />Test WhatsApp
-        </button>
-      </div>
 
       {/* Results Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
