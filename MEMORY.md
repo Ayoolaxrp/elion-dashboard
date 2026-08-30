@@ -1,6 +1,6 @@
 # ELION — Project Memory & Progress Log
 
-> Last updated: 2026-08-30
+> Last updated: 2026-08-30 (updated after consumer trust pass)
 > Current commit: 488fb35
 > Production URL: https://ingenuity-dashboard.vercel.app
 > Repository: https://github.com/Ayoolaxrp/elion-dashboard
@@ -287,7 +287,7 @@ PAID AD -> /funnel -> Problem Recognition -> Why It Matters -> How ELION Fixes I
 - Supabase Auth middleware, login page, logout API route
 - Admin email allowlist, rate limiting, SSRF hardening, response size limits
 
-### Phase 9: Final Hardening (CURRENT)
+### Phase 9: Final Hardening
 - Blocked admin routes when Supabase not configured in production
 - Protected GET /api/request with auth + authorization (401/403)
 - Added rate limiting to /api/audit (5/min per IP)
@@ -295,6 +295,16 @@ PAID AD -> /funnel -> Problem Recognition -> Why It Matters -> How ELION Fixes I
 - CSRF origin validation on state-changing endpoints
 - Removed unused middleware helper
 - Login page handles not_configured error state
+
+### Phase 10: Consumer Trust & Conversion
+- Removed unverified claims from Terms (90-day guarantee, Chinese characters)
+- Removed unverified claims from Landing page ("results within weeks")
+- Simplified Status page for public (hides unconfigured integrations)
+- Softened Support page response time promises
+- Added third-party cost transparency to Pricing page
+- Added "What You Receive" section to Funnel explaining audit deliverables
+- Fixed Pricing CTA links to point to /funnel
+- Replaced placeholder email in floating contact
 
 ---
 
