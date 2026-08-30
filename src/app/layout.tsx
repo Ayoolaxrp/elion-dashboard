@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { RootShell } from "@/components/root-shell";
 
@@ -33,6 +33,14 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#0A0D14",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,7 +49,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#0A0D14" />
       
       <script
         type="application/ld+json"
