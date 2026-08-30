@@ -97,7 +97,7 @@ export default function DemoPage() {
       <div className="bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/30 rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[var(--color-warning)]/100" />
-          <p className="text-sm font-semibold text-amber-800">Interactive Demo</p>
+          <p className="text-sm font-semibold text-[var(--color-warning)]">Interactive Demo</p>
         </div>
         <p className="text-xs text-[var(--color-warning)] mt-1">
           This is a simulated demonstration using sample data. No real messages are sent. No real leads are processed.
@@ -132,7 +132,7 @@ export default function DemoPage() {
             <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Automation Pipeline</h3>
             {demoComplete && <span className="text-xs text-[var(--color-success)] font-medium">Complete</span>}
           </div>
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2">
             {demoSteps.map((step, i) => (
               <div key={i} className={`p-3 rounded border text-center transition-all ${stepColor(step.status)}`}>
                 <div className="flex items-center justify-center mb-2">
@@ -222,7 +222,7 @@ export default function DemoPage() {
                       <span className="text-xs font-semibold text-[var(--color-text-muted)]">ELION Business</span>
                       <span className="text-[10px] text-[var(--color-text-muted)]">{wa.timestamp}</span>
                     </div>
-                    <div className="bg-[var(--color-success)]/10 border border-emerald-100 rounded-lg p-3 max-w-[85%]">
+                    <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 rounded-lg p-3 max-w-[85%]">
                       <p className="text-sm text-[var(--color-text-primary)]">{wa.message}</p>
                       <div className="flex items-center justify-end gap-1 mt-1">
                         <span className="text-[10px] text-[var(--color-success)]">{wa.status}</span>
@@ -280,8 +280,8 @@ export default function DemoPage() {
                 {bookings.map((b) => (
                   <div key={b.id} className="px-5 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded bg-violet-50 flex items-center justify-center">
-                        <Calendar className="w-4 h-4 text-violet-600" />
+                      <div className="w-8 h-8 rounded bg-[var(--color-surface-elevated)] flex items-center justify-center">
+                        <Calendar className="w-4 h-4 text-[var(--color-text-secondary)]" />
                       </div>
                       <div>
                         <p className="text-sm font-medium text-[var(--color-text-primary)]">{b.client}</p>

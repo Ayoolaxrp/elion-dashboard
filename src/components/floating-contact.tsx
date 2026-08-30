@@ -18,7 +18,7 @@ export function FloatingContact() {
           </div>
           <div className="space-y-2">
             <a
-              href="https://wa.me/2348012345678?text=Hi%20ELION%2C%20I%27m%20interested%20in%20your%20automation%20services"
+              href="/funnel"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-2.5 rounded-lg bg-[var(--color-success)]/10 border border-emerald-500/20 text-[var(--color-success)] text-sm font-medium hover:bg-[var(--color-success)]/100/20 transition-colors"

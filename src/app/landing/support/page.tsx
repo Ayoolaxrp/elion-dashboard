@@ -52,11 +52,11 @@ export default function SupportPage() {
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">WhatsApp</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">Fastest response. Available during business hours.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">Contact via WhatsApp</p>
+              <p className="text-xs text-[var(--color-text-muted)]">/Send a request</p>
             </a>
 
             <a
-              href="mailto:support@elion.ng"
+              href="/funnel"
               className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors"
             >
               <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)] mb-3">
@@ -64,7 +64,7 @@ export default function SupportPage() {
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Email</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">For detailed enquiries and support requests.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">support@elion.ng</p>
+              <p className="text-xs text-[var(--color-text-muted)]">/Send a request</p>
             </a>
 
             <div className="border border-[var(--color-border)] rounded-lg p-5">

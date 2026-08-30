@@ -42,7 +42,26 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="theme-color" content="#0A0D14" />
-      </head>
+      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "ELION",
+            url: "https://elion.ng",
+            description: "ELION identifies where your business loses time, leads, money, and operational efficiency. Then builds automation systems to fix those leaks.",
+            sameAs: [],
+            contactPoint: {
+              "@type": "ContactPoint",
+              contactType: "customer service",
+              availableLanguage: "English",
+            },
+          }),
+        }}
+      />
+    </head>
       <body className="bg-[var(--color-surface)] text-[var(--color-text-primary)] antialiased min-h-screen">
         <RootShell>{children}</RootShell>
       </body>

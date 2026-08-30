@@ -22,7 +22,7 @@ const systems = [
 
 const guarantees = [
   { title: "You own everything", desc: "No platform lock-in. No recurring licensing. The automations we build belong to your business. Optional support available." },
-  { title: "You own everything", desc: "No recurring licensing. No platform lock-in. The automations are yours." },
+  { title: "No surprise costs", desc: "Fixed-scope pricing. Third-party costs are disclosed upfront. Monthly support is optional, never required." },
 ];
 
 const faqs = [

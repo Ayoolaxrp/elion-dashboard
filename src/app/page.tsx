@@ -41,8 +41,8 @@ const systems = [
     description: "Reactivate dormant leads and old customers sitting in your database.",
     icon: RotateCcw,
     href: "/recovery",
-    color: "text-violet-600",
-    bgColor: "bg-violet-50",
+    color: "text-[var(--color-text-secondary)]",
+    bgColor: "bg-[var(--color-surface-elevated)]",
     problem: "You have thousands of contacts. Nobody is reaching out to them. Revenue left on the table.",
   },
   {
@@ -51,8 +51,8 @@ const systems = [
     description: "Turn enquiries into booked appointments without the back-and-forth.",
     icon: Calendar,
     href: "/booking",
-    color: "text-rose-600",
-    bgColor: "bg-rose-50",
+    color: "text-[var(--color-text-secondary)]",
+    bgColor: "bg-[var(--color-surface-elevated)]",
     problem: "Customers message, wait, ask availability, reply, confirm. Staff waste hours coordinating.",
   },
   {
@@ -61,8 +61,8 @@ const systems = [
     description: "Remove repetitive work from your team's day. Data entry, reports, notifications, and more.",
     icon: Settings,
     href: "/operations",
-    color: "text-cyan-600",
-    bgColor: "bg-cyan-50",
+    color: "text-[var(--color-text-secondary)]",
+    bgColor: "bg-[var(--color-surface-elevated)]",
     problem: "Your team copies data between systems, updates spreadsheets, manually sends reports.",
   },
 ];

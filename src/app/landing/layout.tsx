@@ -123,8 +123,8 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             <div>
               <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Contact</h4>
               <div className="space-y-2">
-                <a href="mailto:hello@elion.ng" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">hello@elion.ng</a>
-                <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">WhatsApp</a>
+                <a href="/funnel" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">/Contact us</a>
+                <a href="/funnel">Get Started</a>
               </div>
             </div>
           </div>

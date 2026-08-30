@@ -175,13 +175,12 @@ export default async function StatusPage() {
             </span>
           </div>
           <p className="text-xs text-[var(--color-text-muted)] mt-2">
-            {operationalCount} of {totalComponents} systems operational ·{" "}
-            {configuredCount} configured
+            {configuredCount} of {totalComponents} services configured
           </p>
         </div>
 
         <div className="space-y-2">
-          {components.map((c) => (
+          {components.filter(c => c.status !== "not-configured").map((c) => (
             <div
               key={c.name}
               className="flex items-center justify-between px-5 py-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"

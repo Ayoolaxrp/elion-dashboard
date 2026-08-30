@@ -614,14 +614,14 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                 <ClipboardList className="w-4 h-4" /> Request Implementation
               </button>
               <a
-                href={`https://wa.me/2348012345678?text=Hi%20ELION%2C%20I%20just%20completed%20an%20audit%20for%20${encodeURIComponent(auditResult.companyName)}`}
+                href="/funnel?ref=audit-results"
                 target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded hover:bg-emerald-700 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-medium rounded hover:bg-[var(--color-accent-hover)] transition-colors"
               >
-                <Share2 className="w-4 h-4" /> WhatsApp Us
+                <Share2 className="w-4 h-4" /> Get Started
               </a>
               <a
-                href={`mailto:hello@elion.ng?subject=Audit%20Results%20-%20${encodeURIComponent(auditResult.companyName)}`}
+                href={`/funnel?ref=audit-results&subject=Audit%20Results%20-%20${encodeURIComponent(auditResult.companyName)}`}
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] text-sm font-medium rounded hover:bg-[var(--color-surface-elevated)] transition-colors"
               >
                 <Mail className="w-4 h-4" /> Email Us
