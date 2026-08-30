@@ -8,6 +8,13 @@ function generateId(prefix: string): string {
 
 export async function POST(request: NextRequest) {
   try {
+    // CSRF protection: verify same-origin request
+    const origin = request.headers.get("origin");
+    const host = request.headers.get("host");
+    if (origin && host && !origin.includes(host)) {
+      return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+    }
+
     // Check if Supabase is configured
     if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       console.error("Supabase not configured");
@@ -158,8 +165,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET - Admin endpoint for listing leads
+// GET - Admin endpoint for listing leads (requires authentication)
+import { createServerClient } from "@supabase/ssr";
+
 export async function GET(request: NextRequest) {
+  // Require database
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return NextResponse.json(
       { success: false, error: "Database not configured" },
@@ -167,11 +177,40 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const supabase = getSupabaseAdmin();
+  // Require authentication - verify session cookie
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() { return request.cookies.getAll(); },
+      setAll() { /* read-only */ },
+    },
+  });
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Verify admin authorization
+  const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(",").map(e => e.trim().toLowerCase()) || [];
+  const isAllowed =
+    ADMIN_EMAILS.length === 0 ||
+    user.user_metadata?.role === "admin" ||
+    (user.email && ADMIN_EMAILS.includes(user.email.toLowerCase()));
+  if (!isAllowed) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+  }
+
+  const admin = getSupabaseAdmin();
   const url = new URL(request.url);
   const status = url.searchParams.get("status");
 
-  let query = supabase
+  let query = admin
     .from("leads")
     .select("*")
     .order("created_at", { ascending: false })

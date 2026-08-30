@@ -46,8 +46,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // If Supabase is not configured, allow all routes (development mode)
+  // If Supabase is not configured, block admin routes (never allow public admin access)
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (isAdminRoute(pathname)) {
+      // In production without Supabase, admin routes are inaccessible
+      // In development, allow through but log warning
+      if (process.env.NODE_ENV === "production") {
+        const loginUrl = request.nextUrl.clone();
+        loginUrl.pathname = "/login";
+        loginUrl.searchParams.set("error", "not_configured");
+        return NextResponse.redirect(loginUrl);
+      }
+      // Development: allow through but this MUST NOT reach production
+      console.warn(`[SECURITY] Admin route ${pathname} accessed without Supabase configured`);
+    }
     return NextResponse.next();
   }
 

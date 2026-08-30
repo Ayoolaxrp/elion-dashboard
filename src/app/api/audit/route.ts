@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { execSync } from "child_process";
 import path from "path";
 import { URL } from "url";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 // SSRF protection: validate URLs before fetching
 function isSafeUrl(urlStr: string): boolean {
@@ -173,11 +174,25 @@ async function researchBusiness(companyName: string, website: string): Promise<W
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
       const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "ELIONAuditBot/1.0" } });
+      // Enforce response size limit
+      const contentLength = response.headers.get("content-length");
+      if (contentLength && parseInt(contentLength, 10) > MAX_AUDIT_RESPONSE_BYTES) {
+        clearTimeout(timeout);
+        research.hasWebsite = true;
+        research.websiteScore = 30;
+        return research;
+      }
       clearTimeout(timeout);
       research.hasWebsite = response.ok;
 
       if (response.ok) {
         const html = await response.text().catch(() => "");
+        // Enforce size limit on downloaded content
+        if (html.length > MAX_AUDIT_RESPONSE_BYTES) {
+          research.hasWebsite = true;
+          research.websiteScore = 30;
+          return research;
+        }
         const lowerHtml = html.toLowerCase();
 
         // WhatsApp detection
@@ -335,8 +350,21 @@ function calculateScore(benchmark: typeof INDUSTRY_BENCHMARKS.General, research:
   return Math.max(18, Math.min(82, Math.round(score)));
 }
 
+// Max response size for fetched pages: 2MB
+const MAX_AUDIT_RESPONSE_BYTES = 2 * 1024 * 1024;
+
 export async function POST(req: NextRequest) {
   try {
+    // Rate limiting: 5 audit requests per minute per IP
+    const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+    const rateLimit = checkRateLimit(`audit:${ip}`, { windowMs: 60000, maxRequests: 5 });
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { company_name, industry, website, name, email } = body;
 
@@ -571,9 +599,9 @@ export async function POST(req: NextRequest) {
         priorityActions: research.quickWins.slice(0, 5),
       },
     });
-    // Rate limiting hint (actual enforcement should be done via middleware or external service)
-    response.headers.set("X-RateLimit-Limit", "10");
-    response.headers.set("X-RateLimit-Remaining", "9");
+    response.headers.set("X-RateLimit-Limit", "5");
+    response.headers.set("X-RateLimit-Remaining", String(5 - rateLimit.remaining));
+    response.headers.set("X-RateLimit-Reset", String(Math.ceil(rateLimit.resetIn / 1000)));
     return response;
   } catch (error) {
     // Do not expose internal errors to users

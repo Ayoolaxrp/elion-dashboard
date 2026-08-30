@@ -70,6 +70,11 @@ function LoginForm() {
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
+          {authError === "not_configured" && !error && (
+            <div className="p-3 rounded-lg bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/20">
+              <p className="text-sm text-[var(--color-warning)]">Authentication is not configured. Set Supabase environment variables to access this page.</p>
+            </div>
+          )}
           {authError === "unauthorized" && !error && (
             <div className="p-3 rounded-lg bg-[var(--color-error)]/10 border border-[var(--color-error)]/20">
               <p className="text-sm text-[var(--color-error)]">You do not have access to this application.</p>
