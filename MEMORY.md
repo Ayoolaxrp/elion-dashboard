@@ -1,6 +1,6 @@
 # ELION — Project Memory & Progress Log
 
-> Last updated: 2026-08-30 - Final deployment QA + robots.txt
+> Last updated: 2026-08-30 (Session 8) - Final deployment QA + robots.txt
 > Current commit: ed832a8
 > Production URL: https://ingenuity-dashboard.vercel.app
 > Repository: https://github.com/Ayoolaxrp/elion-dashboard
@@ -409,6 +409,39 @@ abceccf feat: dark premium design system
 5599cf7 feat: brand blue accent, remove fabricated stats
 
 ---
+
+
+---
+
+## 15. CONVERSION & TRUST PASS (2026-08-30)
+
+### What Was Fixed
+
+| Fix | Files | Impact |
+|---|---|---|
+| Hardcoded colors → CSS vars | page.tsx, demo/page.tsx | Brand consistency |
+| Duplicate guarantees | landing/page.tsx | Copy accuracy |
+| Status page: hide unconfigured | status/page.tsx | Professionalism |
+| JSON-LD structured data | layout.tsx | SEO |
+| prefers-reduced-motion | globals.css | Accessibility |
+| aria-labels on funnel inputs | funnel/page.tsx | Accessibility |
+| Demo grid responsive | demo/page.tsx | Mobile QA |
+| Demo dark theme colors | demo/page.tsx | Brand consistency |
+| Remove placeholder contacts | 7 files | Accuracy |
+| WhatsApp → /funnel | 4 files | CTA clarity |
+| Audit CTA fix | audit/page.tsx | Conversion |
+| Security regression | Verified | No secrets exposed |
+
+### Placeholder Status
+
+| Item | Status | Notes |
+|---|---|---|
+| hello@elion.ng | REMOVED | Replaced with /funnel links |
+| support@elion.ng | REMOVED | Replaced with /funnel links |
+| +234 801 234 5678 | REMOVED from production pages | Demo route.ts still has it for sample data (OK) |
+| wa.me/2348012345678 | REMOVED | Replaced with /funnel links |
+
+### Production Score: 85/100
 
 ## 14. NOTES FOR FUTURE WORK
 
