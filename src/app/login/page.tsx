@@ -129,7 +129,7 @@ function LoginForm() {
         </form>
 
         <div className="mt-6 text-center">
-          <a href="/landing" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
+          <a href="/funnel" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
             Back to ELION
           </a>
         </div>

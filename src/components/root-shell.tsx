@@ -43,7 +43,7 @@ const sections = [
   {
     label: "Account",
     items: [
-      { label: "Landing Pages", href: "/landing", icon: Globe },
+      { label: "Marketing Site", href: "/funnel", icon: Globe },
       { label: "Demo", href: "/demo", icon: PlayCircle },
       { label: "Support", href: "/landing/support", icon: LifeBuoy },
     ],
@@ -52,7 +52,7 @@ const sections = [
 
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLanding = pathname.startsWith("/landing") || pathname === "/funnel";
+  const isLanding = pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status";
   const handleLogout = async () => { try { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; } catch { window.location.href = "/login"; } };
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

@@ -38,7 +38,7 @@ const sections = [
       { label: "Booking", href: "/booking", icon: Calendar },
       { label: "Revenue Recovery", href: "/recovery", icon: RotateCcw },
       { label: "Operations", href: "/operations", icon: Settings },
-      { label: "Landing Pages", href: "/landing", icon: Globe },
+      { label: "Marketing Site", href: "/funnel", icon: Globe },
     ],
   },
   {
