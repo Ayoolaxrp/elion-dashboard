@@ -3,10 +3,10 @@
 import { useState, useCallback } from "react";
 import { Mail, MessageSquare, Calendar, Play, Loader2, CheckCircle, Clock, ArrowRight } from "lucide-react";
 
-interface EmailMsg { id: string; to: string; from: string; subject: string; body: string; status: string; timestamp: string; }
-interface WhatsAppMsg { id: string; to: string; from: string; message: string; status: string; timestamp: string; }
-interface DemoLead { id: string; name: string; email: string; phone: string; source: string; status: string; score: number; timestamp: string; }
-interface DemoBooking { id: string; client: string; date: string; time: string; type: string; status: string; timestamp: string; }
+interface EmailMsg { id: string; to: string; from?: string; subject: string; body: string; status?: string; timestamp: string; }
+interface WhatsAppMsg { id: string; to?: string; from?: string; message: string; status: string; timestamp: string; }
+interface DemoLead { id: string; name: string; email: string; phone?: string; source: string; status?: string; score: number; timestamp: string; }
+interface DemoBooking { id: string; client: string; date: string; time: string; type: string; status: string; timestamp?: string; }
 
 export default function DemoPage() {
   const [emails, setEmails] = useState<EmailMsg[]>([]);
@@ -20,41 +20,35 @@ export default function DemoPage() {
   const runFullDemo = useCallback(async () => {
     setIsRunning(true);
     setDemoComplete(false);
-    setDemoSteps([]);
+    setEmails([]);
+    setWhatsapps([]);
+    setLeads([]);
+    setBookings([]);
 
     const steps = [
-      { step: 1, action: "Lead Captured", detail: "New lead from Meta Ads landing page", status: "running" },
-      { step: 2, action: "Lead Scoring", detail: "Analyzing lead quality and intent signals", status: "pending" },
-      { step: 3, action: "Email Sent", detail: "Instant welcome email", status: "pending" },
-      { step: 4, action: "WhatsApp Sent", detail: "Personalized greeting", status: "pending" },
-      { step: 5, action: "CRM Updated", detail: "Lead record created", status: "pending" },
-      { step: 6, action: "Booking Created", detail: "Consultation scheduled", status: "pending" },
-      { step: 7, action: "Team Notified", detail: "Sales team alerted", status: "pending" },
+      { step: 1, action: "Lead Captured", detail: "New enquiry from Instagram Ad", status: "running" },
+      { step: 2, action: "Lead Qualified", detail: "Score: 87/100 — high intent", status: "pending" },
+      { step: 3, action: "Email Sent", detail: "Welcome email with property matches", status: "pending" },
+      { step: 4, action: "WhatsApp Sent", detail: "Personalized greeting sent", status: "pending" },
+      { step: 5, action: "CRM Updated", detail: "Lead record created in pipeline", status: "pending" },
+      { step: 6, action: "Booking Created", detail: "Viewing scheduled for tomorrow", status: "pending" },
+      { step: 7, action: "Follow-Up Scheduled", detail: "7-day follow-up sequence activated", status: "pending" },
     ];
 
     for (let i = 0; i < steps.length; i++) {
       setDemoSteps([...steps.slice(0, i), { ...steps[i], status: "running" }]);
-      await new Promise((r) => setTimeout(r, 700));
-      setDemoSteps([...steps.slice(0, i + 1), ...(i + 1 < steps.length ? [{ ...steps[i + 1], status: "pending" }] : [])]);
+      await new Promise(r => setTimeout(r, 800));
+
+      if (i === 0) setLeads([{ id: "lead_1", name: "Chioma Okafor", email: "chioma@premierrealty.com", source: "Instagram Ad", score: 0, timestamp: "Just now" }]);
+      if (i === 1) setLeads([{ id: "lead_1", name: "Chioma Okafor", email: "chioma@premierrealty.com", source: "Instagram Ad", score: 87, timestamp: "Just now" }]);
+      if (i === 2) setEmails([{ id: "email_1", to: "chioma@premierrealty.com", subject: "Welcome to Premier Realty", body: "Hi Chioma, thank you for your interest. Based on your enquiry about 3-bedroom flats in Lekki, I have selected options that match your criteria.", timestamp: "Just now" }]);
+      if (i === 3) setWhatsapps([{ id: "wa_1", message: "Hi Chioma! Thanks for reaching out. I see you are looking for a 3-bedroom in Lekki. I have 3 options that match your budget. Can we schedule a quick call?", status: "delivered", timestamp: "Just now" }]);
+      if (i === 5) setBookings([{ id: "book_1", client: "Chioma Okafor", date: "Tomorrow", time: "2:00 PM WAT", type: "Property Viewing", status: "Confirmed" }]);
+
+      setDemoSteps([...steps.slice(0, i + 1).map(s => ({ ...s, status: "completed" })), ...(i + 1 < steps.length ? [{ ...steps[i + 1], status: "pending" }] : [])]);
     }
-    setDemoSteps(steps.map((s) => ({ ...s, status: "completed" })));
+    setDemoSteps(steps.map(s => ({ ...s, status: "completed" })));
     setDemoComplete(true);
-
-    try {
-      const res = await fetch("/api/demo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "run_full_demo", data: { name: "Chioma Okafor", email: "chioma@premierrealty.com" } }),
-      });
-      const data = await res.json();
-      if (data.email) setEmails((prev) => [data.email, ...prev]);
-      if (data.whatsapp) setWhatsapps((prev) => [data.whatsapp, ...prev]);
-      if (data.lead) setLeads((prev) => [data.lead, ...prev]);
-      if (data.booking) setBookings((prev) => [data.booking, ...prev]);
-    } catch {
-      // Demo API may not be available
-    }
-
     setIsRunning(false);
   }, []);
 
@@ -84,6 +78,11 @@ export default function DemoPage() {
     } catch {
       // Demo API may not be available
     }
+  }, []);
+
+  const reset = useCallback(() => {
+    setEmails([]); setWhatsapps([]); setLeads([]); setBookings([]);
+    setDemoSteps([]); setDemoComplete(false);
   }, []);
 
   const stepColor = (status: string) => {
@@ -117,7 +116,12 @@ export default function DemoPage() {
           className="inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-surface-raised)] transition-colors cursor-pointer disabled:opacity-50"
         >
           {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-          {isRunning ? "Running..." : "Run Full Demo"}
+          {demoComplete && (
+            <button onClick={reset} className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer">
+              Reset
+            </button>
+          )}
+          {isRunning ? "Running..." : demoComplete ? "Run Again" : "Run Full Demo"}
         </button>
       </div>
 
@@ -144,6 +148,15 @@ export default function DemoPage() {
                 <p className="text-[10px] opacity-70 mt-0.5">{step.detail}</p>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {demoComplete && (
+        <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 rounded-lg p-4 mb-6">
+          <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Automation completed</p>
+          <div className="flex flex-wrap gap-3 text-xs text-[var(--color-text-muted)]">
+            <span>1 lead captured</span><span>1 email sent</span><span>1 WhatsApp sent</span><span>1 booking created</span><span>1 follow-up scheduled</span>
           </div>
         </div>
       )}
