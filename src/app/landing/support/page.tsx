@@ -42,11 +42,7 @@ export default function SupportPage() {
           <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-8">Contact us</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <a
-              href="https://wa.me/2348012345678" // TODO: Replace with real WhatsApp number
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors"
-            >
+              href="/funnel">
               <div className="w-10 h-10 rounded-lg bg-[var(--color-success)]/10 flex items-center justify-center text-[var(--color-success)] mb-3">
                 <MessageSquare className="w-5 h-5" />
               </div>

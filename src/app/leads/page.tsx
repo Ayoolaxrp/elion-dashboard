@@ -143,7 +143,7 @@ export default function LeadsPage() {
         <Tabs tabs={[{ id: "all", label: "All Leads", count: counts.all }, { id: "new", label: "New", count: counts.new }, { id: "qualified", label: "Qualified", count: counts.qualified }, { id: "meetings", label: "Meetings", count: counts.meetings }, { id: "won", label: "Won", count: counts.won }]} activeTab={activeTab} onTabChange={setActiveTab} />
         <SearchBar placeholder="Search leads..." value={search} onChange={setSearch} />
       </div>
-      <Card><DataTable columns={columns} data={filtered as unknown as Record<string, unknown>[]} emptyMessage="No leads found" /></Card>
+      <Card><DataTable columns={columns} data={filtered as unknown as Record<string, unknown>[]} emptyMessage="No leads yet. Once your automation captures its first lead, it will appear here with source, response time, status, and follow-up activity." /></Card>
 
       <Modal open={showIntake} onClose={() => { setShowIntake(false); setFormError(""); }} title="Add New Lead">
         <div className="space-y-4">

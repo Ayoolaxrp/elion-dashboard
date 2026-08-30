@@ -6,7 +6,7 @@ const values = [
   { icon: <Zap className="w-6 h-6" />, title: "Results First", desc: "We don't sell automation projects. We sell business outcomes. Every system we build is tied to a measurable business result." },
   { icon: <Shield className="w-6 h-6" />, title: "Transparency", desc: "No hidden fees, no jargon, no smoke and mirrors. We tell you exactly what we'll build, what it costs, and what results to expect." },
   { icon: <Users className="w-6 h-6" />, title: "Done-For-You", desc: "You don't need to learn new tools. We handle everything from strategy to implementation to ongoing optimization." },
-  { icon: <Target className="w-6 h-6" />, title: "Industry Focus", desc: "We've built systems for real estate, healthcare, education, recruitment, e-commerce, and professional services." },
+  { icon: <Target className="w-6 h-6" />, title: "Industry Focus", desc: "We design automation for businesses across real estate, healthcare, education, e-commerce, and professional services." },
 ];
 
 const process_steps = [

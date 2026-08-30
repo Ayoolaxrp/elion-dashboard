@@ -19,8 +19,6 @@ export function FloatingContact() {
           <div className="space-y-2">
             <a
               href="/funnel"
-              target="_blank"
-              rel="noopener noreferrer"
               className="flex items-center gap-3 p-2.5 rounded-lg bg-[var(--color-success)]/10 border border-emerald-500/20 text-[var(--color-success)] text-sm font-medium hover:bg-[var(--color-success)]/100/20 transition-colors"
             >
               <MessageSquare className="w-4 h-4" />
@@ -34,7 +32,7 @@ export function FloatingContact() {
               Email Us
             </a>
             <a
-              href="tel:+2348012345678"
+              href="/funnel"
               className="flex items-center gap-3 p-2.5 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-sm font-medium hover:bg-zinc-700 transition-colors"
             >
               <Phone className="w-4 h-4" />
