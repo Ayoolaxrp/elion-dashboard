@@ -322,6 +322,10 @@ export default function FunnelPage() {
           </div>
         </div>
       </footer>
+      {/* Mobile sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[var(--color-surface)]/95 backdrop-blur-xl border-t border-[var(--color-border)]/50 px-4 py-3 safe-area-bottom">
+        <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
+      </div>
     </div>
   );
 }
