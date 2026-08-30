@@ -9,6 +9,7 @@ const setupPlans = [
     price: "NGN 100,000",
     period: "one-time",
     description: "One automation workflow for small businesses getting started with automation.",
+    built: "We build one focused workflow. For example, an automated lead response that captures enquiries from WhatsApp or your website and sends an instant reply.",
     features: [
       { text: "1 automation workflow", included: true },
       { text: "WhatsApp OR email integration", included: true },
@@ -28,6 +29,7 @@ const setupPlans = [
     price: "NGN 350,000",
     period: "one-time",
     description: "A complete revenue workflow. Lead capture through to booking and follow-up.",
+    built: "We build a complete lead-to-booking system. Capture, qualify, respond instantly, follow up automatically, and book appointments. The full revenue loop.",
     features: [
       { text: "1 complete revenue workflow", included: true },
       { text: "WhatsApp + email integration", included: true },
@@ -47,6 +49,7 @@ const setupPlans = [
     price: "NGN 750,000",
     period: "one-time",
     description: "Multiple interconnected automation systems for established businesses.",
+    built: "We build every system your business needs. Lead response, follow-up, booking, revenue recovery, operations, and custom workflows. All connected, all in one dashboard.",
     features: [
       { text: "All 6 automation systems", included: true },
       { text: "Custom workflows built to spec", included: true },
@@ -66,6 +69,7 @@ const setupPlans = [
     price: "Let's talk",
     period: "",
     description: "Enterprise-grade automation for large teams with complex requirements.",
+    built: "We design a bespoke automation architecture for complex, multi-department operations. Dedicated engineer, custom SLA, and white-label options.",
     features: [
       { text: "Everything in Scale", included: true },
       { text: "Dedicated automation engineer", included: true },
@@ -146,6 +150,16 @@ export default function PricingPage() {
           <p className="text-sm text-[var(--color-text-muted)] max-w-lg mx-auto">
             Transparent pricing. No hidden fees. You own everything we build.
           </p>
+
+          {/* Not sure? nudge */}
+          <div className="mt-8 inline-flex flex-col sm:flex-row items-center gap-3 px-5 py-3 rounded-xl bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20">
+            <span className="text-sm text-[var(--color-text-secondary)]">
+              Not sure which plan? <span className="text-[var(--color-text-primary)] font-medium">Start with the free audit</span> — we will recommend the right tier based on your business.
+            </span>
+            <a href="/funnel" className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">
+              Free Audit <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -164,18 +178,24 @@ export default function PricingPage() {
               <div
                 key={plan.name}
                 className={`rounded-lg p-5 border ${
-                  plan.popular ? "border-zinc-900 bg-[var(--color-surface)] text-white" : "border-[var(--color-border)] bg-[var(--color-surface-raised)]"
+                  plan.popular ? "border-[var(--color-accent)] bg-[var(--color-surface)] ring-1 ring-[var(--color-accent)]/30" : "border-[var(--color-border)] bg-[var(--color-surface-raised)]"
                 }`}
               >
                 {plan.popular && (
-                  <div className="text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Most popular</div>
+                  <div className="text-[10px] font-semibold text-[var(--color-accent)] uppercase tracking-wider mb-3">Most popular</div>
                 )}
                 <h3 className={`text-base font-bold mb-1 ${plan.popular ? "text-white" : "text-[var(--color-text-primary)]"}`}>{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mb-2">
                   <span className={`text-2xl font-bold ${plan.popular ? "text-white" : "text-[var(--color-text-primary)]"}`}>{plan.price}</span>
                   {plan.period && <span className={`text-xs ${plan.popular ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-muted)]"}`}>{plan.period}</span>}
                 </div>
-                <p className={`text-xs leading-relaxed mb-4 ${plan.popular ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-muted)]"}`}>{plan.description}</p>
+                <p className={`text-xs leading-relaxed mb-3 ${plan.popular ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-muted)]"}`}>{plan.description}</p>
+                <div className={`rounded-lg p-3 mb-4 ${plan.popular ? "bg-[var(--color-accent)]/5 border border-[var(--color-accent)]/15" : "bg-[var(--color-surface)] border border-[var(--color-border)]/50"}`}>
+                  <p className={`text-[11px] leading-relaxed ${plan.popular ? "text-[var(--color-text-secondary)]" : "text-[var(--color-text-muted)]"}`}>
+                    {plan.built}
+                  </p>
+                </div>
+
                 <div className="space-y-2 mb-5">
                   {plan.features.map((f, i) => (
                     <div key={i} className="flex items-center gap-2">
@@ -194,8 +214,8 @@ export default function PricingPage() {
                   href={plan.href}
                   className={`block w-full text-center py-2.5 rounded text-sm font-semibold transition-colors ${
                     plan.popular
-                      ? "bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)]"
-                      : "bg-[var(--color-surface)] text-white hover:bg-[var(--color-accent-hover)]"
+                      ? "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)]"
+                      : "bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)]"
                   }`}
                 >
                   {plan.cta}
