@@ -1,9 +1,15 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+let _supabase: SupabaseClient | null = null;
+function getSupabase(): SupabaseClient {
+  if (!_supabase) {
+    _supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+  }
+  return _supabase;
+}
 
 interface ProvisioningStep {
   step: string;
@@ -45,7 +51,7 @@ interface ClientConfig {
 }
 
 async function getLatestTemplateVersion(templateId: string): Promise<TemplateVersion | null> {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from("template_versions")
     .select("*")
     .eq("template_id", templateId)
@@ -58,13 +64,13 @@ async function getLatestTemplateVersion(templateId: string): Promise<TemplateVer
 }
 
 async function getClientConfig(clientId: string): Promise<ClientConfig | null> {
-  const { data, error } = await supabase.from("client_config").select("*").eq("client_id", clientId).single();
+  const { data, error } = await getSupabase().from("client_config").select("*").eq("client_id", clientId).single();
   if (error || !data) return null;
   return data as ClientConfig;
 }
 
 async function getClientEntitlements(clientId: string) {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from("client_entitlements")
     .select("*, features!inner(key, name, category)")
     .eq("client_id", clientId)
@@ -92,7 +98,7 @@ function validateConfig(config: ClientConfig | null, rules: Record<string, unkno
 
 async function validateCredentials(clientId: string, requiredCredentials: string[]): Promise<{ valid: boolean; missing: string[] }> {
   if (requiredCredentials.length === 0) return { valid: true, missing: [] };
-  const { data: creds } = await supabase.from("client_credentials").select("credential_type, status").eq("client_id", clientId);
+  const { data: creds } = await getSupabase().from("client_credentials").select("credential_type, status").eq("client_id", clientId);
   const existing = new Map((creds || []).map((c: { credential_type: string; status: string }) => [c.credential_type, c.status]));
   const missing: string[] = [];
   for (const cred of requiredCredentials) {
@@ -103,7 +109,7 @@ async function validateCredentials(clientId: string, requiredCredentials: string
 }
 
 async function checkExistingAutomation(clientId: string, templateId: string): Promise<string | null> {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("client_automations")
     .select("id, status")
     .eq("client_id", clientId)
@@ -115,7 +121,7 @@ async function checkExistingAutomation(clientId: string, templateId: string): Pr
 }
 
 async function logProvisioning(clientId: string, automationId: string | null, templateId: string, templateVersion: string, action: string, status: string, steps: ProvisioningStep[], error?: string, durationMs?: number) {
-  await supabase.from("provisioning_logs").insert({
+  await getSupabase().from("provisioning_logs").insert({
     client_id: clientId, automation_id: automationId, template_id: templateId,
     template_version: templateVersion, action, status, steps,
     error_message: error || null, initiated_by: "admin", duration_ms: durationMs || null,
@@ -126,11 +132,11 @@ export async function provisionAutomation(clientId: string, templateId: string):
   const startTime = Date.now();
   const steps: ProvisioningStep[] = [];
 
-  const { data: client } = await supabase.from("clients").select("id, company_name, status").eq("id", clientId).single();
+  const { data: client } = await getSupabase().from("clients").select("id, company_name, status").eq("id", clientId).single();
   if (!client) return { success: false, steps, error: "Client not found" };
 
   const entitlements = await getClientEntitlements(clientId);
-  const template = await supabase.from("workflow_templates").select("id, name, slug, category").eq("id", templateId).single();
+  const template = await getSupabase().from("workflow_templates").select("id, name, slug, category").eq("id", templateId).single();
   if (!template.data) {
     steps.push({ step: "template_load", status: "failed", detail: "Template not found" });
     await logProvisioning(clientId, null, templateId, "", "provision", "failed", steps, "Template not found");
@@ -168,7 +174,7 @@ export async function provisionAutomation(clientId: string, templateId: string):
   const configValidation = validateConfig(config, tv.validation_rules as Record<string, unknown>);
   if (!configValidation.valid) {
     steps.push({ step: "config_validation", status: "blocked", detail: "Configuration incomplete", missing: configValidation.missing });
-    const { data: automation } = await supabase.from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
+    const { data: automation } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
     await logProvisioning(clientId, automation?.id || null, templateId, tv.version, "provision", "blocked", steps, "Missing: " + configValidation.missing.join(", "));
     return { success: false, steps, automation_id: automation?.id, error: "Configuration incomplete: " + configValidation.missing.join(", ") };
   }
@@ -177,14 +183,14 @@ export async function provisionAutomation(clientId: string, templateId: string):
   const credValidation = await validateCredentials(clientId, tv.required_credentials);
   if (!credValidation.valid) {
     steps.push({ step: "credential_check", status: "blocked", detail: "Credentials missing", missing: credValidation.missing });
-    const { data: automation } = await supabase.from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
+    const { data: automation } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
     await logProvisioning(clientId, automation?.id || null, templateId, tv.version, "provision", "blocked", steps, "Missing credentials: " + credValidation.missing.join(", "));
     return { success: false, steps, automation_id: automation?.id, error: "Credentials missing: " + credValidation.missing.join(", ") };
   }
   steps.push({ step: "credential_check", status: "passed" });
 
   const mergedConfig = { ...tv.default_config, ...(config?.response_rules || {}), business_name: config?.business_name, timezone: config?.timezone, whatsapp_number: config?.whatsapp_number, email_address: config?.email_address };
-  const { data: automation, error: autoErr } = await supabase.from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: mergedConfig, status: "configuring" }).select("id").single();
+  const { data: automation, error: autoErr } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: mergedConfig, status: "configuring" }).select("id").single();
   if (autoErr || !automation) {
     steps.push({ step: "create_automation", status: "failed", detail: autoErr?.message || "Failed" });
     await logProvisioning(clientId, null, templateId, tv.version, "provision", "failed", steps, autoErr?.message);
@@ -204,14 +210,14 @@ export async function provisionAutomation(clientId: string, templateId: string):
 
   const allPassed = steps.every(s => s.status === "passed" || s.status === "skipped");
   const newStatus = allPassed ? "live" : "configuring";
-  await supabase.from("client_automations").update({ status: newStatus, ...(newStatus === "live" ? { deployed_at: new Date().toISOString() } : {}) }).eq("id", automation.id);
+  await getSupabase().from("client_automations").update({ status: newStatus, ...(newStatus === "live" ? { deployed_at: new Date().toISOString() } : {}) }).eq("id", automation.id);
   steps.push({ step: "activation", status: allPassed ? "passed" : "blocked", detail: newStatus });
 
   const duration = Date.now() - startTime;
   await logProvisioning(clientId, automation.id, templateId, tv.version, "provision", allPassed ? "passed" : "blocked", steps, undefined, duration);
 
   if (allPassed) {
-    await supabase.from("clients").update({ onboarding_status: "building" }).eq("id", clientId).eq("onboarding_status", "pending");
+    await getSupabase().from("clients").update({ onboarding_status: "building" }).eq("id", clientId).eq("onboarding_status", "pending");
   }
 
   return { success: allPassed, steps, automation_id: automation.id, ...(!allPassed ? { error: "Provisioning blocked" } : {}) };
@@ -221,7 +227,7 @@ export async function provisionAllClientAutomations(clientId: string): Promise<P
   const entitlements = await getClientEntitlements(clientId);
   const results: ProvisioningResult[] = [];
   const templateMap = new Map<string, string>();
-  const { data: templates } = await supabase.from("workflow_templates").select("id, category").eq("is_active", true);
+  const { data: templates } = await getSupabase().from("workflow_templates").select("id, category").eq("is_active", true);
   if (templates) for (const t of templates) templateMap.set(t.category, t.id);
   for (const ent of entitlements) {
     const feature = ent.features as Record<string, unknown>;
@@ -233,17 +239,17 @@ export async function provisionAllClientAutomations(clientId: string): Promise<P
 }
 
 export async function deactivateAutomation(automationId: string, reason?: string): Promise<{ success: boolean; error?: string }> {
-  const { data: auto } = await supabase.from("client_automations").select("id, client_id, template_id").eq("id", automationId).single();
+  const { data: auto } = await getSupabase().from("client_automations").select("id, client_id, template_id").eq("id", automationId).single();
   if (!auto) return { success: false, error: "Not found" };
-  await supabase.from("client_automations").update({ status: "paused", paused_at: new Date().toISOString() }).eq("id", automationId);
-  await supabase.from("provisioning_logs").insert({ client_id: auto.client_id, automation_id: automationId, template_id: auto.template_id, action: "deactivate", status: "passed", steps: [{ step: "deactivation", status: "passed", detail: reason || "Manual" }], initiated_by: "admin" });
+  await getSupabase().from("client_automations").update({ status: "paused", paused_at: new Date().toISOString() }).eq("id", automationId);
+  await getSupabase().from("provisioning_logs").insert({ client_id: auto.client_id, automation_id: automationId, template_id: auto.template_id, action: "deactivate", status: "passed", steps: [{ step: "deactivation", status: "passed", detail: reason || "Manual" }], initiated_by: "admin" });
   return { success: true };
 }
 
 export async function reactivateAutomation(automationId: string): Promise<{ success: boolean; error?: string }> {
-  const { data: auto } = await supabase.from("client_automations").select("id, client_id, template_id").eq("id", automationId).single();
+  const { data: auto } = await getSupabase().from("client_automations").select("id, client_id, template_id").eq("id", automationId).single();
   if (!auto) return { success: false, error: "Not found" };
-  await supabase.from("client_automations").update({ status: "live", paused_at: null }).eq("id", automationId);
-  await supabase.from("provisioning_logs").insert({ client_id: auto.client_id, automation_id: automationId, template_id: auto.template_id, action: "activate", status: "passed", steps: [{ step: "reactivation", status: "passed" }], initiated_by: "admin" });
+  await getSupabase().from("client_automations").update({ status: "live", paused_at: null }).eq("id", automationId);
+  await getSupabase().from("provisioning_logs").insert({ client_id: auto.client_id, automation_id: automationId, template_id: auto.template_id, action: "activate", status: "passed", steps: [{ step: "reactivation", status: "passed" }], initiated_by: "admin" });
   return { success: true };
 }
