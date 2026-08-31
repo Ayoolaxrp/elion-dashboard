@@ -77,21 +77,21 @@ export default function FunnelPage() {
         </div>
       </header>
 
-      {/* HERO */}
-      <section className="pt-12 sm:pt-20 pb-12 sm:pb-20 px-4 sm:px-6">
+      {/* 1. HERO — increased spacing */}
+      <section className="pt-16 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-6">AI Operations for Growing Businesses</p>
-          <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.1] mb-8">Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
-          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-12 leading-relaxed">ELION analyzes where leads, follow-ups, bookings, and repetitive operations are breaking down — then builds the systems to fix them.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-8">AI Operations for Growing Businesses</p>
+          <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.1] mb-10">Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
+          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-14 leading-relaxed">ELION analyzes where leads, follow-ups, bookings, and repetitive operations are breaking down — then builds the systems to fix them.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
             <a href="#method" className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] transition-all text-sm">See How It Works</a>
           </div>
-          <p className="text-xs text-[var(--color-text-muted)] mt-4">No credit card. Evidence-based findings. You own the system.</p>
+          <p className="text-xs text-[var(--color-text-muted)]">No credit card. Evidence-based findings. You own the system.</p>
         </div>
       </section>
 
-      {/* THE PAIN */}
+      {/* 2. THE PAIN — 4 leak cards */}
       <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-4">Your business may be leaking revenue in places you cannot see.</h2>
@@ -107,44 +107,27 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* HOW ELION FINDS THE LEAK */}
-      <section id="method" className="py-12 sm:py-20 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">How ELION finds the leak</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-12">ELION finds the leaks before we automate them.</h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-0 flex-wrap">
-            {["Your Business","Free Audit","Find the Leaks","Design the System","Automate the Work","Measure the Result"].map((s,i)=>(
-              <div key={i} className="flex items-center gap-3">
-                <div className={cn("px-4 py-3 rounded-xl text-sm font-medium border",i===0?"bg-[var(--color-surface-raised)] border-[var(--color-border)] text-[var(--color-text-secondary)]":"bg-[var(--color-accent)]/10 border-[var(--color-accent)]/20 text-[var(--color-accent)]")}>{s}</div>
-                {i<5&&<ArrowRight className="w-4 h-4 text-[var(--color-text-muted)]/30 hidden sm:block" />}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SAMPLE AUDIT */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
+      {/* 3. SAMPLE AUDIT — moved here, dashed border, prominent illustrative label */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">See what ELION finds before you pay us.</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3">Give us your business website. ELION analyzes publicly available information and identifies operational gaps worth fixing.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3">See what ELION finds before you pay us.</h2>
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10">Here is what a sample audit looks like.</p>
-          <div className="rounded-xl border border-[var(--color-accent)]/20 bg-[var(--color-surface)] p-6 sm:p-8">
+          <div className="rounded-xl border-2 border-dashed border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.03] p-6 sm:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-2 py-0.5 rounded text-[10px] font-semibold text-[var(--color-accent)] bg-[var(--color-accent)]/10 uppercase tracking-wider">Illustrative Example</span>
+              <span className="px-3 py-1 rounded-md text-[11px] font-bold text-[var(--color-accent)] bg-[var(--color-accent)]/15 uppercase tracking-wider border border-[var(--color-accent)]/20">Illustrative Example — Not a real client</span>
             </div>
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-1">Lagos Real Estate Agency</h3>
-            <p className="text-xs text-[var(--color-text-muted)] mb-6">Not a real client — this shows what the audit produces.</p>
+            <p className="text-xs text-[var(--color-text-muted)] mb-6">This shows what the audit produces.</p>
             <div className="grid sm:grid-cols-3 gap-4 mb-6">
-              <div className="text-center p-4 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
+              <div className="text-center p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]/50">
                 <p className="text-3xl font-bold text-[var(--color-text-primary)]">42</p>
                 <p className="text-xs text-[var(--color-text-muted)] mt-1">Automation Score</p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
+              <div className="text-center p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]/50">
                 <p className="text-3xl font-bold text-red-400">2</p>
                 <p className="text-xs text-[var(--color-text-muted)] mt-1">Critical Findings</p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
+              <div className="text-center p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]/50">
                 <p className="text-3xl font-bold text-amber-400">1</p>
                 <p className="text-xs text-[var(--color-text-muted)] mt-1">High Priority</p>
               </div>
@@ -173,14 +156,14 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* HOW WE FIX IT */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6">
+      {/* 4. HOW WE FIX IT — 4-step method, only process explanation */}
+      <section id="method" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-4xl mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">From finding the leak to fixing it</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12">You do not buy another dashboard. You get an operating system for the workflow that matters.</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             {PROCESS.map((m)=>(
-              <div key={m.n} className="relative p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all">
+              <div key={m.n} className="relative p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all">
                 <span className="text-2xl font-bold text-[var(--color-accent)]/15 absolute top-3 right-4">{m.n}</span>
                 <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{m.title}</h3>
                 <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{m.desc}</p>
@@ -190,43 +173,35 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* OWNERSHIP */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
+      {/* 5. OWNERSHIP — increased visual weight, merged with outcomes */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-6">Built for your business. Owned by you.</h2>
-          <div className="grid sm:grid-cols-2 gap-3 text-left max-w-xl mx-auto mb-8">
-            {["You own your systems","You own your workflows","You own your data","No artificial lock-in","Third-party costs are disclosed","We can maintain it or hand it over"].map((item,i)=>(
-              <div key={i} className="flex items-center gap-2">
-                <span className="text-[var(--color-success)] text-sm">&#10003;</span>
-                <span className="text-sm text-[var(--color-text-secondary)]">{item}</span>
-              </div>
-            ))}
-          </div>
-          <a href="#audit" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-secondary)] font-semibold text-sm hover:bg-[var(--color-surface-elevated)] transition-all">See How ELION Works</a>
-        </div>
-      </section>
-
-      {/* OUTCOMES */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-4">What happens when the automation is built for your business?</h2>
-          <p className="text-center text-[var(--color-text-secondary)] mb-12 max-w-xl mx-auto">Your workflow is unique. That is why ELION starts with an audit.</p>
-          <div className="grid sm:grid-cols-3 gap-6">
+          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">The ELION difference</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">Built for your business.<br />Owned by you.</h2>
+          <p className="text-base text-[var(--color-text-secondary)] mb-10 max-w-xl mx-auto leading-relaxed">Most automation agencies sell you access to a system they control. ELION builds the system, documents it, and hands you the keys.</p>
+          <div className="grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto mb-10">
             {[
-              { title: "More consistency", desc: "Important leads do not depend on someone remembering what to do next." },
-              { title: "Less repetitive work", desc: "Your team stops manually moving information between tools." },
-              { title: "Better visibility", desc: "You can see what is happening instead of guessing." },
+              { title: "You own your systems", desc: "Workflows are documented and yours to keep." },
+              { title: "You own your workflows", desc: "No artificial lock-in. Move freely if you choose." },
+              { title: "You own your data", desc: "Your leads, your records, your information." },
+              { title: "No artificial lock-in", desc: "Optional support — not mandatory dependency." },
+              { title: "Third-party costs are disclosed", desc: "No hidden software subscriptions." },
+              { title: "We can maintain it or hand it over", desc: "Full support or full handoff. Your choice." },
             ].map((item,i)=>(
-              <div key={i} className="p-6 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
-                <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{item.title}</h3>
-                <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{item.desc}</p>
+              <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
+                <span className="text-[var(--color-success)] text-lg mt-0.5 shrink-0">&#10003;</span>
+                <div>
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{item.title}</span>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
+          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/25">Start with the Free Audit <ArrowRight className="w-4 h-4" /></a>
         </div>
       </section>
 
-      {/* AUDIT FORM */}
+      {/* 6. AUDIT FORM — #audit anchor */}
       <section id="audit" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-lg mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">Free Business Automation Audit</p>
@@ -282,7 +257,7 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* 7. FAQ */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12">Frequently asked questions</h2>
@@ -300,7 +275,7 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* FINAL CTA */}
+      {/* 8. FINAL CTA */}
       <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4">Find your leaks.</h2>
@@ -322,7 +297,6 @@ export default function FunnelPage() {
           </div>
         </div>
       </footer>
-      {/* Mobile sticky CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[var(--color-surface)]/95 backdrop-blur-xl border-t border-[var(--color-border)]/50 px-4 py-3 safe-area-bottom">
         <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
       </div>
