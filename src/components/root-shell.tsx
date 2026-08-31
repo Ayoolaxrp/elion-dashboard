@@ -48,6 +48,12 @@ const sections = [
       { label: "Support", href: "/landing/support", icon: LifeBuoy },
     ],
   },
+  {
+    label: "Admin",
+    items: [
+      { label: "Clients", href: "/admin/clients", icon: Settings },
+    ],
+  },
 ];
 
 export function RootShell({ children }: { children: React.ReactNode }) {

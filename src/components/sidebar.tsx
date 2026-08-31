@@ -18,6 +18,8 @@ import {
   X,
   Menu,
   PlayCircle,
+  Users,
+  Shield,
   LifeBuoy,
 } from "lucide-react";
 import { useState } from "react";
@@ -39,6 +41,13 @@ const sections = [
       { label: "Revenue Recovery", href: "/recovery", icon: RotateCcw },
       { label: "Operations", href: "/operations", icon: Settings },
       { label: "Marketing Site", href: "/funnel", icon: Globe },
+    ],
+  },
+  {
+    label: "Admin",
+    items: [
+      { label: "Clients", href: "/admin/clients", icon: Users },
+      { label: "Admin Leads", href: "/admin/leads", icon: Shield },
     ],
   },
   {
