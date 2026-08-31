@@ -49,9 +49,9 @@ function LoginForm() {
       .filter(Boolean);
 
     if (adminEmails.includes(email.toLowerCase())) {
-      router.push("/admin");
+      window.location.href = "/admin";
     } else {
-      router.push(redirect);
+      window.location.href = redirect;
     }
   };
 
