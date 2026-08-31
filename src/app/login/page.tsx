@@ -32,15 +32,40 @@ function LoginForm() {
     const { error: authErr } = await sb.auth.signInWithPassword({ email, password });
 
     if (authErr) {
-      setError(authErr.message === "Invalid login credentials"
-        ? "Invalid email or password."
-        : "Login failed. Please try again."
+      setError(
+        authErr.message === "Invalid login credentials"
+          ? "Invalid email or password."
+          : "Login failed. Please try again."
       );
       setLoading(false);
       return;
     }
 
-    router.push(redirect);
+    // Resolve role from /api/auth/me, then redirect appropriately
+    try {
+      const res = await fetch("/api/auth/me");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.isSuperAdmin || data.isAdmin) {
+          router.push("/admin");
+        } else {
+          router.push(redirect);
+        }
+      } else {
+        // Fallback: check email-based admin
+        const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
+          .split(",")
+          .map((e: string) => e.trim().toLowerCase())
+          .filter(Boolean);
+        if (adminEmails.includes(email.toLowerCase())) {
+          router.push("/admin");
+        } else {
+          router.push(redirect);
+        }
+      }
+    } catch {
+      router.push(redirect);
+    }
     router.refresh();
   };
 
@@ -72,7 +97,7 @@ function LoginForm() {
         <form onSubmit={handleLogin} className="space-y-4">
           {authError === "not_configured" && !error && (
             <div className="p-3 rounded-lg bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/20">
-              <p className="text-sm text-[var(--color-warning)]">Authentication is not configured. Set Supabase environment variables to access this page.</p>
+              <p className="text-sm text-[var(--color-warning)]">Authentication is not configured. Set Supabase environment variables.</p>
             </div>
           )}
           {authError === "unauthorized" && !error && (
@@ -87,8 +112,9 @@ function LoginForm() {
           )}
 
           <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1.5">Email</label>
+            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1.5" htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -99,9 +125,10 @@ function LoginForm() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1.5">Password</label>
+            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1.5" htmlFor="password">Password</label>
             <div className="relative">
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -113,6 +140,7 @@ function LoginForm() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] cursor-pointer"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>

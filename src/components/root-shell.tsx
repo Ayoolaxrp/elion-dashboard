@@ -3,55 +3,68 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
-  Search,
-  Zap,
-  Mail,
-  RotateCcw,
-  Calendar,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Globe,
-  X,
-  Menu,
-  PlayCircle,
-  LifeBuoy, LogOut,
+  LayoutDashboard, Search, Zap, Mail, RotateCcw, Calendar,
+  Settings, ChevronLeft, ChevronRight, Globe, X, Menu,
+  PlayCircle, LifeBuoy, LogOut, Users, Shield, BarChart3,
 } from "lucide-react";
 
-const sections = [
+// Route definitions by role
+const clientSections = [
   {
     label: "Overview",
     items: [
       { label: "Dashboard", href: "/", icon: LayoutDashboard },
-      { label: "Leak Audit", href: "/audit", icon: Search },
     ],
   },
   {
     label: "Automations",
     items: [
-      { label: "Lead Response", href: "/leads", icon: Zap },
+      { label: "Leads", href: "/leads", icon: Zap },
       { label: "Follow-Up", href: "/followup", icon: Mail },
       { label: "Booking", href: "/booking", icon: Calendar },
-      { label: "Revenue Recovery", href: "/recovery", icon: RotateCcw },
+      { label: "Recovery", href: "/recovery", icon: RotateCcw },
       { label: "Operations", href: "/operations", icon: Settings },
     ],
   },
   {
     label: "Account",
     items: [
-      { label: "Marketing Site", href: "/funnel", icon: Globe },
       { label: "Demo", href: "/demo", icon: PlayCircle },
       { label: "Support", href: "/landing/support", icon: LifeBuoy },
     ],
   },
+];
+
+const adminSections = [
   {
-    label: "Admin",
+    label: "Overview",
     items: [
-      { label: "Clients", href: "/admin/clients", icon: Settings },
+      { label: "Admin Home", href: "/admin", icon: Shield },
+      { label: "Leads", href: "/admin/leads", icon: Users },
+    ],
+  },
+  {
+    label: "Clients",
+    items: [
+      { label: "All Clients", href: "/admin/clients", icon: Users },
+    ],
+  },
+  {
+    label: "Platform",
+    items: [
+      { label: "Leak Audit", href: "/audit", icon: Search },
+      { label: "Demo", href: "/demo", icon: PlayCircle },
+      { label: "Marketing", href: "/funnel", icon: Globe },
+      { label: "Analytics", href: "/status", icon: BarChart3 },
+    ],
+  },
+  {
+    label: "Account",
+    items: [
+      { label: "Support", href: "/landing/support", icon: LifeBuoy },
     ],
   },
 ];
@@ -59,13 +72,35 @@ const sections = [
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isLanding = !pathname || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status";
-  const handleLogout = async () => { try { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; } catch { window.location.href = "/login"; } };
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [roleLabel, setRoleLabel] = useState("");
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((d) => {
+        setIsAdmin(d.isSuperAdmin || d.isAdmin);
+        setRoleLabel(d.isSuperAdmin ? "Super Admin" : d.isAdmin ? "Admin" : d.role === "owner" ? "Owner" : "");
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      window.location.href = "/login";
+    } catch {
+      window.location.href = "/login";
+    }
+  };
 
   if (isLanding) {
     return <>{children}</>;
   }
+
+  const sections = isAdmin ? adminSections : clientSections;
 
   const sidebarContent = (
     <>
@@ -73,7 +108,14 @@ export function RootShell({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-2">
           <Image src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} priority />
           {!collapsed && (
-            <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">ELION</span>
+            <div>
+              <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">ELION</span>
+              {roleLabel && (
+                <span className="ml-1.5 text-[9px] font-medium text-[var(--color-accent)] bg-[var(--color-accent)]/10 px-1.5 py-0.5 rounded">
+                  {roleLabel}
+                </span>
+              )}
+            </div>
           )}
         </div>
         <button
@@ -101,7 +143,9 @@ export function RootShell({ children }: { children: React.ReactNode }) {
                     onClick={() => setMobileOpen(false)}
                     className={cn(
                       "flex items-center gap-2.5 px-3 py-2 rounded text-sm transition-colors",
-                      isActive ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-medium" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface)]"
+                      isActive
+                        ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-medium"
+                        : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface)]"
                     )}
                     title={collapsed ? item.label : undefined}
                   >
