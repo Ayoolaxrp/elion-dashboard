@@ -23,6 +23,8 @@ function LoginForm() {
     setError("");
 
     const sb = getSupabase();
+    console.log("[ELION] getSupabase() returned:", sb ? "OK" : "NULL");
+    console.log("[ELION] URL:", process.env.NEXT_PUBLIC_SUPABASE_URL ? "set" : "missing");
     if (!sb) {
       setError("Authentication not configured.");
       setLoading(false);
@@ -32,6 +34,7 @@ function LoginForm() {
     const { error: authErr } = await sb.auth.signInWithPassword({ email, password });
 
     if (authErr) {
+      console.error("[ELION] Auth error:", authErr.message, authErr.status);
       setError(
         authErr.message === "Invalid login credentials"
           ? "Invalid email or password."
