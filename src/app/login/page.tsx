@@ -23,8 +23,6 @@ function LoginForm() {
     setError("");
 
     const sb = getSupabase();
-    console.log("[ELION] getSupabase() returned:", sb ? "OK" : "NULL");
-    console.log("[ELION] URL:", process.env.NEXT_PUBLIC_SUPABASE_URL ? "set" : "missing");
     if (!sb) {
       setError("Authentication not configured.");
       setLoading(false);
@@ -34,7 +32,6 @@ function LoginForm() {
     const { error: authErr } = await sb.auth.signInWithPassword({ email, password });
 
     if (authErr) {
-      console.error("[ELION] Auth error:", authErr.message, authErr.status);
       setError(
         authErr.message === "Invalid login credentials"
           ? "Invalid email or password."
@@ -44,55 +41,27 @@ function LoginForm() {
       return;
     }
 
-    // Resolve role from /api/auth/me, then redirect appropriately
-    try {
-      const res = await fetch("/api/auth/me");
-      if (res.ok) {
-        const data = await res.json();
-        if (data.isSuperAdmin || data.isAdmin) {
-          router.push("/admin");
-        } else {
-          router.push(redirect);
-        }
-      } else {
-        // Fallback: check email-based admin
-        const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
-          .split(",")
-          .map((e: string) => e.trim().toLowerCase())
-          .filter(Boolean);
-        if (adminEmails.includes(email.toLowerCase())) {
-          router.push("/admin");
-        } else {
-          router.push(redirect);
-        }
-      }
-    } catch {
+    // Login succeeded — redirect immediately
+    // Admin emails go to /admin, everyone else goes to the redirect target
+    const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "awodeyiayoola@gmail.com")
+      .split(",")
+      .map((e: string) => e.trim().toLowerCase())
+      .filter(Boolean);
+
+    if (adminEmails.includes(email.toLowerCase())) {
+      router.push("/admin");
+    } else {
       router.push(redirect);
     }
-    router.refresh();
   };
-
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return (
-      <div className="min-h-screen bg-[var(--color-surface)] flex items-center justify-center p-4">
-        <div className="w-full max-w-sm text-center">
-          <Image src="/brand/elion-e-icon.svg" alt="ELION" width={48} height={48} className="mx-auto mb-6" />
-          <h1 className="text-xl font-bold text-[var(--color-text-primary)] mb-2" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</h1>
-          <p className="text-sm text-[var(--color-text-muted)] mb-6">Authentication not configured yet.</p>
-          <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-            <p className="text-xs text-[var(--color-text-secondary)]">Set <code className="text-[var(--color-accent)]">NEXT_PUBLIC_SUPABASE_URL</code> and <code className="text-[var(--color-accent)]">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in your environment variables.</p>
-          </div>
-          <a href="/" className="inline-block mt-4 text-xs text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">Back to Dashboard</a>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[var(--color-surface)] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Image src="/brand/elion-e-icon.svg" alt="ELION" width={48} height={48} className="mx-auto mb-4" />
+          <a href="/funnel">
+            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={48} height={48} className="mx-auto mb-4" />
+          </a>
           <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Sign in to your account</p>
         </div>
@@ -100,7 +69,7 @@ function LoginForm() {
         <form onSubmit={handleLogin} className="space-y-4">
           {authError === "not_configured" && !error && (
             <div className="p-3 rounded-lg bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/20">
-              <p className="text-sm text-[var(--color-warning)]">Authentication is not configured. Set Supabase environment variables.</p>
+              <p className="text-sm text-[var(--color-warning)]">Authentication is not configured.</p>
             </div>
           )}
           {authError === "unauthorized" && !error && (
