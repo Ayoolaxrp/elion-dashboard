@@ -29,6 +29,12 @@ export const metadata: Metadata = {
     title: "ELION - Fix Your Operational Leaks",
     description:
       "Systems that respond to leads, follow up automatically, recover dormant revenue, and book appointments.",
+    images: [{ url: "/brand/elion-e-icon.png", width: 1254, height: 1254 }],
+  },
+  icons: {
+    icon: "/brand/elion-e-icon.png",
+    shortcut: "/brand/elion-e-icon.png",
+    apple: "/brand/elion-e-icon.png",
   },
   robots: { index: true, follow: true },
 };
