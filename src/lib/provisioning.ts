@@ -205,11 +205,12 @@ export async function provisionAutomation(clientId: string, templateId: string):
       steps.push({ step: "n8n_workflow", status: resp.ok ? "passed" : "failed", detail: resp.ok ? "Provisioned" : "HTTP " + resp.status });
     } catch { steps.push({ step: "n8n_workflow", status: "skipped", detail: "n8n not available" }); }
   } else {
-    steps.push({ step: "n8n_workflow", status: "skipped", detail: "n8n not configured" });
+    steps.push({ step: "n8n_workflow", status: "failed", detail: "N8N integration required for activation" });
   }
 
-  const allPassed = steps.every(s => s.status === "passed" || s.status === "skipped");
-  const newStatus = allPassed ? "live" : "configuring";
+  const allPassed = steps.every(s => s.status === "passed");
+  const hasN8nFailed = steps.some(s => s.step === "n8n_workflow" && s.status === "failed");
+  const newStatus = allPassed ? "live" : hasN8nFailed ? "pending_activation" : "configuring";
   await getSupabase().from("client_automations").update({ status: newStatus, ...(newStatus === "live" ? { deployed_at: new Date().toISOString() } : {}) }).eq("id", automation.id);
   steps.push({ step: "activation", status: allPassed ? "passed" : "blocked", detail: newStatus });
 

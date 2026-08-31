@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS client_automations (
       'configuring',    -- being set up
       'testing',        -- testing
       'live',           -- actively running
+      'pending_activation', -- awaiting n8n/activation
       'paused',         -- temporarily stopped
       'failed',         -- error state
       'archived'        -- no longer active
