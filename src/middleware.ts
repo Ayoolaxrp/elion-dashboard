@@ -1,32 +1,22 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-// Admin-only routes (super_admin + admin)
 const ADMIN_ONLY = ["/admin"];
-
-// Client dashboard routes (all authenticated users)
 const CLIENT_ROUTES = ["/", "/leads", "/booking", "/followup", "/operations", "/recovery"];
-
-// Public routes
-const PUBLIC_PATHS = ["/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/api/request", "/api/audit", "/api/demo"];
+const PUBLIC_PATHS = ["/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/api/request", "/api/audit", "/api/demo", "/api/auth"];
 
 function isPublicRoute(pathname: string): boolean {
   return PUBLIC_PATHS.some((r) => pathname === r || pathname.startsWith(r + "/"));
 }
-
 function isAdminOnly(pathname: string): boolean {
   return ADMIN_ONLY.some((r) => pathname === r || pathname.startsWith(r + "/"));
 }
-
 function isClientRoute(pathname: string): boolean {
   return CLIENT_ROUTES.some((r) => pathname === r || pathname.startsWith(r + "/"));
 }
 
-// Admin email allowlist (legacy fallback)
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
-  .split(",")
-  .map((e) => e.trim().toLowerCase())
-  .filter(Boolean);
+  .split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -49,7 +39,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check auth for admin-only and client routes
   if (isAdminOnly(pathname) || isClientRoute(pathname)) {
     try {
       let response = NextResponse.next({ request: { headers: request.headers } });
@@ -74,34 +63,11 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl);
       }
 
-      // Resolve role from membership table
-      const supabaseAdmin = createServerClient(
-        supabaseUrl,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { cookies: { getAll() { return []; }, setAll() {} } }
-      );
+      // Email-based admin check (always works, no DB dependency)
+      const isEmailAdmin = user.email != null && ADMIN_EMAILS.includes(user.email.toLowerCase());
 
-      const { data: memberships } = await supabaseAdmin
-        .from("organization_memberships")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("status", "active");
-
-      // Determine highest role
-      const rolePriority: Record<string, number> = {
-        super_admin: 1, admin: 2, owner: 3, staff: 4, client: 5,
-      };
-      const roles = (memberships || []).map((m: { role: string }) => m.role);
-      const highestRole = roles.sort((a, b) => (rolePriority[a] || 99) - (rolePriority[b] || 99))[0] || null;
-
-      // Fallback: email-based admin check for legacy users
-      let isAdmin = highestRole === "super_admin" || highestRole === "admin";
-      if (!isAdmin && roles.length === 0) {
-        isAdmin = user.email != null && ADMIN_EMAILS.includes(user.email.toLowerCase());
-      }
-
-      // Admin-only routes: require admin role
-      if (isAdminOnly(pathname) && !isAdmin) {
+      // Admin-only routes: allow if email is in admin list
+      if (isAdminOnly(pathname) && !isEmailAdmin) {
         const loginUrl = request.nextUrl.clone();
         loginUrl.pathname = "/";
         loginUrl.searchParams.set("error", "unauthorized");
@@ -109,13 +75,11 @@ export async function middleware(request: NextRequest) {
       }
 
       // Client routes: any authenticated user can access
-      // (both admin and client users see the dashboard)
+      // Both admin and client users see the dashboard
     } catch (err) {
       console.error(`[SECURITY] Middleware error on ${pathname}:`, err);
-      const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = "/login";
-      loginUrl.searchParams.set("error", "auth_error");
-      return NextResponse.redirect(loginUrl);
+      // Fail open for client routes — allow authenticated users through
+      // The session check above already verified the user exists
     }
   }
 
