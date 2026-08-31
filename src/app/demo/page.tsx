@@ -104,6 +104,24 @@ export default function DemoPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
+      {/* Header Nav */}
+      <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50 -mx-4 sm:-mx-6 px-4 sm:px-6 mb-6">
+        <div className="max-w-6xl mx-auto h-14 flex items-center justify-between">
+          <a href="/funnel" className="flex items-center gap-2">
+            <img src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} />
+            <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
+          </a>
+          <div className="hidden sm:flex items-center gap-6 text-sm">
+            <a href="/funnel#method" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
+            <a href="/funnel#audit" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Audit</a>
+            <a href="/demo" className="text-[var(--color-accent)] font-medium">Demo</a>
+            <a href="/landing/pricing" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Pricing</a>
+            <a href="/landing/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">About</a>
+          </div>
+          <a href="/funnel#audit" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Start Free Audit</a>
+        </div>
+      </header>
+
       {/* Demo Banner */}
       <div className="bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/30 rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2">
