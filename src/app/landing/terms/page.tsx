@@ -26,7 +26,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">3. Payment Terms</h2>
-          <p>All pricing is listed in Nigerian Naira (NGN) unless otherwise stated. Payment is due in full before implementation begins unless otherwise agreed in writing. One-time payments grantfull ownership of the delivered automation workflows. Monthly retainer fees are billed on the 1st of each month.</p>
+          <p>All pricing is listed in Nigerian Naira (NGN) unless otherwise stated. Payment is due in full before implementation begins unless otherwise agreed in writing. One-time payments grant full ownership of the delivered automation workflows. Monthly retainer fees are billed on the 1st of each month.</p>
         </section>
 
         <section>
@@ -58,7 +58,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">9. Contact</h2>
-          <p>For questions about these Terms, contact us at <a href="/funnel">Contact us</a>.</p>
+          <p>For questions about these Terms, contact us at <a href="mailto:hello@elion.ng" className="text-[var(--color-accent)] hover:underline">hello@elion.ng</a>.</p>
         </section>
       </div>
     </div>

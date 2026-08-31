@@ -42,25 +42,28 @@ export default function SupportPage() {
           <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-8">Contact us</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <a
-              href="/funnel">
+              href="https://wa.me/2348012345678?text=Hello%20ELION%2C%20I%20need%20support"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block">
               <div className="w-10 h-10 rounded-lg bg-[var(--color-success)]/10 flex items-center justify-center text-[var(--color-success)] mb-3">
                 <MessageSquare className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">WhatsApp</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">Fastest response. Available during business hours.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">/Send a request</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Send a message</p>
             </a>
 
             <a
-              href="/funnel"
-              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors"
+              href="mailto:support@elion.ng"
+              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block"
             >
               <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)] mb-3">
                 <Mail className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Email</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">For detailed enquiries and support requests.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">/Send a request</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Send a message</p>
             </a>
 
             <div className="border border-[var(--color-border)] rounded-lg p-5">

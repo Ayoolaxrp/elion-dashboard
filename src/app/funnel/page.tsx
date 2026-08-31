@@ -251,7 +251,7 @@ export default function FunnelPage() {
                   {step>0&&<button onClick={()=>setStep(step-1)} className="flex items-center gap-2 px-4 py-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors text-sm cursor-pointer mt-2 min-h-[44px]"><ArrowLeft className="w-3 h-3" />Back</button>}
                 </div>
               )}
-              <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required.</p>
+              <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. Your data is handled securely and never shared.</p>
             </div>
           )}
         </div>
@@ -264,7 +264,7 @@ export default function FunnelPage() {
           <div className="space-y-2">
             {FAQ_DATA.map((f,i)=>(
               <div key={i} className="border border-[var(--color-border)]/50 rounded-xl overflow-hidden transition-all">
-                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer hover:bg-[var(--color-surface-raised)] transition-all">
+                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer hover:bg-[var(--color-surface-raised)] transition-all" aria-expanded={openFaq===i}>
                   <span className="text-sm font-medium text-[var(--color-text-primary)] pr-4">{f.q}</span>
                   <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all",openFaq===i?"bg-[var(--color-accent)]/10 rotate-180":"bg-[var(--color-surface-raised)]")}><ChevronDown className="w-4 h-4 text-[var(--color-text-muted)]" /></div>
                 </button>

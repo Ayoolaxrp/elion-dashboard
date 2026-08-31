@@ -57,7 +57,7 @@ export default function AdminPage() {
             View Leads
           </Link>
           <Link
-            href="/audit"
+            href="/funnel#audit"
             className="px-4 py-2 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-primary)] text-sm font-medium border border-[var(--color-border)] hover:border-[var(--color-accent)]/30 transition-colors"
           >
             Run Audit

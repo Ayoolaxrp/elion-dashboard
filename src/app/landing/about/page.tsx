@@ -160,7 +160,7 @@ export default function AboutPage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/audit"
+            href="/funnel#audit"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] rounded font-semibold text-sm hover:bg-[var(--color-surface-elevated)] transition-colors"
           >
             Run Free Audit
