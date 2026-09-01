@@ -48,11 +48,26 @@ export default function FunnelPage() {
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const cs = STEPS[step];
   const pct = ((step + 1) / STEPS.length) * 100;
   const pick = (opt: string) => { setAnswers({...answers, [step]: opt}); if (step < STEPS.length - 1) setStep(step + 1); };
-  const sub = async () => { if (!name || !email) return; setSubmitting(true); try { await fetch("/api/request", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ name, email, phone, website: answers[4]||"", businessType: answers[0]||"", primaryProblem: answers[1]||"", enquiryChannels: answers[2]||"", teamSize: answers[3]||"", source: "funnel" }) }); } catch {} setSubmitting(false); setSubmitted(true); };
+  const validateEmail = (e: string) => /^[^s@]+@[^s@]+.[^s@]+$/.test(e);
+  const sub = async () => {
+    const errors: Record<string, string> = {};
+    if (!name.trim()) errors.name = "Name is required";
+    if (!email.trim()) errors.email = "Email is required";
+    else if (!validateEmail(email.trim())) errors.email = "Please enter a valid email address";
+    if (Object.keys(errors).length > 0) { setFieldErrors(errors); return; }
+    setFieldErrors({});
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/request", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ name: name.trim(), email: email.trim(), phone, website: answers[4]||"", businessType: answers[0]||"", primaryProblem: answers[1]||"", enquiryChannels: answers[2]||"", teamSize: answers[3]||"", source: "funnel" }) });
+      if (!res.ok) throw new Error("Submission failed");
+    } catch { setFieldErrors({ submit: "Something went wrong. Please try again." }); setSubmitting(false); return; }
+    setSubmitting(false); setSubmitted(true);
+  };
 
   const ip = "w-full px-5 py-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all text-base";
   const bc = "flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-elevated)] transition-all text-sm cursor-pointer";
@@ -207,6 +222,11 @@ export default function FunnelPage() {
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">Free Business Automation Audit</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3">Find out what your business could automate.</h2>
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-6 sm:mb-10">We analyze publicly available information about your business and show you where opportunities may be getting lost.</p>
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-[var(--color-text-muted)] mb-6">
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />What you receive: evidence-based audit findings</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />When: within 24 hours</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />Next step: we contact you with results</span>
+          </div>
           {submitted ? (
             <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-accent)]/20 p-10 text-center">
               <CheckCircle2 className="w-14 h-14 text-[var(--color-accent)] mx-auto mb-5" />
@@ -235,8 +255,10 @@ export default function FunnelPage() {
               ) : cs.isContact ? (
                 <div className="space-y-4">
                   <p className="text-xs text-[var(--color-text-muted)] -mb-2">That is enough for us to understand the shape of the problem. Enter your details and we will identify the most relevant automation opportunities.</p>
-                  <input type="text" inputMode="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={name} onChange={e=>setName(e.target.value)} className={ip} />
-                  <input type="email" inputMode="email" autoComplete="email" placeholder="Email address" aria-label="Email address" value={email} onChange={e=>setEmail(e.target.value)} className={ip} />
+                  <input type="text" inputMode="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={name} onChange={e=>{setName(e.target.value); setFieldErrors({...fieldErrors, name:""});}} className={ip + (fieldErrors.name ? " border-red-400" : "")} />
+                  {fieldErrors.name && <p className="text-xs text-red-400 mt-1">{fieldErrors.name}</p>}
+                  <input type="email" inputMode="email" autoComplete="email" placeholder="Email address" aria-label="Email address" value={email} onChange={e=>{setEmail(e.target.value); setFieldErrors({...fieldErrors, email:""});}} className={ip + (fieldErrors.email ? " border-red-400" : "")} />
+                  {fieldErrors.email && <p className="text-xs text-red-400 mt-1">{fieldErrors.email}</p>}
                   <input type="tel" inputMode="tel" placeholder="Phone / WhatsApp (optional)" aria-label="Phone or WhatsApp number" value={phone} onChange={e=>setPhone(e.target.value)} className={ip} />
                   <div className="flex gap-3">
                     <button onClick={()=>setStep(step-1)} className={bc}><ArrowLeft className="w-4 h-4" />Back</button>
@@ -251,7 +273,8 @@ export default function FunnelPage() {
                   {step>0&&<button onClick={()=>setStep(step-1)} className="flex items-center gap-2 px-4 py-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors text-sm cursor-pointer mt-2 min-h-[44px]"><ArrowLeft className="w-3 h-3" />Back</button>}
                 </div>
               )}
-              <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. Your data is handled securely and never shared.</p>
+              {fieldErrors.submit && <p className="text-xs text-red-400 text-center mb-2">{fieldErrors.submit}</p>}
+                  <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. <a href="/landing/privacy" className="text-[var(--color-accent)] hover:underline">Privacy policy</a></p>
             </div>
           )}
         </div>

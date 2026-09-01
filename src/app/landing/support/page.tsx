@@ -15,8 +15,23 @@ export default function SupportPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch("/api/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name, email: form.email, phone: "",
+          website: "", businessType: form.subject,
+          primaryProblem: form.message, enquiryChannels: "support",
+          teamSize: "", source: "support"
+        })
+      });
+    } catch {}
+    setSubmitting(false);
     setSubmitted(true);
   };
 
@@ -149,9 +164,10 @@ export default function SupportPage() {
               </div>
               <button
                 type="submit"
-                className="w-full py-2.5 bg-[var(--color-accent)] text-white rounded text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer"
+                disabled={submitting}
+                className="w-full py-2.5 bg-[var(--color-accent)] text-white rounded text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer disabled:opacity-50"
               >
-                Send Request
+                {submitting ? "Sending..." : "Send Request"}
               </button>
             </form>
           )}
@@ -167,7 +183,7 @@ export default function SupportPage() {
               <div key={i} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer"
+                  className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer" aria-expanded={openFaq===i}
                 >
                   <span className="text-sm font-semibold text-[var(--color-text-primary)]">{faq.q}</span>
                   {openFaq === i ? <ChevronUp className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" /> : <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />}
