@@ -6,7 +6,7 @@ import { Play, Pause, Loader2, Check, X, ChevronDown, ChevronUp } from "lucide-r
 
 interface Client {
   id: string; contact_name: string; email: string; phone: string; company_name: string; industry: string; website: string;
-  plan_name: string; plan_price: number; onboarding_status: string; onboarding_notes: string; status: string; created_at: string;
+  plan_name: string; plan_price: number; onboarding_status: string; onboarding_notes: string; onboarding_form_data: Record<string, unknown> | null; onboarding_completed_at: string | null; status: string; created_at: string;
   client_automations: Array<{ id: string; status: string; custom_name: string; last_run_at: string; total_runs: number; success_rate: number; deployed_at: string; workflow_templates: { name: string; slug: string; category: string; description: string; value_proposition: string } }>;
   client_integrations: Array<{ integration_type: string; provider: string; status: string; last_verified_at: string }>;
   client_metrics: Array<{ leads_captured: number; leads_qualified: number; leads_responded: number; avg_response_time_seconds: number; followups_sent: number; bookings_created: number; conversion_rate: number }>;
@@ -84,6 +84,45 @@ export default function ClientDetailPage() {
         <div className="flex items-center gap-2">
           <span className="px-2 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[var(--color-surface)] text-[var(--color-text-secondary)] border border-[var(--color-border)]">{client.plan_name || "No plan"}</span>
           <span className={"px-2 py-1 rounded text-xs font-semibold uppercase tracking-wider " + (SC[client.onboarding_status] || "")}>{client.onboarding_status.replace("_", " ")}</span>
+        </div>
+      </div>
+
+      {/* Onboarding Link */}
+      <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl p-5 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Client Onboarding</h2>
+            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+              {client.onboarding_status === 'completed'
+                ? 'Onboarding completed on ' + new Date(client.onboarding_completed_at || Date.now()).toLocaleDateString()
+                : client.onboarding_status === 'in_review'
+                ? 'Onboarding form submitted — review the details below'
+                : 'Send this link to the client to complete onboarding'}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              readOnly
+              value={typeof window !== 'undefined' ? window.location.origin + '/onboarding/' + client.id : '/onboarding/' + client.id}
+              className="px-3 py-1.5 text-xs bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg text-[var(--color-text-muted)] w-64"
+            />
+            <button
+              onClick={() => {
+                const url = window.location.origin + '/onboarding/' + client.id;
+                navigator.clipboard.writeText(url);
+              }}
+              className="px-3 py-1.5 text-xs bg-[var(--color-accent)] text-white rounded-lg hover:opacity-90 transition-colors cursor-pointer"
+            >
+              Copy Link
+            </button>
+            <a
+              href={'/onboarding/' + client.id}
+              target="_blank"
+              className="px-3 py-1.5 text-xs border border-[var(--color-border)] text-[var(--color-text-secondary)] rounded-lg hover:bg-[var(--color-surface)] transition-colors"
+            >
+              Preview
+            </a>
+          </div>
         </div>
       </div>
 
