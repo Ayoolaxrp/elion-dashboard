@@ -365,7 +365,7 @@ export default function PricingPage() {
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">Ready to get started?</h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-6">Run a free leak audit to see where your business is losing money.</p>
           <Link
-            href="/funnel"
+            href="/funnel#audit"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-white rounded-lg font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             Run Free Leak Audit <ArrowRight className="w-4 h-4" />
