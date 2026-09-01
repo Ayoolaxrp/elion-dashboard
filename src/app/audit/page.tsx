@@ -860,5 +860,6 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       </Modal>
 
     </div>
+    </div>
   );
 }
