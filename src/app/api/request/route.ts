@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { sendAuditNotification } from "@/lib/resend";
 
 function generateId(prefix: string): string {
   return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
@@ -161,6 +162,13 @@ export async function POST(request: NextRequest) {
       });
     } catch (e) {
       console.error('Notification insert failed:', e);
+    }
+
+    // Send email to admin
+    try {
+      await sendAuditNotification('awodeyiayoola@gmail.com', { name, email, businessType, website, primaryProblem });
+    } catch (e) {
+      console.error('Email send failed:', e);
     }
 
     return NextResponse.json({
