@@ -1,0 +1,74 @@
+{
+  "name": "ELION - Follow-Up Sequence",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "elion/follow-up",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "w2-n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst day = body.follow_up_day || 1;\nconst name = (body.lead_name || '').split(' ')[0] || 'there';\nconst biz = body.business_name || 'ELION';\nconst msgs = {\n  1: 'Hi ' + name + ',\n\nJust checking in on your enquiry to ' + biz + '. Have you had a chance to review what we discussed?\n\nWe are here to help whenever you are ready.\n\nBest regards,\n' + biz,\n  3: 'Hi ' + name + ',\n\nFollowing up again regarding ' + biz + '. We noticed you have not yet moved forward and wanted to make sure you have everything you need.\n\nWould you like to schedule a quick call?\n\nBest regards,\n' + biz,\n  7: 'Hi ' + name + ',\n\nThis is your final follow-up from ' + biz + '. We understand timing is everything and we will not contact you further unless you reach out.\n\nIf you need us in the future, we are here.\n\nBest regards,\n' + biz\n};\nconst message = msgs[day] || msgs[1];\nreturn [{ json: { lead_email: body.lead_email, lead_name: body.lead_name, business_name: biz, message, follow_up_day: day } }];"
+      },
+      "id": "w2-n2",
+      "name": "Generate Follow-Up",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        470,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nreturn [{ json: { success: true, follow_up_day: d.follow_up_day, lead: d.lead_name } }];"
+      },
+      "id": "w2-n3",
+      "name": "Log & Respond",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        690,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Follow-Up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Follow-Up": {
+      "main": [
+        [
+          {
+            "node": "Log & Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

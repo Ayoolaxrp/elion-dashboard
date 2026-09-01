@@ -1,0 +1,74 @@
+{
+  "name": "ELION - Booking Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "elion/booking",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "w3-n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst name = (body.lead_name || '').split(' ')[0] || 'there';\nconst biz = body.business_name || 'ELION';\nconst date = body.booking_date || 'TBD';\nconst time = body.booking_time || 'TBD';\nconst link = body.meeting_link || 'https://meet.google.com/new';\nconst msg = 'Hi ' + name + ',\n\nYour booking with ' + biz + ' has been confirmed.\n\nDate: ' + date + '\nTime: ' + time + '\nLink: ' + link + '\n\nPlease join from somewhere you can comfortably discuss your business.\n\nBest regards,\n' + biz;\nreturn [{ json: { lead_email: body.lead_email, lead_name: body.lead_name, business_name: biz, message: msg, booking_date: date, booking_time: time, meeting_link: link } }];"
+      },
+      "id": "w3-n2",
+      "name": "Generate Booking",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        470,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nreturn [{ json: { success: true, booking: true, lead: d.lead_name, date: d.booking_date } }];"
+      },
+      "id": "w3-n3",
+      "name": "Confirm & Respond",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        690,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Booking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Booking": {
+      "main": [
+        [
+          {
+            "node": "Confirm & Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

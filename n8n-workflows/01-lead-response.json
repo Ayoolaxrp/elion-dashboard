@@ -1,0 +1,135 @@
+{
+  "name": "ELION - Lead Response",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "elion/lead-response",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "w1-n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst clientId = body.client_id;\nif (!clientId) return [{ json: { error: 'No client_id' } }];\nreturn [{ json: { client_id: clientId, lead_email: body.lead_email || body.email, lead_phone: body.lead_phone || body.phone, lead_name: body.lead_name || body.contact_name || 'Customer' } }];"
+      },
+      "id": "w1-n2",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        470,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://dxpzvscfbemywhkehpdm.supabase.co/rest/v1/clients?id=eq.{{ $json.client_id }}&select=id,company_name,contact_name",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI"
+            }
+          ]
+        }
+      },
+      "id": "w1-n3",
+      "name": "Get Client",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        690,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const client = ($input.first().json.body || [{}])[0] || {};\nconst prev = $('Validate Input').first().json;\nconst name = (prev.lead_name || '').split(' ')[0] || 'there';\nconst biz = client.company_name || 'ELION';\nconst msg = 'Hi ' + name + ',\n\nThank you for contacting ' + biz + '. We have received your enquiry and will respond shortly.\n\nBest regards,\n' + biz;\nreturn [{ json: { ...prev, business_name: biz, message: msg } }];"
+      },
+      "id": "w1-n4",
+      "name": "Format Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        910,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nreturn [{ json: { success: true, channel: 'email', lead: d.lead_name, business: d.business_name } }];"
+      },
+      "id": "w1-n5",
+      "name": "Send Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1130,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Get Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Client": {
+      "main": [
+        [
+          {
+            "node": "Format Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Message": {
+      "main": [
+        [
+          {
+            "node": "Send Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
