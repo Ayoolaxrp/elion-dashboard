@@ -21,37 +21,25 @@ function LoginForm() {
     setLoading(true);
     setError("");
 
-    const sb = getSupabase();
-    if (!sb) {
-      setError("Authentication not configured.");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        setError(data.error === "Invalid login credentials" ? "Invalid email or password." : (data.error || "Login failed."));
+        setLoading(false);
+        return;
+      }
+
+      // Redirect to the destination returned by the server
+      window.location.replace(data.redirect || redirect);
+    } catch {
+      setError("Network error. Please try again.");
       setLoading(false);
-      return;
-    }
-
-    const { data, error: authErr } = await sb.auth.signInWithPassword({ email, password });
-
-    if (authErr) {
-      setError(
-        authErr.message === "Invalid login credentials"
-          ? "Invalid email or password."
-          : "Login failed. Please try again."
-      );
-      setLoading(false);
-      return;
-    }
-
-    // Login succeeded — redirect immediately
-    // Admin emails go to /admin, everyone else goes to the redirect target
-    const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "awodeyiayoola@gmail.com")
-      .split(",")
-      .map((e: string) => e.trim().toLowerCase())
-      .filter(Boolean);
-
-    if (adminEmails.includes(email.toLowerCase())) {
-      await new Promise(r => setTimeout(r, 1000));
-      window.location.replace("/admin");
-    } else {
-      window.location.replace(redirect);
     }
   };
 
