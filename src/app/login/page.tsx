@@ -29,7 +29,7 @@ function LoginForm() {
       return;
     }
 
-    const { error: authErr } = await sb.auth.signInWithPassword({ email, password });
+    const { data, error: authErr } = await sb.auth.signInWithPassword({ email, password });
 
     if (authErr) {
       setError(
