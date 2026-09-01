@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 const ADMIN_ONLY = ["/admin"];
-const CLIENT_ROUTES = ["/", "/leads", "/booking", "/followup", "/operations", "/recovery"];
+const CLIENT_ROUTES = ["/", "/leads", "/booking", "/followup", "/operations", "/recovery", "/dashboard"];
 const PUBLIC_PATHS = ["/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/onboarding", "/api/request", "/api/audit", "/api/demo", "/api/auth"];
 
 function isPublicRoute(pathname: string): boolean {

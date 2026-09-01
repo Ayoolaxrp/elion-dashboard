@@ -10,7 +10,7 @@ async function getAdmin() {
     { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
   );
   const { data: { user } } = await sb.auth.getUser();
-  if (!user || user.email !== process.env.ADMIN_EMAILS) return null;
+  if (!user || !(process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase()).includes((user.email || "").toLowerCase())) return null;
   return sb;
 }
 

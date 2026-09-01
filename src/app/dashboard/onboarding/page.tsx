@@ -1,0 +1,121 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { CheckCircle, Circle, Clock, ArrowLeft, Loader2, Shield, Mail, Phone, Settings, Rocket, Handshake } from "lucide-react";
+
+const STAGES = [
+  { key: "welcome", label: "Welcome", desc: "We sent you a welcome email with next steps.", icon: Mail },
+  { key: "kickoff", label: "Kickoff Call", desc: "We schedule a call to understand your workflow.", icon: Phone },
+  { key: "configuration", label: "Configuration", desc: "We configure your automations around your business.", icon: Settings },
+  { key: "build", label: "Build", desc: "We build and deploy your automation systems.", icon: Rocket },
+  { key: "testing", label: "Testing", desc: "We verify everything works correctly.", icon: Shield },
+  { key: "launch", label: "Launch", desc: "Your automations go live.", icon: Rocket },
+  { key: "handover", label: "Handover", desc: "We deliver your systems and documentation.", icon: Handshake },
+];
+
+export default function OnboardingProgress() {
+  const [data, setData] = useState<any>(null);
+  const [ld, setLd] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/client/onboarding").then(r => r.json()).then(d => { setData(d); setLd(false); }).catch(() => setLd(false));
+  }, []);
+
+  if (ld) return <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center"><Loader2 className="w-8 h-8 text-[#4F7CFF] animate-spin" /></div>;
+  if (!data || !data.pipeline) return <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center p-4"><div className="max-w-md text-center"><Image src="/brand/elion-e-icon.png" alt="ELION" width={48} height={48} className="mx-auto mb-4" /><h1 className="text-lg font-bold text-white mb-2">No Onboarding Found</h1><p className="text-sm text-[#6B7280] mb-4">Your onboarding has not started yet. We will be in touch soon.</p><Link href="/" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#4F7CFF] text-white text-sm font-semibold">Back to Dashboard</Link></div></div>;
+
+  const { client, pipeline, automations } = data;
+  const si = STAGES.findIndex(s => s.key === pipeline.current_stage);
+  const isComplete = pipeline.current_stage === "handover" && si === STAGES.length - 1;
+
+  return (
+    <div className="min-h-screen bg-[#0A0D14]">
+      <header className="border-b border-[#1F2937] px-6 py-4">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 text-[#9CA3AF] hover:text-white transition-colors">
+            <ArrowLeft className="w-4 h-4" /><span className="text-sm">Dashboard</span>
+          </Link>
+          <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} />
+        </div>
+      </header>
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        <div className="mb-8">
+          <p className="text-xs font-semibold text-[#4F7CFF] uppercase tracking-wider mb-2">Your Onboarding</p>
+          <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{client.company_name}</h1>
+          <p className="text-sm text-[#6B7280]">Hi {client.contact_name}, here is your implementation progress.</p>
+        </div>
+
+        {isComplete ? (
+          <div className="mb-8 p-6 rounded-xl bg-[#10B981]/10 border border-[#10B981]/30">
+            <div className="flex items-center gap-3 mb-2"><CheckCircle className="w-6 h-6 text-[#10B981]" /><h2 className="text-lg font-bold text-[#10B981]">Onboarding Complete</h2></div>
+            <p className="text-sm text-[#9CA3AF]">Your ELION automation systems are live and operational. Check your dashboard for results.</p>
+          </div>
+        ) : (
+          <div className="mb-8 p-6 rounded-xl bg-[#4F7CFF]/10 border border-[#4F7CFF]/30">
+            <div className="flex items-center gap-3 mb-2"><Clock className="w-6 h-6 text-[#4F7CFF]" /><h2 className="text-lg font-bold text-[#4F7CFF]">Stage {si + 1} of {STAGES.length}</h2></div>
+            <p className="text-sm text-[#9CA3AF]">Currently: {STAGES[si].label} � {STAGES[si].desc}</p>
+          </div>
+        )}
+
+        <div className="mb-8">
+          <div className="flex gap-1 mb-6">
+            {STAGES.map((s, i) => <div key={s.key} className={"h-2 flex-1 rounded-full transition-all " + (i < si ? "bg-[#10B981]" : i === si ? "bg-[#4F7CFF]" : "bg-[#1F2937]")} />)}
+          </div>
+          <div className="space-y-0">
+            {STAGES.map((s, i) => {
+              const isDone = i < si;
+              const isCurrent = i === si;
+              const isFuture = i > si;
+              const Icon = s.icon;
+              const completedAt = pipeline[s.key + "_completed_at"];
+              return (
+                <div key={s.key} className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className={"w-10 h-10 rounded-full flex items-center justify-center shrink-0 " + (isDone ? "bg-[#10B981]/20" : isCurrent ? "bg-[#4F7CFF]/20" : "bg-[#11161F]")}>
+                      {isDone ? <CheckCircle className="w-5 h-5 text-[#10B981]" /> : isCurrent ? <Icon className="w-5 h-5 text-[#4F7CFF]" /> : <Circle className="w-5 h-5 text-[#1F2937]" />}
+                    </div>
+                    {i < STAGES.length - 1 && <div className={"w-0.5 flex-1 my-1 " + (isDone ? "bg-[#10B981]/30" : "bg-[#1F2937]")} />}
+                  </div>
+                  <div className="pb-6 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className={"text-sm font-semibold " + (isFuture ? "text-[#6B7280]" : "text-white")}>{s.label}</h3>
+                      {isDone && <span className="text-xs text-[#10B981]">Done</span>}
+                      {isCurrent && <span className="text-xs text-[#4F7CFF] font-medium">In Progress</span>}
+                    </div>
+                    <p className={"text-xs " + (isFuture ? "text-[#4B5563]" : "text-[#9CA3AF]")}>{s.desc}</p>
+                    {completedAt && <p className="text-xs text-[#6B7280] mt-1">Completed {new Date(completedAt).toLocaleDateString()}</p>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {automations.length > 0 && (
+          <div className="mt-8 p-6 rounded-xl border border-[#1F2937] bg-[#11161F]">
+            <h3 className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-4">Your Automations</h3>
+            <div className="space-y-3">
+              {automations.map((a: any) => (
+                <div key={a.id} className="flex items-center justify-between p-3 rounded-lg bg-[#0A0D14] border border-[#1F2937]">
+                  <div>
+                    <p className="text-sm font-medium text-white">{a.custom_name}</p>
+                    <p className="text-xs text-[#6B7280]">{a.workflow_templates ? a.workflow_templates.category : "automation"}</p>
+                  </div>
+                  <span className={"px-2 py-0.5 rounded text-xs font-medium " + (a.status === "live" ? "bg-[#10B981]/20 text-[#10B981]" : a.status === "pending" ? "bg-[#F59E0B]/20 text-[#F59E0B]" : "bg-[#4F7CFF]/20 text-[#4F7CFF]")}>{a.status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!isComplete && (
+          <div className="mt-8 text-center">
+            <p className="text-xs text-[#6B7280] mb-3">Questions about your implementation?</p>
+            <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#25D366] text-white text-sm font-semibold hover:bg-[#20BA5A] transition-colors">Chat on WhatsApp</a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

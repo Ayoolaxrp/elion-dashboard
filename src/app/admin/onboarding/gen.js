@@ -1,1 +1,0 @@
-const fs=require("fs");const content=Buffer.from(process.argv[1],"base64").toString();fs.writeFileSync("src/app/admin/onboarding/page.tsx",content);console.log("Written",content.length,"bytes");

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
 
 const faqs = [
@@ -42,7 +43,7 @@ export default function SupportPage() {
         <div className="max-w-5xl mx-auto px-6 py-16 text-center">
           <div className="flex items-center justify-center gap-2 mb-6">
             <div className="w-8 h-8 rounded bg-[var(--color-surface)] flex items-center justify-center">
-              <span className="text-white text-xs font-bold">E</span>
+              <Image src="/brand/elion-e-icon.png" alt="ELION" width={20} height={20} />
             </div>
             <span className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </div>
@@ -57,7 +58,7 @@ export default function SupportPage() {
           <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-8">Contact us</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <a
-              href="https://wa.me/2348012345678?text=Hello%20ELION%2C%20I%20need%20support"
+              href="https://wa.me/2349126281855?text=Hello%20ELION%2C%20I%20need%20support"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block">
@@ -81,14 +82,14 @@ export default function SupportPage() {
               <p className="text-xs text-[var(--color-text-muted)]">Send a message</p>
             </a>
 
-            <div className="border border-[var(--color-border)] rounded-lg p-5">
+            <a href="tel:+2349126281855" className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block">
               <div className="w-10 h-10 rounded-lg bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-secondary)] mb-3">
                 <Phone className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Phone</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">Monday to Friday, 9am to 6pm WAT.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">Contact via WhatsApp or email</p>
-            </div>
+              <p className="text-xs text-[var(--color-accent)]">0912 628 1855</p>
+            </a>
           </div>
 
           <div className="mt-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
