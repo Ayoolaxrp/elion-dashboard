@@ -154,7 +154,7 @@ export default async function StatusPage() {
       <div className="max-w-2xl mx-auto px-4 py-16">
         <div className="mb-12">
           <div className="flex items-center gap-2.5 mb-6">
-            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} priority />
+            <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} priority />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">
               ELION
             </span>

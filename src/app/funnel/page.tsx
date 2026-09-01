@@ -78,7 +78,7 @@ export default function FunnelPage() {
       <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={32} height={32} priority />
+            <Image src="/brand/elion-e-icon.png" alt="ELION" width={32} height={32} priority />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">

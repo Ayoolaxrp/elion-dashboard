@@ -23,7 +23,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       <nav className="border-b border-[var(--color-border)] sticky top-0 z-40 bg-[var(--color-surface-raised)]">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/funnel" className="flex items-center gap-2">
-            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} priority />
+            <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} priority />
             <span className="text-sm font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </Link>
 
@@ -95,7 +95,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Image src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} priority />
+                <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} priority />
                 <span className="text-sm font-bold text-[var(--color-text-primary)]">ELION</span>
               </div>
               <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">

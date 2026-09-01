@@ -21,7 +21,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
     return (
       <div className={className}>
         <Image
-          src="/brand/elion-e-icon.svg"
+          src="/brand/elion-e-icon.png"
           alt="ELION"
           width={s.height}
           height={s.height}
@@ -50,7 +50,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
   return (
     <div className={`flex items-center ${s.gap} ${className}`}>
       <Image
-        src="/brand/elion-e-icon.svg"
+        src="/brand/elion-e-icon.png"
         alt=""
         width={s.height}
         height={s.height}
