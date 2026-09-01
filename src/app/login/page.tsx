@@ -49,9 +49,10 @@ function LoginForm() {
       .filter(Boolean);
 
     if (adminEmails.includes(email.toLowerCase())) {
-      window.location.href = "/admin";
+      await new Promise(r => setTimeout(r, 1000));
+      window.location.replace("/admin");
     } else {
-      window.location.href = redirect;
+      window.location.replace(redirect);
     }
   };
 
