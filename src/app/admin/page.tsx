@@ -62,6 +62,18 @@ export default function AdminPage() {
           >
             Run Audit
           </Link>
+          <Link
+            href="/admin/analytics"
+            className="px-4 py-2 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-primary)] text-sm font-medium border border-[var(--color-border)] hover:border-[var(--color-accent)]/30 transition-colors"
+          >
+            Analytics
+          </Link>
+          <Link
+            href="/admin/status"
+            className="px-4 py-2 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-primary)] text-sm font-medium border border-[var(--color-border)] hover:border-[var(--color-accent)]/30 transition-colors"
+          >
+            Manage Status
+          </Link>
         </div>
       </div>
     </div>
