@@ -156,7 +156,7 @@ export default function PricingPage() {
             <span className="text-sm text-[var(--color-text-secondary)]">
               Not sure which plan? <span className="text-[var(--color-text-primary)] font-medium">Start with the free audit</span> — we will recommend the right tier based on your business.
             </span>
-            <a href="/funnel" className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">
+            <a href="/funnel#audit" className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">
               Free Audit <ArrowRight className="w-3 h-3" />
             </a>
           </div>
