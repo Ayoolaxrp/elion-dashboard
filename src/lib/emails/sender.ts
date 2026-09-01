@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const FROM = "ELION <onboarding@elion.ng>";
+const FROM = "ELION <onboarding@resend.dev>";
 const ADMIN_EMAIL = "awodeyiayoola@gmail.com";
 
 export async function sendEmail(to: string, subject: string, html: string, text: string): Promise<boolean> {
