@@ -150,6 +150,19 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Create admin notification for new lead
+    try {
+      const admin = getSupabaseAdmin();
+      await admin.from('notifications').insert({
+        type: 'new_lead',
+        title: 'New Audit Submission',
+        message: name + ' (' + email + ') submitted an audit request for ' + (businessType || 'their business'),
+        metadata: { lead_id: leadId, name, email, businessType, source: source || 'funnel' },
+      });
+    } catch (e) {
+      console.error('Notification insert failed:', e);
+    }
+
     return NextResponse.json({
       success: true,
       message:
