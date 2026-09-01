@@ -86,11 +86,11 @@ CREATE POLICY "Service role full access activity" ON activity_log FOR ALL USING 
 
 -- Seed workflow templates
 INSERT INTO workflow_templates (name, category, description, version, required_integrations) VALUES
-  ('Lead Response System', 'lead_response', 'Automatically responds to new leads and routes qualified prospects', '1.0', ARRAY['whatsapp', 'email']),
-  ('Follow-Up Sequence', 'follow_up', 'Timed follow-up sequences for leads who didnt convert initially', '1.0', ARRAY['whatsapp', 'email']),
-  ('Booking Automation', 'booking', 'Calendar sync and automated appointment scheduling', '1.0', ARRAY['calendar', 'whatsapp']),
-  ('Revenue Recovery', 'revenue_recovery', 'Identify lost opportunities and trigger recovery workflows', '1.0', ARRAY['whatsapp', 'email']),
-  ('Operations Automation', 'operations', 'Internal task automation, notifications, and reporting', '1.0', ARRAY['email'])
+  ('Lead Response System', 'lead_response', 'Automatically responds to new leads and routes qualified prospects', '1.0', '["whatsapp","email"]'::jsonb),
+  ('Follow-Up Sequence', 'follow_up', 'Timed follow-up sequences for leads who didnt convert initially', '1.0', '["whatsapp","email"]'::jsonb),
+  ('Booking Automation', 'booking', 'Calendar sync and automated appointment scheduling', '1.0', '["calendar","whatsapp"]'::jsonb),
+  ('Revenue Recovery', 'revenue_recovery', 'Identify lost opportunities and trigger recovery workflows', '1.0', '["whatsapp","email"]'::jsonb),
+  ('Operations Automation', 'operations', 'Internal task automation, notifications, and reporting', '1.0', '["email"]'::jsonb)
 ON CONFLICT DO NOTHING;
 
 -- Create internal organization for ELION

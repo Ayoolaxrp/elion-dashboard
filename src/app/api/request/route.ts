@@ -1,3 +1,5 @@
+import { buildAuditNotificationEmail } from "@/lib/emails/templates";
+import { sendAdminNotification } from "@/lib/emails/sender";
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -171,6 +173,21 @@ export async function POST(request: NextRequest) {
       console.error('Email send failed:', e);
     }
 
+    
+    // Send admin notification email (non-blocking)
+    try {
+      const { subject, html, text } = buildAuditNotificationEmail({
+        contactName: String(name).trim(),
+        email: String(email).toLowerCase().trim(),
+        businessType: businessType || undefined,
+        website: website || undefined,
+        primaryProblem: primaryProblem || undefined,
+        teamSize: teamSize || undefined,
+      });
+      await sendAdminNotification(subject, html, text);
+    } catch (emailErr) {
+      console.error("[ELION] Admin notification email failed:", emailErr);
+    }
     return NextResponse.json({
       success: true,
       message:
