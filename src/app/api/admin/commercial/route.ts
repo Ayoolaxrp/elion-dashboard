@@ -239,7 +239,7 @@ async function handleAdvance(body: {
     if (!valid) {
       results.push({
         template_id: automation.template_id,
-        name: (automation.workflow_templates as Record<string, unknown>)?.name as string || "Unknown",
+        name: ((automation.workflow_templates as unknown as Record<string, unknown>)?.name as string) || "Unknown",
         old_status: automation.status,
         new_status: automation.status,
       });
@@ -271,7 +271,7 @@ async function handleAdvance(body: {
 
     results.push({
       template_id: automation.template_id,
-      name: (automation.workflow_templates as Record<string, unknown>)?.name as string || "Unknown",
+      name: ((automation.workflow_templates as unknown as Record<string, unknown>)?.name as string) || "Unknown",
       old_status: automation.status,
       new_status: newStatus,
     });
@@ -348,13 +348,13 @@ async function handleGet(request: NextRequest) {
   const blockers: string[] = [];
   (automations || []).forEach((a) => {
     if (a.status === "pending" || a.status === "configuring") {
-      blockers.push(`${(a.workflow_templates as Record<string, unknown>)?.name || "Automation"} needs configuration`);
+      blockers.push(`${((a.workflow_templates as unknown as Record<string, unknown>)?.name as string) || "Automation"} needs configuration`);
     }
     if (a.status === "pending_activation") {
-      blockers.push(`${(a.workflow_templates as Record<string, unknown>)?.name || "Automation"} needs provisioning`);
+      blockers.push(`${((a.workflow_templates as unknown as Record<string, unknown>)?.name as string) || "Automation"} needs provisioning`);
     }
     if (a.status === "failed") {
-      blockers.push(`${(a.workflow_templates as Record<string, unknown>)?.name || "Automation"} has failed`);
+      blockers.push(`${((a.workflow_templates as unknown as Record<string, unknown>)?.name as string) || "Automation"} has failed`);
     }
   });
 
