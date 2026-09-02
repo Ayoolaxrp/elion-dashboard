@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Zap, Mail, Calendar, RotateCcw, Settings, Plus, Activity, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import DashboardSidebar from "@/components/dashboard/sidebar";
 
 interface Automation {
   id: string;
@@ -90,7 +91,9 @@ export default function DashboardPage() {
   const ownedKeys = new Set(automations.map(a => a.workflow_templates?.category).filter(Boolean));
 
   return (
-    <div className="max-w-5xl">
+    <div className="min-h-screen bg-[var(--color-surface)]">
+      <DashboardSidebar />
+      <div className="lg:ml-60 p-6 lg:p-8">
       <div className="mb-8">
         <h1 className="text-xl font-bold text-[var(--color-text-primary)] mb-1" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
           {client?.company_name || "Your Dashboard"}
@@ -181,6 +184,7 @@ export default function DashboardPage() {
             );
           })}
         </div>
+      </div>
       </div>
     </div>
   );
