@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const STEPS = [
   { title: "Business type", question: "What type of business do you run?", options: ["Service Business","E-commerce","Real Estate","Healthcare","Education","Professional Services","Hospitality","Other"] },
@@ -40,8 +41,13 @@ const PROCESS = [
   { n: "04", title: "Operate", desc: "The automation handles the repetitive work while you retain ownership." },
 ];
 
+// Spring config: critically damped, interruptible
+const SPRING_STEP = { type: "spring" as const, damping: 30, stiffness: 300, mass: 0.8 };
+const SPRING_FAQ = { type: "spring" as const, damping: 28, stiffness: 260, mass: 0.7 };
+
 export default function FunnelPage() {
   const [step, setStep] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -52,8 +58,25 @@ export default function FunnelPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const cs = STEPS[step];
   const pct = ((step + 1) / STEPS.length) * 100;
-  const pick = (opt: string) => { setAnswers({...answers, [step]: opt}); if (step < STEPS.length - 1) setStep(step + 1); };
-  const validateEmail = (e: string) => /^[^s@]+@[^s@]+.[^s@]+$/.test(e);
+
+  const pick = (opt: string) => {
+    setAnswers({...answers, [step]: opt});
+    setDirection(1);
+    if (step < STEPS.length - 1) setStep(step + 1);
+  };
+
+  const goBack = () => {
+    setDirection(-1);
+    if (step > 0) setStep(step - 1);
+  };
+
+  const goForward = () => {
+    setDirection(1);
+    if (step < STEPS.length - 1) setStep(step + 1);
+  };
+
+  const validateEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
   const sub = async () => {
     const errors: Record<string, string> = {};
     if (!name.trim()) errors.name = "Name is required";
@@ -70,12 +93,13 @@ export default function FunnelPage() {
   };
 
   const ip = "w-full px-5 py-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all text-base";
-  const bc = "flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-elevated)] transition-all text-sm cursor-pointer";
-  const nc = "flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-sm cursor-pointer";
+  const bc = "flex items-center gap-2 px-5 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-elevated)] transition-all text-sm cursor-pointer active:scale-[0.97]";
+  const nc = "flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-sm cursor-pointer active:scale-[0.97]";
 
   return (
     <div className="min-h-screen bg-[var(--color-surface)]">
-      <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50">
+      {/* Glass nav */}
+      <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Image src="/brand/elion-e-icon.png" alt="ELION" width={32} height={32} priority />
@@ -88,28 +112,28 @@ export default function FunnelPage() {
             <a href="/landing/pricing" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Pricing</a>
             <a href="/landing/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">About</a>
           </div>
-          <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20">Start Free Audit</a>
+          <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97]">Start Free Audit</a>
         </div>
       </header>
 
-      {/* 1. HERO — increased spacing */}
+      {/* 1. HERO */}
       <section className="pt-16 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-8">AI Operations for Growing Businesses</p>
-          <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.1] mb-10">Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
+          <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.08] mb-10" style={{letterSpacing:"-0.025em"}}>Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
           <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-14 leading-relaxed">ELION analyzes where leads, follow-ups, bookings, and repetitive operations are breaking down — then builds the systems to fix them.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-            <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
-            <a href="#method" className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] transition-all text-sm">See How It Works</a>
+            <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
+            <a href="#method" className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] transition-all text-sm active:scale-[0.97]">See How It Works</a>
           </div>
           <p className="text-xs text-[var(--color-text-muted)]">No credit card. Evidence-based findings. You own the system.</p>
         </div>
       </section>
 
-      {/* 2. THE PAIN — 4 leak cards */}
+      {/* 2. THE PAIN */}
       <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-4">Your business may be leaking revenue in places you cannot see.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-4" style={{letterSpacing:"-0.02em"}}>Your business may be leaking revenue in places you cannot see.</h2>
           <p className="text-center text-[var(--color-text-secondary)] mb-12 max-w-xl mx-auto">These are not isolated problems. They are operational leaks.</p>
           <div className="grid sm:grid-cols-2 gap-4">
             {PAIN_POINTS.map((p,i)=>(
@@ -122,10 +146,10 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 3. SAMPLE AUDIT — moved here, dashed border, prominent illustrative label */}
+      {/* 3. SAMPLE AUDIT */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3">See what ELION finds before you pay us.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>See what ELION finds before you pay us.</h2>
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10">Here is what a sample audit looks like.</p>
           <div className="rounded-xl border-2 border-dashed border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.03] p-6 sm:p-8">
             <div className="flex items-center gap-2 mb-4">
@@ -166,16 +190,16 @@ export default function FunnelPage() {
             </div>
           </div>
           <div className="text-center mt-8">
-            <a href="#audit" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/25">Run Your Free Audit <ArrowRight className="w-4 h-4" /></a>
+            <a href="#audit" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Audit <ArrowRight className="w-4 h-4" /></a>
           </div>
         </div>
       </section>
 
-      {/* 4. HOW WE FIX IT — 4-step method, only process explanation */}
+      {/* 4. HOW WE FIX IT */}
       <section id="method" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-4xl mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">From finding the leak to fixing it</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12">You do not buy another dashboard. You get an operating system for the workflow that matters.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12" style={{letterSpacing:"-0.02em"}}>You do not buy another dashboard. You get an operating system for the workflow that matters.</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             {PROCESS.map((m)=>(
               <div key={m.n} className="relative p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all">
@@ -188,11 +212,11 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 5. OWNERSHIP — increased visual weight, merged with outcomes */}
+      {/* 5. OWNERSHIP */}
       <section className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">The ELION difference</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">Built for your business.<br />Owned by you.</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6" style={{letterSpacing:"-0.02em"}}>Built for your business.<br />Owned by you.</h2>
           <p className="text-base text-[var(--color-text-secondary)] mb-10 max-w-xl mx-auto leading-relaxed">Most automation agencies sell you access to a system they control. ELION builds the system, documents it, and hands you the keys.</p>
           <div className="grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto mb-10">
             {[
@@ -212,15 +236,15 @@ export default function FunnelPage() {
               </div>
             ))}
           </div>
-          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/25">Start with the Free Audit <ArrowRight className="w-4 h-4" /></a>
+          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Start with the Free Audit <ArrowRight className="w-4 h-4" /></a>
         </div>
       </section>
 
-      {/* 6. AUDIT FORM — #audit anchor */}
+      {/* 6. AUDIT FORM — with spring-animated step transitions */}
       <section id="audit" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-lg mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">Free Business Automation Audit</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3">Find out what your business could automate.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>Find out what your business could automate.</h2>
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-6 sm:mb-10">We analyze publicly available information about your business and show you where opportunities may be getting lost.</p>
           <div className="flex flex-wrap justify-center gap-4 text-xs text-[var(--color-text-muted)] mb-6">
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />What you receive: evidence-based audit findings</span>
@@ -228,70 +252,103 @@ export default function FunnelPage() {
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />Next step: we contact you with results</span>
           </div>
           {submitted ? (
-            <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-accent)]/20 p-10 text-center">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={SPRING_STEP} className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-accent)]/20 p-10 text-center">
               <CheckCircle2 className="w-14 h-14 text-[var(--color-accent)] mx-auto mb-5" />
               <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Audit request received.</h3>
               <p className="text-sm text-[var(--color-text-secondary)] mb-2">Your business information has been submitted.</p>
               <p className="text-sm text-[var(--color-text-muted)]">We will review the information, identify the most relevant automation opportunities, and contact you to schedule a discovery call.</p>
-            </div>
+            </motion.div>
           ) : (
-            <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 p-6 sm:p-8">
+            <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 p-6 sm:p-8 overflow-hidden">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-[var(--color-text-muted)]">Step {step + 1} of {STEPS.length}</span>
                 <span className="text-xs text-[var(--color-text-muted)]">{cs.title}</span>
               </div>
               <div className="w-full h-1 bg-[var(--color-surface-raised)] rounded-full mb-6">
-                <div className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-500 ease-out" style={{width:pct+"%"}} />
+                <motion.div className="h-full bg-[var(--color-accent)] rounded-full" animate={{ width: pct + "%" }} transition={SPRING_STEP} />
               </div>
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-6">{cs.question}</h3>
-              {cs.isInput ? (
-                <div className="space-y-4">
-                  <input type="url" inputMode="url" autoComplete="url" placeholder="https://yourbusiness.com" aria-label="Your business website URL" value={answers[4]||""} onChange={e=>setAnswers({...answers,[4]:e.target.value})} className={ip} />
-                  <div className="flex gap-3">
-                    <button onClick={()=>setStep(step-1)} className={bc}><ArrowLeft className="w-4 h-4" />Back</button>
-                    <button onClick={()=>setStep(step+1)} className={nc}>Continue <ArrowRight className="w-4 h-4" /></button>
-                  </div>
-                </div>
-              ) : cs.isContact ? (
-                <div className="space-y-4">
-                  <p className="text-xs text-[var(--color-text-muted)] -mb-2">That is enough for us to understand the shape of the problem. Enter your details and we will identify the most relevant automation opportunities.</p>
-                  <input type="text" inputMode="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={name} onChange={e=>{setName(e.target.value); setFieldErrors({...fieldErrors, name:""});}} className={ip + (fieldErrors.name ? " border-red-400" : "")} />
-                  {fieldErrors.name && <p className="text-xs text-red-400 mt-1">{fieldErrors.name}</p>}
-                  <input type="email" inputMode="email" autoComplete="email" placeholder="Email address" aria-label="Email address" value={email} onChange={e=>{setEmail(e.target.value); setFieldErrors({...fieldErrors, email:""});}} className={ip + (fieldErrors.email ? " border-red-400" : "")} />
-                  {fieldErrors.email && <p className="text-xs text-red-400 mt-1">{fieldErrors.email}</p>}
-                  <input type="tel" inputMode="tel" placeholder="Phone / WhatsApp (optional)" aria-label="Phone or WhatsApp number" value={phone} onChange={e=>setPhone(e.target.value)} className={ip} />
-                  <div className="flex gap-3">
-                    <button onClick={()=>setStep(step-1)} className={bc}><ArrowLeft className="w-4 h-4" />Back</button>
-                    <button onClick={sub} disabled={!name||!email||submitting} className={nc+" disabled:opacity-40 disabled:cursor-not-allowed"}>{submitting?<><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Submitting...</>:<>Analyze My Business <ArrowRight className="w-4 h-4" /></>}</button>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {cs.options?.map(opt=>(
-                    <button key={opt} onClick={()=>pick(opt)} className={cn("w-full text-left px-5 py-4 rounded-xl border text-sm transition-all cursor-pointer min-h-[48px] ",answers[step]===opt?"bg-[var(--color-accent)]/10 border-[var(--color-accent)]/40 text-[var(--color-accent)]":"bg-[var(--color-surface-raised)] border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-elevated)]")}>{opt}</button>
-                  ))}
-                  {step>0&&<button onClick={()=>setStep(step-1)} className="flex items-center gap-2 px-4 py-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors text-sm cursor-pointer mt-2 min-h-[44px]"><ArrowLeft className="w-3 h-3" />Back</button>}
-                </div>
-              )}
+
+              {/* Spring-animated step content */}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: direction * 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction * -40 }}
+                  transition={SPRING_STEP}
+                >
+                  <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-6">{cs.question}</h3>
+                  {cs.isInput ? (
+                    <div className="space-y-4">
+                      <input type="url" inputMode="url" autoComplete="url" placeholder="https://yourbusiness.com" aria-label="Your business website URL" value={answers[4]||""} onChange={e=>setAnswers({...answers,[4]:e.target.value})} className={ip} />
+                      <div className="flex gap-3">
+                        <button onClick={goBack} className={bc}><ArrowLeft className="w-4 h-4" />Back</button>
+                        <button onClick={goForward} className={nc}>Continue <ArrowRight className="w-4 h-4" /></button>
+                      </div>
+                    </div>
+                  ) : cs.isContact ? (
+                    <div className="space-y-4">
+                      <p className="text-xs text-[var(--color-text-muted)] -mb-2">That is enough for us to understand the shape of the problem. Enter your details and we will identify the most relevant automation opportunities.</p>
+                      <input type="text" inputMode="text" autoComplete="name" placeholder="Your name" aria-label="Your name" value={name} onChange={e=>{setName(e.target.value); setFieldErrors({...fieldErrors, name:""});}} className={ip + (fieldErrors.name ? " border-red-400" : "")} />
+                      {fieldErrors.name && <p className="text-xs text-red-400 mt-1">{fieldErrors.name}</p>}
+                      <input type="email" inputMode="email" autoComplete="email" placeholder="Email address" aria-label="Email address" value={email} onChange={e=>{setEmail(e.target.value); setFieldErrors({...fieldErrors, email:""});}} className={ip + (fieldErrors.email ? " border-red-400" : "")} />
+                      {fieldErrors.email && <p className="text-xs text-red-400 mt-1">{fieldErrors.email}</p>}
+                      <input type="tel" inputMode="tel" placeholder="Phone / WhatsApp (optional)" aria-label="Phone or WhatsApp number" value={phone} onChange={e=>setPhone(e.target.value)} className={ip} />
+                      <div className="flex gap-3">
+                        <button onClick={goBack} className={bc}><ArrowLeft className="w-4 h-4" />Back</button>
+                        <button onClick={sub} disabled={!name||!email||submitting} className={nc+" disabled:opacity-40 disabled:cursor-not-allowed"}>{submitting?<><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Submitting...</>:<>Analyze My Business <ArrowRight className="w-4 h-4" /></>}</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {cs.options?.map(opt=>(
+                        <button key={opt} onClick={()=>pick(opt)} className={cn("w-full text-left px-5 py-4 rounded-xl border text-sm transition-all cursor-pointer min-h-[48px] active:scale-[0.97]",answers[step]===opt?"bg-[var(--color-accent)]/10 border-[var(--color-accent)]/40 text-[var(--color-accent)]":"bg-[var(--color-surface-raised)] border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface-elevated)]")}>{opt}</button>
+                      ))}
+                      {step>0&&<button onClick={goBack} className="flex items-center gap-2 px-4 py-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors text-sm cursor-pointer mt-2 min-h-[44px] active:scale-[0.97]"><ArrowLeft className="w-3 h-3" />Back</button>}
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
               {fieldErrors.submit && <p className="text-xs text-red-400 text-center mb-2">{fieldErrors.submit}</p>}
-                  <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. <a href="/landing/privacy" className="text-[var(--color-accent)] hover:underline">Privacy policy</a></p>
+              <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. <a href="/landing/privacy" className="text-[var(--color-accent)] hover:underline">Privacy policy</a></p>
             </div>
           )}
         </div>
       </section>
 
-      {/* 7. FAQ */}
+      {/* 7. FAQ — spring-animated accordion */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12">Frequently asked questions</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12" style={{letterSpacing:"-0.02em"}}>Frequently asked questions</h2>
           <div className="space-y-2">
             {FAQ_DATA.map((f,i)=>(
-              <div key={i} className="border border-[var(--color-border)]/50 rounded-xl overflow-hidden transition-all">
-                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer hover:bg-[var(--color-surface-raised)] transition-all" aria-expanded={openFaq===i}>
+              <div key={i} className="border border-[var(--color-border)]/50 rounded-xl overflow-hidden">
+                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer hover:bg-[var(--color-surface-raised)] transition-colors active:scale-[0.99]" aria-expanded={openFaq===i}>
                   <span className="text-sm font-medium text-[var(--color-text-primary)] pr-4">{f.q}</span>
-                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all",openFaq===i?"bg-[var(--color-accent)]/10 rotate-180":"bg-[var(--color-surface-raised)]")}><ChevronDown className="w-4 h-4 text-[var(--color-text-muted)]" /></div>
+                  <motion.div
+                    animate={{ rotate: openFaq === i ? 180 : 0 }}
+                    transition={SPRING_FAQ}
+                    className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", openFaq===i ? "bg-[var(--color-accent)]/10" : "bg-[var(--color-surface-raised)]")}
+                  >
+                    <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)]" />
+                  </motion.div>
                 </button>
-                {openFaq===i&&<div className="px-6 pb-5"><p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{f.a}</p></div>}
+                <AnimatePresence initial={false}>
+                  {openFaq === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={SPRING_FAQ}
+                      style={{ overflow: "hidden", transformOrigin: "top" }}
+                    >
+                      <div className="px-6 pb-5">
+                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{f.a}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </div>
@@ -301,9 +358,9 @@ export default function FunnelPage() {
       {/* 8. FINAL CTA */}
       <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4">Find your leaks.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4" style={{letterSpacing:"-0.02em"}}>Find your leaks.</h2>
           <p className="text-sm text-[var(--color-text-secondary)] mb-8">Start with the free audit. No commitment.</p>
-          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25">Run Your Free Audit <ArrowRight className="w-4 h-4" /></a>
+          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Audit <ArrowRight className="w-4 h-4" /></a>
         </div>
       </section>
 
@@ -320,8 +377,10 @@ export default function FunnelPage() {
           </div>
         </div>
       </footer>
-      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[var(--color-surface)]/95 backdrop-blur-xl border-t border-[var(--color-border)]/50 px-4 py-3 safe-area-bottom">
-        <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
+
+      {/* Mobile sticky CTA — glass material */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom">
+        <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
       </div>
     </div>
   );
