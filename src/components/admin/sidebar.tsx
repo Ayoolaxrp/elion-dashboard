@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
 const NAV = [
@@ -11,14 +11,18 @@ const NAV = [
   { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
   { href: "/admin/contracts", label: "Contracts", icon: FileText },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
-  { href: "/admin/onboarding", label: "Onboarding", icon: Receipt },
+  { href: "/admin/templates", label: "Templates", icon: Layers },
+  { href: "/admin/provisioning", label: "Provisioning", icon: Wrench },
   { href: "/admin/automations", label: "Automations", icon: Zap },
+  { href: "/admin/onboarding", label: "Onboarding", icon: Receipt },
+  { href: "/admin/integrations", label: "Integrations", icon: Globe },
+  { href: "/admin/logs", label: "Logs", icon: Activity },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/status", label: "Status", icon: CheckCircle },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
-export default function AdminSidebar() {
+export function AdminSidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

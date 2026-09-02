@@ -1,112 +1,170 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Shield, Users, Zap, BarChart3, Plus, ArrowRight, CheckCircle, FileText, CreditCard, FileSignature, Clock } from "lucide-react";
-import { allClients, allLeads, allProposals, allContracts, allPayments } from "@/lib/mock-lifecycle";
+import { AdminSidebar } from "@/components/admin/sidebar";
+import {
+  Users, AlertTriangle, Clock, CheckCircle, XCircle, Settings, Activity, FileText, CreditCard, Handshake, TrendingUp, ArrowRight, Wrench, Eye, Pause, Shield, BarChart3, Layers
+} from "lucide-react";
+import { allClients as clients } from "@/lib/mock-lifecycle";
+import { adminAutomations as clientAutomations } from "@/lib/mock-operations";
 
-const LIFECYCLE_COLORS: Record<string, string> = {
-  prospect: "text-gray-400 bg-gray-400/10",
-  contract_pending: "text-amber-400 bg-amber-400/10",
-  payment_pending: "text-amber-400 bg-amber-400/10",
-  onboarding: "text-blue-400 bg-blue-400/10",
-  implementation: "text-blue-400 bg-blue-400/10",
-  testing: "text-purple-400 bg-purple-400/10",
-  live: "text-emerald-400 bg-emerald-400/10",
-  paused: "text-yellow-400 bg-yellow-400/10",
-  completed: "text-emerald-400 bg-emerald-400/10",
-  cancelled: "text-red-400 bg-red-400/10",
-};
+const attentionItems = [
+  { type: "warning", client: "Fresh Ventures", message: "WhatsApp token expiring soon", icon: AlertTriangle },
+  { type: "error", client: "Chidi & Sons", message: "Email SMTP authentication failed", icon: XCircle },
+  { type: "info", client: "Dewdrops Hotel", message: "Awaiting contract signature", icon: FileText },
+];
 
-export default function AdminPage() {
-  const liveClients = allClients.filter(c => c.lifecycle_status === "live").length;
-  const onboardingClients = allClients.filter(c => c.lifecycle_status === "onboarding").length;
-  const pendingContracts = allContracts.filter(c => c.status !== "signed").length;
-  const pendingPayments = allPayments.filter(p => p.status === "pending").length;
+const quickLinks = [
+  { href: "/admin/clients", label: "Clients", icon: Users },
+  { href: "/admin/proposals", label: "Proposals", icon: FileText },
+  { href: "/admin/contracts", label: "Contracts", icon: Handshake },
+  { href: "/admin/payments", label: "Payments", icon: CreditCard },
+  { href: "/admin/templates", label: "Templates", icon: Layers },
+  { href: "/admin/provisioning", label: "Provisioning", icon: Wrench },
+  { href: "/admin/integrations", label: "Integrations", icon: Settings },
+  { href: "/admin/logs", label: "Logs", icon: Activity },
+];
+
+export default function AdminDashboard() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const liveClients = clients.filter((c: any) => c.lifecycle_status === "live").length;
+  const onboardingClients = clients.filter((c: any) => c.lifecycle_status === "onboarding" || c.lifecycle_status === "implementation").length;
+  const pendingContracts = clients.filter((c: any) => c.lifecycle_status === "contract_pending" || c.lifecycle_status === "payment_pending").length;
+  const liveAutomations = clientAutomations.filter((a: any) => a.status === "live").length;
+  const needsAttention = attentionItems.length;
 
   return (
-    <div className="max-w-5xl p-6">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-[var(--color-accent)]/10"><Shield className="w-6 h-6 text-[var(--color-accent)]" /></div>
-          <div><h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION Admin</h1><p className="text-sm text-[var(--color-text-muted)]">Platform operations</p></div>
-        </div>
-        <Link href="/admin/clients/new" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"><Plus className="w-4 h-4" /> New Client</Link>
-      </div>
+    <div className="flex min-h-screen bg-[#0A0D14]">
+      <AdminSidebar />
+      <main className="flex-1 p-6">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-bold mb-2">Admin Operations</h1>
+          <p className="text-gray-400 mb-8">What requires your attention today.</p>
 
-      {/* Attention Required */}
-      {(pendingContracts > 0 || pendingPayments > 0) && (
-        <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-5 mb-8">
-          <h2 className="text-sm font-semibold text-amber-400 mb-3">Requires Attention</h2>
-          <div className="flex flex-wrap gap-4 text-sm">
-            {pendingContracts > 0 && <Link href="/admin/contracts" className="flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-amber-400 transition-colors"><FileText className="w-4 h-4" />{pendingContracts} contract(s) pending</Link>}
-            {pendingPayments > 0 && <Link href="/admin/payments" className="flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-amber-400 transition-colors"><CreditCard className="w-4 h-4" />{pendingPayments} payment(s) pending</Link>}
+          {/* Attention Section */}
+          {attentionItems.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-amber-400" />
+                Attention Required
+              </h2>
+              <div className="space-y-3">
+                {attentionItems.map((item, i) => (
+                  <div key={i} className="bg-[#11161F] rounded-xl p-4 border border-gray-800 flex items-center gap-4">
+                    <div className={`p-2 rounded-lg ${
+                      item.type === "error" ? "bg-red-500/10" : item.type === "warning" ? "bg-amber-500/10" : "bg-blue-500/10"
+                    }`}>
+                      <item.icon className={`w-5 h-5 ${
+                        item.type === "error" ? "text-red-400" : item.type === "warning" ? "text-amber-400" : "text-blue-400"
+                      }`} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-white">{item.client}</p>
+                      <p className="text-sm text-gray-400">{item.message}</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-gray-500" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            {[
+              { label: "Live Clients", value: liveClients, icon: CheckCircle, color: "text-green-400" },
+              { label: "Onboarding", value: onboardingClients, icon: Clock, color: "text-amber-400" },
+              { label: "Pending", value: pendingContracts, icon: FileText, color: "text-blue-400" },
+              { label: "Live Automations", value: liveAutomations, icon: Wrench, color: "text-purple-400" },
+              { label: "Needs Attention", value: needsAttention, icon: AlertTriangle, color: "text-red-400" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-[#11161F] rounded-xl p-4 border border-gray-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <stat.icon className={`w-4 h-4 ${stat.color}`} />
+                  <p className="text-sm text-gray-400">{stat.label}</p>
+                </div>
+                <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick Links */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {quickLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="bg-[#11161F] rounded-xl p-4 border border-gray-800 hover:border-[#4F7CFF]/50 transition-all group"
+                >
+                  <link.icon className="w-5 h-5 text-[#4F7CFF] mb-2 group-hover:scale-110 transition-transform" />
+                  <p className="text-sm font-medium text-white">{link.label}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Client Lifecycle Table */}
+          <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden">
+            <div className="p-4 border-b border-gray-800 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Client Lifecycle</h2>
+              <Link href="/admin/clients" className="text-sm text-[#4F7CFF] hover:underline">
+                View All
+              </Link>
+            </div>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-800">
+                  <th className="text-left p-4 text-sm text-gray-400 font-medium">Client</th>
+                  <th className="text-left p-4 text-sm text-gray-400 font-medium">Status</th>
+                  <th className="text-left p-4 text-sm text-gray-400 font-medium">Automations</th>
+                  <th className="text-left p-4 text-sm text-gray-400 font-medium">Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clients.map((client: any) => {
+                  const clientAuto = clientAutomations.filter((a: any) => a.client_id === client.id);
+                  return (
+                    <tr key={client.id} className="border-b border-gray-800/50 hover:bg-[#161C27]">
+                      <td className="p-4">
+                        <p className="text-sm font-medium text-white">{client.organization?.organization_name || "-"}</p>
+                        <p className="text-xs text-gray-500">{client.contact_name}</p>
+                      </td>
+                      <td className="p-4">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                          client.lifecycle_status === "live" ? "bg-green-500/10 text-green-400 border border-green-500/20" :
+                          client.lifecycle_status === "onboarding" || client.lifecycle_status === "implementation" ? "bg-amber-500/10 text-amber-400 border border-amber-500/20" :
+                          "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                        }`}>
+                          {client.lifecycle_status === "live" ? <CheckCircle className="w-3 h-3" /> :
+                           client.lifecycle_status === "onboarding" || client.lifecycle_status === "implementation" ? <Clock className="w-3 h-3" /> :
+                           <FileText className="w-3 h-3" />}
+                          {client.lifecycle_status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-sm text-gray-300">
+                        {clientAuto.length > 0 ? (
+                          <span>{clientAuto.length} active</span>
+                        ) : (
+                          <span className="text-gray-500">None</span>
+                        )}
+                      </td>                        <td className="p-4 text-sm text-gray-300">{client.created_at}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
-      )}
-
-      {/* Overview Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <Users className="w-4 h-4 text-[var(--color-text-muted)] mb-2" />
-          <p className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{allClients.length}</p>
-          <p className="text-xs text-[var(--color-text-muted)]">Total Clients</p>
-          <p className="text-[10px] text-emerald-400 mt-1">{liveClients} live</p>
-        </div>
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <BarChart3 className="w-4 h-4 text-[var(--color-text-muted)] mb-2" />
-          <p className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{allLeads.length}</p>
-          <p className="text-xs text-[var(--color-text-muted)]">Leads</p>
-          <p className="text-[10px] text-[var(--color-accent)] mt-1">{allLeads.filter(l => l.lead_status === "qualified").length} qualified</p>
-        </div>
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <FileSignature className="w-4 h-4 text-[var(--color-text-muted)] mb-2" />
-          <p className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{allProposals.length}</p>
-          <p className="text-xs text-[var(--color-text-muted)]">Proposals</p>
-          <p className="text-[10px] text-emerald-400 mt-1">{allProposals.filter(p => p.status === "accepted").length} accepted</p>
-        </div>
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <Zap className="w-4 h-4 text-[var(--color-text-muted)] mb-2" />
-          <p className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{onboardingClients}</p>
-          <p className="text-xs text-[var(--color-text-muted)]">Onboarding</p>
-          <p className="text-[10px] text-blue-400 mt-1">{onboardingClients} in progress</p>
-        </div>
-      </div>
-
-      {/* Quick Links */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {[
-          { href: "/admin/clients", label: "Clients", icon: Users, desc: "Manage accounts" },
-          { href: "/admin/proposals", label: "Proposals", icon: FileSignature, desc: "Send proposals" },
-          { href: "/admin/contracts", label: "Contracts", icon: FileText, desc: "Track signings" },
-          { href: "/admin/payments", label: "Payments", icon: CreditCard, desc: "View payments" },
-        ].map(item => (
-          <Link key={item.href} href={item.href} className="p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/30 transition-colors group">
-            <div className="flex items-center justify-between mb-3"><item.icon className="w-5 h-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]" /><ArrowRight className="w-4 h-4 text-[var(--color-text-muted)]" /></div>
-            <h3 className="text-sm font-medium text-[var(--color-text-primary)] mb-1">{item.label}</h3>
-            <p className="text-xs text-[var(--color-text-muted)]">{item.desc}</p>
-          </Link>
-        ))}
-      </div>
-
-      {/* Client Lifecycle */}
-      <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
-          <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Client Lifecycle</h2>
-          <Link href="/admin/clients" className="text-xs text-[var(--color-accent)] hover:underline">View all</Link>
-        </div>
-        <div className="divide-y divide-[var(--color-border)]">
-          {allClients.map(c => (
-            <Link key={c.id} href={`/admin/clients/${c.id}`} className="px-5 py-3 flex items-center justify-between hover:bg-[var(--color-surface)] transition-colors">
-              <div>
-                <p className="text-sm font-medium text-[var(--color-text-primary)]">{c.organization.name}</p>
-                <p className="text-xs text-[var(--color-text-muted)]">{c.contact_name} · {c.organization.industry}</p>
-              </div>
-              <span className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-wider ${LIFECYCLE_COLORS[c.lifecycle_status] || "text-gray-400 bg-gray-400/10"}`}>
-                {c.lifecycle_status.replace("_", " ")}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
