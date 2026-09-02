@@ -24,9 +24,9 @@ export default function AdminOnboarding(){
 
   const sendEmail=async(id:string,type:string,extra:Record<string,unknown>={})=>{setBusy(id+type);const r=await fetch("/api/admin/pipeline/"+id+"/send",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({type,...extra})});const d=await r.json();if(d.whatsappMessage)setWa(d.whatsappMessage);await load();setBusy(null);};
 
-  if(ld)return <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center"><Loader2 className="w-8 h-8 text-[#4F7CFF] animate-spin" /></div>;
+  if(ld)return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#4F7CFF] animate-spin" /></div>;
   return(
-    <div className="min-h-screen bg-[#0A0D14] p-6">
+    <div className="p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
           <Link href="/admin" className="text-[#9CA3AF] hover:text-white"><ArrowLeft className="w-4 h-4" /></Link>

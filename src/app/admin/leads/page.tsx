@@ -37,7 +37,7 @@ export default function LeadsPage() {
   if (loading) return <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 text-[#4F7CFF] animate-spin" /></div>;
 
   return (
-    <div className="min-h-screen bg-[#0A0D14]">
+    <div className="">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
