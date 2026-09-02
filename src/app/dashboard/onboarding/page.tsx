@@ -2,16 +2,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle, Circle, Clock, ArrowLeft, Loader2, Shield, Mail, Phone, Settings, Rocket, Handshake } from "lucide-react";
+import { CheckCircle, Circle, Clock, ArrowLeft, Loader2, Shield, Mail, Settings, Handshake, FileText, CreditCard } from "lucide-react";
 
 const STAGES = [
-  { key: "welcome", label: "Welcome", desc: "We sent you a welcome email with next steps.", icon: Mail },
-  { key: "kickoff", label: "Kickoff Call", desc: "We schedule a call to understand your workflow.", icon: Phone },
-  { key: "configuration", label: "Configuration", desc: "We configure your automations around your business.", icon: Settings },
-  { key: "build", label: "Build", desc: "We build and deploy your automation systems.", icon: Rocket },
-  { key: "testing", label: "Testing", desc: "We verify everything works correctly.", icon: Shield },
-  { key: "launch", label: "Launch", desc: "Your automations go live.", icon: Rocket },
-  { key: "handover", label: "Handover", desc: "We deliver your systems and documentation.", icon: Handshake },
+  { key: "proposal", label: "Proposal", desc: "Your scope, deliverables, and pricing are ready for review.", icon: FileText },
+  { key: "contract", label: "Contract", desc: "Sign the agreement to get started.", icon: Shield },
+  { key: "invoice", label: "Invoice", desc: "Complete payment to begin implementation.", icon: CreditCard },
+  { key: "welcome", label: "Welcome", desc: "Welcome to ELION. We are getting started.", icon: Mail },
+  { key: "portal", label: "Client Portal", desc: "Your automations are being configured and built.", icon: Settings },
+  { key: "thankyou", label: "Thank You", desc: "Your systems are live. Here is everything you need.", icon: Handshake },
 ];
 
 export default function OnboardingProgress() {
