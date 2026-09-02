@@ -1,14 +1,17 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard } from "lucide-react";
 import { useState } from "react";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/leads", label: "Leads", icon: UserPlus },
-  { href: "/admin/onboarding", label: "Onboarding", icon: FileText },
+  { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
+  { href: "/admin/contracts", label: "Contracts", icon: FileText },
+  { href: "/admin/payments", label: "Payments", icon: CreditCard },
+  { href: "/admin/onboarding", label: "Onboarding", icon: Receipt },
   { href: "/admin/automations", label: "Automations", icon: Zap },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/status", label: "Status", icon: CheckCircle },
