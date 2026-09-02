@@ -118,13 +118,13 @@ export async function POST(request: NextRequest) {
     const startTime = Date.now();
 
     // STEP 1: Get the client's active lead_response automation
-    // Look for lead_response template specifically, then fall back to any live automation
+    // Look for lead_response category specifically, then fall back to any live automation
     let { data: automation } = await supabase
       .from("client_automations")
-      .select("id, custom_config, custom_name, status, template_id")
+      .select("id, custom_config, custom_name, status, template_id, workflow_templates!inner(category)")
       .eq("client_id", body.client_id)
       .eq("status", "live")
-      .like("template_id", "%lead_response%")
+      .eq("workflow_templates.category", "lead_response")
       .limit(1)
       .single();
 
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
       // Fallback: any live automation
       const { data: fallback } = await supabase
         .from("client_automations")
-        .select("id, custom_config, custom_name, status, template_id")
+        .select("id, custom_config, custom_name, status, template_id, workflow_templates!inner(category)")
         .eq("client_id", body.client_id)
         .eq("status", "live")
         .limit(1)
