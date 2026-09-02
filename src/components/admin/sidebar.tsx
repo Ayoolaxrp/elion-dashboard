@@ -11,6 +11,7 @@ const NAV = [
   { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
   { href: "/admin/contracts", label: "Contracts", icon: FileText },
   { href: "/admin/invoices", label: "Invoices", icon: Receipt },
+  { href: "/admin/documents", label: "Documents", icon: FileText },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
   { href: "/admin/templates", label: "Templates", icon: Layers },
   { href: "/admin/provisioning", label: "Provisioning", icon: Wrench },
