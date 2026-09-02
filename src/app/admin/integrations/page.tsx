@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import { ArrowLeft, Wifi, WifiOff, AlertTriangle, CheckCircle, RefreshCw } from "lucide-react";
