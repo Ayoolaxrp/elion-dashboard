@@ -113,7 +113,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Client Lifecycle Table */}
-          <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden">
+          <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden overflow-x-auto">
             <div className="p-4 border-b border-gray-800 flex items-center justify-between">
               <h2 className="text-lg font-semibold">Client Lifecycle</h2>
               <Link href="/admin/clients" className="text-sm text-[#4F7CFF] hover:underline">

@@ -215,7 +215,7 @@ export default function FollowUpPage() {
                     )}
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-3 rounded-lg bg-secondary/30"><p className="text-xs text-muted-foreground">Sent</p><p className="text-lg font-semibold text-foreground">{c.sent.toLocaleString()}</p></div>
                   <div className="p-3 rounded-lg bg-secondary/30"><p className="text-xs text-muted-foreground">Replied</p><p className="text-lg font-semibold text-success">{c.replied}</p></div>
                   <div className="p-3 rounded-lg bg-secondary/30"><p className="text-xs text-muted-foreground">Reply Rate</p><p className="text-lg font-semibold text-foreground">{c.sent > 0 ? Math.round((c.replied / c.sent) * 100) : 0}%</p></div>

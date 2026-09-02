@@ -192,7 +192,7 @@ export default function IntegrationsPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden">
+          <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-800">

@@ -10,7 +10,7 @@ export default function LogsPage() {
         <p className="text-sm text-[var(--color-text-muted)]">{executionLogs.length} executions</p>
       </div>
       <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl overflow-hidden">
-        <div className="grid grid-cols-7 gap-4 px-5 py-3 border-b border-[var(--color-border)] text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
+        <div className="grid grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4 px-5 py-3 border-b border-[var(--color-border)] text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
           <span>Client</span>
           <span>Automation</span>
           <span>Trigger</span>
@@ -20,7 +20,7 @@ export default function LogsPage() {
           <span>Time</span>
         </div>
         {executionLogs.map(log => (
-          <div key={log.id} className="grid grid-cols-7 gap-4 px-5 py-4 border-b border-[var(--color-border)]/50 text-sm items-start">
+          <div key={log.id} className="grid grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4 px-5 py-4 border-b border-[var(--color-border)]/50 text-sm items-start">
             <span className="text-xs text-[var(--color-text-secondary)]">{log.client_name}</span>
             <span className="text-xs text-[var(--color-text-primary)] font-medium">{log.automation_name}</span>
             <span className="text-xs text-[var(--color-text-muted)]">{log.trigger}</span>

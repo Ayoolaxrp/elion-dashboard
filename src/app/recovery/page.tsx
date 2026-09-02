@@ -198,7 +198,7 @@ export default function RecoveryPage() {
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-4 gap-4 mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
                   <div className="p-3 rounded-lg bg-secondary/30"><p className="text-xs text-muted-foreground">Sent</p><p className="text-lg font-semibold text-foreground">{c.sent.toLocaleString()}</p></div>
                   <div className="p-3 rounded-lg bg-secondary/30"><p className="text-xs text-muted-foreground">Recovered</p><p className="text-lg font-semibold text-success">{c.recovered.toLocaleString()}</p></div>
                   <div className="p-3 rounded-lg bg-secondary/30"><p className="text-xs text-muted-foreground">Revenue</p><p className="text-lg font-semibold text-foreground">{c.revenue}</p></div>
