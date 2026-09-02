@@ -19,7 +19,7 @@ export default function ClientsPage() {
         <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)]/50">
           <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">No clients yet</p>
           <p className="text-sm text-[var(--color-text-muted)]">Clients appear here after a lead converts and is onboarded.</p>
-          <div className="flex gap-2 justify-center mt-4"><Link href="/admin/clients/new" className="inline-flex items-center gap-2 px-4 py-2 bg-[#4F7CFF] text-white text-sm font-semibold rounded-lg hover:bg-[#3B66E8] transition-colors">Add Client</Link><Link href="/admin/leads" className="inline-flex items-center gap-2 px-4 py-2 bg-[#1F2937] text-white text-sm font-semibold rounded-lg hover:bg-[#2A3548] border border-[#1F2937] transition-colors">View Leads</Link></div>
+          <div className="flex gap-2 justify-center mt-4"><Link href="/admin/clients/new" className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B66E8] text-white text-sm font-semibold rounded-lg hover:bg-[#3B66E8] transition-colors">Add Client</Link><Link href="/admin/leads" className="inline-flex items-center gap-2 px-4 py-2 bg-[#1F2937] text-white text-sm font-semibold rounded-lg hover:bg-[#2A3548] border border-[#1F2937] transition-colors">View Leads</Link></div>
         </div>
       ) : (
         <div className="space-y-3">

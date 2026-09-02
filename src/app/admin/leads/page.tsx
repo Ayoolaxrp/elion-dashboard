@@ -34,7 +34,7 @@ export default function LeadsPage() {
     setUpdating(null);
   };
 
-  if (loading) return <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 text-[#4F7CFF] animate-spin" /></div>;
+  if (loading) return <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 text-[#3B66E8] animate-spin" /></div>;
 
   return (
     <div className="">
@@ -42,18 +42,18 @@ export default function LeadsPage() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <Link href="/admin" className="text-[#9CA3AF] hover:text-white"><ArrowLeft className="w-4 h-4" /></Link>
-            <div><h1 className="text-2xl font-bold text-white">Leads</h1><p className="text-sm text-[#6B7280] mt-1">{leads.length} total leads</p></div>
+            <div><h1 className="text-2xl font-bold text-white">Leads</h1><p className="text-sm text-[#7C8494] mt-1">{leads.length} total leads</p></div>
           </div>
-          <button onClick={() => setShowAdd(!showAdd)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#4F7CFF] text-white text-sm font-semibold hover:bg-[#3B66E8] transition-colors">
+          <button onClick={() => setShowAdd(!showAdd)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3B66E8] text-white text-sm font-semibold hover:bg-[#3B66E8] transition-colors">
             <Plus className="w-4 h-4" /> Add Lead
           </button>
         </div>
 
         {showAdd && (
-          <div className="mb-6 p-5 rounded-xl bg-[#11161F] border border-[#4F7CFF]/30">
+          <div className="mb-6 p-5 rounded-xl bg-[#11161F] border border-[#3B66E8]/30">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-white">New Lead</h3>
-              <button onClick={() => setShowAdd(false)} className="text-[#6B7280] hover:text-white"><X className="w-4 h-4" /></button>
+              <button onClick={() => setShowAdd(false)} className="text-[#7C8494] hover:text-white"><X className="w-4 h-4" /></button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <input placeholder="Contact name *" value={form.contact_name} onChange={e => setForm({...form, contact_name: e.target.value})} className="px-3 py-2 rounded-lg bg-[#0A0D14] border border-[#1F2937] text-white text-sm" />
@@ -64,7 +64,7 @@ export default function LeadsPage() {
               <input placeholder="Industry" value={form.industry} onChange={e => setForm({...form, industry: e.target.value})} className="px-3 py-2 rounded-lg bg-[#0A0D14] border border-[#1F2937] text-white text-sm" />
               <input placeholder="Primary problem" value={form.primary_problem} onChange={e => setForm({...form, primary_problem: e.target.value})} className="px-3 py-2 rounded-lg bg-[#0A0D14] border border-[#1F2937] text-white text-sm sm:col-span-2" />
             </div>
-            <button onClick={addLead} disabled={saving || !form.contact_name || !form.email} className="mt-3 flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981] text-white text-sm font-semibold hover:bg-[#059669] transition-colors disabled:opacity-50">
+            <button onClick={addLead} disabled={saving || !form.contact_name || !form.email} className="mt-3 flex items-center gap-2 px-4 py-2 rounded-lg bg-[#047857] text-white text-sm font-semibold hover:bg-[#059669] transition-colors disabled:opacity-50">
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Save Lead
             </button>
           </div>
@@ -73,20 +73,20 @@ export default function LeadsPage() {
         {leads.length === 0 ? (
           <div className="text-center py-20 bg-[#11161F] rounded-xl border border-[#1F2937]">
             <p className="text-lg font-semibold text-white mb-2">No leads yet</p>
-            <p className="text-sm text-[#6B7280] mb-4">Add your first lead or wait for funnel submissions.</p>
-            <button onClick={() => setShowAdd(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#4F7CFF] text-white text-sm font-semibold rounded-lg hover:bg-[#3B66E8]"><Plus className="w-4 h-4" /> Add Lead</button>
+            <p className="text-sm text-[#7C8494] mb-4">Add your first lead or wait for funnel submissions.</p>
+            <button onClick={() => setShowAdd(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B66E8] text-white text-sm font-semibold rounded-lg hover:bg-[#3B66E8]"><Plus className="w-4 h-4" /> Add Lead</button>
           </div>
         ) : (
           <div className="space-y-2">
             {leads.map(lead => (
-              <div key={lead.id} className="rounded-xl bg-[#11161F] border border-[#1F2937] p-4 hover:border-[#4F7CFF]/30 transition-colors">
+              <div key={lead.id} className="rounded-xl bg-[#11161F] border border-[#1F2937] p-4 hover:border-[#3B66E8]/30 transition-colors">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 cursor-pointer" onClick={() => setExpanded(expanded === lead.id ? null : lead.id)}>
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-semibold text-white">{lead.contact_name}</h3>
-                      {expanded === lead.id ? <ChevronUp className="w-3 h-3 text-[#6B7280]" /> : <ChevronDown className="w-3 h-3 text-[#6B7280]" />}
+                      {expanded === lead.id ? <ChevronUp className="w-3 h-3 text-[#7C8494]" /> : <ChevronDown className="w-3 h-3 text-[#7C8494]" />}
                     </div>
-                    <p className="text-xs text-[#6B7280]">{lead.email}{lead.phone ? " · " + lead.phone : ""}</p>
+                    <p className="text-xs text-[#7C8494]">{lead.email}{lead.phone ? " · " + lead.phone : ""}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <select value={lead.lead_status} onChange={e => updateStatus(lead.id, e.target.value)} disabled={updating === lead.id}
@@ -97,12 +97,12 @@ export default function LeadsPage() {
                 </div>
                 {expanded === lead.id && (
                   <div className="mt-3 pt-3 border-t border-[#1F2937] grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                    {lead.company_name && <div><span className="text-[#6B7280]">Company:</span> <span className="text-white">{lead.company_name}</span></div>}
-                    {lead.website && <div><span className="text-[#6B7280]">Website:</span> <span className="text-white">{lead.website}</span></div>}
-                    {lead.industry && <div><span className="text-[#6B7280]">Industry:</span> <span className="text-white">{lead.industry}</span></div>}
-                    {lead.primary_problem && <div className="sm:col-span-2"><span className="text-[#6B7280]">Problem:</span> <span className="text-white">{lead.primary_problem}</span></div>}
-                    <div><span className="text-[#6B7280]">Source:</span> <span className="text-white">{lead.source || "direct"}</span></div>
-                    <div><span className="text-[#6B7280]">Created:</span> <span className="text-white">{new Date(lead.created_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos" })}</span></div>
+                    {lead.company_name && <div><span className="text-[#7C8494]">Company:</span> <span className="text-white">{lead.company_name}</span></div>}
+                    {lead.website && <div><span className="text-[#7C8494]">Website:</span> <span className="text-white">{lead.website}</span></div>}
+                    {lead.industry && <div><span className="text-[#7C8494]">Industry:</span> <span className="text-white">{lead.industry}</span></div>}
+                    {lead.primary_problem && <div className="sm:col-span-2"><span className="text-[#7C8494]">Problem:</span> <span className="text-white">{lead.primary_problem}</span></div>}
+                    <div><span className="text-[#7C8494]">Source:</span> <span className="text-white">{lead.source || "direct"}</span></div>
+                    <div><span className="text-[#7C8494]">Created:</span> <span className="text-white">{new Date(lead.created_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos" })}</span></div>
                   </div>
                 )}
               </div>

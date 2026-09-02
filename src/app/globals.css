@@ -11,10 +11,8 @@
   --color-border: #1F2937;
   --color-border-light: #2A3548;
   --color-text-primary: #F8FAFC;
-  --color-text-secondary: #9CA3AF;
-  --color-text-muted: #6B7280;
-  --color-accent: #4F7CFF;
-  --color-accent-hover: #3B66E8;
+  --color-text-secondary: #9CA3AF;    --color-text-muted: #7C8494;    --color-accent: #3B66E8;
+    --color-accent-hover: #2E56CC;
   --color-accent-deep: #2E56CC;
   --color-accent-cyan: #00D4FF;
   --color-success: #10B981;

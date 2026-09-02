@@ -103,9 +103,9 @@ export default function AdminDashboard() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="bg-[#11161F] rounded-xl p-4 border border-gray-800 hover:border-[#4F7CFF]/50 transition-all group"
+                  className="bg-[#11161F] rounded-xl p-4 border border-gray-800 hover:border-[#3B66E8]/50 transition-all group"
                 >
-                  <link.icon className="w-5 h-5 text-[#4F7CFF] mb-2 group-hover:scale-110 transition-transform" />
+                  <link.icon className="w-5 h-5 text-[#3B66E8] mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-sm font-medium text-white">{link.label}</p>
                 </Link>
               ))}
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
           <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden overflow-x-auto">
             <div className="p-4 border-b border-gray-800 flex items-center justify-between">
               <h2 className="text-lg font-semibold">Client Lifecycle</h2>
-              <Link href="/admin/clients" className="text-sm text-[#4F7CFF] hover:underline">
+              <Link href="/admin/clients" className="text-sm text-[#3B66E8] hover:underline">
                 View All
               </Link>
             </div>

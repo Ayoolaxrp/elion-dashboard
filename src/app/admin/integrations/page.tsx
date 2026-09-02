@@ -182,7 +182,7 @@ export default function IntegrationsPage() {
                 onClick={() => setStatusFilter(f)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-all ${
                   statusFilter === f
-                    ? "bg-[#4F7CFF] text-white"
+                    ? "bg-[#3B66E8] text-white"
                     : "bg-[#11161F] text-gray-400 hover:text-white"
                 }`}
               >
@@ -220,7 +220,7 @@ export default function IntegrationsPage() {
                     <td className="p-4 text-sm text-gray-400">{int.lastVerified}</td>
                     <td className="p-4 text-sm text-red-400">{int.error || "-"}</td>
                     <td className="p-4">
-                      <button className="text-sm text-[#4F7CFF] hover:text-[#3B66E8] flex items-center gap-1">
+                      <button className="text-sm text-[#3B66E8] hover:text-[#3B66E8] flex items-center gap-1">
                         <RefreshCw className="w-3 h-3" /> Verify
                       </button>
                     </td>
