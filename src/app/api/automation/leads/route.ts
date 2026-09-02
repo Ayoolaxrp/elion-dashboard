@@ -6,11 +6,12 @@
  * generates a response, logs the execution, and updates the dashboard.
  *
  * Uses existing tables: leads, clients, client_automations, workflow_templates,
- * client_integrations, activity_log
+ * client_integrations, automation_executions
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendLeadToN8n } from "@/lib/n8n-client";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -223,18 +224,54 @@ export async function POST(request: NextRequest) {
       })
       .eq("id", storedLead.id);
 
-    // STEP 11: Log execution in activity_log
-    await supabase.from("activity_log").insert({
-      lead_id: storedLead.id,
-      event_type: "lead_response_automation",
-      event_data: {
-        automation_id: automation.id,
-        automation_name: automation.custom_name,
+    // STEP 10.5: Send to n8n if channel is ready
+    let n8nResult = null;
+    if (channelStatus === "ready_to_send" && channel) {
+      n8nResult = await sendLeadToN8n({
         client_id: body.client_id,
-        client_name: client?.company_name,
+        client_name: clientConfig.business_name,
+        client_industry: clientConfig.industry,
+        lead_id: storedLead.id,
         lead_name: body.name.trim(),
         lead_email: body.email,
-        lead_phone: body.phone || body.whatsapp,
+        lead_phone: body.phone,
+        lead_whatsapp: body.whatsapp,
+        lead_message: body.message,
+        lead_source: body.source || "api",
+        channel: channel.channel,
+        channel_destination: channel.destination,
+        response_template: clientConfig.response_template,
+        business_hours: {
+          timezone: clientConfig.timezone || "Africa/Lagos",
+          start: clientConfig.working_hours_start || "09:00",
+          end: clientConfig.working_hours_end || "18:00",
+          currently_open: withinHours,
+        },
+        qualification,
+      });
+
+      // If n8n succeeded, update send status
+      if (n8nResult.success) {
+        responseSendStatus = "sent";
+      }
+    }
+
+    // STEP 11: Log execution in automation_executions
+    await supabase.from("automation_executions").insert({
+      client_id: body.client_id,
+      automation_id: automation.id,
+      trigger_type: "new_lead",
+      trigger_data: {
+        lead_id: storedLead.id,
+        lead_name: body.name.trim(),
+        source: body.source || "api",
+        client_name: client?.company_name,
+      },
+      status: responseSendStatus === "sent" ? "completed" : "failed",
+      started_at: new Date(startTime).toISOString(),
+      completed_at: new Date().toISOString(),
+      duration_ms: responseDurationMs,
+      result: {
         channel: channel?.channel || "none",
         channel_destination: channel?.destination,
         channel_status: channelStatus,
@@ -242,12 +279,12 @@ export async function POST(request: NextRequest) {
         response_text: responseText,
         qualification_score: qualification.score,
         qualification_qualified: qualification.qualified,
-        qualification_reason: qualification.reason,
         within_business_hours: withinHours,
-        duration_ms: responseDurationMs,
-        source: body.source || "api",
       },
-      performed_by: "lead_response_automation",
+      error_code: channelStatus === "credentials_missing" ? "CREDENTIALS_MISSING" : null,
+      error_message: channelStatus === "credentials_missing"
+        ? `${channel?.channel || "No channel"} credentials not configured`
+        : null,
     });
 
     // STEP 12: Update automation stats
@@ -322,11 +359,11 @@ export async function GET(request: NextRequest) {
       .select("id, custom_name, status, total_runs, last_run_at, template_id")
       .eq("client_id", clientId);
 
-    // Get recent executions from activity_log
+    // Get recent executions from automation_executions
     const { data: executions } = await supabase
-      .from("activity_log")
-      .select("id, event_type, event_data, created_at, performed_by")
-      .eq("lead_id", clientId) // This won't work - activity_log links to leads not clients
+      .from("automation_executions")
+      .select("id, trigger_type, trigger_data, status, started_at, completed_at, duration_ms, result, error_message, error_code")
+      .eq("client_id", clientId)
       .order("created_at", { ascending: false })
       .limit(limit);
 
