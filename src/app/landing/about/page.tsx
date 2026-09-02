@@ -16,9 +16,18 @@ const process_steps = [
   { step: "04", title: "Go live, you own it", desc: "Your system goes live. You own it. Optional ongoing support and optimization is available if you want it." },
 ];
 
-const tech = [
-  "n8n", "Make.com", "Zapier", "WhatsApp Business API", "HubSpot", "Pipedrive",
-  "Google Calendar", "Slack", "Custom APIs", "AI / LLM Integration",
+const confirmedIntegrations = [
+  "WhatsApp Business API",
+  "Email (SMTP)",
+  "Google Calendar",
+  "Custom APIs",
+];
+
+const supportedPlatforms = [
+  "n8n",
+  "HubSpot",
+  "Pipedrive",
+  "Slack",
 ];
 
 export default function AboutPage() {
@@ -31,7 +40,7 @@ export default function AboutPage() {
           We Fix Operational Leaks<br className="hidden md:block" /> That Cost Businesses Money
         </h1>
         <p className="text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto leading-relaxed">
-          ELION is a business automation agency. We identify where your business loses leads, time, and revenue, then build systems to fix those gaps.
+          ELION is a business automation company. We identify where your business loses leads, time, and revenue, then build systems to fix those gaps.
         </p>
       </div>
 
@@ -137,18 +146,31 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
-      {/* Technology */}
+      {/* Integrations */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 text-center">Technology We Use</h2>
+        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 text-center">Integrations</h2>
         <p className="text-sm text-[var(--color-text-muted)] text-center mb-8 max-w-xl mx-auto">
-          We work with the tools that make sense for your business. No unnecessary complexity.
+          ELION can integrate with your existing tools. Here is what we currently support.
         </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          {tech.map((t) => (
-            <span key={t} className="px-4 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-secondary)] font-medium">
-              {t}
-            </span>
-          ))}
+        <div className="mb-6">
+          <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider text-center mb-3">Confirmed Integrations</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {confirmedIntegrations.map((t) => (
+              <span key={t} className="px-4 py-2 bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 rounded-lg text-sm text-[var(--color-accent)] font-medium">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider text-center mb-3">Supported Platforms</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {supportedPlatforms.map((t) => (
+              <span key={t} className="px-4 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-secondary)] font-medium">
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -160,10 +182,10 @@ export default function AboutPage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/funnel#audit"
+            href="/demo"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] rounded font-semibold text-sm hover:bg-[var(--color-surface-elevated)] transition-colors"
           >
-            Run Free Audit
+            See ELION In Action
           </Link>
           <Link
             href="/landing/pricing"

@@ -58,7 +58,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">9. Contact</h2>
-          <p>For questions about these Terms, contact us at <a href="mailto:hello@elion.ng" className="text-[var(--color-accent)] hover:underline">hello@elion.ng</a>.</p>
+          <p>For questions about these Terms, contact us at <a href="mailto:support@elion.ng" className="text-[var(--color-accent)] hover:underline">support@elion.ng</a>.</p>
         </section>
       </div>
     </div>
