@@ -20,7 +20,7 @@ function getSupabase() {
 
 export const dynamic = "force-dynamic";
 
-// GET — public read of visible components
+// GET - public read of visible components
 export async function GET() {
   const supabase = getSupabase();
   const { data, error } = await supabase
@@ -35,7 +35,7 @@ export async function GET() {
   return NextResponse.json({ components: data || [] });
 }
 
-// PUT — admin update component status
+// PUT - admin update component status
 export async function PUT(request: Request) {
   const supabase = getSupabase();
   const body = await request.json();
@@ -65,7 +65,7 @@ export async function PUT(request: Request) {
   return NextResponse.json({ component: data });
 }
 
-// POST — add new component
+// POST - add new component
 export async function POST(request: Request) {
   const supabase = getSupabase();
   const body = await request.json();
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
   return NextResponse.json({ component: data });
 }
 
-// DELETE — remove component
+// DELETE - remove component
 export async function DELETE(request: Request) {
   const supabase = getSupabase();
   const { searchParams } = new URL(request.url);

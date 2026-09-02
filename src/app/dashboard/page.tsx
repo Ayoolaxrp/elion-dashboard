@@ -115,11 +115,11 @@ export default function DashboardPage() {
           <div className="text-xs text-[var(--color-text-muted)] mt-1">Total Systems</div>
         </div>
         <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>—</div>
+          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>-</div>
           <div className="text-xs text-[var(--color-text-muted)] mt-1">Leads Processed</div>
         </div>
         <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>—</div>
+          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>-</div>
           <div className="text-xs text-[var(--color-text-muted)] mt-1">Responses Sent</div>
         </div>
       </div>

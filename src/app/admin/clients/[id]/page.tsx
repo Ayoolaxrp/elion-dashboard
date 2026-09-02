@@ -96,7 +96,7 @@ export default function ClientDetailPage() {
               {client.onboarding_status === 'completed'
                 ? 'Onboarding completed on ' + new Date(client.onboarding_completed_at || Date.now()).toLocaleDateString()
                 : client.onboarding_status === 'in_review'
-                ? 'Onboarding form submitted — review the details below'
+                ? 'Onboarding form submitted, review the details below'
                 : 'Send this link to the client to complete onboarding'}
             </p>
           </div>
@@ -187,7 +187,7 @@ export default function ClientDetailPage() {
                   <div className="flex items-center gap-2">
                     <span className={"text-[10px] font-semibold uppercase " + (log.status === "passed" ? "text-green-400" : log.status === "failed" ? "text-[var(--color-error)]" : "text-yellow-400")}>{log.status}</span>
                     <span className="text-xs text-[var(--color-text-secondary)]">{log.action}</span>
-                    {log.workflow_templates && <span className="text-xs text-[var(--color-text-muted)]">— {log.workflow_templates.name}</span>}
+                    {log.workflow_templates && <span className="text-xs text-[var(--color-text-muted)]"> - {log.workflow_templates.name}</span>}
                   </div>
                   <span className="text-[10px] text-[var(--color-text-muted)]">{new Date(log.created_at).toLocaleString()}</span>
                 </div>
@@ -218,7 +218,7 @@ export default function ClientDetailPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-xs text-[var(--color-text-muted)]">
-                    <span>Runs: {a.total_runs || 0}</span><span>Success: {a.success_rate ? a.success_rate + "%" : "—"}</span><span>Deployed: {a.deployed_at ? new Date(a.deployed_at).toLocaleDateString() : "—"}</span>
+                    <span>Runs: {a.total_runs || 0}</span><span>Success: {a.success_rate ? a.success_rate + "%" : "-"}</span><span>Deployed: {a.deployed_at ? new Date(a.deployed_at).toLocaleDateString() : "-"}</span>
                   </div>
                 </div>
               ))}</div>
@@ -235,7 +235,7 @@ export default function ClientDetailPage() {
           {m && (<div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl p-5">
             <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Performance</h2>
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-              {[{ l: "Leads", v: m.leads_captured || 0 }, { l: "Qualified", v: m.leads_qualified || 0 }, { l: "Responded", v: m.leads_responded || 0 }, { l: "Avg Response", v: m.avg_response_time_seconds ? Math.round(m.avg_response_time_seconds / 60) + "m" : "—" }, { l: "Follow-ups", v: m.followups_sent || 0 }, { l: "Bookings", v: m.bookings_created || 0 }].map(item => (
+              {[{ l: "Leads", v: m.leads_captured || 0 }, { l: "Qualified", v: m.leads_qualified || 0 }, { l: "Responded", v: m.leads_responded || 0 }, { l: "Avg Response", v: m.avg_response_time_seconds ? Math.round(m.avg_response_time_seconds / 60) + "m" : "-" }, { l: "Follow-ups", v: m.followups_sent || 0 }, { l: "Bookings", v: m.bookings_created || 0 }].map(item => (
                 <div key={item.l} className="text-center"><p className="text-lg font-bold text-[var(--color-text-primary)]">{item.v}</p><p className="text-[10px] text-[var(--color-text-muted)] uppercase">{item.l}</p></div>
               ))}
             </div>
@@ -245,7 +245,7 @@ export default function ClientDetailPage() {
           <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl p-5">
             <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Client Info</h3>
             <div className="space-y-2 text-sm">
-              {[["Plan", client.plan_name || "—"], ["Price", client.plan_price ? "₦" + (client.plan_price / 100).toLocaleString() : "—"], ["Industry", client.industry || "—"], ["Phone", client.phone || "—"], ["Status", client.status], ["Since", new Date(client.created_at).toLocaleDateString()]].map(([k, v]) => (
+              {[["Plan", client.plan_name || "-"], ["Price", client.plan_price ? "₦" + (client.plan_price / 100).toLocaleString() : "-"], ["Industry", client.industry || "-"], ["Phone", client.phone || "-"], ["Status", client.status], ["Since", new Date(client.created_at).toLocaleDateString()]].map(([k, v]) => (
                 <div key={k} className="flex justify-between"><span className="text-[var(--color-text-muted)]">{k}</span><span className="text-[var(--color-text-primary)]">{v}</span></div>
               ))}
             </div>

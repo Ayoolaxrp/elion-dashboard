@@ -14,12 +14,12 @@ function p(text: string, extra?: string): string {
 }
 
 export function buildWelcomeEmail(data: WelcomeEmailData) {
-  const subject = "Welcome to ELION — " + data.businessName;
+  const subject = "Welcome to ELION - " + data.businessName;
   const auto = data.automationsPurchased && data.automationsPurchased.length > 0 ? data.automationsPurchased.join(", ") : "your agreed automation systems";
   const html = wrap(
     p("Hi " + data.firstName + ",") + p("Welcome to ELION.") + p("We're officially getting started.")
     + p("Your automation project is now moving into the implementation phase, and I'm looking forward to building something that genuinely improves how " + data.businessName + " operates.")
-    + p("We'll be setting up " + auto + " — configured specifically around how your business works.")
+    + p("We'll be setting up " + auto + ", configured specifically around how your business works.")
     + '<p style="color:#F8FAFC;font-size:16px;font-weight:600;letter-spacing:0.5px;margin:0 0 32px">Discover → Configure → Build → Test → Launch</p>'
     + '<h3 style="color:#F8FAFC;font-size:15px;font-weight:600;margin:0 0 16px">What happens next</h3>'
     + p("I'll be sending you the details for our kickoff call, where we'll:")
@@ -37,11 +37,11 @@ export function buildKickoffWhatsApp(data: KickoffWhatsAppData): string {
   return "Hi " + data.firstName + ",\n\nWe're ready for the kickoff call for your ELION automation.\n\n\ud83d\udcc5 Date: " + data.date + "\n\ud83d\udd50 Time: " + data.time + "\n\ud83d\udcde Call: " + data.callLink
     + "\n\nDuring the call, we'll cover:\n\n1. Your current workflow\n2. The problem we're solving\n3. The agreed automation\n4. Required integrations/access\n5. How the new workflow should operate\n6. Implementation timeline\n7. What we'll need from you"
     + "\n\nPlease join from somewhere you can comfortably discuss your business processes."
-    + "\n\nThank you in anticipation.\n\n— Ayoola\nELION";
+    + "\n\nThank you in anticipation.\n\n- Ayoola\nELION";
 }
 
 export function buildCompletionEmail(data: CompletionEmailData) {
-  var subject = "Your ELION Automation is Live — " + data.automationName;
+  var subject = "Your ELION Automation is Live - " + data.automationName;
   var systemsList = data.connectedSystems.map(function(s) { return '<li style="color:#9CA3AF;font-size:14px">' + s + '</li>'; }).join("");
   var html = wrap(
     p("Hi " + data.firstName + ",") + p("We're done. Your ELION automation has now been completed and is ready for use.")
@@ -61,7 +61,7 @@ export function buildCompletionEmail(data: CompletionEmailData) {
 }
 
 export function buildAuditNotificationEmail(data: AuditNotificationData) {
-  var subject = "New Audit Submission — " + data.contactName;
+  var subject = "New Audit Submission - " + data.contactName;
   var html = wrap(
     '<div style="background:#11161F;border:1px solid #1F2937;border-radius:8px;padding:20px;margin:0 0 24px">'
     + '<p style="color:#6B7280;font-size:12px;margin:0 0 4px;text-transform:uppercase;letter-spacing:1px">New Audit Submission</p>'

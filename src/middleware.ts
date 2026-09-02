@@ -78,7 +78,7 @@ export async function middleware(request: NextRequest) {
       // Both admin and client users see the dashboard
     } catch (err) {
       console.error(`[SECURITY] Middleware error on ${pathname}:`, err);
-      // Fail open for client routes — allow authenticated users through
+      // Fail open for client routes, allow authenticated users through
       // The session check above already verified the user exists
     }
   }

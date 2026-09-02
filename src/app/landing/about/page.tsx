@@ -13,7 +13,7 @@ const process_steps = [
   { step: "01", title: "Free audit", desc: "We inspect your current customer and operational workflow to find where you are losing time, leads, or money." },
   { step: "02", title: "See your leaks", desc: "We identify where you are losing leads, time, and money with specific evidence." },
   { step: "03", title: "We build your system", desc: "ELION designs, builds, and connects the automation around your existing tools. You get dashboard access to monitor it." },
-  { step: "04", title: "Go live — you own it", desc: "Your system goes live. You own it. Optional ongoing support and optimization is available if you want it." },
+  { step: "04", title: "Go live, you own it", desc: "Your system goes live. You own it. Optional ongoing support and optimization is available if you want it." },
 ];
 
 const tech = [
@@ -108,30 +108,30 @@ export default function AboutPage() {
         <div className="text-center mb-10">
           <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Illustrative Example</p>
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">What This Looks Like in Practice</h2>
-          <p className="text-sm text-[var(--color-text-muted)] mt-2">A representative scenario — not a real client.</p>
+          <p className="text-sm text-[var(--color-text-muted)] mt-2">A representative scenario, not a real client.</p>
         </div>
         <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-8 md:p-10">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-[var(--color-accent)]"></div>
-            <p className="text-sm font-semibold text-[var(--color-text-secondary)]">Lagos Real Estate Business — Illustrative Scenario</p>
+            <p className="text-sm font-semibold text-[var(--color-text-secondary)]">Lagos Real Estate Business, Illustrative Scenario</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-sm font-semibold text-[var(--color-error)] mb-4 flex items-center gap-2"><div className="w-5 h-5 rounded bg-[var(--color-error)]/10 flex items-center justify-center"><span className="text-[10px] font-bold">!</span></div>Before ELION</h3>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">—</span>Leads arrive through WhatsApp and website forms. Responses depend on staff availability.</li>
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">—</span>Follow-ups are inconsistent. Some prospects never receive a second message.</li>
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">—</span>Booking requires manual back-and-forth: &quot;Are you available Thursday?&quot; &quot;How about Friday?&quot;</li>
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">—</span>No visibility into which leads are active, which are stale, or how many were lost.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">-</span>Leads arrive through WhatsApp and website forms. Responses depend on staff availability.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">-</span>Follow-ups are inconsistent. Some prospects never receive a second message.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">-</span>Booking requires manual back-and-forth: &quot;Are you available Thursday?&quot; &quot;How about Friday?&quot;</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">-</span>No visibility into which leads are active, which are stale, or how many were lost.</li>
               </ul>
             </div>
             <div>
               <h3 className="text-sm font-semibold text-[var(--color-success)] mb-4 flex items-center gap-2"><div className="w-5 h-5 rounded bg-[var(--color-success)]/10 flex items-center justify-center"><span className="text-[10px] font-bold">✓</span></div>After ELION</h3>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">—</span>New leads trigger an immediate automated response across WhatsApp and email.</li>
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">—</span>Follow-ups happen on a defined schedule. No lead falls through the cracks.</li>
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">—</span>Prospects self-book through an automated scheduling link. Zero back-and-forth.</li>
-                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">—</span>Every lead, follow-up, and booking is tracked in a single dashboard the client owns.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">-</span>New leads trigger an immediate automated response across WhatsApp and email.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">-</span>Follow-ups happen on a defined schedule. No lead falls through the cracks.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">-</span>Prospects self-book through an automated scheduling link. Zero back-and-forth.</li>
+                <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">-</span>Every lead, follow-up, and booking is tracked in a single dashboard the client owns.</li>
               </ul>
             </div>
           </div>

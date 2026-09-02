@@ -32,7 +32,7 @@ const STAGE_ORDER = ["welcome", "kickoff", "configuration", "build", "testing", 
 
 function getWelcomeEmail(config: ScheduleConfig) {
   return {
-    subject: `Welcome to ELION — Your Automation Journey Begins`,
+    subject: `Welcome to ELION - Your Automation Journey Begins`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#4F7CFF;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:white;">E</div>
@@ -82,7 +82,7 @@ function getWelcomeEmail(config: ScheduleConfig) {
 
 function getKickoffEmail(config: ScheduleConfig) {
   return {
-    subject: `ELION — Project Kickoff Call Scheduled`,
+    subject: `ELION - Project Kickoff Call Scheduled`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#4F7CFF;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:white;">E</div>
@@ -113,7 +113,7 @@ function getKickoffEmail(config: ScheduleConfig) {
       <p style="font-size:16px;line-height:1.7;color:#9CA3AF;margin-bottom:24px;">See you on the call.</p>
       <div style="border-top:1px solid #1F2937;padding-top:24px;">
         <p style="font-size:14px;color:#6B7280;">Thank you in anticipation.</p>
-        <p style="font-size:16px;font-weight:600;">— Ayoola</p>
+        <p style="font-size:16px;font-weight:600;">- Ayoola</p>
         <p style="font-size:14px;color:#4F7CFF;">ELION</p>
       </div>
     </div>`
@@ -122,7 +122,7 @@ function getKickoffEmail(config: ScheduleConfig) {
 
 function getConfigurationEmail(config: ScheduleConfig) {
   return {
-    subject: `ELION — Configuration Phase for ${config.businessName}`,
+    subject: `ELION - Configuration Phase for ${config.businessName}`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#4F7CFF;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:white;">E</div>
@@ -146,7 +146,7 @@ function getConfigurationEmail(config: ScheduleConfig) {
       </p>
       <div style="border-top:1px solid #1F2937;padding-top:24px;">
         <p style="font-size:14px;color:#6B7280;">Thank you in anticipation.</p>
-        <p style="font-size:16px;font-weight:600;">— Ayoola</p>
+        <p style="font-size:16px;font-weight:600;">- Ayoola</p>
         <p style="font-size:14px;color:#4F7CFF;">ELION</p>
       </div>
     </div>`
@@ -155,7 +155,7 @@ function getConfigurationEmail(config: ScheduleConfig) {
 
 function getBuildEmail(config: ScheduleConfig) {
   return {
-    subject: `ELION — Build Phase for ${config.businessName}`,
+    subject: `ELION - Build Phase for ${config.businessName}`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#4F7CFF;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:white;">E</div>
@@ -178,7 +178,7 @@ function getBuildEmail(config: ScheduleConfig) {
       </p>
       <div style="border-top:1px solid #1F2937;padding-top:24px;">
         <p style="font-size:14px;color:#6B7280;">Thank you in anticipation.</p>
-        <p style="font-size:16px;font-weight:600;">— Ayoola</p>
+        <p style="font-size:16px;font-weight:600;">- Ayoola</p>
         <p style="font-size:14px;color:#4F7CFF;">ELION</p>
       </div>
     </div>`
@@ -187,7 +187,7 @@ function getBuildEmail(config: ScheduleConfig) {
 
 function getTestingEmail(config: ScheduleConfig) {
   return {
-    subject: `ELION — Testing Phase for ${config.businessName}`,
+    subject: `ELION - Testing Phase for ${config.businessName}`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#F59E0B;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;color:white;">⚙</div>
@@ -211,7 +211,7 @@ function getTestingEmail(config: ScheduleConfig) {
       </p>
       <div style="border-top:1px solid #1F2937;padding-top:24px;">
         <p style="font-size:14px;color:#6B7280;">Thank you in anticipation.</p>
-        <p style="font-size:16px;font-weight:600;">— Ayoola</p>
+        <p style="font-size:16px;font-weight:600;">- Ayoola</p>
         <p style="font-size:14px;color:#4F7CFF;">ELION</p>
       </div>
     </div>`
@@ -220,7 +220,7 @@ function getTestingEmail(config: ScheduleConfig) {
 
 function getLaunchEmail(config: ScheduleConfig) {
   return {
-    subject: `ELION — Your Automation is Live!`,
+    subject: `ELION - Your Automation is Live!`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#10B981;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;color:white;">✓</div>
@@ -267,7 +267,7 @@ function getLaunchEmail(config: ScheduleConfig) {
 
 function getHandoverEmail(config: ScheduleConfig) {
   return {
-    subject: `ELION — Handover Complete for ${config.businessName}`,
+    subject: `ELION - Handover Complete for ${config.businessName}`,
     html: `<div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#0A0D14;color:#F8FAFC;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="width:48px;height:48px;background:#10B981;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;color:white;">★</div>
@@ -280,7 +280,7 @@ function getHandoverEmail(config: ScheduleConfig) {
         I know that putting your business systems in someone else's hands requires trust, and I don't take that lightly.
       </p>
       <p style="font-size:16px;line-height:1.7;color:#9CA3AF;margin-bottom:16px;">
-        We're not just building an automation for you — we're building something that should give you and your team more time to focus on the things that actually move the business forward.
+        We're not just building an automation for you, we're building something that should give you and your team more time to focus on the things that actually move the business forward.
       </p>
       <p style="font-size:16px;line-height:1.7;color:#9CA3AF;margin-bottom:16px;">
         I'm excited to see what we build together.
@@ -289,7 +289,7 @@ function getHandoverEmail(config: ScheduleConfig) {
         Thank you for choosing ELION.
       </p>
       <div style="border-top:1px solid #1F2937;padding-top:24px;">
-        <p style="font-size:16px;font-weight:600;">— Ayoolamikun</p>
+        <p style="font-size:16px;font-weight:600;">- Ayoolamikun</p>
         <p style="font-size:14px;color:#4F7CFF;">ELION</p>
       </div>
     </div>`

@@ -79,7 +79,7 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left — Copy */}
+            {/* Left - Copy */}
             <div className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 mb-8">
                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
@@ -94,7 +94,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-lg text-[var(--color-text-secondary)] mb-10 max-w-xl leading-relaxed">
-                ELION audits your operations, identifies where leads and revenue are being lost, and builds automation systems to fix those leaks — permanently.
+                ELION audits your operations, identifies where leads and revenue are being lost, and builds automation systems to fix those leaks, permanently.
               </p>
 
               <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -113,7 +113,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — Dashboard Mockup */}
+            {/* Right - Dashboard Mockup */}
             <div className={`relative transition-all duration-1000 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
               {/* Glow behind */}
               <div className="absolute inset-0 bg-[var(--color-accent)]/10 blur-[80px] rounded-3xl" />
@@ -154,7 +154,7 @@ export default function HomePage() {
                       {[
                         { time: "2m ago", event: "New lead captured", detail: "Adeola from Lagos", color: "bg-blue-400" },
                         { time: "5m ago", event: "Response sent via WhatsApp", detail: "Automated reply", color: "bg-green-400" },
-                        { time: "12m ago", event: "Booking confirmed", detail: "Property viewing — 3pm", color: "bg-purple-400" },
+                        { time: "12m ago", event: "Booking confirmed", detail: "Property viewing, 3pm", color: "bg-purple-400" },
                         { time: "18m ago", event: "Follow-up scheduled", detail: "24h follow-up for Chidi", color: "bg-amber-400" },
                       ].map((a, i) => (
                         <div key={i} className="flex items-center gap-3">
@@ -228,7 +228,7 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
               Your business is leaking.
             </h2>
-            <p className="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">Most businesses lose opportunities through operational inefficiencies they cannot see — until we show them.</p>
+            <p className="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">Most businesses lose opportunities through operational inefficiencies they cannot see, until we show them.</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {LEAKS.map((item, i) => (
@@ -316,7 +316,7 @@ export default function HomePage() {
             You own everything.
           </h2>
           <p className="text-lg text-[var(--color-text-secondary)] mb-12 max-w-2xl mx-auto">
-            No lock-in. No hidden fees. No dependency. Your automations, your data, your systems — permanently.
+            No lock-in. No hidden fees. No dependency. Your automations, your data, your systems, permanently.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto">
             {[

@@ -121,7 +121,7 @@ export default function FunnelPage() {
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-8">AI Operations for Growing Businesses</p>
           <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.08] mb-10" style={{letterSpacing:"-0.025em"}}>Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
-          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-14 leading-relaxed">ELION analyzes where leads, follow-ups, bookings, and repetitive operations are breaking down — then builds the systems to fix them.</p>
+          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-14 leading-relaxed">ELION analyzes where leads, follow-ups, bookings, and repetitive operations are breaking down, then builds the systems to fix them.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
             <a href="#method" className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] transition-all text-sm active:scale-[0.97]">See How It Works</a>
@@ -153,7 +153,7 @@ export default function FunnelPage() {
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10">Here is what a sample audit looks like.</p>
           <div className="rounded-xl border-2 border-dashed border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.03] p-6 sm:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 rounded-md text-[11px] font-bold text-[var(--color-accent)] bg-[var(--color-accent)]/15 uppercase tracking-wider border border-[var(--color-accent)]/20">Illustrative Example — Not a real client</span>
+              <span className="px-3 py-1 rounded-md text-[11px] font-bold text-[var(--color-accent)] bg-[var(--color-accent)]/15 uppercase tracking-wider border border-[var(--color-accent)]/20">Illustrative Example - Not a real client</span>
             </div>
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-1">Lagos Real Estate Agency</h3>
             <p className="text-xs text-[var(--color-text-muted)] mb-6">This shows what the audit produces.</p>
@@ -223,7 +223,7 @@ export default function FunnelPage() {
               { title: "You own your systems", desc: "Workflows are documented and yours to keep." },
               { title: "You own your workflows", desc: "No artificial lock-in. Move freely if you choose." },
               { title: "You own your data", desc: "Your leads, your records, your information." },
-              { title: "No artificial lock-in", desc: "Optional support — not mandatory dependency." },
+              { title: "No artificial lock-in", desc: "Optional support, not mandatory dependency." },
               { title: "Third-party costs are disclosed", desc: "No hidden software subscriptions." },
               { title: "We can maintain it or hand it over", desc: "Full support or full handoff. Your choice." },
             ].map((item,i)=>(
@@ -240,7 +240,7 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 6. AUDIT FORM — with spring-animated step transitions */}
+      {/* 6. AUDIT FORM - with spring-animated step transitions */}
       <section id="audit" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-lg mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">Free Business Automation Audit</p>
@@ -317,7 +317,7 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 7. FAQ — spring-animated accordion */}
+      {/* 7. FAQ - spring-animated accordion */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12" style={{letterSpacing:"-0.02em"}}>Frequently asked questions</h2>
@@ -378,7 +378,7 @@ export default function FunnelPage() {
         </div>
       </footer>
 
-      {/* Mobile sticky CTA — glass material */}
+      {/* Mobile sticky CTA - glass material */}
       <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom">
         <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
       </div>

@@ -32,7 +32,7 @@ export default function DemoPage() {
 
     const steps = [
       { step: 1, action: "Lead Detected", detail: "New enquiry from Instagram Ad", status: "running" },
-      { step: 2, action: "Lead Qualified", detail: "Score: 87/100 — high intent", status: "pending" },
+      { step: 2, action: "Lead Qualified", detail: "Score: 87/100, high intent", status: "pending" },
       { step: 3, action: "Email Sent", detail: "Welcome email with property matches", status: "pending" },
       { step: 4, action: "WhatsApp Sent", detail: "Personalized greeting sent", status: "pending" },
       { step: 5, action: "CRM Updated", detail: "Lead record created in pipeline", status: "pending" },
@@ -184,7 +184,7 @@ export default function DemoPage() {
         )}
       </AnimatePresence>
 
-      {/* Pipeline — with spring-animated step cards */}
+      {/* Pipeline - with spring-animated step cards */}
       {demoSteps.length > 0 && (
         <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5 mb-6">
           <div className="flex items-center justify-between mb-4">
@@ -233,7 +233,7 @@ export default function DemoPage() {
 
       {/* Results Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Captured Leads — PRIMARY panel */}
+        {/* Captured Leads - PRIMARY panel */}
         <div className="bg-[var(--color-surface-raised)] border-2 border-[var(--color-accent)]/20 rounded-lg lg:row-span-1">
           <div className="px-5 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
             <div className="flex items-center gap-2">
