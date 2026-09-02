@@ -46,3 +46,4 @@ supabase/.temp/
 
 .env*
 scripts/cloudflared.exe
+.env.local
