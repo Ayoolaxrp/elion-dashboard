@@ -23,7 +23,7 @@ export default function OnboardingProgress() {
   }, []);
 
   if (ld) return <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center"><Loader2 className="w-8 h-8 text-[#4F7CFF] animate-spin" /></div>;
-  if (!data || !data.pipeline) return <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center p-4"><div className="max-w-md text-center"><Image src="/brand/elion-e-icon.png" alt="ELION" width={48} height={48} className="mx-auto mb-4" /><h1 className="text-lg font-bold text-white mb-2">No Onboarding Found</h1><p className="text-sm text-[#6B7280] mb-4">Your onboarding has not started yet. We will be in touch soon.</p><Link href="/" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#4F7CFF] text-white text-sm font-semibold">Back to Dashboard</Link></div></div>;
+  if (!data || !data.pipeline) return <div className="min-h-screen bg-[#0A0D14] flex items-center justify-center p-4"><div className="max-w-md text-center"><Image src="/brand/elion-e-icon.png" alt="ELION" width={48} height={48} className="mx-auto mb-4" /><h1 className="text-lg font-bold text-white mb-2">No Onboarding Found</h1><p className="text-sm text-[#6B7280] mb-4">Your onboarding has not started yet. We will be in touch soon.</p><Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#4F7CFF] text-white text-sm font-semibold">Back to Dashboard</Link></div></div>;
 
   const { client, pipeline, automations } = data;
   const si = STAGES.findIndex(s => s.key === pipeline.current_stage);
@@ -33,7 +33,7 @@ export default function OnboardingProgress() {
     <div className="min-h-screen bg-[#0A0D14]">
       <header className="border-b border-[#1F2937] px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-[#9CA3AF] hover:text-white transition-colors">
+          <Link href="/dashboard" className="flex items-center gap-2 text-[#9CA3AF] hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" /><span className="text-sm">Dashboard</span>
           </Link>
           <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} />
@@ -112,7 +112,7 @@ export default function OnboardingProgress() {
         {!isComplete && (
           <div className="mt-8 text-center">
             <p className="text-xs text-[#6B7280] mb-3">Questions about your implementation?</p>
-            <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#25D366] text-white text-sm font-semibold hover:bg-[#20BA5A] transition-colors">Chat on WhatsApp</a>
+            <a href="https://wa.me/2349126281855" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#25D366] text-white text-sm font-semibold hover:bg-[#20BA5A] transition-colors">Chat on WhatsApp</a>
           </div>
         )}
       </div>

@@ -101,10 +101,10 @@ export default function FunnelPage() {
       {/* Glass nav */}
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+          <a href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
             <Image src="/brand/elion-e-icon.png" alt="ELION" width={32} height={32} priority />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
-          </div>
+          </a>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a href="#method" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
             <a href="#audit" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Audit</a>
@@ -366,10 +366,10 @@ export default function FunnelPage() {
 
       <footer className="border-t border-[var(--color-border)]/30 py-10 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
+          <a href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
             <div className="w-6 h-6 rounded-md bg-[var(--color-accent)] flex items-center justify-center"><span className="text-white text-[8px] font-bold">E</span></div>
             <span className="text-sm text-[var(--color-text-muted)] font-medium">ELION</span>
-          </div>
+          </a>
           <div className="flex items-center gap-6">
             <a href="/landing/privacy" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Privacy</a>
             <a href="/landing/terms" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Terms</a>

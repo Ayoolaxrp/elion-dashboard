@@ -143,7 +143,7 @@ export default function DemoPage() {
         </div>
         <div className="flex items-center gap-2">
           {demoComplete && (
-            <button onClick={reset} className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer active:scale-[0.97]">
+            <button onClick={reset} aria-label="Reset demo" className="inline-flex items-center gap-1.5 px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium rounded hover:bg-[var(--color-surface)] transition-colors cursor-pointer active:scale-[0.97]">
               <RotateCcw className="w-3.5 h-3.5" />
               Reset
             </button>
@@ -177,8 +177,8 @@ export default function DemoPage() {
               <Zap className="w-5 h-5 text-[var(--color-accent)]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-[var(--color-text-primary)]">Lead responded to in 8 seconds</p>
-              <p className="text-xs text-[var(--color-text-muted)]">Average manual response time: 4+ hours. Automated: under 10 seconds.</p>
+              <p className="text-sm font-semibold text-[var(--color-text-primary)]">Example: Lead responded to in 8 seconds</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Illustrative. Average manual response: 4+ hours. With automation: under 10 seconds.</p>
             </div>
           </motion.div>
         )}

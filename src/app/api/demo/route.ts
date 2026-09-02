@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         const email = {
           id: generateId("email"),
           to: data.to || "demo@example.com",
-          from: "hello@elion.ng",
+          from: "support@elion.ng",
           subject: replacePlaceholders(emailTmpl.subject || "Welcome", data.placeholders || {}),
           body: replacePlaceholders(emailTmpl.body || "", data.placeholders || {}),
           status: "sent" as string,
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
         const email = {
           id: generateId("email"),
           to: demoData.email,
-          from: "hello@elion.ng",
+          from: "support@elion.ng",
           subject: replacePlaceholders(demoTemplates.welcome_email.subject, { company: demoData.company, name: demoData.name }),
           body: replacePlaceholders(demoTemplates.welcome_email.body, { company: demoData.company, name: demoData.name }),
           status: "sent" as string,
