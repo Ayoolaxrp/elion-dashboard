@@ -11,7 +11,7 @@ export async function GET() {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user || user.email !== process.env.ADMIN_EMAILS) {
+  if (!user || !(process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase()).includes((user.email || "").toLowerCase())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const ADMIN_EMAIL = "awodeyiayoola@gmail.com";
+
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email } = body;
     
-    if (email !== ADMIN_EMAIL) {
+    if (!email || !(process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase()).includes(email.toLowerCase())) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

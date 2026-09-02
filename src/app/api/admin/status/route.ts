@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+
+async function requireAdmin() {
+  const cookieStore = await cookies();
+  const sb = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } });
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user || !(process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).includes((user.email || '').toLowerCase())) return null;
+  return user;
+}
 
 function getSupabase() {
   return createServerClient(

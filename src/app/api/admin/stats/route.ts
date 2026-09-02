@@ -11,7 +11,14 @@ function getSupabase() {
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Admin check
+  const cookieStore = await import('next/headers').then(m => m.cookies());
+  const sb = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { cookies: { getAll: () => [], setAll: () => {} } });
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user || !(process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).includes((user.email || '').toLowerCase())) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+  }
   const supabase = getSupabase();
 
   const [clientsRes, leadsRes, automationsRes] = await Promise.all([
