@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import Link from "next/link";
 import {
@@ -30,7 +30,7 @@ interface ClientPipeline {
   }[];
 }
 
-const mockPipelines: ClientPipeline[] = [
+const pipelines: ClientPipeline[] = [
   {
     id: "client_001",
     company: "ABC Properties",
@@ -105,16 +105,43 @@ const STATUS_CONFIG: Record<string, { color: string; label: string; bg: string }
 };
 
 export default function AdminDocumentsPage() {
+  const [pipelines, setPipelines] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [expandedClient, setExpandedClient] = useState<string | null>(null);
   const [sending, setSending] = useState<string | null>(null);
-  const [previewDoc, setPreviewDoc] = useState<{ clientId: string; docType: string } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/documents")
+      .then(r => r.json())
+      .then(d => { setPipelines(d.pipelines || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
 
   const handleSend = async (clientId: string, docType: string) => {
     setSending(`${clientId}-${docType}`);
-    // Simulate sending
-    await new Promise(r => setTimeout(r, 1500));
+    try {
+      const res = await fetch("/api/admin/documents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ client_id: clientId, doc_type: docType }),
+      });
+      if (res.ok) {
+        // Refresh pipelines
+        const d = await fetch("/api/admin/documents").then(r => r.json());
+        setPipelines(d.pipelines || []);
+      }
+    } catch {}
     setSending(null);
   };
+
+  if (loading) return (
+    <div className="flex min-h-screen bg-[var(--color-surface)]">
+      <AdminSidebar />
+      <main className="flex-1 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[var(--color-accent)] animate-spin" />
+      </main>
+    </div>
+  );
 
   return (
     <div className="flex min-h-screen bg-[var(--color-surface)]">
@@ -151,9 +178,9 @@ export default function AdminDocumentsPage() {
 
           {/* Client Pipelines */}
           <div className="space-y-4">
-            {mockPipelines.map(client => {
+            {pipelines.map(client => {
               const isExpanded = expandedClient === client.id;
-              const completedCount = client.documents.filter(d => ["accepted", "signed", "paid", "completed"].includes(d.status)).length;
+              const completedCount = client.documents.filter((d: any) => ["accepted", "signed", "paid", "completed"].includes(d.status)).length;
               const progress = (completedCount / 6) * 100;
 
               return (
@@ -191,7 +218,7 @@ export default function AdminDocumentsPage() {
                       {/* Pipeline Visual */}
                       <div className="flex items-center gap-1 mb-6 overflow-x-auto pb-2">
                         {DOC_TYPES.map((doc, i) => {
-                          const docData = client.documents.find(d => d.type === doc.key);
+                          const docData = client.documents.find((d: any) => d.type === doc.key);
                           const isComplete = docData && ["accepted", "signed", "paid", "completed"].includes(docData.status);
                           const isActive = doc.key === client.current_stage;
                           return (
@@ -208,7 +235,7 @@ export default function AdminDocumentsPage() {
                       {/* Document Cards */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {DOC_TYPES.map(doc => {
-                          const docData = client.documents.find(d => d.type === doc.key);
+                          const docData = client.documents.find((d: any) => d.type === doc.key);
                           const status = docData?.status || "not_started";
                           const sc = STATUS_CONFIG[status];
                           const Icon = doc.icon;

@@ -95,7 +95,33 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
   const config = DOC_CONFIG[docType];
   const doc = MOCK_DOCS[docType];
 
-  if (!config || !doc) {
+  // Fetch real document data
+  const [realDoc, setRealDoc] = useState<any>(null);
+  const [clientName, setClientName] = useState("");
+
+  useEffect(() => {
+    fetch("/api/client/documents")
+      .then(r => r.json())
+      .then(d => {
+        const found = d.documents?.find((doc: any) => doc.type === docType);
+        if (found?.content) {
+          setRealDoc(found.content);
+          setClientName(d.client?.name || "");
+          // Mark as viewed
+          fetch("/api/client/documents", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ doc_type: docType }),
+          });
+        }
+      })
+      .catch(() => {});
+  }, [docType]);
+
+  // Use real data if available, fallback to mock
+  const displayDoc = realDoc || doc;
+
+if (!config || !doc) {
     return (
       <div className="min-h-screen bg-[var(--color-surface)] flex items-center justify-center p-4">
         <div className="text-center">
@@ -136,17 +162,17 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
               <Icon className="w-6 h-6" style={{ color: config.color }} />
             </div>
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-              {doc.title || config.label}
+              {displayDoc.title || config.label}
             </h1>
-            {doc.prepared_for && <p className="text-sm text-[var(--color-text-muted)]">Prepared for {doc.prepared_for}</p>}
-            {doc.bill_to && <p className="text-sm text-[var(--color-text-muted)]">Bill to: {doc.bill_to}</p>}
-            {doc.invoice_number && <p className="text-xs text-[var(--color-text-muted)] mt-1">{doc.invoice_number}</p>}
+            {displayDoc.prepared_for && <p className="text-sm text-[var(--color-text-muted)]">Prepared for {displayDoc.prepared_for}</p>}
+            {displayDoc.bill_to && <p className="text-sm text-[var(--color-text-muted)]">Bill to: {displayDoc.bill_to}</p>}
+            {displayDoc.invoice_number && <p className="text-xs text-[var(--color-text-muted)] mt-1">{displayDoc.invoice_number}</p>}
           </div>
 
           {/* Proposal */}
           {docType === "proposal" && (
             <div className="space-y-6">
-              {doc.sections.map((section: any, i: number) => (
+              {displayDoc.sections.map((section: any, i: number) => (
                 <div key={i}>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">{section.title}</h2>
                   {section.content && <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{section.content}</p>}
@@ -173,22 +199,22 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
           {docType === "contract" && (
             <div className="space-y-6">
               <div className="text-sm text-[var(--color-text-secondary)]">
-                <p>Between: <span className="text-[var(--color-text-primary)] font-medium">{doc.between}</span></p>
-                <p>And: <span className="text-[var(--color-text-primary)] font-medium">{doc.and}</span></p>
-                <p className="text-xs text-[var(--color-text-muted)] mt-1">Date: {doc.date}</p>
+                <p>Between: <span className="text-[var(--color-text-primary)] font-medium">{displayDoc.between}</span></p>
+                <p>And: <span className="text-[var(--color-text-primary)] font-medium">{displayDoc.and}</span></p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-1">Date: {displayDoc.date}</p>
               </div>
-              {doc.sections.map((section: any, i: number) => (
+              {displayDoc.sections.map((section: any, i: number) => (
                 <div key={i}>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{section.title}</h2>
                   <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{section.content}</p>
                 </div>
               ))}
-              {doc.signature_line && (
+              {displayDoc.signature_line && (
                 <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
-                  {doc.signed ? (
+                  {displayDoc.signed ? (
                     <div className="flex items-center gap-2 text-emerald-400">
                       <CheckCircle className="w-5 h-5" />
-                      <span className="text-sm font-medium">Signed by {doc.and?.split("/")[0]?.trim()} on {doc.signed_at}</span>
+                      <span className="text-sm font-medium">Signed by {displayDoc.and?.split("/")[0]?.trim()} on {displayDoc.signed_at}</span>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -205,11 +231,11 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
           {docType === "invoice" && (
             <div className="space-y-6">
               <div className="text-sm text-[var(--color-text-secondary)]">
-                <p>Bill to: <span className="text-[var(--color-text-primary)] font-medium">{doc.bill_to}</span></p>
-                <p className="text-xs text-[var(--color-text-muted)]">Date: {doc.date} | Due: {doc.due_date}</p>
+                <p>Bill to: <span className="text-[var(--color-text-primary)] font-medium">{displayDoc.bill_to}</span></p>
+                <p className="text-xs text-[var(--color-text-muted)]">Date: {displayDoc.date} | Due: {displayDoc.due_date}</p>
               </div>
               <div className="space-y-2">
-                {doc.items.map((item: any, i: number) => (
+                {displayDoc.items.map((item: any, i: number) => (
                   <div key={i} className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--color-surface)]">
                     <span className="text-sm text-[var(--color-text-secondary)]">{item.description}</span>
                     <span className="text-sm font-medium text-[var(--color-text-primary)]">N{item.amount.toLocaleString()}</span>
@@ -217,13 +243,13 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
                 ))}
                 <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20">
                   <span className="text-sm font-semibold text-[var(--color-text-primary)]">Total</span>
-                  <span className="text-lg font-bold text-[var(--color-accent)]" style={{ fontFamily: "Space Grotesk, sans-serif" }}>N{doc.total.toLocaleString()}</span>
+                  <span className="text-lg font-bold text-[var(--color-accent)]" style={{ fontFamily: "Space Grotesk, sans-serif" }}>N{displayDoc.total.toLocaleString()}</span>
                 </div>
               </div>
-              {doc.paid ? (
+              {displayDoc.paid ? (
                 <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm text-emerald-400 font-medium">Paid on {doc.paid_at}</span>
+                  <span className="text-sm text-emerald-400 font-medium">Paid on {displayDoc.paid_at}</span>
                 </div>
               ) : (
                 <button className="w-full py-3 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors flex items-center justify-center gap-2">
@@ -237,14 +263,14 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
           {docType === "welcome" && (
             <div className="space-y-6">
               <div className="text-sm text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line">
-                <p className="text-[var(--color-text-primary)] font-medium mb-4">{doc.greeting}</p>
-                {doc.body}
+                <p className="text-[var(--color-text-primary)] font-medium mb-4">{displayDoc.greeting}</p>
+                {displayDoc.body}
               </div>
-              {doc.what_happens_next && (
+              {displayDoc.what_happens_next && (
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">What happens next</h2>
                   <div className="space-y-2">
-                    {doc.what_happens_next.map((step: string, i: number) => (
+                    {displayDoc.what_happens_next.map((step: string, i: number) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className="w-6 h-6 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center shrink-0">
                           <span className="text-xs font-bold text-[var(--color-accent)]">{i + 1}</span>
@@ -255,21 +281,21 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
                   </div>
                 </div>
               )}
-              {doc.your_automations && (
+              {displayDoc.your_automations && (
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Your Automations</h2>
                   <div className="flex flex-wrap gap-2">
-                    {doc.your_automations.map((a: string, i: number) => (
+                    {displayDoc.your_automations.map((a: string, i: number) => (
                       <span key={i} className="px-3 py-1.5 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs font-medium border border-[var(--color-accent)]/20">{a}</span>
                     ))}
                   </div>
                 </div>
               )}
               <div className="text-sm text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line mt-6 pt-6 border-t border-[var(--color-border)]">
-                {doc.closing}
+                {displayDoc.closing}
               </div>
               <div className="mt-4">
-                <p className="text-sm font-semibold text-[var(--color-text-primary)]">{doc.signature}</p>
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">{displayDoc.signature}</p>
                 <p className="text-xs text-[var(--color-text-muted)]">ELION</p>
               </div>
             </div>
@@ -279,14 +305,14 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
           {docType === "thankyou" && (
             <div className="space-y-6">
               <div className="text-sm text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line">
-                <p className="text-[var(--color-text-primary)] font-medium mb-4">{doc.greeting}</p>
-                {doc.body}
+                <p className="text-[var(--color-text-primary)] font-medium mb-4">{displayDoc.greeting}</p>
+                {displayDoc.body}
               </div>
-              {doc.delivered && (
+              {displayDoc.delivered && (
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">What has been delivered</h2>
                   <div className="space-y-2">
-                    {doc.delivered.map((item: any, i: number) => (
+                    {displayDoc.delivered.map((item: any, i: number) => (
                       <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-[var(--color-surface)]">
                         <span className="text-sm text-[var(--color-text-secondary)]">{item.name}</span>
                         <span className="text-xs font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">{item.status}</span>
@@ -295,21 +321,21 @@ export default function DocumentPage({ params }: { params: Promise<{ docType: st
                   </div>
                 </div>
               )}
-              {doc.connected_systems && (
+              {displayDoc.connected_systems && (
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Connected Systems</h2>
                   <div className="flex flex-wrap gap-2">
-                    {doc.connected_systems.map((s: string, i: number) => (
+                    {displayDoc.connected_systems.map((s: string, i: number) => (
                       <span key={i} className="px-3 py-1.5 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-secondary)] text-xs font-medium border border-[var(--color-border)]">{s}</span>
                     ))}
                   </div>
                 </div>
               )}
               <div className="text-sm text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line mt-6 pt-6 border-t border-[var(--color-border)]">
-                {doc.closing}
+                {displayDoc.closing}
               </div>
               <div className="mt-4">
-                <p className="text-sm font-semibold text-[var(--color-text-primary)]">{doc.signature}</p>
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">{displayDoc.signature}</p>
                 <p className="text-xs text-[var(--color-text-muted)]">ELION</p>
               </div>
             </div>
