@@ -59,14 +59,14 @@ export default function HomePage() {
             <span className="text-lg font-bold text-white" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/funnel" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">How It Works</Link>
+            <Link href="/demo" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">How It Works</Link>
             <Link href="/demo" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">Demo</Link>
             <Link href="/landing/pricing" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">Pricing</Link>
             <Link href="/landing/about" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">About</Link>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">Sign In</Link>
-            <Link href="/funnel" className="px-5 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Run Free Audit</Link>
+            <Link href="/demo" className="px-5 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">See Demo</Link>
           </div>
         </div>
       </nav>
@@ -98,8 +98,8 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <Link href="/funnel" className="group px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white text-base font-semibold hover:bg-[var(--color-accent-hover)] transition-all flex items-center gap-2.5 shadow-lg shadow-[var(--color-accent)]/20">
-                  Run Your Free Audit
+                <Link href="/demo" className="group px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white text-base font-semibold hover:bg-[var(--color-accent-hover)] transition-all flex items-center gap-2.5 shadow-lg shadow-[var(--color-accent)]/20">
+                  See ELION In Action
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link href="/demo" className="px-8 py-4 rounded-xl border border-white/10 text-[var(--color-text-secondary)] text-base font-medium hover:border-white/20 hover:text-white transition-all flex items-center gap-2">
@@ -346,8 +346,8 @@ export default function HomePage() {
           <p className="text-lg text-[var(--color-text-secondary)] mb-10">
             Run a free audit and discover exactly where your business is losing opportunities.
           </p>
-          <Link href="/funnel" className="group inline-flex items-center gap-2.5 px-10 py-4 rounded-xl bg-[var(--color-accent)] text-white text-lg font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-xl shadow-[var(--color-accent)]/20">
-            Run Your Free Audit
+          <Link href="/demo" className="group inline-flex items-center gap-2.5 px-10 py-4 rounded-xl bg-[var(--color-accent)] text-white text-lg font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-xl shadow-[var(--color-accent)]/20">
+            See ELION In Action
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -362,7 +362,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-6">
             {[
-              { href: "/funnel", label: "Audit" },
+              { href: "/demo", label: "Demo" },
               { href: "/demo", label: "Demo" },
               { href: "/landing/pricing", label: "Pricing" },
               { href: "/landing/about", label: "About" },

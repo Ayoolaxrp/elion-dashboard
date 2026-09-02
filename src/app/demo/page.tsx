@@ -115,13 +115,12 @@ export default function DemoPage() {
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
           </a>
           <div className="hidden sm:flex items-center gap-6 text-sm">
-            <a href="/funnel#method" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
-            <a href="/funnel#audit" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Audit</a>
+            <a href="/demo" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
             <a href="/demo" className="text-[var(--color-accent)] font-medium">Demo</a>
             <a href="/landing/pricing" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Pricing</a>
             <a href="/landing/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">About</a>
           </div>
-          <a href="/funnel#audit" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all active:scale-[0.97]">Start Free Audit</a>
+          <a href="/landing/pricing" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all active:scale-[0.97]">View Pricing</a>
         </div>
       </header>
 
@@ -379,7 +378,7 @@ export default function DemoPage() {
         <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2" style={{letterSpacing:"-0.02em"}}>What would happen if your business handled every enquiry like this?</h3>
         <p className="text-sm text-[var(--color-text-muted)] mb-4">Find out with your free audit.</p>
         <a
-          href="/funnel#audit"
+          href="/landing/pricing"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-semibold rounded hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97]"
         >
           Run Free Audit <ArrowRight className="w-4 h-4" />

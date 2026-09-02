@@ -155,8 +155,28 @@
     -webkit-backdrop-filter: none;
     background: rgba(10, 13, 20, 0.95);
   }
+  html.lenis, html.lenis body {
+    scroll-behavior: auto !important;
+  }
 }
 .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ---- Lenis Smooth Scroll Reset ---- */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
 
 /* ---- Apple-style Glass Materials ---- */
 .glass-nav {

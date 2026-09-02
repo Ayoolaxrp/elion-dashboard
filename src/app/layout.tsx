@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { RootShell } from "@/components/root-shell";
+import SmoothScroll from "@/components/smooth-scroll";
 
 export const metadata: Metadata = {
   title: {
@@ -76,7 +77,9 @@ export default function RootLayout({
       />
     </head>
       <body className="bg-[var(--color-surface)] text-[var(--color-text-primary)] antialiased min-h-screen">
-        <RootShell>{children}</RootShell>
+        <SmoothScroll>
+          <RootShell>{children}</RootShell>
+        </SmoothScroll>
       </body>
     </html>
   );
