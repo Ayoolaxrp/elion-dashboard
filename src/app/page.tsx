@@ -1,187 +1,81 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Zap, Mail, Calendar, RotateCcw, Settings, Plus, Activity, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Zap, Mail, Calendar, RotateCcw, Settings } from "lucide-react";
 
-interface Automation {
-  id: string;
-  custom_name: string;
-  status: string;
-  template_id: string;
-  deployed_at: string | null;
-  workflow_templates?: { name: string; category: string };
-}
+const iconMap: Record<string, any> = { Zap, Mail, Calendar, RotateCcw, Settings };
 
-interface ClientInfo {
-  company_name: string;
-  onboarding_status: string;
-}
-
-const statusColors: Record<string, string> = {
-  live: "text-[var(--color-success)]",
-  pending_activation: "text-[var(--color-warning)]",
-  configuring: "text-[var(--color-warning)]",
-  testing: "text-[var(--color-accent)]",
-  pending: "text-[var(--color-text-muted)]",
-  paused: "text-[var(--color-text-muted)]",
-  failed: "text-[var(--color-error)]",
-};
-
-const statusIcons: Record<string, typeof CheckCircle2> = {
-  live: CheckCircle2, pending_activation: Clock, configuring: Clock,
-  testing: Activity, pending: AlertCircle, paused: AlertCircle, failed: AlertCircle,
-};
-
-const statusLabels: Record<string, string> = {
-  live: "Operational", pending_activation: "Awaiting Activation", configuring: "Configuring",
-  testing: "Testing", pending: "Pending Setup", paused: "Paused", failed: "Issue Detected",
-};
-
-const categoryIcons: Record<string, typeof Zap> = {
-  lead_response: Zap, follow_up: Mail, booking: Calendar,
-  revenue_recovery: RotateCcw, operations: Settings,
-};
-
-const AVAILABLE_MODULES = [
-  { key: "lead_response", name: "Lead Response", description: "Capture, qualify, and respond to new leads instantly" },
-  { key: "follow_up", name: "Follow-Up", description: "Automated sequences for leads who didn't convert" },
-  { key: "booking", name: "Booking", description: "Calendar sync and automated appointment scheduling" },
-  { key: "revenue_recovery", name: "Revenue Recovery", description: "Find dormant customers and re-engage them" },
-  { key: "operations", name: "Operations", description: "Internal workflows, notifications, and reporting" },
+const FEATURES = [
+  { icon: "Zap", title: "Lead Response", desc: "Respond to new leads in seconds, not hours." },
+  { icon: "Mail", title: "Follow-Up", desc: "Automated sequences that work while you sleep." },
+  { icon: "Calendar", title: "Booking", desc: "Automated scheduling that syncs with your calendar." },
+  { icon: "RotateCcw", title: "Revenue Recovery", desc: "Find dormant customers and re-engage them." },
+  { icon: "Settings", title: "Operations", desc: "Automate repetitive internal tasks." },
 ];
 
-export default function DashboardPage() {
-  const [automations, setAutomations] = useState<Automation[]>([]);
-  const [client, setClient] = useState<ClientInfo | null>(null);
-  const [loading, setLoading] = useState(true);
+const STEPS = [
+  { num: "01", title: "Discover", desc: "Examine your business and identify lost opportunities." },
+  { num: "02", title: "Diagnose", desc: "Turn gaps into actionable automation opportunities." },
+  { num: "03", title: "Build", desc: "Configure the systems your business actually needs." },
+  { num: "04", title: "Automate", desc: "Systems handle repetitive workflows continuously." },
+  { num: "05", title: "Measure", desc: "See where automation creates value." },
+];
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const meRes = await fetch("/api/auth/me");
-        if (!meRes.ok) { setLoading(false); return; }
-        const me = await meRes.json();
-        if (me.isClient && me.organizationId) {
-          const autoRes = await fetch("/api/client/automations");
-          if (autoRes.ok) {
-            const data = await autoRes.json();
-            setAutomations(data.automations || []);
-            setClient(data.client || null);
-          }
-        } else if (me.isSuperAdmin || me.isAdmin) {
-          window.location.href = "/admin";
-          return;
-        }
-      } catch { /* silent */ } finally { setLoading(false); }
-    }
-    load();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-6 h-6 border-2 border-[var(--color-accent)] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  const activeAutomations = automations.filter(a => a.status === "live");
-  const activeKeys = new Set(activeAutomations.map(a => a.workflow_templates?.category).filter(Boolean));
-  const ownedKeys = new Set(automations.map(a => a.workflow_templates?.category).filter(Boolean));
-
+export default function HomePage() {
   return (
-    <div className="max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-xl font-bold text-[var(--color-text-primary)] mb-1" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
-          {client?.company_name || "Your Dashboard"}
-        </h1>
-        <p className="text-sm text-[var(--color-text-muted)]">
-          {["go_live","completed"].includes(client?.onboarding_status || "")
-            ? "Your automations are live and processing."
-            : "Your ELION systems are being set up."}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{activeAutomations.length}</div>
-          <div className="text-xs text-[var(--color-text-muted)] mt-1">Active Systems</div>
-        </div>
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{automations.length}</div>
-          <div className="text-xs text-[var(--color-text-muted)] mt-1">Total Systems</div>
-        </div>
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>—</div>
-          <div className="text-xs text-[var(--color-text-muted)] mt-1">Leads Processed</div>
-        </div>
-        <div className="p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>—</div>
-          <div className="text-xs text-[var(--color-text-muted)] mt-1">Responses Sent</div>
-        </div>
-      </div>
-
-      {automations.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Your ELION Systems</h2>
-          <div className="space-y-2">
-            {automations.map((auto) => {
-              const Icon = categoryIcons[auto.workflow_templates?.category || ""] || Zap;
-              const StatusIcon = statusIcons[auto.status] || AlertCircle;
-              const color = statusColors[auto.status] || "text-[var(--color-text-muted)]";
-              return (
-                <div key={auto.id} className="flex items-center gap-3 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
-                  <div className="p-2 rounded-lg bg-[var(--color-accent)]/10 shrink-0">
-                    <Icon className="w-4 h-4 text-[var(--color-accent)]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-[var(--color-text-primary)]">{auto.custom_name || auto.workflow_templates?.name || "Automation"}</div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{statusLabels[auto.status] || auto.status}</div>
-                  </div>
-                  <StatusIcon className={`w-4 h-4 shrink-0 ${color}`} />
-                </div>
-              );
-            })}
+    <div className="min-h-screen">      <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border)]">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)] flex items-center justify-center text-white text-sm font-bold" style={{ fontFamily: "Space Grotesk,sans-serif" }}>E</div>
+            <span className="text-lg font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/funnel" className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">How It Works</Link>
+            <Link href="/demo" className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Demo</Link>
+            <Link href="/landing/pricing" className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Pricing</Link>
+            <Link href="/landing/about" className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">About</Link>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Sign In</Link>
+            <Link href="/funnel" className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">Run Free Audit</Link>
           </div>
         </div>
-      )}
-
-      {automations.length === 0 && (
-        <div className="p-8 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-center mb-8">
-          <div className="w-12 h-12 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center mx-auto mb-4">
-            <Activity className="w-6 h-6 text-[var(--color-accent)]" />
+      </nav>
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-sm font-medium text-[var(--color-accent)] tracking-widest uppercase mb-6">Business Automation Platform</p>
+          <h1 className="text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] mb-6 leading-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Find the leaks in your business.<br /><span className="text-[var(--color-accent)]">Then automate them.</span></h1>
+          <p className="text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed">ELION audits your business operations, identifies where leads, revenue, and time are being lost, and builds automation systems to fix those leaks.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/funnel" className="px-8 py-3.5 rounded-xl bg-[var(--color-accent)] text-white text-base font-semibold hover:bg-[var(--color-accent-hover)] transition-all flex items-center gap-2">Run Your Free Audit <ArrowRight className="w-4 h-4" /></Link>
+            <Link href="/demo" className="px-8 py-3.5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] text-base font-medium hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-all">See How It Works</Link>
           </div>
-          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Your automation is ready</h3>
-          <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto">Once ELION deploys your systems, they'll appear here with real-time status and results.</p>
         </div>
-      )}
-
-      <div>
-        <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Available Systems</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {AVAILABLE_MODULES.map((mod) => {
-            const isOwned = ownedKeys.has(mod.key);
-            const isActive = activeKeys.has(mod.key);
-            const Icon = categoryIcons[mod.key] || Zap;
-            return (
-              <div key={mod.key} className={`p-4 rounded-xl border transition-colors ${isOwned ? "bg-[var(--color-surface-raised)] border-[var(--color-accent)]/20" : "bg-[var(--color-surface-raised)] border-[var(--color-border)] opacity-60"}`}>
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-[var(--color-surface)] shrink-0"><Icon className="w-4 h-4 text-[var(--color-text-muted)]" /></div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-[var(--color-text-primary)]">{mod.name}</div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{mod.description}</div>
-                  </div>
-                  {isOwned ? (
-                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${isActive ? "text-[var(--color-success)] bg-[var(--color-success)]/10" : "text-[var(--color-warning)] bg-[var(--color-warning)]/10"}`}>{isActive ? "Active" : "Provisioning"}</span>
-                  ) : (
-                    <span className="text-[10px] text-[var(--color-text-muted)] bg-[var(--color-surface)] px-2 py-0.5 rounded flex items-center gap-1"><Plus className="w-3 h-3" /> Available</span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      </section>
+      <section className="py-20 px-6 bg-[var(--color-surface-raised)]/50"><div className="max-w-6xl mx-auto"><div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Your business may be leaking more than you realize</h2>
+          <p className="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">Most businesses lose opportunities through operational inefficiencies they do not even see.</p>
+        </div><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[{ title: "Slow Lead Response", desc: "Prospects hear nothing for hours." }, { title: "Forgotten Follow-Up", desc: "Leads fall through the cracks." }, { title: "Missed Bookings", desc: "Manual scheduling creates friction." }, { title: "Revenue Leakage", desc: "Opportunities go untracked." }].map((item, i) => (<div key={i} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"><h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{item.title}</h3><p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p></div>))}
+        </div></div></section>
+      <section className="py-20 px-6"><div className="max-w-6xl mx-auto"><div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>How ELION Works</h2>
+          <p className="text-lg text-[var(--color-text-secondary)]">A simple, evidence-based approach to automation.</p>
+        </div><div className="grid md:grid-cols-5 gap-6">{STEPS.map((step, i) => (<div key={i} className="text-center"><div className="w-12 h-12 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center mx-auto mb-4"><span className="text-sm font-bold text-[var(--color-accent)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{step.num}</span></div><h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{step.title}</h3><p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{step.desc}</p></div>))}</div></div></section>
+      <section className="py-20 px-6 bg-[var(--color-surface-raised)]/50"><div className="max-w-6xl mx-auto"><div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Automation Systems</h2>
+          <p className="text-lg text-[var(--color-text-secondary)]">Every system is built around how your business operates.</p>
+        </div><div className="grid md:grid-cols-3 gap-6">{FEATURES.map((feat, i) => { const Icon = iconMap[feat.icon]; return (<div key={i} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/30 transition-colors group cursor-pointer"><div className="w-10 h-10 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center mb-4 group-hover:bg-[var(--color-accent)]/20 transition-colors">{Icon && <Icon className="w-5 h-5 text-[var(--color-accent)]" />}</div><h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{feat.title}</h3><p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{feat.desc}</p></div>); })}</div></div></section>
+      <section className="py-20 px-6"><div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-6" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Ready to find your leaks?</h2>
+          <p className="text-lg text-[var(--color-text-secondary)] mb-10">Run a free audit and discover exactly where your business is losing opportunities.</p>
+          <Link href="/funnel" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[var(--color-accent)] text-white text-base font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Run Your Free Audit <ArrowRight className="w-4 h-4" /></Link>
+        </div></section>
+      <footer className="py-12 px-6 border-t border-[var(--color-border)]"><div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-lg bg-[var(--color-accent)] flex items-center justify-center text-white text-sm font-bold" style={{ fontFamily: "Space Grotesk,sans-serif" }}>E</div><span className="text-lg font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION</span></div>
+          <div className="flex flex-wrap items-center justify-center gap-6"><Link href="/funnel" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Audit</Link><Link href="/demo" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Demo</Link><Link href="/landing/pricing" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Pricing</Link><Link href="/landing/about" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">About</Link><Link href="/landing/support" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Support</Link><Link href="/landing/privacy" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Privacy</Link><Link href="/landing/terms" className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Terms</Link></div>
+          <p className="text-xs text-[var(--color-text-muted)]">2026 ELION. All rights reserved.</p>
+        </div></footer>
     </div>
   );
 }

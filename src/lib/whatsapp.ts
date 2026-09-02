@@ -41,7 +41,7 @@ export class WhatsAppClient {
 
   private normalizePhone(phone: string): string | null {
     if (!phone) return null;
-    let c = phone.replace(/[s-()]/g, "");
+    let c = phone.replace(/[s\-()]/g, "");
     if (c.startsWith("+") && c.length >= 11) return c;
     if (c.startsWith("0") && c.length === 11) return "+234" + c.substring(1);
     if (c.startsWith("234") && c.length === 13) return "+" + c;
