@@ -117,14 +117,28 @@ export async function POST(request: NextRequest) {
 
     const startTime = Date.now();
 
-    // STEP 1: Get the client's active automation
-    const { data: automation } = await supabase
+    // STEP 1: Get the client's active lead_response automation
+    // Look for lead_response template specifically, then fall back to any live automation
+    let { data: automation } = await supabase
       .from("client_automations")
-      .select("id, custom_config, custom_name, status")
+      .select("id, custom_config, custom_name, status, template_id")
       .eq("client_id", body.client_id)
       .eq("status", "live")
+      .like("template_id", "%lead_response%")
       .limit(1)
       .single();
+
+    if (!automation) {
+      // Fallback: any live automation
+      const { data: fallback } = await supabase
+        .from("client_automations")
+        .select("id, custom_config, custom_name, status, template_id")
+        .eq("client_id", body.client_id)
+        .eq("status", "live")
+        .limit(1)
+        .single();
+      automation = fallback;
+    }
 
     if (!automation) {
       return NextResponse.json(
