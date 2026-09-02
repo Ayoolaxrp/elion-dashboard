@@ -72,6 +72,7 @@ const adminSections = [
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isLanding = !pathname || pathname === "/" || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status" || pathname === "/pricing" || pathname === "/about" || pathname === "/support";
+  const isAdminRoute = pathname.startsWith("/admin");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -96,7 +97,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
     }
   };
 
-  if (isLanding) {
+  if (isLanding || isAdminRoute) {
     return <>{children}</>;
   }
 
