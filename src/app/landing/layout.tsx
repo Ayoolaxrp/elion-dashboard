@@ -22,7 +22,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       {/* Nav */}
       <nav className="border-b border-[var(--color-border)] sticky top-0 z-40 bg-[var(--color-surface-raised)]">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/funnel" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} priority />
             <span className="text-sm font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
           </Link>
@@ -41,7 +41,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
               </Link>
             ))}
             <Link
-              href="/funnel#audit"
+              href="/audit"
               className="px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-medium rounded-lg hover:bg-[var(--color-accent-hover)] transition-colors"
             >
               Free Audit
@@ -75,7 +75,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
                 </Link>
               ))}
               <Link
-                href="/funnel#audit"
+                href="/audit"
                 onClick={() => setMobileOpen(false)}
                 className="block w-full text-center py-2.5 bg-[var(--color-surface)] text-white text-sm font-medium rounded hover:bg-[var(--color-accent-hover)] transition-colors"
               >
@@ -105,10 +105,10 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             <div>
               <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Product</h4>
               <div className="space-y-2">
-                <Link href="/funnel" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Home</Link>
+                <Link href="/" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Home</Link>
                 <Link href="/landing/pricing" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Pricing</Link>
                 <Link href="/demo" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Demo</Link>
-                <Link href="/funnel#audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Free Audit</Link>
+                <Link href="/audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Free Audit</Link>
               </div>
             </div>
             <div>
@@ -123,8 +123,8 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
             <div>
               <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Contact</h4>
               <div className="space-y-2">
-                <a href="/funnel#audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Contact us</a>
-                <a href="/funnel#audit">Get Started</a>
+                <a href="/audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Contact us</a>
+                <a href="/audit">Get Started</a>
               </div>
             </div>
           </div>

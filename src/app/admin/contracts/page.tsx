@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { FileText, CheckCircle, Clock, Send } from "lucide-react";
+import { FileText, CheckCircle, Clock, Send, ArrowLeft } from "lucide-react";
 import { allContracts } from "@/lib/mock-lifecycle";
+import { AdminSidebar } from "@/components/admin/sidebar";
 
 const STATUS_CONFIG: Record<string, { color: string; icon: any }> = {
   draft: { color: "text-gray-400 bg-gray-400/10", icon: FileText },
@@ -14,7 +15,9 @@ const STATUS_CONFIG: Record<string, { color: string; icon: any }> = {
 
 export default function ContractsPage() {
   return (
-    <div className="max-w-5xl p-6">
+    <div className="flex min-h-screen bg-[var(--color-surface)]">
+      <AdminSidebar />
+      <main className="flex-1 max-w-5xl p-6">
       <div className="mb-8">
         <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Contracts</h1>
         <p className="text-sm text-[var(--color-text-muted)]">{allContracts.length} contracts</p>
@@ -45,6 +48,7 @@ export default function ContractsPage() {
           );
         })}
       </div>
+      </main>
     </div>
   );
 }

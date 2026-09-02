@@ -156,7 +156,7 @@ export default function PricingPage() {
             <span className="text-sm text-[var(--color-text-secondary)]">
               Not sure which plan? <span className="text-[var(--color-text-primary)] font-medium">Start with the free audit</span>, we will recommend the right tier based on your business.
             </span>
-            <a href="/funnel#audit" className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">
+            <a href="/audit" className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">
               Free Audit <ArrowRight className="w-3 h-3" />
             </a>
           </div>
@@ -365,7 +365,7 @@ export default function PricingPage() {
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3">Ready to get started?</h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-6">Run a free leak audit to see where your business is losing money.</p>
           <Link
-            href="/funnel#audit"
+            href="/audit"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-white rounded-lg font-semibold text-sm hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             Run Free Leak Audit <ArrowRight className="w-4 h-4" />

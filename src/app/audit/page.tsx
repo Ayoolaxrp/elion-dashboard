@@ -311,18 +311,18 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50 -mx-4 sm:-mx-6 px-4 sm:px-6 mb-6">
         <div className="max-w-5xl mx-auto h-14 flex items-center justify-between">
-          <a href="/funnel" className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <img src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
           </a>
           <div className="hidden sm:flex items-center gap-6 text-sm">
-            <a href="/funnel#method" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
+            <a href="/audit#method" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
             <a href="/audit" className="text-[var(--color-accent)] font-medium">Audit</a>
             <a href="/demo" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Demo</a>
             <a href="/landing/pricing" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Pricing</a>
             <a href="/landing/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">About</a>
           </div>
-          <a href="/funnel#audit" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Start Free Audit</a>
+          <a href="/audit" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Start Free Audit</a>
         </div>
       </header>
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -632,7 +632,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                 <ClipboardList className="w-4 h-4" /> Request Implementation
               </button>
               <a
-                href="/funnel?ref=audit-results"
+                href="/audit?ref=audit-results"
                 target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-medium rounded hover:bg-[var(--color-accent-hover)] transition-colors"
               >
