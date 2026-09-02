@@ -16,7 +16,7 @@ const clientSections = [
   {
     label: "Overview",
     items: [
-      { label: "Dashboard", href: "/", icon: LayoutDashboard },
+      { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     ],
   },
   {
@@ -71,7 +71,7 @@ const adminSections = [
 
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLanding = !pathname || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status";
+  const isLanding = !pathname || pathname === "/" || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status" || pathname === "/pricing" || pathname === "/about" || pathname === "/support";
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -135,7 +135,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
             )}
             <div className="space-y-0.5">
               {section.items.map((item) => {
-                const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                const isActive = item.href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(item.href);
                 return (
                   <Link
                     key={item.href}
