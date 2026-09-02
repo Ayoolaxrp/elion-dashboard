@@ -94,5 +94,18 @@ export async function PATCH(request: Request) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+  // Create admin notification
+  const docLabels: Record<string, string> = {
+    proposal: "Proposal", contract: "Contract", invoice: "Invoice",
+    welcome: "Welcome Doc", portal: "Client Portal", thankyou: "Thank You",
+  };
+  await sb.from("notifications").insert({
+    type: "document_viewed",
+    client_id: client.id,
+    document_type: doc_type,
+    title: `${docLabels[doc_type] || doc_type} viewed`,
+    message: `Client viewed their ${docLabels[doc_type] || doc_type} document.`,
+  });
+
   return NextResponse.json({ success: true });
 }

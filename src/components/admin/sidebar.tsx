@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell } from "lucide-react";
 import { useState } from "react";
 
 const NAV = [
@@ -28,6 +28,11 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    fetch("/api/admin/notifications").then(r => r.json()).then(d => setUnread(d.unread || 0)).catch(() => {});
+  }, []);
   const handleSignOut = async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; };
 
   return (
@@ -56,6 +61,11 @@ export function AdminSidebar() {
           })}
         </nav>
         <div className="p-2 border-t border-[var(--color-border)]">
+          <Link href="/admin/notifications" className={"flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] transition-colors relative " + (collapsed ? "justify-center" : "")}>
+            <Bell className="w-4 h-4 shrink-0" />
+            {unread > 0 && <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[var(--color-error)] text-white text-[9px] font-bold flex items-center justify-center">{unread > 9 ? "9+" : unread}</span>}
+            {!collapsed && <span>Notifications</span>}
+          </Link>
           <Link href="/" className={"flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] transition-colors " + (collapsed ? "justify-center" : "")}>
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
             {!collapsed && <span>View Site</span>}
