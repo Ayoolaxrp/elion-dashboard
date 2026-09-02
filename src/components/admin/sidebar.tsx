@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell } from "lucide-react";
-import { useState } from "react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell, Database } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -22,6 +22,7 @@ const NAV = [
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/status", label: "Status", icon: CheckCircle },
   { href: "/admin/settings", label: "Settings", icon: Settings },
+  { href: "/admin/migrations", label: "Migrations", icon: Database },
 ];
 
 export function AdminSidebar() {
