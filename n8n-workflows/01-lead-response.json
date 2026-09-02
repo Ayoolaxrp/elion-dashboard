@@ -1,5 +1,6 @@
 {
-  "name": "ELION - Lead Response",
+  "name": "ELION \u2014 Lead Response System",
+  "active": true,
   "nodes": [
     {
       "parameters": {
@@ -8,77 +9,135 @@
         "responseMode": "lastNode",
         "options": {}
       },
-      "id": "w1-n1",
+      "id": "webhook-1",
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        250,
+        200,
         300
-      ]
+      ],
+      "webhookId": "elion-lead-response"
     },
     {
       "parameters": {
-        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst clientId = body.client_id;\nif (!clientId) return [{ json: { error: 'No client_id' } }];\nreturn [{ json: { client_id: clientId, lead_email: body.lead_email || body.email, lead_phone: body.lead_phone || body.phone, lead_name: body.lead_name || body.contact_name || 'Customer' } }];"
+        "jsCode": "const data = $input.first().json.body || $input.first().json;\n\n// Validate required fields\nconst required = ['client_id', 'lead_phone'];\nconst missing = required.filter(f => !data[f]);\n\nif (missing.length > 0) {\n  return [{ json: { success: false, error: `Missing: ${missing.join(', ')}` } }];\n}\n\n// Normalize phone number\nlet phone = data.lead_phone.replace(/[\\s\\-\\(\\)]/g, '');\nif (phone.startsWith('0') && phone.length === 11) {\n  phone = '+234' + phone.substring(1);\n} else if (!phone.startsWith('+')) {\n  phone = '+' + phone;\n}\n\nreturn [{ json: {\n  client_id: data.client_id,\n  lead_name: data.lead_name || 'Prospect',\n  lead_email: data.lead_email || '',\n  lead_phone: phone,\n  lead_source: data.lead_source || 'webhook',\n  business_name: data.business_name || '',\n  business_type: data.business_type || '',\n  problem: data.problem || '',\n  timestamp: new Date().toISOString()\n}}];"
       },
-      "id": "w1-n2",
+      "id": "validate-1",
       "name": "Validate Input",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        470,
+        420,
         300
       ]
     },
     {
       "parameters": {
-        "url": "=https://dxpzvscfbemywhkehpdm.supabase.co/rest/v1/clients?id=eq.{{ $json.client_id }}&select=id,company_name,contact_name",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "apikey",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI"
-            },
-            {
-              "name": "Authorization",
-              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI"
+        "method": "GET",
+        "url": "=https://dxpzvscfbemywhkehpdm.supabase.co/rest/v1/clients?id=eq.{{ $json.client_id }}&select=id,company_name,contact_name,contact_phone,automation_config",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false
             }
-          ]
+          }
         }
       },
-      "id": "w1-n3",
-      "name": "Get Client",
+      "id": "get-client-1",
+      "name": "Get Client Config",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        690,
+        640,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "supabase-auth",
+          "name": "Supabase Service Role"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $('Validate Input').first().json;\nconst clientRows = $input.first().json;\nconst client = Array.isArray(clientRows) ? clientRows[0] : clientRows;\n\n// Build WhatsApp message for the LEAD (the person who submitted the form)\nconst leadMsg = `Hi ${lead.lead_name},\n\nThank you for your interest. We've received your submission and will review your business operations shortly.\n\nOur team will be in touch within 24 hours with initial findings.\n\nBest regards,\nELION Team`;\n\n// Build admin notification\nconst adminMsg = `\ud83d\udd14 New Lead Captured\n\nName: ${lead.lead_name}\nPhone: ${lead.lead_phone}\nEmail: ${lead.lead_email || 'N/A'}\nSource: ${lead.lead_source}\nBusiness: ${lead.business_name || 'N/A'}\nProblem: ${lead.problem || 'N/A'}\nTime: ${lead.timestamp}`;\n\nreturn [{ json: {\n  ...lead,\n  client_name: client?.company_name || 'ELION',\n  lead_message: leadMsg,\n  admin_message: adminMsg\n}}];"
+      },
+      "id": "format-1",
+      "name": "Format Messages",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        860,
         300
       ]
     },
     {
       "parameters": {
-        "jsCode": "const client = ($input.first().json.body || [{}])[0] || {};\nconst prev = $('Validate Input').first().json;\nconst name = (prev.lead_name || '').split(' ')[0] || 'there';\nconst biz = client.company_name || 'ELION';\nconst msg = 'Hi ' + name + ',\n\nThank you for contacting ' + biz + '. We have received your enquiry and will respond shortly.\n\nBest regards,\n' + biz;\nreturn [{ json: { ...prev, business_name: biz, message: msg } }];"
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WHATSAPP_PHONE_NUMBER_ID }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $json.lead_phone }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": {{ JSON.stringify($json.lead_message) }},\n    \"preview_url\": false\n  }\n}",
+        "options": {}
       },
-      "id": "w1-n4",
-      "name": "Format Message",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "id": "send-whatsapp-lead",
+      "name": "WhatsApp to Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        910,
-        300
-      ]
+        1080,
+        200
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-auth",
+          "name": "WhatsApp Cloud API"
+        }
+      },
+      "continueOnFail": true
     },
     {
       "parameters": {
-        "jsCode": "const d = $input.first().json;\nreturn [{ json: { success: true, channel: 'email', lead: d.lead_name, business: d.business_name } }];"
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $env.WHATSAPP_PHONE_NUMBER_ID }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $env.ADMIN_WHATSAPP_PHONE }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": {{ JSON.stringify($json.admin_message) }},\n    \"preview_url\": false\n  }\n}",
+        "options": {}
       },
-      "id": "w1-n5",
-      "name": "Send Response",
+      "id": "send-whatsapp-admin",
+      "name": "WhatsApp to Admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        400
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "whatsapp-auth",
+          "name": "WhatsApp Cloud API"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $('Format Messages').first().json;\nconst whatsappLead = $('WhatsApp to Lead').first().json;\nconst whatsappAdmin = $('WhatsApp to Admin').first().json;\n\nreturn [{ json: {\n  success: true,\n  lead_name: lead.lead_name,\n  lead_phone: lead.lead_phone,\n  whatsapp_to_lead: whatsappLead?.messages?.[0]?.id ? 'sent' : 'failed',\n  whatsapp_to_admin: whatsappAdmin?.messages?.[0]?.id ? 'sent' : 'failed',\n  timestamp: new Date().toISOString()\n}}];"
+      },
+      "id": "response-1",
+      "name": "Final Response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1130,
+        1300,
         300
       ]
     }
@@ -99,29 +158,56 @@
       "main": [
         [
           {
-            "node": "Get Client",
+            "node": "Get Client Config",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Client": {
+    "Get Client Config": {
       "main": [
         [
           {
-            "node": "Format Message",
+            "node": "Format Messages",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Format Message": {
+    "Format Messages": {
       "main": [
         [
           {
-            "node": "Send Response",
+            "node": "WhatsApp to Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "WhatsApp to Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp to Lead": {
+      "main": [
+        [
+          {
+            "node": "Final Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp to Admin": {
+      "main": [
+        [
+          {
+            "node": "Final Response",
             "type": "main",
             "index": 0
           }
@@ -131,5 +217,13 @@
   },
   "settings": {
     "executionOrder": "v1"
-  }
+  },
+  "tags": [
+    {
+      "name": "elion"
+    },
+    {
+      "name": "lead-response"
+    }
+  ]
 }

@@ -45,3 +45,4 @@ local.db
 supabase/.temp/
 
 .env*
+scripts/cloudflared.exe
