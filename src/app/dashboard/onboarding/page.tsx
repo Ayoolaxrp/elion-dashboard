@@ -108,6 +108,38 @@ export default function OnboardingProgress() {
           </div>
         )}
 
+        
+        {/* 6-Document System */}
+        <div className="mt-8 p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)]">
+          <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Your Onboarding Documents</h3>
+          <p className="text-xs text-[var(--color-text-muted)] mb-4">Six documents. That is the whole system. Each one is generated from your information.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {[
+              { key: "proposal", label: "Proposal", icon: "FileText", color: "#3B66E8" },
+              { key: "contract", label: "Contract", icon: "Shield", color: "#8B5CF6" },
+              { key: "invoice", label: "Invoice", icon: "CreditCard", color: "#F59E0B" },
+              { key: "welcome", label: "Welcome Doc", icon: "Mail", color: "#10B981" },
+              { key: "portal", label: "Client Portal", icon: "Settings", color: "#00D4FF" },
+              { key: "thankyou", label: "Thank You", icon: "Handshake", color: "#10B981" },
+            ].map((doc, i) => {
+              const stageIdx = STAGES.findIndex(s => s.key === doc.key);
+              const isComplete = stageIdx >= 0 && stageIdx < si;
+              const isCurrent = stageIdx === si;
+              return (
+                <a key={doc.key} href={`/dashboard/documents/${doc.key}`} className={`p-4 rounded-xl border transition-all hover:scale-[1.02] ${isCurrent ? "border-[var(--color-accent)]/30 bg-[var(--color-accent)]/5" : isComplete ? "border-emerald-500/20 bg-emerald-500/5" : "border-[var(--color-border)] bg-[var(--color-surface)] opacity-60"}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: isComplete ? "#10B981" : isCurrent ? doc.color : "#1F2937" }} />
+                    <span className="text-xs font-medium text-[var(--color-text-muted)]">{i + 1}/6</span>
+                  </div>
+                  <p className="text-sm font-medium text-[var(--color-text-primary)]">{doc.label}</p>
+                  {isComplete && <p className="text-xs text-emerald-400 mt-1">Complete</p>}
+                  {isCurrent && <p className="text-xs text-[var(--color-accent)] mt-1">Current</p>}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
         {!isComplete && (
           <div className="mt-8 text-center">
             <p className="text-xs text-[#7C8494] mb-3">Questions about your implementation?</p>
