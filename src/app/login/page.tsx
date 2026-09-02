@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { getSupabase } from "@/lib/supabase/client";
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
+import { validateEmail, validatePassword } from "@/lib/validation";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -20,6 +21,11 @@ function LoginForm() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    const emailCheck = validateEmail(email);
+    if (!emailCheck.valid) { setError(emailCheck.error || "Invalid email"); setLoading(false); return; }
+    const passCheck = validatePassword(password);
+    if (!passCheck.valid) { setError(passCheck.error || "Invalid password"); setLoading(false); return; }
 
     try {
       const res = await fetch("/api/auth/login", {

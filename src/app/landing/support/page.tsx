@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
+import { validateName, validateEmail, validateMessage } from "@/lib/validation";
 
 const faqs = [
   { q: "How do I get started?", a: "Run a free Leak Audit on our website. We will analyse your business and identify automation opportunities. From there, we recommend the right plan." },
@@ -15,11 +16,23 @@ export default function SupportPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const [submitting, setSubmitting] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setFormErrors({});
+    
+    const errors: Record<string, string> = {};
+    const nameCheck = validateName(form.name);
+    if (!nameCheck.valid) errors.name = nameCheck.error || "";
+    const emailCheck = validateEmail(form.email);
+    if (!emailCheck.valid) errors.email = emailCheck.error || "";
+    const msgCheck = validateMessage(form.message);
+    if (!msgCheck.valid) errors.message = msgCheck.error || "";
+    
+    if (Object.keys(errors).length > 0) { setFormErrors(errors); setSubmitting(false); return; }
     try {
       await fetch("/api/request", {
         method: "POST",
