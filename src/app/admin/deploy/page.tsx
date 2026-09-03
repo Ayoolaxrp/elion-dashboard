@@ -41,13 +41,19 @@ interface WizardState {
 
 const DEFAULT_STATE: WizardState = { company: "", industry: "", website: "", contact: "", email: "", phone: "", timezone: "Africa/Lagos", currency: "NGN" };
 
-/** Demo provider connection panel — REAL connections require credentials. */
-const DEMO_PROVIDERS: { name: string; kind: string; required_for: string[] }[] = [
-  { name: "Meta (WhatsApp Business Platform)", kind: "whatsapp", required_for: ["prod_wa_lead_response", "prod_follow_up", "prod_ai_receptionist", "prod_ai_sales_agent"] },
-  { name: "Voice AI provider (e.g. Vapi)", kind: "voice", required_for: ["prod_ai_receptionist"] },
-  { name: "AI model provider (OpenAI/Anthropic/Google)", kind: "ai", required_for: ["prod_ai_receptionist", "prod_ai_sales_agent", "prod_wa_lead_response"] },
-  { name: "Calendar (Google/Outlook)", kind: "calendar", required_for: ["prod_ai_receptionist", "prod_booking"] },
-  { name: "Email provider (Resend/SendGrid/Postmark)", kind: "email", required_for: ["prod_email_assistant", "prod_follow_up"] },
+/**
+ * Demo provider connection panel — REAL connections require credentials.
+ *
+ * `covers` maps each row to the exact `provider` strings used by the product
+ * infrastructure definitions, so toggling "Connected" satisfies the
+ * readiness gate for every product that references that infrastructure.
+ */
+const DEMO_PROVIDERS: { name: string; kind: string; covers: string[]; required_for: string[] }[] = [
+  { name: "Meta (WhatsApp Business Platform)", kind: "whatsapp", covers: ["Meta (WhatsApp Business Platform)", "WhatsApp / Meta"], required_for: ["prod_wa_lead_response", "prod_follow_up", "prod_ai_receptionist", "prod_ai_sales_agent"] },
+  { name: "Voice AI provider (e.g. Vapi)", kind: "voice", covers: ["Voice AI provider (e.g. Vapi)"], required_for: ["prod_ai_receptionist"] },
+  { name: "AI model provider (OpenAI/Anthropic/Google)", kind: "ai", covers: ["AI model provider (OpenAI/Anthropic/Google)", "AI model provider"], required_for: ["prod_ai_receptionist", "prod_ai_sales_agent", "prod_wa_lead_response"] },
+  { name: "Calendar (Google/Outlook)", kind: "calendar", covers: ["Calendar (Google/Outlook)"], required_for: ["prod_ai_receptionist", "prod_booking"] },
+  { name: "Email provider (Resend/SendGrid/Postmark)", kind: "email", covers: ["Email provider (Resend/SendGrid/Postmark)", "Email provider"], required_for: ["prod_email_assistant", "prod_follow_up"] },
 ];
 
 export default function DeployPage() {
@@ -227,7 +233,32 @@ export default function DeployPage() {
     }
   };
 
-  const activeProviders = DEMO_PROVIDERS.filter((dp) => dp.required_for.some((pid) => selected.has(pid)));
+  // Infra provider keys the selected products actually require/use, and the
+  // demo rows that cover them (a row shows when it covers at least one).
+  const selectedInfraKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const p of selectedProducts) {
+      for (const item of p.infrastructure.items) keys.add(item.provider);
+    }
+    return keys;
+  }, [selectedProducts]);
+  const activeProviders = DEMO_PROVIDERS.filter((dp) => dp.covers.some((k) => selectedInfraKeys.has(k)));
+
+  const providerRowStatus = (dp: (typeof DEMO_PROVIDERS)[number]): ProviderStatus => {
+    const connected = dp.covers.some((k) => providerStatus[k] === "connected");
+    const testing = dp.covers.some((k) => providerStatus[k] === "testing");
+    if (connected) return "connected";
+    if (testing) return "testing";
+    return "not_configured";
+  };
+
+  const setProviderRow = (dp: (typeof DEMO_PROVIDERS)[number], s: ProviderStatus) => {
+    setProviderStatus((prev) => {
+      const next = { ...prev };
+      for (const k of dp.covers) next[k] = s;
+      return next;
+    });
+  };
 
   const renderField = (p: ProductDefinition, key: string) => {
     const groups = p.config_groups;
@@ -597,8 +628,8 @@ export default function DeployPage() {
                 <p className="text-xs text-[var(--color-text-muted)] mb-4">Required infrastructure for the selected systems. In production these connect to real accounts with credentials. Toggling here only proves the validation gate works — it never sends real messages.</p>
                 <div className="space-y-2">
                   {activeProviders.map((dp) => {
-                    const needed = dp.required_for.filter((id) => selected.has(id)).map((id) => getProduct(id)?.short_name).filter(Boolean).join(", ");
-                    const status = providerStatus[dp.name] || "not_configured";
+                    const needed = selectedProducts.filter((p) => p.infrastructure.items.some((i) => dp.covers.includes(i.provider))).map((p) => p.short_name).filter(Boolean).join(", ");
+                    const status = providerRowStatus(dp);
                     return (
                       <div key={dp.name} className="flex items-center justify-between gap-3 p-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]/40">
                         <div className="min-w-0">
@@ -607,7 +638,7 @@ export default function DeployPage() {
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
                           {(["not_configured", "connected"] as ProviderStatus[]).map((s) => (
-                            <button key={s} onClick={() => setProviderStatus({ ...providerStatus, [dp.name]: s })}
+                            <button key={s} onClick={() => setProviderRow(dp, s)}
                               className={"px-2.5 py-1.5 rounded-lg text-[11px] font-medium border transition-colors cursor-pointer " + (status === s ? (s === "connected" ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-400" : "border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-muted)]") : "border-[var(--color-border)]/40 text-[var(--color-text-muted)] opacity-60 hover:opacity-100")}>
                               {s === "connected" ? "Connected" : "Not configured"}
                             </button>
