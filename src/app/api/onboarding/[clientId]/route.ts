@@ -48,7 +48,7 @@ export async function POST(
   // Verify client exists
   const { data: client, error: fetchErr } = await supabase
     .from("clients")
-    .select("id, onboarding_status")
+    .select("id, company_name, onboarding_status")
     .eq("id", clientId)
     .single();
 
@@ -109,8 +109,9 @@ export async function POST(
     .update({
       onboarding_form_data: formData,
       onboarding_status: "in_review",
-      // Update company details from form
-      company_name: formData.business_name || client.onboarding_status,
+      // Update company details from form (never overwrite the client name
+      // with a status string when the form's business name is blank)
+      company_name: formData.business_name || client.company_name || "",
       industry: formData.industry,
       website: formData.website,
       phone: formData.primary_contact_phone,
@@ -119,6 +120,38 @@ export async function POST(
 
   if (updateErr) {
     return NextResponse.json({ error: updateErr.message }, { status: 500 });
+  }
+
+  // Merge client-provided agent configuration into the matching automation
+  // rows so deployed agents actually run on the client's answers. Each block
+  // is stored namespaced on the automation's custom_config (receptionist /
+  // sales) and never clobbers the admin-set operational fields above it. If
+  // the automation row does not exist yet (admin deploy is yet to run), the
+  // config stays in onboarding_form_data until the deploy happens.
+  if (body.agent_receptionist || body.agent_sales) {
+    const { data: automations } = await supabase
+      .from("client_automations")
+      .select("id, custom_config, workflow_templates(slug)")
+      .eq("client_id", clientId);
+
+    for (const a of automations || []) {
+      // REST may return the joined template as an object (FK) or an array
+      const wt = Array.isArray(a.workflow_templates) ? a.workflow_templates[0] : a.workflow_templates;
+      const slug = wt?.slug;
+      if (!slug) continue;
+      if (slug === "ai_receptionist" && body.agent_receptionist) {
+        await supabase
+          .from("client_automations")
+          .update({ custom_config: { ...(a.custom_config || {}), receptionist: body.agent_receptionist } })
+          .eq("id", a.id);
+      }
+      if (slug === "ai_sales_agent" && body.agent_sales) {
+        await supabase
+          .from("client_automations")
+          .update({ custom_config: { ...(a.custom_config || {}), sales: body.agent_sales } })
+          .eq("id", a.id);
+      }
+    }
   }
 
   return NextResponse.json({ success: true, status: "in_review" });
