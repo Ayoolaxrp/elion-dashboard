@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, PlayCircle, Activity } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { ElionLogo } from "@/components/elion-logo";
@@ -113,47 +112,42 @@ function SiteNav() {
 /* ------------------------------- Hero -------------------------------- */
 
 function Hero() {
-  const reduced = useReducedMotion();
-  const heroMotion = reduced
-    ? {}
-    : {
-        initial: { opacity: 0, y: 24 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
-      };
+  // CSS-keyframe entrance (runs at first paint, no JS/hydration dependency,
+  // so LCP is not blocked). Reduced-motion fallback handled in globals.css.
   return (
     <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 px-6 overflow-hidden">
-      <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[720px] h-[420px] rounded-full bg-[var(--color-accent)]/[0.07] blur-[140px] pointer-events-none" />
-      <div className="absolute top-40 left-1/4 w-[300px] h-[300px] rounded-full bg-[var(--color-accent-cyan)]/[0.04] blur-[100px] pointer-events-none" />
+      {/* Radial-gradient glows instead of blur() filters (cheap to paint) */}
+      <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[720px] h-[420px] rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(79,124,255,0.10), transparent 70%)" }} />
+      <div className="absolute top-40 left-1/4 w-[300px] h-[300px] rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(0,212,255,0.07), transparent 70%)" }} />
 
       <div className="relative max-w-4xl mx-auto text-center">
-        <motion.div {...heroMotion}>
+        <div className="animate-hero-in" style={{ animationDelay: "0ms" }}>
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
             <span className="text-xs font-medium text-[var(--color-accent-bright)]">AI Operations for Growing Businesses</span>
           </span>
-        </motion.div>
+        </div>
 
-        <motion.h1
-          {...heroMotion}
-          className="mt-8 text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] leading-[1.04] tracking-[-0.03em]"
+        <h1
+          className="animate-hero-in mt-8 text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] leading-[1.04] tracking-[-0.03em]"
+          style={{ animationDelay: "80ms" }}
         >
           Find the leaks in your business.
           <br />
           <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)] bg-clip-text text-transparent">
             Then automate them.
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          {...heroMotion}
-          className="mt-7 text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed"
+        <p
+          className="animate-hero-in mt-7 text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed"
+          style={{ animationDelay: "160ms" }}
         >
           ELION identifies where leads, follow-ups, bookings, and operational
           workflows are breaking down, then deploys systems to fix them.
-        </motion.p>
+        </p>
 
-        <motion.div {...heroMotion} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="animate-hero-in mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style={{ animationDelay: "240ms" }}>
           <Link
             href="/audit"
             className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97] px-8 py-4 text-base"
@@ -168,11 +162,11 @@ function Hero() {
             <PlayCircle className="w-4 h-4" />
             See ELION in Action
           </Link>
-        </motion.div>
+        </div>
 
-        <motion.p {...heroMotion} className="mt-8 text-xs text-[var(--color-text-muted)]">
+        <p className="animate-hero-in mt-8 text-xs text-[var(--color-text-muted)]" style={{ animationDelay: "320ms" }}>
           No credit card. No commitment. Evidence-based findings.
-        </motion.p>
+        </p>
       </div>
     </section>
   );
