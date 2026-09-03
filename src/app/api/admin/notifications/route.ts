@@ -1,24 +1,34 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
-async function getAdmin() {
+// Auth check: real session cookies so getUser() sees the login.
+async function requireAdmin() {
   const cookieStore = await cookies();
-  const sb = createServerClient(
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user || !(process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase()).includes((user.email || "").toLowerCase())) return null;
-  return sb;
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return null;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  if (!adminEmails.includes((user.email || "").toLowerCase())) return null;
+  return user;
+}
+
+// Data client: service role bypasses RLS (notifications only allows service_role).
+function getDataClient() {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 }
 
 // GET - list notifications
 export async function GET() {
-  const sb = await getAdmin();
-  if (!sb) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const sb = getDataClient();
   const { data, error } = await sb
     .from("notifications")
     .select("*, clients(company_name, contact_name)")
@@ -34,9 +44,10 @@ export async function GET() {
 
 // PATCH - mark notification as read
 export async function PATCH(request: Request) {
-  const sb = await getAdmin();
-  if (!sb) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const sb = getDataClient();
   const body = await request.json();
   const { id, mark_all } = body;
 
