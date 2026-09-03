@@ -3,11 +3,10 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
 function getSupabase() {
-  const cookieStore = { get: (name: string) => ({ value: "" as string }), getAll: () => [] as { name: string; value: string }[] };
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
+    { cookies: { getAll: () => [], setAll: () => {} } }
   );
 }
 
@@ -18,7 +17,12 @@ async function checkAdmin(supabase: ReturnType<typeof getSupabase>) {
 }
 
 export async function GET() {
-  const supabase = getSupabase();
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
   const admin = await checkAdmin(supabase);
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -32,7 +36,12 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const supabase = getSupabase();
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
   const admin = await checkAdmin(supabase);
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

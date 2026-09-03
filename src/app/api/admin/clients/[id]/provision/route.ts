@@ -3,16 +3,16 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { provisionAutomation, provisionAllClientAutomations, deactivateAutomation, reactivateAutomation } from "@/lib/provisioning";
 
-function getSupabase() {
-  const cookieStore = { get: (name: string) => ({ value: "" as string }), getAll: () => [] as { name: string; value: string }[] };
+async function getSupabase() {
+  const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
 }
 
-async function checkAdmin(supabase: ReturnType<typeof getSupabase>) {
+async function checkAdmin(supabase: Awaited<ReturnType<typeof getSupabase>>) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user || user.email !== process.env.ADMIN_EMAILS) return null;
   return user;
@@ -23,7 +23,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: clientId } = await params;
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const admin = await checkAdmin(supabase);
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -58,7 +58,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: clientId } = await params;
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const admin = await checkAdmin(supabase);
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
