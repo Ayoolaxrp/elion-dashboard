@@ -370,7 +370,7 @@ export async function createBooking(input: NewBookingInput, clientId?: string | 
   if (error || !data) {
     // Roll back the calendar event (best effort).
     try {
-      await deleteEventSafe(calendarId, event.eventId);
+      await deleteEventSafe(calendarId, event.eventId, clientId);
     } catch {
       // ignore
     }
@@ -381,12 +381,33 @@ export async function createBooking(input: NewBookingInput, clientId?: string | 
     );
   }
 
-  return data as CreatedBooking;
+  const booking = data as CreatedBooking;
+
+  // Confirmation email — sent only now that the booking is REAL (calendar
+  // event exists + row persisted). Delivery failure never changes the
+  // booking outcome; it is logged so it can be retried.
+  try {
+    const { sendBookingConfirmationEmail } = await import("@/lib/emails/sender");
+    await sendBookingConfirmationEmail(input.customer_email, {
+      customer_name: input.customer_name,
+      summary: cfg.title,
+      start_at: booking.start_at,
+      end_at: booking.end_at,
+      timezone: booking.timezone,
+      meet_url: booking.google_meet_url,
+      booking_id: booking.id,
+      host: clientId ? cfg.title : "ELION",
+    });
+  } catch (emailErr) {
+    console.error("[BOOKINGS] Confirmation email failed (booking still confirmed):", emailErr);
+  }
+
+  return booking;
 }
 
-async function deleteEventSafe(calendarId: string, eventId: string) {
+async function deleteEventSafe(calendarId: string, eventId: string, clientId?: string | null) {
   try {
-    await deleteEvent(calendarId, eventId);
+    await deleteEvent(calendarId, eventId, clientId);
   } catch {
     // ignore
   }
