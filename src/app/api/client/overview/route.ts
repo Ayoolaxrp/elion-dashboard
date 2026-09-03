@@ -107,7 +107,7 @@ export async function GET() {
   // Integration credentials for this client
   const { data: creds } = await supabase
     .from("integration_credentials")
-    .select("integration_type, status, health, last_verified_at, updated_at")
+    .select("integration_type, status, health, last_verified_at")
     .eq("client_id", clientId);
 
   const connectedTypes = new Set(
