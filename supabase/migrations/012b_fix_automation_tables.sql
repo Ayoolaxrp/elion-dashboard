@@ -82,9 +82,13 @@ VALUES
   ('client_2595d414-d84a-43b5-bdb9-9caac035895e', 'n8n', 'connected', 'healthy')
 ON CONFLICT DO NOTHING;
 
--- 6. Seed execution logs for test client
-INSERT INTO automation_executions (client_id, automation_id, template_id, trigger_type, trigger_data, status, started_at, completed_at, duration_ms, channel, channel_status, response_sent_to, metadata)
-VALUES
-  ('client_2595d414-d84a-43b5-bdb9-9caac035895e', 'ca_fbe06ee6-23aa-436c-a4fb-f6970e75ef74', 'tmpl_lead_response_v1', 'new_lead', '{"lead_name": "John Adekunle", "source": "website_form"}', 'completed', now() - interval '2 hours', now() - interval '2 hours' + interval '8 seconds', 8200, 'whatsapp', 'sent', '+2348031234567', '{"response_time_ms": 8200}'),
-  ('client_2595d414-d84a-43b5-bdb9-9caac035895e', 'ca_fbe06ee6-23aa-436c-a4fb-f6970e75ef74', 'tmpl_lead_response_v1', 'new_lead', '{"lead_name": "Sarah Okafor", "source": "instagram"}', 'completed', now() - interval '5 hours', now() - interval '5 hours' + interval '6 seconds', 6100, 'whatsapp', 'sent', '+2348059876543', '{"response_time_ms": 6100}'),
-  ('client_2595d414-d84a-43b5-bdb9-9caac035895e', 'ca_fbe06ee6-23aa-436c-a4fb-f6970e75ef74', 'tmpl_lead_response_v1', 'new_lead', '{"lead_name": "Chidi Nwosu", "source": "referral"}', 'completed', now() - interval '1 day', now() - interval '1 day' + interval '12 seconds', 12000, 'whatsapp', 'delivered', '+2348071112222', '{"response_time_ms": 12000}');
+-- 6. Seed execution logs for test client (optional - only runs if table is empty)
+-- Uses actual automation_executions columns: trigger_type, trigger_data, status, started_at, completed_at, duration_ms, result
+INSERT INTO automation_executions (client_id, automation_id, trigger_type, trigger_data, status, started_at, completed_at, duration_ms, result)
+SELECT 'client_2595d414-d84a-43b5-bdb9-9caac035895e', 'ca_fbe06ee6-23aa-436c-a4fb-f6970e75ef74', 'new_lead', v.lead_data, 'completed', now() - v.age, now() - v.age + make_interval(secs => v.ms / 1000.0), v.ms, jsonb_build_object('channel', 'whatsapp', 'channel_status', 'sent', 'response_sent_to', v.phone, 'response_time_ms', v.ms)
+FROM (VALUES
+  ('{"lead_name": "John Adekunle", "source": "website_form"}'::jsonb, '+2348031234567', 8200, interval '2 hours'),
+  ('{"lead_name": "Sarah Okafor", "source": "instagram"}'::jsonb, '+2348059876543', 6100, interval '5 hours'),
+  ('{"lead_name": "Chidi Nwosu", "source": "referral"}'::jsonb, '+2348071112222', 12000, interval '1 day')
+) AS v(lead_data, phone, ms, age)
+WHERE NOT EXISTS (SELECT 1 FROM automation_executions WHERE client_id = 'client_2595d414-d84a-43b5-bdb9-9caac035895e');
