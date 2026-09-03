@@ -152,13 +152,24 @@ const one = (body) => (Array.isArray(body) ? body[0] : body);
     });
 
     async function loginAs(page, email) {
-      await page.goto(BASE + "/login", { waitUntil: "networkidle2", timeout: 60000 });
-      await page.waitForSelector('input[type="email"]', { timeout: 15000 });
-      await page.type('input[type="email"]', email, { delay: 10 });
-      await page.type('input[type="password"]', PASSWORD, { delay: 10 });
-      await page.evaluate(() => document.querySelector("form").requestSubmit());
-      await page.waitForFunction(() => location.pathname !== "/login", { timeout: 30000 }).catch(() => {});
-      await sleep(2500);
+      for (let attempt = 0; attempt < 3; attempt++) {
+        await page.goto(BASE + "/login", { waitUntil: "networkidle2", timeout: 60000 });
+        await page.waitForSelector('input[type="email"]', { timeout: 15000 });
+        await page.type('input[type="email"]', email, { delay: 10 });
+        await page.type('input[type="password"]', PASSWORD, { delay: 10 });
+        await page.evaluate(() => document.querySelector("form").requestSubmit());
+        const moved = await Promise.race([
+          page.waitForFunction(() => location.pathname !== "/login", { timeout: 25000 }).then(() => true).catch(() => false),
+          sleep(26000).then(() => false),
+        ]);
+        if (moved) { await sleep(2500); return; }
+        const err = await page.evaluate(() =>
+          (document.body.innerText.match(/Too many login attempts|Invalid email or password|Email not confirmed/i) || [""])[0]
+        );
+        if (/Too many login attempts/i.test(err)) { console.log("  login rate-limited — waiting 70s"); await sleep(70000); continue; }
+        console.log("  login did not redirect:", err || "(no error message)");
+        await sleep(5000);
+      }
     }
 
     // ---- Client A: desktop ----

@@ -31,7 +31,12 @@ export function googleRedirectUri(reqOrigin?: string): string {
 }
 
 // ---------------------------------------------------------------
-// Persistence — booking_settings.google_tokens
+// Persistence — booking_settings.<google_tokens[:client_id]>
+// The key without a client_id is ELION's own calendar (strategy
+// calls on /landing/book). A client_id-scoped key is the calendar of
+// one client's Booking Automation — each client's automation gets its
+// own Google Calendar connection (reusable template, per-client
+// credentials). Tokens are only ever read/written server-side.
 // ---------------------------------------------------------------
 import { createServerClient } from "@supabase/ssr";
 
@@ -43,12 +48,16 @@ function settingsClient() {
   );
 }
 
-export async function getStoredTokens(): Promise<GoogleTokens | null> {
+export function tokenKey(clientId?: string | null): string {
+  return clientId ? `google_tokens:${clientId}` : "google_tokens";
+}
+
+export async function getStoredTokens(clientId?: string | null): Promise<GoogleTokens | null> {
   const sb = settingsClient();
   const { data } = await sb
     .from("booking_settings")
     .select("value")
-    .eq("key", "google_tokens")
+    .eq("key", tokenKey(clientId))
     .maybeSingle();
   if (!data?.value) return null;
   const t = data.value as GoogleTokens;
@@ -56,17 +65,24 @@ export async function getStoredTokens(): Promise<GoogleTokens | null> {
   return t;
 }
 
-export async function storeTokens(tokens: GoogleTokens) {
+export async function storeTokens(tokens: GoogleTokens, clientId?: string | null) {
   const sb = settingsClient();
   await sb.from("booking_settings").upsert(
-    { key: "google_tokens", value: tokens, updated_at: new Date().toISOString() },
+    { key: tokenKey(clientId), value: { ...tokens, client_id: clientId || null }, updated_at: new Date().toISOString() },
     { onConflict: "key" }
   );
 }
 
-export async function clearTokens() {
+export async function clearTokens(clientId?: string | null) {
   const sb = settingsClient();
-  await sb.from("booking_settings").delete().eq("key", "google_tokens");
+  await sb.from("booking_settings").delete().eq("key", tokenKey(clientId));
+}
+
+/** Keys of all connected calendars (ELION + per-client) without exposing token values. */
+export async function listConnectedCalendarKeys(): Promise<string[]> {
+  const sb = settingsClient();
+  const { data } = await sb.from("booking_settings").select("key").like("key", "google_tokens%");
+  return (data || []).map((r: { key: string }) => r.key);
 }
 
 // ---------------------------------------------------------------
@@ -130,29 +146,54 @@ async function refreshTokens(t: GoogleTokens): Promise<GoogleTokens> {
   return next;
 }
 
-async function attachAccountInfo(t: GoogleTokens) {
+export async function attachAccountInfo(t: GoogleTokens, clientId?: string | null) {
   try {
-    const cal = await authedRequest<{ id: string }>("GET", "/users/me/calendarList/primary");
+    const cal = await rawAuthedRequest<{ id: string }>(t, "GET", "/users/me/calendarList/primary");
     if (cal?.id) {
       t.calendar_id = cal.id;
-      // primary calendar resource includes account email on the calendarList item
     }
-    const list = await authedRequest<{ items?: Array<{ id: string }> }>("GET", "/users/me/calendarList");
+    const list = await rawAuthedRequest<{ items?: Array<{ id: string }> }>(t, "GET", "/users/me/calendarList");
     t.account_email = list?.items?.find((i) => i.id === t.calendar_id)?.id || undefined;
   } catch {
     // Non-fatal: token still usable; calendar id resolved lazily on demand.
   }
+  void clientId;
 }
 
-// ---------------------------------------------------------------
-// Authenticated request (handles refresh + retry once)
-// ---------------------------------------------------------------
-async function authedRequest<T>(
+/** Raw authenticated call with an explicit token set (no refresh loop). */
+async function rawAuthedRequest<T>(
+  tokens: GoogleTokens,
   method: "GET" | "POST" | "PATCH" | "DELETE",
   path: string,
   body?: unknown
 ): Promise<T> {
-  let tokens = await getStoredTokens();
+  const res = await fetch(`${CALENDAR_API}${path}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${tokens.access_token}`,
+      "Content-Type": "application/json",
+    },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => "");
+    throw new Error(`Google Calendar API ${res.status}: ${errBody.slice(0, 300)}`);
+  }
+  return (await res.json()) as T;
+}
+
+// ---------------------------------------------------------------
+// Authenticated request (handles refresh + retry once).
+// clientId selects whose calendar (ELION global vs a client's Booking
+// Automation) — tokens are looked up and stored under the same scope.
+// ---------------------------------------------------------------
+async function authedRequest<T>(
+  method: "GET" | "POST" | "PATCH" | "DELETE",
+  path: string,
+  body?: unknown,
+  clientId?: string | null
+): Promise<T> {
+  let tokens = await getStoredTokens(clientId);
   if (!tokens) throw new Error("Google Calendar is not connected");
 
   const doFetch = async (accessToken: string) => {
@@ -169,7 +210,7 @@ async function authedRequest<T>(
   let res = await doFetch(tokens.access_token);
   if (res.status === 401) {
     tokens = await refreshTokens(tokens);
-    await storeTokens(tokens);
+    await storeTokens(tokens, clientId);
     res = await doFetch(tokens.access_token);
   }
   if (!res.ok) {
@@ -182,15 +223,15 @@ async function authedRequest<T>(
 // ---------------------------------------------------------------
 // Calendar operations
 // ---------------------------------------------------------------
-export async function getPrimaryCalendarId(): Promise<string> {
-  const tokens = await getStoredTokens();
+export async function getPrimaryCalendarId(clientId?: string | null): Promise<string> {
+  const tokens = await getStoredTokens(clientId);
   if (!tokens) throw new Error("Google Calendar is not connected");
   if (tokens.calendar_id) return tokens.calendar_id;
-  const primary = await authedRequest<{ id: string }>("GET", "/users/me/calendarList/primary");
+  const primary = await authedRequest<{ id: string }>("GET", "/users/me/calendarList/primary", undefined, clientId);
   const id = primary?.id;
   if (!id) throw new Error("Could not resolve primary calendar");
   tokens.calendar_id = id;
-  await storeTokens(tokens);
+  await storeTokens(tokens, clientId);
   return id;
 }
 
@@ -198,7 +239,8 @@ export async function freeBusy(
   calendarId: string,
   timeMin: Date,
   timeMax: Date,
-  timeZone: string
+  timeZone: string,
+  clientId?: string | null
 ): Promise<Array<{ start: string; end: string }>> {
   const res = await authedRequest<{ calendars: Record<string, { busy?: Array<{ start: string; end: string }> }> }>(
     "POST",
@@ -208,7 +250,8 @@ export async function freeBusy(
       timeMax: timeMax.toISOString(),
       timeZone,
       items: [{ id: calendarId }],
-    }
+    },
+    clientId
   );
   return res.calendars?.[calendarId]?.busy || [];
 }
@@ -231,30 +274,41 @@ export interface CalendarEventResult {
 
 export async function createEventWithMeet(
   calendarId: string,
-  input: CalendarEventInput
+  input: CalendarEventInput,
+  clientId?: string | null
 ): Promise<CalendarEventResult> {
   const res = await authedRequest<{
     id: string;
     hangoutLink?: string;
     htmlLink?: string;
-  }>("POST", `/calendars/${encodeURIComponent(calendarId)}/events?conferenceDataVersion=1`, {
-    summary: input.summary,
-    description: input.description || "",
-    start: { dateTime: input.start.toISOString(), timeZone: input.timeZone },
-    end: { dateTime: input.end.toISOString(), timeZone: input.timeZone },
-    attendees: input.attendeeEmail ? [{ email: input.attendeeEmail, displayName: input.attendeeName }] : [],
-    conferenceData: {
-      createRequest: {
-        requestId: `elion_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
-        conferenceSolutionKey: { type: "hangoutsMeet" },
+  }>(
+    "POST",
+    `/calendars/${encodeURIComponent(calendarId)}/events?conferenceDataVersion=1`,
+    {
+      summary: input.summary,
+      description: input.description || "",
+      start: { dateTime: input.start.toISOString(), timeZone: input.timeZone },
+      end: { dateTime: input.end.toISOString(), timeZone: input.timeZone },
+      attendees: input.attendeeEmail ? [{ email: input.attendeeEmail, displayName: input.attendeeName }] : [],
+      conferenceData: {
+        createRequest: {
+          requestId: `elion_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+          conferenceSolutionKey: { type: "hangoutsMeet" },
+        },
       },
     },
-  });
+    clientId
+  );
   return { eventId: res.id, hangoutLink: res.hangoutLink, htmlLink: res.htmlLink };
 }
 
-export async function deleteEvent(calendarId: string, eventId: string) {
-  await authedRequest("DELETE", `/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`);
+export async function deleteEvent(calendarId: string, eventId: string, clientId?: string | null) {
+  await authedRequest(
+    "DELETE",
+    `/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
+    undefined,
+    clientId
+  );
 }
 
 export async function moveEvent(
@@ -262,10 +316,16 @@ export async function moveEvent(
   eventId: string,
   start: Date,
   end: Date,
-  timeZone: string
+  timeZone: string,
+  clientId?: string | null
 ): Promise<{ htmlLink?: string }> {
-  return authedRequest("PATCH", `/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`, {
-    start: { dateTime: start.toISOString(), timeZone },
-    end: { dateTime: end.toISOString(), timeZone },
-  });
+  return authedRequest(
+    "PATCH",
+    `/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
+    {
+      start: { dateTime: start.toISOString(), timeZone },
+      end: { dateTime: end.toISOString(), timeZone },
+    },
+    clientId
+  );
 }

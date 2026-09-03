@@ -129,5 +129,22 @@ export async function POST(request: NextRequest) {
     created.push({ template_slug: slug, automation_id: automation.id, status: automation.status });
   }
 
+  // Booking Automation needs a per-client Google Calendar connection. Record
+  // the integration row as not_configured so dashboards truthfully ask for a
+  // connection (never clobber an already-connected calendar).
+  if (products.some((p) => p.template_slug === "booking")) {
+    await supabase
+      .from("integration_credentials")
+      .upsert(
+        {
+          client_id,
+          integration_type: "calendar",
+          status: "not_configured",
+          health: "unknown",
+        },
+        { onConflict: "client_id,integration_type", ignoreDuplicates: true }
+      );
+  }
+
   return NextResponse.json({ client_id, automations: created });
 }

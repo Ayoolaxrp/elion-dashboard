@@ -34,11 +34,11 @@ function dbClient() {
   );
 }
 
-export async function loadBookingConfig(): Promise<BookingConfig> {
+export async function loadBookingConfig(clientId?: string | null): Promise<BookingConfig> {
   const sb = dbClient();
   const { data } = await sb.from("booking_settings").select("value").eq("key", "config").maybeSingle();
   const c = (data?.value || {}) as Partial<BookingConfig>;
-  return {
+  const base: BookingConfig = {
     title: c.title || "Strategy call with ELION",
     description: c.description || "",
     duration_min: c.duration_min ?? 30,
@@ -52,6 +52,70 @@ export async function loadBookingConfig(): Promise<BookingConfig> {
       days: c.working_hours?.days?.length ? c.working_hours.days : ["mon", "tue", "wed", "thu", "fri"],
       weekends: c.working_hours?.weekends ?? false,
     },
+  };
+
+  // Per-client Booking Automation: settings come from the client's own
+  // automation configuration (the reusable `booking` template deployed by
+  // the admin wizard), falling back to ELION's defaults field by field.
+  if (clientId) {
+    const { data: auto } = await sb
+      .from("client_automations")
+      .select("custom_name, custom_config, workflow_templates(slug)")
+      .eq("client_id", clientId)
+      .order("created_at", { ascending: true })
+      .limit(10);
+    const row = (auto || []).find((a: any) => {
+      const wt = Array.isArray(a.workflow_templates) ? a.workflow_templates[0] : a.workflow_templates;
+      return wt?.slug === "booking";
+    });
+    if (row) {
+      const cfg = (row.custom_config || {}) as Record<string, unknown>;
+      const tz = String(cfg.timezone || "") || base.timezone;
+      const dur = parseMinutes(String(cfg.duration || ""), 30);
+      const buf = String(cfg.buffer || "").toLowerCase().includes("none") ? 0 : parseMinutes(String(cfg.buffer || ""), 15);
+      const wh = parseWorkingHours(String(cfg.working_hours || ""));
+      return {
+        title: row.custom_name || "Book a call",
+        description: base.description,
+        duration_min: dur,
+        buffer_min: buf,
+        min_notice_min: base.min_notice_min,
+        max_window_days: base.max_window_days,
+        timezone: tz,
+        working_hours: { start: wh.start, end: wh.end, days: wh.days, weekends: wh.weekends },
+      };
+    }
+  }
+  return base;
+}
+
+function parseMinutes(raw: string, fallback: number): number {
+  const m = raw.match(/(\d+)/);
+  return m ? Math.max(5, Math.min(240, Number(m[1]))) : fallback;
+}
+
+/** Parse "Mon-Fri 9:00 AM - 5:00 PM" style strings into working hours. */
+function parseWorkingHours(raw: string): { start: string; end: string; days: string[]; weekends: boolean } {
+  const DAYS: Record<string, string> = { mon: "mon", tue: "tue", wed: "wed", thu: "thu", fri: "fri", sat: "sat", sun: "sun" };
+  const found: string[] = [];
+  const low = raw.toLowerCase();
+  for (const key of ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]) {
+    if (low.includes(key)) found.push(key);
+  }
+  const days = found.length ? found : ["mon", "tue", "wed", "thu", "fri"];
+  const weekends = days.includes("sat") || days.includes("sun");
+  const timeRe = /(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i;
+  const tm = raw.match(timeRe);
+  const to24 = (h: number, min: number, ampm: string) => {
+    let hh = h % 12;
+    if (ampm.toLowerCase() === "pm") hh += 12;
+    return `${String(hh).padStart(2, "0")}:${String(min).padStart(2, "0")}`;
+  };
+  return {
+    start: tm ? to24(+tm[1], +(tm[2] || 0), tm[3]) : "09:00",
+    end: tm ? to24(+tm[4], +(tm[5] || 0), tm[6]) : "17:00",
+    days,
+    weekends,
   };
 }
 
@@ -122,13 +186,17 @@ export interface AvailabilityResult {
 }
 
 /** Generate candidate slots across [dateStart, dateEnd] (local dates inclusive), then
- *  subtract Google Free/Busy busy periods and minimum-notice windows. */
+ *  subtract Google Free/Busy busy periods and minimum-notice windows.
+ *  Pass clientId to compute availability on that client's Booking Automation
+ *  calendar (per-client tokens + per-client configuration).
+ */
 export async function computeAvailability(
   dateStart: string,
-  dateEnd: string
+  dateEnd: string,
+  clientId?: string | null
 ): Promise<AvailabilityResult> {
-  const cfg = await loadBookingConfig();
-  const tokens = await getStoredTokens();
+  const cfg = await loadBookingConfig(clientId);
+  const tokens = await getStoredTokens(clientId);
   if (!tokens) {
     return {
       connected: false,
@@ -139,7 +207,7 @@ export async function computeAvailability(
     };
   }
 
-  const calendarId = tokens.calendar_id || (await getPrimaryCalendarId().catch(() => null));
+  const calendarId = tokens.calendar_id || (await getPrimaryCalendarId(clientId).catch(() => null));
   if (!calendarId) {
     return {
       connected: false,
@@ -178,7 +246,7 @@ export async function computeAvailability(
       // Busy windows for this calendar day (UTC window covering the full local day).
       const dayStartUtc = zonedWallToUtc(cfg.timezone, y, mo - 1, d, 0, 0);
       const dayEndUtc = zonedWallToUtc(cfg.timezone, y, mo - 1, d, 23, 59);
-      const busy = await freeBusy(calendarId, new Date(dayStartUtc), new Date(dayEndUtc), cfg.timezone);
+      const busy = await freeBusy(calendarId, new Date(dayStartUtc), new Date(dayEndUtc), cfg.timezone, clientId);
       const busyMs: Array<[number, number]> = busy.map((b) => [Date.parse(b.start), Date.parse(b.end)]);
 
       for (let t = whStartMin; t + cfg.duration_min <= whEndMin; t += stepMin) {
@@ -236,20 +304,20 @@ export interface CreatedBooking {
   timezone: string;
 }
 
-export async function createBooking(input: NewBookingInput): Promise<CreatedBooking> {
-  const cfg = await loadBookingConfig();
-  const tokens = await getStoredTokens();
+export async function createBooking(input: NewBookingInput, clientId?: string | null): Promise<CreatedBooking> {
+  const cfg = await loadBookingConfig(clientId);
+  const tokens = await getStoredTokens(clientId);
   if (!tokens) throw new BookingError("calendar_not_connected", "Google Calendar is not connected yet.");
 
   const start = new Date(input.start);
   const durationMs = cfg.duration_min * 60000;
   const end = new Date(start.getTime() + durationMs);
 
-  const calendarId = tokens.calendar_id || (await getPrimaryCalendarId());
+  const calendarId = tokens.calendar_id || (await getPrimaryCalendarId(clientId));
   const tz = input.timezone || cfg.timezone;
 
   // 1) Re-check availability for this exact slot (double-booking protection).
-  const busy = await freeBusy(calendarId, new Date(start.getTime() - 5 * 60000), new Date(end.getTime() + 5 * 60000), tz);
+  const busy = await freeBusy(calendarId, new Date(start.getTime() - 5 * 60000), new Date(end.getTime() + 5 * 60000), tz, clientId);
   const overlaps = busy.some((b) => Date.parse(b.start) < end.getTime() && Date.parse(b.end) > start.getTime());
   if (overlaps) throw new BookingError("slot_unavailable", "That time was just booked. Please choose another slot.");
 
@@ -265,7 +333,7 @@ export async function createBooking(input: NewBookingInput): Promise<CreatedBook
   };
   let event: CalendarEventResult;
   try {
-    event = await createEventWithMeet(calendarId, eventInput);
+    event = await createEventWithMeet(calendarId, eventInput, clientId);
   } catch (e) {
     throw new BookingError(
       "calendar_event_failed",

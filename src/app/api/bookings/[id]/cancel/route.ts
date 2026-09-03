@@ -31,7 +31,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const { data: booking } = await sb
     .from("bookings")
-    .select("id, customer_email, status, calendar_id, calendar_event_id")
+    .select("id, customer_email, status, calendar_id, calendar_event_id, client_id")
     .eq("id", id)
     .maybeSingle();
   if (!booking) return NextResponse.json({ error: "Booking not found" }, { status: 404 });
@@ -48,7 +48,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   // Remove the real calendar event first (best effort), then mark cancelled.
   if (booking.calendar_event_id && booking.calendar_id) {
     try {
-      await deleteEvent(booking.calendar_id, booking.calendar_event_id);
+      await deleteEvent(booking.calendar_id, booking.calendar_event_id, booking.client_id);
     } catch {
       // Event deletion failed — still record the cancellation; calendar cleanup is
       // retried manually, but we never leave a fake "cancelled" state with a live event

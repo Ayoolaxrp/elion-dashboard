@@ -5,6 +5,18 @@ import {
   Calendar, CalendarDays, CheckCircle2, Link2, Loader2, Save, Video, X, AlertTriangle, ExternalLink,
 } from "lucide-react";
 
+interface ClientCalendar {
+  client_id: string;
+  company_name: string;
+  automation_status: string;
+  connected: boolean;
+  configured: boolean;
+  duration: string;
+  timezone: string;
+  working_hours: string;
+  custom_name: string;
+}
+
 interface BookingRow {
   id: string;
   customer_name: string;
@@ -37,6 +49,7 @@ const inputCls = "w-full px-3 py-2 rounded-lg bg-[var(--color-surface)] border b
 
 export default function AdminBookingsPage() {
   const [conn, setConn] = useState<{ configured: boolean; connected: boolean; account_email: string | null } | null>(null);
+  const [clientCalendars, setClientCalendars] = useState<ClientCalendar[]>([]);
   const [upcoming, setUpcoming] = useState<BookingRow[]>([]);
   const [recent, setRecent] = useState<BookingRow[]>([]);
   const [cfg, setCfg] = useState<any>(null);
@@ -56,6 +69,7 @@ export default function AdminBookingsPage() {
         fetch("/api/admin/bookings/settings").then((r) => r.json()),
       ]);
       setConn(br.connection || null);
+      setClientCalendars(br.clientCalendars || []);
       setUpcoming(br.upcoming || []);
       setRecent(br.recent || []);
       if (sr.config) { setCfg(sr.config); setForm(JSON.parse(JSON.stringify(sr.config))); }
@@ -162,6 +176,47 @@ export default function AdminBookingsPage() {
               <p className="mt-3 text-xs text-[var(--color-text-muted)] leading-relaxed border-t border-[var(--color-border)]/50 pt-3">
                 Required server-side environment variables: <code className="text-[var(--color-accent)]">GOOGLE_CLIENT_ID</code>, <code className="text-[var(--color-accent)]">GOOGLE_CLIENT_SECRET</code>, and redirect URI <code className="text-[var(--color-accent)]">{`{site}/api/bookings/oauth/callback`}</code> (add it as an authorized redirect in Google Cloud Console).
               </p>
+            )}
+          </div>
+
+          {/* Client booking automations (per-client calendars) */}
+          <div className="rounded-2xl border border-[var(--color-border)]/70 bg-[var(--color-surface-raised)] p-5 mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+              <h2 className="text-sm font-semibold text-[var(--color-text-primary)] flex items-center gap-2"><CalendarDays className="w-4 h-4 text-[var(--color-accent)]" /> Client booking automations</h2>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wide">Per-client calendars</span>
+            </div>
+            <p className="text-xs text-[var(--color-text-muted)] mb-4">Each client with a Booking Automation gets its own Google Calendar connection. Bookings run against the client's calendar — never ELION's shared one.</p>
+            {loading ? (
+              <div className="flex items-center justify-center py-8"><Loader2 className="w-5 h-5 text-[var(--color-accent)] animate-spin" /></div>
+            ) : clientCalendars.length === 0 ? (
+              <div className="text-center py-8 border border-dashed border-[var(--color-border)]/60 rounded-xl">
+                <p className="text-sm font-semibold text-[var(--color-text-secondary)]">No client booking automations yet</p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-1">Deploy <span className="text-[var(--color-text-primary)]">Booking Automation</span> to a client from the Deploy Systems flow — its calendar connection will appear here.</p>
+              </div>
+            ) : (
+              <div className="space-y-2.5">
+                {clientCalendars.map((c) => (
+                  <div key={c.client_id} className="flex flex-wrap items-center gap-3 p-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50">
+                    <div className="flex-1 min-w-[220px]">
+                      <p className="text-sm font-semibold text-[var(--color-text-primary)]">{c.company_name}</p>
+                      <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                        {c.custom_name}{c.duration ? ` · ${c.duration}` : ""}{c.timezone ? ` · ${c.timezone}` : ""}
+                      </p>
+                      {c.working_hours && <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">{c.working_hours}</p>}
+                    </div>
+                    <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded border ${c.automation_status === "live" ? "text-green-400 bg-green-400/10 border-green-400/20" : "text-yellow-400 bg-yellow-400/10 border-yellow-400/20"}`}>{c.automation_status}</span>
+                    {c.connected ? (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-[var(--color-success)] shrink-0"><CheckCircle2 className="w-3.5 h-3.5" /> Calendar connected</span>
+                    ) : c.configured ? (
+                      <a href={`/api/bookings/oauth?client_id=${encodeURIComponent(c.client_id)}`} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:opacity-90 transition-opacity shrink-0 cursor-pointer">
+                        <Link2 className="w-3.5 h-3.5" /> Connect calendar
+                      </a>
+                    ) : (
+                      <span className="text-xs text-[var(--color-warning)] shrink-0">Waiting for Google credentials</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 

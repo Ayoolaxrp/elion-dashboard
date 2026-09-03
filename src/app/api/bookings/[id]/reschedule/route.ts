@@ -37,7 +37,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const { data: booking } = await sb
     .from("bookings")
-    .select("id, customer_email, status, calendar_id, calendar_event_id, timezone")
+    .select("id, customer_email, status, calendar_id, calendar_event_id, timezone, client_id")
     .eq("id", id)
     .maybeSingle();
   if (!booking) return NextResponse.json({ error: "Booking not found" }, { status: 404 });
@@ -51,19 +51,19 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Only confirmed bookings can be rescheduled." }, { status: 400 });
   }
 
-  const cfg = await loadBookingConfig();
+  const cfg = await loadBookingConfig(booking.client_id);
   const startMs = Date.parse(start);
   const endMs = startMs + cfg.duration_min * 60000;
   const newStart = new Date(startMs);
   const newEnd = new Date(endMs);
 
-  // Re-check availability on the new slot.
-  const tokens = await getStoredTokens();
+  // Re-check availability on the new slot (scoped to the owning client's calendar).
+  const tokens = await getStoredTokens(booking.client_id);
   if (!tokens) return NextResponse.json({ error: "Calendar is not connected." }, { status: 409 });
-  const calendarId = booking.calendar_id || tokens.calendar_id || (await getPrimaryCalendarId().catch(() => null));
+  const calendarId = booking.calendar_id || tokens.calendar_id || (await getPrimaryCalendarId(booking.client_id).catch(() => null));
   if (!calendarId) return NextResponse.json({ error: "Calendar is not connected." }, { status: 409 });
 
-  const busy = await freeBusy(calendarId, new Date(startMs - 5 * 60000), new Date(endMs + 5 * 60000), booking.timezone || cfg.timezone);
+  const busy = await freeBusy(calendarId, new Date(startMs - 5 * 60000), new Date(endMs + 5 * 60000), booking.timezone || cfg.timezone, booking.client_id);
   const overlaps = busy.some((b) => Date.parse(b.start) < endMs && Date.parse(b.end) > startMs);
   if (overlaps) {
     return NextResponse.json({ error: "That time is no longer available. Please choose another slot.", code: "slot_unavailable" }, { status: 422 });
@@ -71,7 +71,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   // Move the real calendar event first.
   try {
-    await moveEvent(calendarId, booking.calendar_event_id, newStart, newEnd, booking.timezone || cfg.timezone);
+    await moveEvent(calendarId, booking.calendar_event_id, newStart, newEnd, booking.timezone || cfg.timezone, booking.client_id);
   } catch {
     return NextResponse.json({ error: "We could not update your booking on the calendar. Please try again." }, { status: 502 });
   }
