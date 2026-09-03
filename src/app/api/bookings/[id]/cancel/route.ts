@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { deleteEvent } from "@/lib/google-calendar";
+
+const data = () =>
+  createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
 
 function isAdminEmail(email: string | undefined): boolean {
   if (!email) return false;
@@ -29,7 +37,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const { data: { user } } = await sb.auth.getUser();
   const isAdmin = Boolean(user && isAdminEmail(user.email || undefined));
 
-  const { data: booking } = await sb
+  const { data: booking } = await data()
     .from("bookings")
     .select("id, customer_email, status, calendar_id, calendar_event_id, client_id")
     .eq("id", id)
@@ -56,7 +64,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     }
   }
 
-  const { error } = await sb
+  const { error } = await data()
     .from("bookings")
     .update({
       status: "cancelled",

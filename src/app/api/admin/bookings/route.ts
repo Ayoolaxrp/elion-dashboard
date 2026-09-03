@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { getStoredTokens, googleConfigured, listConnectedCalendarKeys } from "@/lib/google-calendar";
 
 function isAdminEmail(email: string | undefined): boolean {
@@ -10,6 +11,16 @@ function isAdminEmail(email: string | undefined): boolean {
     .map((e) => e.trim().toLowerCase())
     .includes(email.toLowerCase());
 }
+
+// Auth (cookie session) is separate from data reads: data runs as service
+// role without cookies, otherwise the user session makes queries run as
+// role `authenticated`, which the live RLS denies.
+const data = () =>
+  createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -23,21 +34,22 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const db = data();
   const tokens = await getStoredTokens();
   const [upcoming, recent, bookingAutos, connectedKeys] = await Promise.all([
-    sb
+    db
       .from("bookings")
       .select("*, clients(company_name)")
       .in("status", ["pending", "confirmed", "rescheduled"])
       .gte("start_at", new Date().toISOString())
       .order("start_at", { ascending: true })
       .limit(50),
-    sb
+    db
       .from("bookings")
       .select("*, clients(company_name)")
       .order("created_at", { ascending: false })
       .limit(20),
-    sb
+    db
       .from("client_automations")
       .select("id, client_id, custom_name, status, custom_config, clients(company_name), workflow_templates(slug)")
       .eq("workflow_templates.slug", "booking"),
@@ -45,7 +57,7 @@ export async function GET() {
   ]);
 
   // Per-client calendar connections: booking automations + which clients
-  // have a Google token scope connected (values never leave the server).
+  // have a Google token scope connected (token values never leave the server).
   const connectedClientIds = new Set(
     connectedKeys
       .filter((k) => k.startsWith("google_tokens:"))

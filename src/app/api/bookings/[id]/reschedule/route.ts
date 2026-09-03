@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { freeBusy, moveEvent, getPrimaryCalendarId, getStoredTokens } from "@/lib/google-calendar";
 import { loadBookingConfig } from "@/lib/bookings";
+
+const data = () =>
+  createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
 
 function isAdminEmail(email: string | undefined): boolean {
   if (!email) return false;
@@ -35,7 +43,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const { data: { user } } = await sb.auth.getUser();
   const isAdmin = Boolean(user && isAdminEmail(user.email || undefined));
 
-  const { data: booking } = await sb
+  const { data: booking } = await data()
     .from("bookings")
     .select("id, customer_email, status, calendar_id, calendar_event_id, timezone, client_id")
     .eq("id", id)
@@ -76,7 +84,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "We could not update your booking on the calendar. Please try again." }, { status: 502 });
   }
 
-  const { error } = await sb
+  const { error } = await data()
     .from("bookings")
     .update({
       start_at: newStart.toISOString(),

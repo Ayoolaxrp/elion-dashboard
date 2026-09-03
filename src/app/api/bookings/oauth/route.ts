@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { authUrl, googleConfigured } from "@/lib/google-calendar";
 
 function isAdmin(email: string | undefined): boolean {
@@ -10,6 +11,13 @@ function isAdmin(email: string | undefined): boolean {
     .map((e) => e.trim().toLowerCase())
     .includes(email.toLowerCase());
 }
+
+const data = () =>
+  createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
 
 // Admin-only. Without ?client_id this connects ELION's own calendar
 // (strategy calls). With ?client_id=<id> it connects the calendar for that
@@ -40,7 +48,7 @@ export async function GET(request: Request) {
 
   if (clientId) {
     // The client must exist and have a deployed/planned Booking Automation.
-    const { data: auto } = await sb
+    const { data: auto } = await data()
       .from("client_automations")
       .select("id, workflow_templates(slug)")
       .eq("client_id", clientId)
