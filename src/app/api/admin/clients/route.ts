@@ -1,31 +1,32 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
-function getSupabase() {
-  return createServerClient(
+// Data client: service role bypasses RLS (clients table only allows service_role).
+const data = () =>
+  createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+
+// Auth check: read the browser's real session cookies so getUser() sees the login.
+async function requireAdmin() {
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll: () => [], setAll: () => {} } }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
-}
-
-async function checkAdmin(supabase: ReturnType<typeof getSupabase>) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user || !(process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase()).includes((user.email || "").toLowerCase())) return null;
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return null;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  if (!adminEmails.includes((user.email || "").toLowerCase())) return null;
   return user;
 }
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  );
-  const admin = await checkAdmin(supabase);
+  const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const supabase = data();
   const { data: clients, error } = await supabase
     .from("clients")
     .select("*, client_automations(id, status, custom_name, workflow_templates(name, slug, category)), client_integrations(integration_type, provider, status)")
@@ -36,19 +37,15 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  );
-  const admin = await checkAdmin(supabase);
+  const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json();
   const { lead_id, company_name, contact_name, email, phone, industry, website, plan_name, features, onboarding_notes } = body;
 
   if (!company_name) return NextResponse.json({ error: "Company name is required" }, { status: 400 });
+
+  const supabase = data();
 
   // Create client
   const { data: client, error: clientErr } = await supabase

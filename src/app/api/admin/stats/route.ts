@@ -1,22 +1,24 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  // Admin check (reads the real request cookies so the session is visible)
+  // Auth check: real session cookies so getUser() sees the login.
   const cookieStore = await cookies();
-  const sb = createServerClient(
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
-  const { data: { user } } = await sb.auth.getUser();
+  const { data: { user } } = await authClient.auth.getUser();
   if (!user || !(process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).includes((user.email || '').toLowerCase())) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
-  const supabase = sb;
+  // Data client: service role bypasses RLS.
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
   const [clientsRes, leadsRes, automationsRes] = await Promise.all([
     supabase.from("clients").select("id, status, plan_name", { count: "exact" }),

@@ -19,19 +19,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
-async function getSupabase() {
+// Data client: service role bypasses RLS (only service_role is allowed on
+// workflow_templates / client_automations / clients).
+const data = () =>
+  createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+
+// Auth check: read the browser's real session cookies so getUser() sees the login.
+async function requireAdmin() {
   const cookieStore = await cookies();
-  return createServerClient(
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
-}
-
-async function checkAdmin(supabase: Awaited<ReturnType<typeof getSupabase>>) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user || !(process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase()).includes((user.email || "").toLowerCase())) return null;
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return null;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  if (!adminEmails.includes((user.email || "").toLowerCase())) return null;
   return user;
 }
 
@@ -42,8 +48,7 @@ interface DeployProduct {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = await getSupabase();
-  const admin = await checkAdmin(supabase);
+  const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json().catch(() => ({}));
@@ -53,6 +58,8 @@ export async function POST(request: NextRequest) {
   if (!Array.isArray(products) || products.length === 0) {
     return NextResponse.json({ error: "products array is required" }, { status: 400 });
   }
+
+  const supabase = data();
 
   // Client must exist
   const { data: client } = await supabase.from("clients").select("id, company_name").eq("id", client_id).single();

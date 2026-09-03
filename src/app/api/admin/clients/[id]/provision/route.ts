@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { provisionAutomation, provisionAllClientAutomations, deactivateAutomation, reactivateAutomation } from "@/lib/provisioning";
 
-async function getSupabase() {
+// Auth check: read the browser's real session cookies so getUser() sees the login.
+async function requireAdmin() {
   const cookieStore = await cookies();
-  return createServerClient(
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
-}
-
-async function checkAdmin(supabase: Awaited<ReturnType<typeof getSupabase>>) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user || user.email !== process.env.ADMIN_EMAILS) return null;
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return null;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  if (!adminEmails.includes((user.email || "").toLowerCase())) return null;
   return user;
 }
 
@@ -23,8 +24,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: clientId } = await params;
-  const supabase = await getSupabase();
-  const admin = await checkAdmin(supabase);
+  const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json().catch(() => ({}));
@@ -58,9 +58,11 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: clientId } = await params;
-  const supabase = await getSupabase();
-  const admin = await checkAdmin(supabase);
+  const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  // Data client: service role bypasses RLS (provisioning_logs only allows service_role).
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
   const { data: logs, error } = await supabase
     .from("provisioning_logs")
