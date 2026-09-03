@@ -78,7 +78,7 @@ export async function GET() {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: { "x-elion-ov": "2" } });
 
   // All reads below run as service role (bypasses RLS, real data only)
   const db = dataClient();
