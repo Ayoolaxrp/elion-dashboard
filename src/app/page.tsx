@@ -290,7 +290,7 @@ function Hero() {
       };
   return (
     <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 px-6 overflow-hidden">
-      {/* Ambient glow — restrained */}
+      {/* Ambient glow (restrained) */}
       <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[720px] h-[420px] rounded-full bg-[var(--color-accent)]/[0.07] blur-[140px] pointer-events-none" />
       <div className="absolute top-40 left-1/4 w-[300px] h-[300px] rounded-full bg-[var(--color-accent-cyan)]/[0.04] blur-[100px] pointer-events-none" />
 
@@ -354,7 +354,7 @@ function ProductPreview() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
-            Product Preview — Illustrative
+            Product Preview (Illustrative)
           </p>
         </div>
 
@@ -474,7 +474,7 @@ function ProblemSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  4. ELION SYSTEM — interactive workflow map                         */
+/*  4. ELION SYSTEM: interactive workflow map                          */
 /* ------------------------------------------------------------------ */
 
 function SystemMap() {
@@ -695,7 +695,7 @@ function AuditSection() {
                   ))}
                 </div>
                 <div className="mt-5 flex items-center justify-between">
-                  <span className="text-xs text-[var(--color-text-muted)]">Illustrative example — not a real client</span>
+                  <span className="text-xs text-[var(--color-text-muted)]">Illustrative example, not a real client</span>
                   <Link href="/audit" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-accent)] hover:underline">
                     View full audit <ArrowUpRight className="w-3.5 h-3.5" />
                   </Link>
@@ -770,7 +770,7 @@ function DashboardPreview() {
             <div className="rounded-xl border border-[var(--color-border)]/50 overflow-hidden">
               <div className="px-4 py-3 bg-[var(--color-surface-raised)] border-b border-[var(--color-border)]/50 flex items-center justify-between">
                 <span className="text-xs font-semibold text-[var(--color-text-secondary)]">Recent Activity</span>
-                <span className="text-[11px] text-[var(--color-text-muted)]">Sample data — illustrative</span>
+                <span className="text-[11px] text-[var(--color-text-muted)]">Sample data (illustrative)</span>
               </div>
               <div className="divide-y divide-[var(--color-border)]/40">
                 {rows.map((r) => (
@@ -802,7 +802,7 @@ function DashboardPreview() {
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="text-xs text-[var(--color-text-muted)]">
-                Product preview — illustrative. Real metrics appear once your systems are live.
+                Product preview (illustrative). Real metrics appear once your systems are live.
               </p>
               <SecondaryCta href="/demo" size="md">See the Full Demo</SecondaryCta>
             </div>
