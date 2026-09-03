@@ -1,7 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
-const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI";
-const sb = createClient("https://dxpzvscfbemywhkehpdm.supabase.co", key);
+const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+if (!key) {
+  console.error("SUPABASE_SERVICE_ROLE_KEY missing. Run with: node --env-file=.env.local scripts/test-isolation.mjs");
+  process.exit(1);
+}
+const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dxpzvscfbemywhkehpdm.supabase.co", key);
 
 const CLIENT_A = "client_2595d414-d84a-43b5-bdb9-9caac035895e";
 const CLIENT_B = "client_e2e_1788353988213";

@@ -1,11 +1,12 @@
 const { createClient } = require('@supabase/supabase-js');
-const sb = createClient(
-  'https://dxpzvscfbemywhkehpdm.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI'
-);
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://dxpzvscfbemywhkehpdm.supabase.co';
+const ADMIN_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const sb = createClient(SUPABASE_URL, ADMIN_KEY);
 
-const ADMIN_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI';
-const SUPABASE_URL = 'https://dxpzvscfbemywhkehpdm.supabase.co';
+if (!ADMIN_KEY) {
+  console.error('SUPABASE_SERVICE_ROLE_KEY missing. Run with: node --env-file=.env.local scripts/create_client.js');
+  process.exit(1);
+}
 
 async function go() {
   // 1. Create auth user via Admin API

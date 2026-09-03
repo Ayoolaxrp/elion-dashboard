@@ -1,8 +1,13 @@
 const { createClient } = require('@supabase/supabase-js');
 const sb = createClient(
-  'https://dxpzvscfbemywhkehpdm.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cHp2c2NmYmVteXdoa2VocGRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODA5NDY1OCwiZXhwIjoyMTAzNjcwNjU4fQ.l9VJEM2wpaYO6Wrz0774JX3EXJUH7HOG_y2kmIyTEMI'
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://dxpzvscfbemywhkehpdm.supabase.co',
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('SUPABASE_SERVICE_ROLE_KEY missing. Run with: node --env-file=.env.local scripts/setup_pipeline.js');
+  process.exit(1);
+}
 
 async function runSQL(label, sql) {
   const { data, error } = await sb.rpc('exec_sql', { query: sql });
