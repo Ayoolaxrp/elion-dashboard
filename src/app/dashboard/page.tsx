@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Zap, Mail, Calendar, RotateCcw, Settings, Plus, Activity, CheckCircle2, AlertCircle, Clock, ArrowRight, Loader2, TrendingUp } from "lucide-react";
+import { Zap, Mail, Calendar, RotateCcw, Settings, Plus, Activity, CheckCircle2, AlertCircle, Clock, ArrowRight, Loader2, TrendingUp, Users } from "lucide-react";
 
 interface Automation {
   id: string;

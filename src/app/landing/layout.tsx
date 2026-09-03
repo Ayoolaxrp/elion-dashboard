@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
 
 const landingNav = [
   { label: "Home", href: "/landing" },
@@ -90,49 +91,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       <main>{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
-        <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} priority />
-                <span className="text-sm font-bold text-[var(--color-text-primary)]">ELION</span>
-              </div>
-              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
-                business automation for SMEs in Nigeria and beyond.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Product</h4>
-              <div className="space-y-2">
-                <Link href="/" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Home</Link>
-                <Link href="/landing/pricing" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Pricing</Link>
-                <Link href="/demo" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Demo</Link>
-                <Link href="/audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Free Audit</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Company</h4>
-              <div className="space-y-2">
-                <Link href="/landing/about" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">About</Link>
-                <Link href="/landing/support" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Support</Link>
-                <Link href="/landing/privacy" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Privacy Policy</Link>
-                <Link href="/landing/terms" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Terms of Service</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Contact</h4>
-              <div className="space-y-2">
-                <a href="/audit" className="block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">Contact us</a>
-                <a href="/audit">Get Started</a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
-            <p className="text-xs text-[var(--color-text-muted)]">&copy; {new Date().getFullYear()} ELION. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
