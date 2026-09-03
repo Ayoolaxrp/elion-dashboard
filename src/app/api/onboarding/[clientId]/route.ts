@@ -14,12 +14,8 @@ export async function GET(
   { params }: { params: Promise<{ clientId: string }> }
 ) {
   const { clientId } = await params;
-  // Admin check
-  const sb = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { cookies: { getAll: () => [], setAll: () => {} } });
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user || !(process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).includes((user.email || '').toLowerCase())) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
-  }
+  // Client-facing onboarding: reached via the client's unique onboarding link.
+  // Returns only the fields the onboarding form needs. POST is likewise unauthenticated.
   const supabase = getSupabase();
 
   const { data: client, error } = await supabase
@@ -32,7 +28,13 @@ export async function GET(
     return NextResponse.json({ error: "Client not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ client });
+  // Purchased automations decide which configuration sections this client sees.
+  const { data: automations } = await supabase
+    .from("client_automations")
+    .select("id, status, custom_name, workflow_templates(name, slug, category, description)")
+    .eq("client_id", clientId);
+
+  return NextResponse.json({ client, automations: automations || [] });
 }
 
 export async function POST(
@@ -93,6 +95,10 @@ export async function POST(
     current_tools: body.current_tools || "",
     biggest_challenge: body.biggest_challenge || "",
     additional_notes: body.additional_notes || "",
+
+    // AI systems configuration (only present when the client purchased them)
+    agent_receptionist: body.agent_receptionist || null,
+    agent_sales: body.agent_sales || null,
     
     // Metadata
     submitted_at: new Date().toISOString(),

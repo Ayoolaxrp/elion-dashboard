@@ -121,6 +121,8 @@ const INDUSTRY_BENCHMARKS: Record<string, {
   },
 };
 
+type EvidenceLevel = "verified" | "supported" | "estimated" | "unknown";
+
 interface WebResearch {
   hasWebsite: boolean;
   websiteScore: number;
@@ -136,6 +138,59 @@ interface WebResearch {
   responseTimeIndicator: string;
   digitalPresenceScore: number;
   quickWins: string[];
+  // Directly observable facts gathered during the check (never invented)
+  pageTitle?: string;
+  foundPhones: string[];
+  foundEmails: string[];
+  checkedAt: string;
+}
+
+interface BusinessVerification {
+  facts: string[];
+  checkedAt: string;
+  places?: { name?: string; rating?: number; reviewCount?: number; address?: string; phone?: string } | null;
+}
+
+/** Public review/place lookup — only runs when GOOGLE_PLACES_API_KEY is configured. */
+async function lookupPublicPlaceInfo(
+  companyName: string,
+  website: string
+): Promise<BusinessVerification["places"]> {
+  const key = process.env.GOOGLE_PLACES_API_KEY;
+  if (!key) return null;
+  try {
+    const url = new URL("https://maps.googleapis.com/maps/api/place/findplacefromtext/json");
+    url.searchParams.set("input", companyName);
+    url.searchParams.set("inputtype", "textquery");
+    url.searchParams.set(
+      "fields",
+      "place_id,name,formatted_address,international_phone_number,rating,user_ratings_total,website"
+    );
+    url.searchParams.set("key", key);
+    const res = await fetch(url.toString(), { signal: AbortSignal.timeout(6000) });
+    const body = await res.json();
+    const candidates: Array<Record<string, unknown>> = body?.candidates || [];
+    // Prefer a candidate whose website matches the supplied domain when possible.
+    let match = candidates[0];
+    if (website) {
+      const domain = website.replace(/^https?:\/\//, "").replace(/\/.*$/, "").toLowerCase();
+      const bySite = candidates.find((c) => {
+        const cw = String(c.website || "").toLowerCase();
+        return cw && cw.includes(domain);
+      });
+      if (bySite) match = bySite;
+    }
+    if (!match?.place_id) return null;
+    return {
+      name: typeof match.name === "string" ? match.name : undefined,
+      rating: typeof match.rating === "number" ? match.rating : undefined,
+      reviewCount: typeof match.user_ratings_total === "number" ? match.user_ratings_total : undefined,
+      address: typeof match.formatted_address === "string" ? match.formatted_address : undefined,
+      phone: typeof match.international_phone_number === "string" ? match.international_phone_number : undefined,
+    };
+  } catch {
+    return null;
+  }
 }
 
 // Scrapling deep analysis, calls Python scraper for enhanced detection
@@ -161,6 +216,7 @@ async function researchBusiness(companyName: string, website: string): Promise<W
     hasSocialMedia: false, socialPlatforms: [], hasOnlineBooking: false, hasCRM: false,
     hasEmailMarketing: false, hasLiveChat: false, hasEcommerce: false,
     responseTimeIndicator: "unknown", digitalPresenceScore: 0, quickWins: [],
+    foundPhones: [], foundEmails: [], checkedAt: new Date().toISOString(),
   };
 
   if (website) {
@@ -194,6 +250,24 @@ async function researchBusiness(companyName: string, website: string): Promise<W
           return research;
         }
         const lowerHtml = html.toLowerCase();
+
+        // Directly observable contact facts (only stored when actually found)
+        const titleMatch = html.match(/<title[^>]*>([^<]{2,120})<\/title>/i);
+        if (titleMatch) research.pageTitle = titleMatch[1].trim();
+        // Phone: +XXX, 0XXX, Nigerian 0XX / +234 formats (no invented values — regex only)
+        const phoneSet = new Set<string>();
+        for (const m of html.matchAll(/(?:\+?234|\+?\d{1,3}[\s.-]?)?0?\d{3}[\s.-]?\d{3}[\s.-]?\d{3,4}(?!\d)/g)) {
+          const p = m[0].trim();
+          if (p.length >= 10 && p.length <= 17 && /\d{8,}/.test(p.replace(/\D/g, ""))) phoneSet.add(p);
+        }
+        research.foundPhones = [...phoneSet].slice(0, 3);
+        // Email: standard pattern, excludes image filenames
+        const emailSet = new Set<string>();
+        for (const m of html.matchAll(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/gi)) {
+          const e = m[0].toLowerCase();
+          if (!/\.(png|jpe?g|gif|webp|svg|ico)$/.test(e) && !e.includes("sentry") && !e.includes("example.com")) emailSet.add(e);
+        }
+        research.foundEmails = [...emailSet].slice(0, 3);
 
         // WhatsApp detection
         research.hasWhatsApp = lowerHtml.includes("wa.me") || lowerHtml.includes("whatsapp") || lowerHtml.includes("api.whatsapp");
@@ -392,6 +466,10 @@ export async function POST(req: NextRequest) {
       id: string; area: string; severity: "critical" | "high" | "medium" | "low";
       description: string; impact: string; recommendation: string;
       estimatedSavings: string; source: string; evidence?: string[];
+      evidenceLevel?: EvidenceLevel;
+      recommendedProduct?: { slug: string; name: string } | null;
+      estimateNote?: string;
+      checkedAt?: string;
     }> = [];
 
     let leakId = 1;
@@ -566,6 +644,67 @@ export async function POST(req: NextRequest) {
       return acc;
     }, 0);
 
+    // ──── Decorate every finding: evidence level, product mapping, estimate labelling ────
+    // A finding's detection is either directly observable from the site (verified),
+    // inferred from multiple signals (supported), or a model/benchmark view (estimated).
+    // Financial figures are ALWAYS illustrative estimates — never measured business results.
+    const ESTIMATE_NOTE =
+      "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.";
+    const AREA_LEVEL: Record<string, EvidenceLevel> = {
+      Website: "verified",
+      "Website Quality": "supported",
+      "WhatsApp Integration": "verified",
+      "Appointment Management": "verified",
+      "Email Marketing": "supported",
+      "Customer Management": "supported",
+      "Live Chat": "verified",
+      "Social Media Presence": "verified",
+      "Website Technology": "supported",
+      "Optimization Opportunity": "estimated",
+    };
+    const AREA_PRODUCT: Record<string, { slug: string; name: string } | null> = {
+      "WhatsApp Integration": { slug: "whatsapp-lead-response", name: "WhatsApp Lead Response" },
+      "Appointment Management": { slug: "booking-automation", name: "Booking Automation" },
+      "Customer Management": { slug: "follow-up-system", name: "Follow-Up System" },
+      "Live Chat": { slug: "ai-receptionist", name: "AI Receptionist" },
+      "Email Marketing": { slug: "email-assistant", name: "Email Assistant" },
+      "Website Quality": null,
+      Website: null,
+      "Social Media Presence": null,
+      "Website Technology": null,
+      "Optimization Opportunity": null,
+    };
+    for (const leak of leaks) {
+      leak.evidenceLevel = AREA_LEVEL[leak.area] || "unknown";
+      leak.recommendedProduct = AREA_PRODUCT[leak.area] || null;
+      if (leak.estimatedSavings.includes("NGN")) leak.estimateNote = ESTIMATE_NOTE;
+      leak.checkedAt = research.checkedAt;
+    }
+
+    // ──── Business verification — small facts proving ELION checked the right business ────
+    const verificationFacts: string[] = [];
+    if (research.hasWebsite && website) {
+      verificationFacts.push(`We reached your website at ${website.replace(/^https?:\/\//, "").replace(/\/$/, "")}${research.pageTitle ? ` — it opens with “${research.pageTitle.slice(0, 70)}”` : ""}.`);
+    } else if (website) {
+      verificationFacts.push(`We could not reach ${website} at the time of this check (it may be offline or blocking automated requests).`);
+    }
+    if (research.hasWhatsApp) verificationFacts.push("Your website exposes a WhatsApp contact path.");
+    if (research.socialPlatforms.length > 0) verificationFacts.push(`We found links to ${research.socialPlatforms.length} social profile${research.socialPlatforms.length > 1 ? "s" : ""} (${research.socialPlatforms.slice(0, 3).join(", ")}).`);
+    if (research.foundPhones.length > 0) verificationFacts.push(`A phone number (${research.foundPhones[0]}) appears on your site.`);
+    if (research.foundEmails.length > 0) verificationFacts.push(`A contact email (${research.foundEmails[0]}) appears on your site.`);
+    const places = await lookupPublicPlaceInfo(company_name, website || "");
+    if (places?.reviewCount != null) {
+      verificationFacts.push(
+        `Google listed approximately ${places.reviewCount} review${places.reviewCount === 1 ? "" : "s"} for ${company_name}${places.rating != null ? ` at an average rating of ${places.rating.toFixed(1)}` : ""} when we checked.`
+      );
+    }
+    if (places?.address) verificationFacts.push(`Google lists ${company_name} at ${places.address}${places.phone ? ` with the public number ${places.phone}` : ""}.`);
+    const businessVerification: BusinessVerification = {
+      facts: verificationFacts,
+      checkedAt: research.checkedAt,
+      places,
+    };
+
     // Sub-scores based on ACTUAL research findings + industry benchmarks
     const subScores = {
       lead_response: Math.max(10, 100 - Math.round(parseFloat(benchmark.avgResponseTime) * 15)),
@@ -598,6 +737,7 @@ export async function POST(req: NextRequest) {
         roles: benchmark.recommendedRoles,
         priorityActions: research.quickWins.slice(0, 5),
       },
+      businessVerification,
     });
     response.headers.set("X-RateLimit-Limit", "5");
     response.headers.set("X-RateLimit-Remaining", String(5 - rateLimit.remaining));

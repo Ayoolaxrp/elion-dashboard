@@ -31,6 +31,10 @@ interface Leak {
   estimatedSavings: string;
   source: string;
   evidence?: string[];
+  evidenceLevel?: "verified" | "supported" | "estimated" | "unknown";
+  recommendedProduct?: { slug: string; name: string } | null;
+  estimateNote?: string;
+  checkedAt?: string;
 }
 
 interface AuditResult {
@@ -72,6 +76,7 @@ interface AuditResult {
     roles: Array<{ role: string; tasks: string[] }>;
     priorityActions: string[];
   };
+  businessVerification?: { facts: string[]; checkedAt: string; places?: Record<string, unknown> | null };
 }
 
 /* ──────────── Helper: severity config ──────────── */
@@ -742,6 +747,24 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                     </div>
                   </div>
 
+                  {/* Business verification — only when facts were actually found */}
+                  {auditResult.businessVerification && auditResult.businessVerification.facts.length > 0 && (
+                    <div>
+                      <h3 className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase tracking-[0.16em] mb-4">What ELION Checked</h3>
+                      <div className="rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface)] p-4">
+                        <ul className="space-y-2">
+                          {auditResult.businessVerification.facts.map((f, i) => (
+                            <li key={i} className="flex items-start gap-2.5 text-xs text-[var(--color-text-secondary)] leading-relaxed">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)] mt-1.5 shrink-0" />
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="text-[11px] text-[var(--color-text-muted)] mt-3 border-t border-[var(--color-border)]/50 pt-2">Facts observed during this check · {new Date(auditResult.businessVerification.checkedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} · Public sources can change over time.</p>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Leak analysis */}
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -807,7 +830,32 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                                     </div>
                                     <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{leak.recommendation}</p>
                                   </div>
-                                  <p className="text-[11px] text-[var(--color-text-muted)]">Source: {leak.source} &middot; Priority: {leak.severity}</p>
+                                  {(leak.evidenceLevel || leak.recommendedProduct || leak.estimateNote) && (
+                                    <div className="flex flex-wrap items-center gap-1.5">
+                                      {leak.evidenceLevel && (
+                                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide border ${
+                                          leak.evidenceLevel === "verified" ? "border-[var(--color-success)]/25 bg-[var(--color-success)]/10 text-[var(--color-success)]" :
+                                          leak.evidenceLevel === "supported" ? "border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent-bright)]" :
+                                          "border-[var(--color-warning)]/25 bg-[var(--color-warning)]/10 text-[var(--color-warning)]"
+                                        }`}>
+                                          {leak.evidenceLevel === "verified" ? <CheckCircle className="w-3 h-3" /> : leak.evidenceLevel === "supported" ? <AlertTriangle className="w-3 h-3" /> : <AlertTriangle className="w-3 h-3" />}
+                                          {leak.evidenceLevel === "verified" ? "Verified" : leak.evidenceLevel === "supported" ? "Supported" : "Estimated"}
+                                        </span>
+                                      )}
+                                      {leak.recommendedProduct && (
+                                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-semibold border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent-bright)]">
+                                          <Zap className="w-3 h-3" /> Fix with: {leak.recommendedProduct.name}
+                                        </span>
+                                      )}
+                                      {leak.estimateNote && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-muted)]">Illustrative estimate</span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {leak.estimateNote && (
+                                    <p className="text-[11px] text-[var(--color-text-muted)] italic">{leak.estimateNote}</p>
+                                  )}
+                                  <p className="text-[11px] text-[var(--color-text-muted)]">Source: {leak.source} &middot; Priority: {leak.severity}{leak.checkedAt ? ` &middot; Checked ${new Date(leak.checkedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}` : ""}</p>
                                 </div>
                               </div>
                             )}
