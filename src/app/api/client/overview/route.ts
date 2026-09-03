@@ -78,7 +78,7 @@ export async function GET() {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: { "x-elion-ov": "2" } });
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: { "x-elion-ov": "3" } });
 
   // All reads below run as service role (bypasses RLS, real data only)
   const db = dataClient();
@@ -157,9 +157,14 @@ export async function GET() {
     success_rate: number | null;
     workflow_templates?: { required_integrations?: string[] | null } | { required_integrations?: string[] | null }[] | null;
   }): Health => {
-    const wt = Array.isArray(a.workflow_templates) ? a.workflow_templates[0] : a.workflow_templates;
-    const required: string[] = Array.isArray(wt?.required_integrations) ? (wt.required_integrations as string[]) : [];
-    const missing = required.filter((t) => !connectedTypes.has(t));
+  const wt = Array.isArray(a.workflow_templates) ? a.workflow_templates[0] : a.workflow_templates;
+  // Only connection types the client can see/own count as required — template
+  // rows may also list non-connection concepts (e.g. "forms").
+  const knownTypes = Object.keys(INTEGRATION_LABELS);
+  const required: string[] = Array.isArray(wt?.required_integrations)
+    ? (wt.required_integrations as string[]).filter((t) => knownTypes.includes(String(t)))
+    : [];
+  const missing = required.filter((t) => !connectedTypes.has(t));
     switch (a.status) {
       case "failed":
         return { level: "attention", label: "Needs attention", reason: "A recent run failed. ELION has been notified." };
@@ -259,7 +264,8 @@ export async function GET() {
   }
   for (const type of requiredByTemplate) {
     if (connectedTypes.has(type)) continue;
-    const label = INTEGRATION_LABELS[type] || type;
+    const label = INTEGRATION_LABELS[type];
+    if (!label) continue; // not a client-visible connection type
     needsAttention.push({
       kind: "integration",
       title: `${label} needs attention`,
@@ -312,8 +318,10 @@ export async function GET() {
     last_verified_at: c.last_verified_at,
   }));
   for (const type of requiredByTemplate) {
+    const label = INTEGRATION_LABELS[type];
+    if (!label) continue;
     if (!integrationsView.some((i: { type: string }) => i.type === type)) {
-      integrationsView.push({ type, label: INTEGRATION_LABELS[type] || type, status: "not_configured", health: null, last_verified_at: null });
+      integrationsView.push({ type, label, status: "not_configured", health: null, last_verified_at: null });
     }
   }
 
