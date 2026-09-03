@@ -62,12 +62,6 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     check("booking client seeded", !!client?.id && !!auto?.id && !!cred?.id);
     check("calendar cred recorded not_configured", cred?.status === "not_configured");
 
-    // API: oauth connect for this client must fail closed (no creds configured yet)
-    const oa = await fetch(BASE + "/api/bookings/oauth?client_id=" + client.id);
-    check("oauth connect honest 503 (creds not configured)", oa.status === 503);
-    const oaBody = await oa.json();
-    check("oauth message names env vars", (oaBody.error || "").includes("GOOGLE_CLIENT_ID"));
-
     // Browser: admin bookings page lists the client booking automation
     const browser = await puppeteer.launch({
       executablePath: CHROME, headless: "new",
@@ -102,7 +96,18 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     });
     check("admin bookings API lists client calendars", api.status === 200 && api.count >= 1);
 
-    const errors = logs.filter((l) => l.startsWith("PAGEERROR") || (l.startsWith("error:") && !l.includes("favicon")));
+    // OAuth connect for this client must fail closed in-session (no creds configured yet)
+    const oa = await page.evaluate(async (cid) => {
+      const r = await fetch("/api/bookings/oauth?client_id=" + cid, { redirect: "manual" });
+      let body = {};
+      try { body = await r.json(); } catch {}
+      return { status: r.status, error: body.error || "" };
+    }, client.id);
+    check("oauth connect honest 503 (creds not configured)", oa.status === 503);
+    check("oauth message names env vars", (oa.error || "").includes("GOOGLE_CLIENT_ID"));
+
+    // The OAuth probe above intentionally triggers one 503 resource error — ignore it.
+    const errors = logs.filter((l) => l.startsWith("PAGEERROR") || (l.startsWith("error:") && !l.includes("favicon") && !l.includes("503")));
     check("no console/page errors", errors.length === 0);
     if (errors.length) console.log(errors.slice(0, 4).join("\n"));
     await browser.close();
