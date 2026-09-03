@@ -129,8 +129,8 @@ function Hero() {
         </div>
 
         <h1
-          className="animate-hero-in mt-8 text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] leading-[1.04] tracking-[-0.03em]"
-          style={{ animationDelay: "80ms" }}
+          className="animate-hero-slide mt-8 text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] leading-[1.04] tracking-[-0.03em]"
+          style={{ animationDelay: "0ms" }}
         >
           Find the leaks in your business.
           <br />

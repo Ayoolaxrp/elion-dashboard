@@ -227,6 +227,15 @@ p, span, li, td {
 .animate-hero-in {
   animation: heroIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+/* LCP element (hero headline): transform-only entrance so the text
+   paints on the first frame instead of waiting for the fade to finish */
+@keyframes heroSlide {
+  from { transform: translateY(14px); }
+  to { transform: translateY(0); }
+}
+.animate-hero-slide {
+  animation: heroSlide 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
