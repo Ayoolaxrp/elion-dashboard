@@ -135,7 +135,7 @@ export default function FunnelPage() {
             {submitted ? (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={SPRING_STEP} className="text-center py-6">
                 <CheckCircle2 className="w-14 h-14 text-[var(--color-success)] mx-auto mb-5" />
-                <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Audit request received.</h3>
+                <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Audit request received.</h2>
                 <p className="text-sm text-[var(--color-text-secondary)] mb-2">Your business information has been submitted.</p>
                 <p className="text-sm text-[var(--color-text-muted)]">We will review the information, identify the most relevant automation opportunities, and contact you to schedule a discovery call.</p>
               </motion.div>
@@ -157,7 +157,7 @@ export default function FunnelPage() {
                     exit={reduced ? { opacity: 0 } : { opacity: 0, x: direction * -40 }}
                     transition={SPRING_STEP}
                   >
-                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-6">{cs.question}</h3>
+                    <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-6">{cs.question}</h2>
                     {cs.isInput ? (
                       <div className="space-y-4">
                         <input type="url" inputMode="url" autoComplete="url" placeholder="https://yourbusiness.com" aria-label="Your business website URL" value={answers[4]||""} onChange={e=>setAnswers({...answers,[4]:e.target.value})} className={ip} />
@@ -191,7 +191,7 @@ export default function FunnelPage() {
                 </AnimatePresence>
 
                 {fieldErrors.submit && <p className="text-xs text-red-400 text-center mb-2">{fieldErrors.submit}</p>}
-                <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. <a href="/landing/privacy" className="text-[var(--color-accent)] hover:underline">Privacy policy</a></p>
+                <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. <a href="/privacy" className="text-[var(--color-accent)] underline underline-offset-2 hover:text-[var(--color-accent-bright)]">Privacy policy</a></p>
               </>
             )}
           </div>
@@ -238,7 +238,7 @@ export default function FunnelPage() {
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {PROCESS.map((m)=>(
               <div key={m.n} className="relative p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all">
-                <span className="text-2xl font-bold text-[var(--color-accent)]/15 absolute top-3 right-4">{m.n}</span>
+                <span aria-hidden="true" className="text-2xl font-bold text-[var(--color-accent)]/15 absolute top-3 right-4">{m.n}</span>
                 <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{m.title}</h3>
                 <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{m.desc}</p>
               </div>

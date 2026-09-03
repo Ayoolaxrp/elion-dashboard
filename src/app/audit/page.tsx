@@ -500,7 +500,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                             <div className="bg-[var(--color-accent)]/10 rounded border border-blue-100 p-3">
                               <div className="flex items-center gap-2 mb-1.5">
                                 <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-[var(--color-accent)]">Observed</span>
-                                <span className="text-[11px] text-[var(--color-accent)]">What we found on your website</span>
+                                <span className="text-[11px] text-[var(--color-accent-bright)]">What we found on your website</span>
                               </div>
                               <ul className="space-y-1">
                                 {leak.evidence.map((e, i) => (
@@ -654,13 +654,13 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       {!auditResult && !isScanning && (
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <div className="px-2 py-0.5 bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 rounded text-[10px] font-semibold text-[var(--color-accent)] uppercase tracking-wider">Illustrative Example</div>
+            <div className="px-2 py-0.5 bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 rounded text-[10px] font-semibold text-[var(--color-accent-bright)] uppercase tracking-wider">Illustrative Example</div>
           </div>
           <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg overflow-hidden">
             <div className="px-6 py-4 border-b border-[var(--color-border)]">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-[var(--color-text-primary)]">Sample: Lagos Real Estate Agency</h3>
+                  <h2 className="text-sm font-bold text-[var(--color-text-primary)]">Sample: Lagos Real Estate Agency</h2>
                   <p className="text-xs text-[var(--color-text-muted)] mt-0.5">This is what a real audit looks like - not a real client</p>
                 </div>
                 <div className="text-right">
@@ -674,10 +674,10 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded bg-[var(--color-error)]/10 flex items-center justify-center shrink-0 mt-0.5"><span className="text-[var(--color-error)] text-xs font-bold">!</span></div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1"><span className="text-xs font-semibold text-[var(--color-text-primary)]">Lead Response Gap</span><span className="px-1.5 py-0.5 bg-[var(--color-error)]/10 text-[var(--color-error)] text-[10px] font-semibold rounded">Critical</span></div>
+                    <div className="flex items-center gap-2 mb-1"><span className="text-xs font-semibold text-[var(--color-text-primary)]">Lead Response Gap</span><span className="px-1.5 py-0.5 bg-[var(--color-error)]/10 text-[#f87171] text-[10px] font-semibold rounded">Critical</span></div>
                     <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-2"><strong className="text-[var(--color-text-secondary)]">Observation:</strong> Website visitors are directed to WhatsApp, but there is no automated qualification step before the conversation begins.</p>
                     <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-2"><strong className="text-[var(--color-text-secondary)]">Evidence:</strong> Contact flow requires the visitor to manually initiate the conversation. No chatbot, no lead capture form, no instant response.</p>
-                    <div className="bg-[var(--color-surface)] rounded p-3 mt-2"><p className="text-[11px] text-[var(--color-accent)] font-medium">Recommended: Lead capture - qualification - instant WhatsApp response - booking - follow-up</p></div>
+                    <div className="bg-[var(--color-surface)] rounded p-3 mt-2"><p className="text-[11px] text-[var(--color-accent-bright)] font-medium">Recommended: Lead capture - qualification - instant WhatsApp response - booking - follow-up</p></div>
                   </div>
                 </div>
               </div>
@@ -687,7 +687,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1"><span className="text-xs font-semibold text-[var(--color-text-primary)]">No Follow-Up System</span><span className="px-1.5 py-0.5 bg-[var(--color-warning)]/10 text-[var(--color-warning)] text-[10px] font-semibold rounded">High</span></div>
                     <p className="text-xs text-[var(--color-text-muted)] leading-relaxed"><strong className="text-[var(--color-text-secondary)]">Observation:</strong> No automated follow-up sequence detected. After initial contact, there is no systematic re-engagement for leads who do not convert immediately.</p>
-                    <div className="bg-[var(--color-surface)] rounded p-3 mt-2"><p className="text-[11px] text-[var(--color-accent)] font-medium">Recommended: Automated follow-up sequences across WhatsApp and email at 1, 3, 7, and 14-day intervals</p></div>
+                    <div className="bg-[var(--color-surface)] rounded p-3 mt-2"><p className="text-[11px] text-[var(--color-accent-bright)] font-medium">Recommended: Automated follow-up sequences across WhatsApp and email at 1, 3, 7, and 14-day intervals</p></div>
                   </div>
                 </div>
               </div>

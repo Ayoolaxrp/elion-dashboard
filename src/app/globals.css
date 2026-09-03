@@ -41,46 +41,18 @@
 
   a { color: inherit; text-decoration: none; }
 
-  /* Geist / Inter font faces */
+  /* Inter + Space Grotesk variable fonts (self-hosted, no CDN/CSP dependency) */
   @font-face {
     font-family: "Inter";
-    src: url("https://cdn.jsdelivr.net/npm/inter-font@3.19/build/Inter-Regular.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Inter";
-    src: url("https://cdn.jsdelivr.net/npm/inter-font@3.19/build/Inter-Medium.woff2") format("woff2");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Inter";
-    src: url("https://cdn.jsdelivr.net/npm/inter-font@3.19/build/Inter-SemiBold.woff2") format("woff2");
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Inter";
-    src: url("https://cdn.jsdelivr.net/npm/inter-font@3.19/build/Inter-Bold.woff2") format("woff2");
-    font-weight: 700;
+    src: url("/fonts/Inter-Variable.woff2") format("woff2");
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: "Space Grotesk";
-    src: url("https://cdn.jsdelivr.net/npm/space-grotesk@7.0.8/dist/space-grotesk-latin-regular.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Space Grotesk";
-    src: url("https://cdn.jsdelivr.net/npm/space-grotesk@7.0.8/dist/space-grotesk-latin-700.woff2") format("woff2");
-    font-weight: 700;
+    src: url("/fonts/SpaceGrotesk-Variable.woff2") format("woff2");
+    font-weight: 300 700;
     font-style: normal;
     font-display: swap;
   }

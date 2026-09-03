@@ -79,9 +79,13 @@ export function RootShell({ children }: { children: React.ReactNode }) {
   const [roleLabel, setRoleLabel] = useState("");
 
   useEffect(() => {
+    // Only ask for the session if a Supabase auth cookie exists; otherwise
+    // skip the fetch entirely so logged-out public pages log no 401 noise.
+    if (!document.cookie.split(";").some((c) => c.trim().startsWith("sb-"))) return;
     fetch("/api/auth/me")
-      .then((r) => r.json())
+      .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
+        if (!d) return;
         setIsAdmin(d.isSuperAdmin || d.isAdmin);
         setRoleLabel(d.isSuperAdmin ? "Super Admin" : d.isAdmin ? "Admin" : d.role === "owner" ? "Owner" : "");
       })
