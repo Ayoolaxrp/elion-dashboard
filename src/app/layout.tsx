@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { RootShell } from "@/components/root-shell";
 import SmoothScroll from "@/components/smooth-scroll";
+import { ScrollProgress } from "@/components/scroll-progress";
 
 export const metadata: Metadata = {
   title: {
@@ -21,11 +22,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "ELION" }],
   creator: "ELION",
-  metadataBase: new URL("https://elion.ng"),
+  metadataBase: new URL("https://elion.com.ng"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://elion.ng",
+    url: "https://elion.com.ng",
     siteName: "ELION",
     title: "ELION - Fix Your Operational Leaks",
     description:
@@ -64,7 +65,7 @@ export default function RootLayout({
             "@context": "https://schema.org",
             "@type": "Organization",
             name: "ELION",
-            url: "https://elion.ng",
+            url: "https://elion.com.ng",
             description: "ELION identifies where your business loses time, leads, money, and operational efficiency. Then builds automation systems to fix those leaks.",
             sameAs: [],
             contactPoint: {
@@ -77,6 +78,7 @@ export default function RootLayout({
       />
     </head>
       <body className="bg-[var(--color-surface)] text-[var(--color-text-primary)] antialiased min-h-screen">
+        <ScrollProgress />
         <SmoothScroll>
           <RootShell>{children}</RootShell>
         </SmoothScroll>

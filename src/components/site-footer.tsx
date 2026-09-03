@@ -34,8 +34,8 @@ const FOOTER_COLUMNS = [
   {
     title: "Legal",
     links: [
-      { label: "Privacy Policy", href: "/landing/privacy" },
-      { label: "Terms of Service", href: "/landing/terms" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
     ],
   },
 ];
@@ -78,12 +78,21 @@ export function SiteFooter() {
 
         <div className="mt-14 pt-8 border-t border-[var(--color-border)]/40 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[var(--color-text-muted)]">
-            © {new Date().getFullYear()} ELION. All rights reserved.
+            © 2026 ELION. All rights reserved.
           </p>
           <p className="text-xs text-[var(--color-text-muted)]">
-            Find the leaks. Fix what matters. Automate what repeats.
+            ELION™ &middot; AI operations for growing businesses.
           </p>
         </div>
+        <p className="mt-6 text-[11px] text-[var(--color-text-muted)]/70 max-w-3xl leading-relaxed">
+          ELION and its associated software, systems, automation workflows, processes, frameworks,
+          designs, documentation, trademarks, and other materials constitute proprietary intellectual
+          property owned by or licensed to ELION. Unauthorized use is prohibited. See our{" "}
+          <Link href="/terms" className="underline underline-offset-2 hover:text-[var(--color-text-primary)] transition-colors">
+            Terms of Service
+          </Link>
+          {" "}for details.
+        </p>
       </div>
     </footer>
   );

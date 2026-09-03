@@ -53,8 +53,8 @@ function LoginForm() {
     <div className="min-h-screen bg-[var(--color-surface)] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <a href="/funnel">
-            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={48} height={48} className="mx-auto mb-4" />
+          <a href="/" aria-label="ELION home">
+            <Image src="/brand/elion-e-icon.svg" alt="" width={48} height={48} className="mx-auto mb-4" />
           </a>
           <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Sign in to your account</p>
@@ -123,7 +123,7 @@ function LoginForm() {
         </form>
 
         <div className="mt-6 text-center">
-          <a href="/funnel" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
+          <a href="/" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
             Back to ELION
           </a>
         </div>

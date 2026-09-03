@@ -13,7 +13,7 @@ export default function NotFound() {
         <p className="text-gray-400 mb-8">
           The page you are looking for does not exist or has been moved.
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-wrap gap-4 justify-center">
           <Link
             href="/"
             className="px-6 py-3 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
@@ -21,10 +21,10 @@ export default function NotFound() {
             Go Home
           </Link>
           <Link
-            href="/login"
-            className="px-6 py-3 rounded-lg border border-gray-700 text-gray-300 text-sm font-medium hover:border-gray-500 hover:text-white transition-colors"
+            href="/audit"
+            className="px-6 py-3 rounded-lg border border-[var(--color-border-light)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-accent)] hover:text-white transition-colors"
           >
-            Sign In
+            Run Free Audit
           </Link>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { LandingNav } from "@/components/landing-nav";
 import { SiteFooter } from "@/components/site-footer";
 
-export default function LandingLayout({ children }: { children: React.ReactNode }) {
+export function LegalShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[var(--color-surface-raised)]">
       <LandingNav />

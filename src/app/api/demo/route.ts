@@ -15,7 +15,7 @@ const demoStore = {
 const demoTemplates = {
   welcome_email: {
     subject: "Welcome to {{company}}, Here's what happens next",
-    body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, learn more about our services at elion.ng\n\nBest regards,\nThe ELION Team",
+    body: "Hi {{name}},\n\nThank you for reaching out to us! We're excited to help you transform your business operations.\n\nHere's what happens next:\n1. Our team will review your requirements within 24 hours\n2. We'll schedule a brief call to understand your needs\n3. You'll receive a custom automation roadmap\n\nIn the meantime, learn more about our services at elion.com.ng\n\nBest regards,\nThe ELION Team",
   },
   followup_email: {
     subject: "Quick follow-up, {{company}} automation opportunity",
@@ -23,7 +23,7 @@ const demoTemplates = {
   },
   reactivation_email: {
     subject: "We miss you, {{name}}, Special offer inside",
-    body: "Hi {{name}},\n\nIt's been a while since you visited us. We've made some exciting updates that we think you'll love.\n\nAs a valued contact, we're offering you a free Automation Leak Audit (worth NGN 100,000) to help identify where your business is losing time and money.\n\nClick here to claim your free audit: elion.ng/audit\n\nCheers,\nThe ELION Team",
+    body: "Hi {{name}},\n\nIt's been a while since you visited us. We've made some exciting updates that we think you'll love.\n\nAs a valued contact, we're offering you a free Automation Leak Audit (worth NGN 100,000) to help identify where your business is losing time and money.\n\nClick here to claim your free audit: elion.com.ng/audit\n\nCheers,\nThe ELION Team",
   },
   booking_confirmation: {
     subject: "Your appointment is confirmed, {{date}} at {{time}}",
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         const email = {
           id: generateId("email"),
           to: data.to || "demo@example.com",
-          from: "support@elion.ng",
+          from: "support@elion.com.ng",
           subject: replacePlaceholders(emailTmpl.subject || "Welcome", data.placeholders || {}),
           body: replacePlaceholders(emailTmpl.body || "", data.placeholders || {}),
           status: "sent" as string,
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
         const email = {
           id: generateId("email"),
           to: demoData.email,
-          from: "support@elion.ng",
+          from: "support@elion.com.ng",
           subject: replacePlaceholders(demoTemplates.welcome_email.subject, { company: demoData.company, name: demoData.name }),
           body: replacePlaceholders(demoTemplates.welcome_email.body, { company: demoData.company, name: demoData.name }),
           status: "sent" as string,

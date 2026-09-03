@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Check, X, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Reveal } from "@/components/reveal";
 
 const setupPlans = [
   {
@@ -173,7 +174,7 @@ export default function PricingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Reveal className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {setupPlans.map((plan) => (
               <div
                 key={plan.name}
@@ -222,7 +223,7 @@ export default function PricingPage() {
                 </a>
               </div>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -237,7 +238,7 @@ export default function PricingPage() {
             <p className="text-xs text-[var(--color-text-muted)] mt-1">Requires an existing ELION automation implementation.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
+          <Reveal delay={60} className="grid md:grid-cols-2 gap-4 max-w-3xl">
             {supportPlans.map((plan) => (
               <div key={plan.name} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5">
                 <h3 className="text-base font-bold text-[var(--color-text-primary)] mb-1">{plan.name}</h3>
@@ -257,7 +258,7 @@ export default function PricingPage() {
                 {plan.note && <p className="text-[11px] text-[var(--color-text-muted)] italic">{plan.note}</p>}
               </div>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 

@@ -3,7 +3,17 @@ import { createServerClient } from "@supabase/ssr";
 
 const ADMIN_ONLY = ["/admin"];
 const CLIENT_ROUTES = ["/dashboard", "/leads", "/booking", "/followup", "/operations", "/recovery", "/onboarding"];
-const PUBLIC_PATHS = ["/", "/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/api/request", "/api/audit", "/api/demo", "/api/auth"];
+const PUBLIC_PATHS = ["/", "/home", "/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/privacy", "/terms", "/api/request", "/api/audit", "/api/demo", "/api/auth"];
+
+// Canonical redirect map: alias/legacy URL -> canonical production page
+const REDIRECTS: Record<string, string> = {
+  "/home": "/",
+  "/pricing": "/landing/pricing",
+  "/about": "/landing/about",
+  "/support": "/landing/support",
+  "/landing/privacy": "/privacy",
+  "/landing/terms": "/terms",
+};
 
 function isPublicRoute(pathname: string): boolean {
   return PUBLIC_PATHS.some((r) => pathname === r || pathname.startsWith(r + "/"));
@@ -20,6 +30,16 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Permanent (308) canonical redirects for aliases/legacy routes.
+  // /home is the canonical public homepage alias; /landing was the old
+  // homepage and must not dump visitors into the ad-only funnel.
+  const canonical = REDIRECTS[pathname];
+  if (canonical) {
+    const url = request.nextUrl.clone();
+    url.pathname = canonical;
+    return NextResponse.redirect(url, 308);
+  }
 
   if (isPublicRoute(pathname)) return NextResponse.next();
   if (pathname.startsWith("/_next") || pathname.startsWith("/brand") || pathname.includes(".")) return NextResponse.next();

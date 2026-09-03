@@ -1,6 +1,9 @@
+import { LegalShell } from "@/components/legal-shell";
+
 export default function PrivacyPage() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-20">
+    <LegalShell>
+      <div className="max-w-3xl mx-auto px-6 py-20">
       <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
       <p className="text-sm text-[var(--color-text-muted)] mb-8">Last updated: August 28, 2026</p>
 
@@ -72,9 +75,11 @@ export default function PrivacyPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-white mb-3">9. Contact</h2>
-          <p>For privacy-related inquiries, contact us at <a href="mailto:privacy@elion.ng" className="text-primary hover:underline">privacy@elion.ng</a>.</p>
+          <p>For privacy-related inquiries, contact us at <a href="mailto:privacy@elion.com.ng" className="text-[var(--color-accent)] hover:underline">privacy@elion.com.ng</a>.</p>
         </section>
       </div>
     </div>
+
+    </LegalShell>
   );
 }

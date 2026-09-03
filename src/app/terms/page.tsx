@@ -1,6 +1,9 @@
+import { LegalShell } from "@/components/legal-shell";
+
 export default function TermsPage() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-20">
+    <LegalShell>
+      <div className="max-w-3xl mx-auto px-6 py-20">
       <h1 className="text-3xl font-bold mb-2">Terms of Service</h1>
       <p className="text-sm text-[var(--color-text-muted)] mb-8">Last updated: August 28, 2026</p>
 
@@ -35,32 +38,44 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">5. Warranty and Support</h2>
+          <h2 className="text-lg font-semibold text-white mb-3">5. Intellectual Property Notice</h2>
+          <p>&copy; 2026 ELION. All rights reserved.</p>
+          <p className="mt-2">ELION and its associated software, systems, automation workflows, processes, frameworks, designs, documentation, trademarks, and other materials constitute proprietary intellectual property (&quot;Protected Materials&quot;) owned by or licensed to ELION.</p>
+          <p className="mt-2">Except as expressly permitted by ELION&apos;s Terms of Use or a separate written agreement, you may not copy, reproduce, modify, distribute, publish, sell, sublicense, disclose, reverse engineer, create derivative works from, or commercially exploit the Protected Materials without prior written authorization from ELION.</p>
+          <p className="mt-2">Unauthorized use may violate applicable copyright, trademark, trade-secret, contract, and other laws and may result in suspension of access and the pursuit of available legal and equitable remedies.</p>
+          <p className="mt-4 font-semibold text-white">ELION&trade;</p>
+          <p>AI operations for growing businesses.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-3">6. Warranty and Support</h2>
           <p>ELION warrants that delivered automation systems will function as specified in the agreed scope of work. If a system does not perform as documented within the applicable support period, ELION will address the issue at no additional cost.</p>
           <p className="mt-2">Results from automation depend on many factors including business processes, data quality, third-party service performance, and team adoption. ELION does not guarantee specific revenue or conversion outcomes.</p>
           <p className="mt-2">Monthly retainer services are billed on the 1st of each month and may be cancelled with 30 days written notice.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">6. Limitation of Liability</h2>
+          <h2 className="text-lg font-semibold text-white mb-3">7. Limitation of Liability</h2>
           <p>To the maximum extent permitted by law, ELION shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenue, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of the Services.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">7. Termination</h2>
+          <h2 className="text-lg font-semibold text-white mb-3">8. Termination</h2>
           <p>Either party may terminate the agreement with 30 days written notice. Upon termination, you retain ownership of all delivered automation workflows. Monthly retainer services will cease at the end of the current billing period.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">8. Governing Law</h2>
+          <h2 className="text-lg font-semibold text-white mb-3">9. Governing Law</h2>
           <p>These Terms shall be governed by and construed in accordance with the laws of the Federal Republic of Nigeria. Any disputes shall be resolved in the courts of Lagos State, Nigeria.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">9. Contact</h2>
-          <p>For questions about these Terms, contact us at <a href="mailto:support@elion.ng" className="text-[var(--color-accent)] hover:underline">support@elion.ng</a>.</p>
+          <h2 className="text-lg font-semibold text-white mb-3">10. Contact</h2>
+          <p>For questions about these Terms, contact us at <a href="mailto:support@elion.com.ng" className="text-[var(--color-accent)] hover:underline">support@elion.com.ng</a>.</p>
         </section>
       </div>
     </div>
+
+    </LegalShell>
   );
 }

@@ -124,7 +124,7 @@ export default async function StatusPage() {
         </div>
 
         <div className="mt-8 text-center">
-          <a href="/funnel" className="text-xs text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">Back to ELION</a>
+          <a href="/" className="text-xs text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors">Back to ELION</a>
         </div>
       </div>
     </div>

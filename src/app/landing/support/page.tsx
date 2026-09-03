@@ -87,7 +87,7 @@ export default function SupportPage() {
             </a>
 
             <a
-              href="mailto:support@elion.ng"
+              href="mailto:support@elion.com.ng"
               className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block"
             >
               <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)] mb-3">

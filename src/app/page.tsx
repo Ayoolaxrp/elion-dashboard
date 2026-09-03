@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight, PlayCircle, Activity } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
@@ -111,14 +111,48 @@ function SiteNav() {
 
 /* ------------------------------- Hero -------------------------------- */
 
+function HeroGlow({ className, color, drift }: { className: string; color: string; drift: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      // Subtle parallax: glows drift upward slightly as the user scrolls down.
+      el.style.transform = `translateY(${Math.min(0, window.scrollY * -0.04 - drift * 0.25)}px)`;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [drift]);
+
+  return (
+    <div
+      ref={ref}
+      className={`absolute rounded-full pointer-events-none ${className}`}
+      style={{ background: `radial-gradient(closest-side, ${color}, transparent 70%)` }}
+    />
+  );
+}
+
 function Hero() {
   // CSS-keyframe entrance (runs at first paint, no JS/hydration dependency,
   // so LCP is not blocked). Reduced-motion fallback handled in globals.css.
   return (
     <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 px-6 overflow-hidden">
       {/* Radial-gradient glows instead of blur() filters (cheap to paint) */}
-      <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[720px] h-[420px] rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(79,124,255,0.10), transparent 70%)" }} />
-      <div className="absolute top-40 left-1/4 w-[300px] h-[300px] rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(0,212,255,0.07), transparent 70%)" }} />
+      <HeroGlow className="top-16 left-1/2 -translate-x-1/2 w-[720px] h-[420px]" color="rgba(79,124,255,0.10)" drift={14} />
+      <HeroGlow className="top-40 left-1/4 w-[300px] h-[300px]" color="rgba(0,212,255,0.07)" drift={26} />
 
       <div className="relative max-w-4xl mx-auto text-center">
         <div className="animate-hero-in" style={{ animationDelay: "0ms" }}>

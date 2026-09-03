@@ -71,7 +71,7 @@ export async function sendClientWelcome(to: string, clientData: {
         "<p style='text-align:center;margin:24px 0'>" +
         "<a href='" + loginUrl + "' style='display:inline-block;background:#4F7CFF;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600'>Go to Dashboard</a>" +
         "</p>" +
-        "<p style='color:#666;font-size:13px'>If you have any questions, reply to this email or contact us at support@elion.ng.</p>",
+        "<p style='color:#666;font-size:13px'>If you have any questions, reply to this email or contact us at support@elion.com.ng.</p>",
         ""
       ),
     });
