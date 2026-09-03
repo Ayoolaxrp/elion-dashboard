@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
+
+// Auth (cookie session) and data are split: the cookie client only ever
+// resolves the signed-in user; all data reads run on a service-role client
+// without cookies, because attaching the user session to a data client
+// makes queries run as role `authenticated`, which RLS denies on the live
+// schema. See the repo-wide admin route pattern.
 
 // ------------------------------------------------------------------
 // Client dashboard overview — everything the client sees is derived
@@ -55,19 +62,29 @@ function friendlyEvent(row: ActivityRow): { text: string; tone: "ok" | "warn" | 
   }
 }
 
+const dataClient = () =>
+  createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
+
 export async function GET() {
   const cookieStore = await cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
   );
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  // All reads below run as service role (bypasses RLS, real data only)
+  const db = dataClient();
+
   // Find the signed-in user's client organization (same rule as /api/client/automations)
-  const { data: memberships } = await supabase
+  const { data: memberships } = await db
     .from("organization_memberships")
     .select("organization_id, role")
     .eq("user_id", user.id)
@@ -75,7 +92,7 @@ export async function GET() {
 
   let clientId: string | null = null;
   if (memberships && memberships.length > 0) {
-    const { data: org } = await supabase
+    const { data: org } = await db
       .from("organizations")
       .select("id, client_id")
       .in("id", memberships.map((m: { organization_id: string }) => m.organization_id))
@@ -89,14 +106,14 @@ export async function GET() {
   }
 
   // Client record
-  const { data: client } = await supabase
+  const { data: client } = await db
     .from("clients")
     .select("company_name, contact_name, email, onboarding_status, created_at")
     .eq("id", clientId)
     .single();
 
   // Automations with their template (incl. the integrations the template requires)
-  const { data: automations } = await supabase
+  const { data: automations } = await db
     .from("client_automations")
     .select(
       "id, custom_name, status, total_runs, last_run_at, success_rate, deployed_at, paused_at, last_health_check, workflow_templates(name, slug, category, required_integrations)"
@@ -105,7 +122,7 @@ export async function GET() {
     .order("created_at", { ascending: true });
 
   // Integration credentials for this client
-  const { data: creds } = await supabase
+  const { data: creds } = await db
     .from("integration_credentials")
     .select("integration_type, status, health, last_verified_at")
     .eq("client_id", clientId);
@@ -117,7 +134,7 @@ export async function GET() {
   );
 
   // Activity attributable to this client (execution events carry client_id in event_data)
-  const { data: activityRows } = await supabase
+  const { data: activityRows } = await db
     .from("activity_log")
     .select("id, created_at, event_type, event_data")
     .contains("event_data", { client_id: clientId })
@@ -125,7 +142,7 @@ export async function GET() {
     .limit(12);
 
   // Bookings attributable to this client (real booking rows)
-  const { data: bookingRows } = await supabase
+  const { data: bookingRows } = await db
     .from("bookings")
     .select("id, status, start_at, customer_name")
     .eq("client_id", clientId);
