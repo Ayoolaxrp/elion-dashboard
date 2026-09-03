@@ -21,7 +21,7 @@ const setupPlans = [
       { text: "Custom workflows", included: false },
     ],
     cta: "Get Started",
-    href: "/funnel",
+    href: "/audit",
     popular: false,
   },
   {
@@ -41,7 +41,7 @@ const setupPlans = [
       { text: "Multiple interconnected systems", included: false },
     ],
     cta: "Get Started",
-    href: "/funnel",
+    href: "/audit",
     popular: true,
   },
   {
@@ -61,7 +61,7 @@ const setupPlans = [
       { text: "Documentation", included: true },
     ],
     cta: "Get Started",
-    href: "/funnel",
+    href: "/audit",
     popular: false,
   },
   {
@@ -81,7 +81,7 @@ const setupPlans = [
       { text: "Scalable architecture", included: true },
     ],
     cta: "Contact Us",
-    href: "/funnel",
+    href: "/audit",
     popular: false,
   },
 ];

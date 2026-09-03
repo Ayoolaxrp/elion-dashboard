@@ -21,7 +21,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
     return (
       <div className={className}>
         <Image
-          src="/brand/elion-e-icon.png"
+          src="/brand/elion-e-icon.svg"
           alt="ELION"
           width={s.height}
           height={s.height}
@@ -35,9 +35,9 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
     return (
       <div className={`flex items-center ${s.gap} ${className}`}>
         <Image
-          src="/brand/elion-full-logo.png"
+          src="/brand/elion-full-logo.svg"
           alt="ELION - Business Automation Systems"
-          width={120}
+          width={140}
           height={s.height}
           priority
           style={{ height: s.height, width: "auto" }}
@@ -50,7 +50,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
   return (
     <div className={`flex items-center ${s.gap} ${className}`}>
       <Image
-        src="/brand/elion-e-icon.png"
+        src="/brand/elion-e-icon.svg"
         alt=""
         width={s.height}
         height={s.height}

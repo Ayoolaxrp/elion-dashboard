@@ -106,7 +106,7 @@ export default function FunnelPage() {
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <Image src="/brand/elion-e-icon.png" alt="ELION" width={32} height={32} priority />
+            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={32} height={32} priority />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
           </a>
           <div className="hidden sm:flex items-center gap-6 text-sm">
@@ -122,7 +122,7 @@ export default function FunnelPage() {
       {/* 1. HERO - compact, leads straight into the audit */}
       <section className="pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-6">AI Operations for Growing Businesses</p>
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-6">AI Operations for Growing Businesses</p>
           <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.08] mb-6" style={{letterSpacing:"-0.025em"}}>Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
           <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">Answer six quick questions. We analyze your business and show you exactly where leads, time, and revenue are leaking.</p>
         </div>
@@ -233,7 +233,7 @@ export default function FunnelPage() {
       {/* 4. HOW WE FIX IT */}
       <section id="method" className="py-12 sm:py-20 px-4 sm:px-6 scroll-mt-16">
         <div className="max-w-4xl mx-auto">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4 text-center">From finding the leak to fixing it</p>
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">From finding the leak to fixing it</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12" style={{letterSpacing:"-0.02em"}}>You do not buy another dashboard. You get an operating system for the workflow that matters.</h2>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {PROCESS.map((m)=>(
@@ -254,7 +254,7 @@ export default function FunnelPage() {
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10">Here is what a sample audit looks like.</p>
           <div className="rounded-xl border-2 border-dashed border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.03] p-6 sm:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 rounded-md text-[11px] font-bold text-[var(--color-accent)] bg-[var(--color-accent)]/15 uppercase tracking-wider border border-[var(--color-accent)]/20">Illustrative Example - Not a real client</span>
+              <span className="px-3 py-1 rounded-md text-[11px] font-bold text-[var(--color-accent-bright)] bg-[var(--color-accent)]/15 uppercase tracking-wider border border-[var(--color-accent)]/20">Illustrative Example - Not a real client</span>
             </div>
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-1">Lagos Real Estate Agency</h3>
             <p className="text-xs text-[var(--color-text-muted)] mb-6">This shows what the audit produces.</p>
@@ -296,7 +296,7 @@ export default function FunnelPage() {
       {/* 6. PRODUCT PROOF - brief */}
       <section className="py-12 sm:py-16 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">See the system working</p>
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4">See the system working</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-6" style={{letterSpacing:"-0.02em"}}>Every enquiry handled. Every step visible.</h2>
           <p className="text-sm text-[var(--color-text-secondary)] mb-8 max-w-xl mx-auto">Watch how a lead moves through the full workflow, from capture to booking, in the ELION demo.</p>
           <a href="/demo" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]"><PlayCircle className="w-4 h-4" />Run the Full Demo</a>
@@ -306,7 +306,7 @@ export default function FunnelPage() {
       {/* 7. OWNERSHIP */}
       <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">The ELION difference</p>
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4">The ELION difference</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6" style={{letterSpacing:"-0.02em"}}>Built for your business.<br />Owned by you.</h2>
           <p className="text-base text-[var(--color-text-secondary)] mb-10 max-w-xl mx-auto leading-relaxed">Most automation agencies sell you access to a system they control. ELION builds the system, documents it, and hands you the keys.</p>
           <div className="grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto mb-10">

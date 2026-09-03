@@ -15,6 +15,7 @@
     --color-accent-hover: #2E56CC;
   --color-accent-deep: #2E56CC;
   --color-accent-cyan: #00D4FF;
+  --color-accent-bright: #7C9BFF;  /* AA-compliant accent for small text on dark surfaces */
   --color-success: #10B981;
   --color-warning: #F59E0B;
   --color-error: #EF4444;

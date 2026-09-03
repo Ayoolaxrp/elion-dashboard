@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     images: [{ url: "/brand/elion-e-icon.png", width: 1254, height: 1254 }],
   },
   icons: {
-    icon: "/brand/elion-e-icon.png",
-    shortcut: "/brand/elion-e-icon.png",
-    apple: "/brand/elion-e-icon.png",
+    icon: "/brand/elion-e-icon.svg",
+    shortcut: "/brand/elion-e-icon.svg",
+    apple: "/brand/elion-e-icon.svg",
   },
   robots: { index: true, follow: true },
 };

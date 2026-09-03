@@ -30,7 +30,7 @@ export default function AdminOnboarding(){
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
           <Link href="/admin" className="text-[#9CA3AF] hover:text-white"><ArrowLeft className="w-4 h-4" /></Link>
-          <Image src="/brand/elion-e-icon.png" alt="E" width={24} height={24} />
+          <Image src="/brand/elion-e-icon.svg" alt="E" width={24} height={24} />
           <h1 className="text-xl font-bold text-white">Onboarding</h1>
           <button onClick={load} className="ml-auto text-xs text-[#9CA3AF] hover:text-white">Refresh</button>
         </div>

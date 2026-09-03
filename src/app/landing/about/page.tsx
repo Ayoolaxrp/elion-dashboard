@@ -1,6 +1,10 @@
 "use client";
 import { Shield, Zap, Users, Globe, CheckCircle, ArrowRight, Target, Wrench, BarChart3 } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const reveal = { opacity: 0, y: 24 };
+const show = { opacity: 1, y: 0, transition: { type: "spring" as const, damping: 30, stiffness: 260, mass: 0.8 } };
 
 const values = [
   { icon: <Zap className="w-6 h-6" />, title: "Results First", desc: "We don't sell automation projects. We sell business outcomes. Every system we build is tied to a measurable business result." },
@@ -34,15 +38,15 @@ export default function AboutPage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-24">
       {/* Hero */}
-      <div className="text-center mb-20">
-        <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">About ELION</p>
-        <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight mb-6 leading-tight">
+      <motion.div initial={reveal} animate={show} className="text-center mb-20 pt-8">
+        <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">About ELION</p>
+        <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight mb-6 leading-tight" style={{ letterSpacing: "-0.025em" }}>
           We Fix Operational Leaks<br className="hidden md:block" /> That Cost Businesses Money
         </h1>
         <p className="text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto leading-relaxed">
           ELION is a business automation company. We identify where your business loses leads, time, and revenue, then build systems to fix those gaps.
         </p>
-      </div>
+      </motion.div>
 
       {/* What We Do */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-24">

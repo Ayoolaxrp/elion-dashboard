@@ -111,7 +111,7 @@ export default function DemoPage() {
       <header className="sticky top-0 z-50 glass-nav -mx-4 sm:-mx-6 px-4 sm:px-6 mb-6">
         <div className="max-w-6xl mx-auto h-14 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
-            <img src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} />
+            <img src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
           </a>
           <div className="hidden sm:flex items-center gap-6 text-sm">

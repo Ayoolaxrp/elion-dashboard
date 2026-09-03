@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import Link from "next/link";
 import { ArrowLeft, Save, Eye, RotateCcw, Loader2, CheckCircle, FileText, Shield, CreditCard, Mail, Settings, Handshake } from "lucide-react";
@@ -30,10 +30,69 @@ export default function TemplateEditorPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Load templates from Supabase on mount
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/document-templates");
+        if (!res.ok) throw new Error("Failed to load templates");
+        const data = await res.json();
+        const saved = new Map<string, Record<string, string | boolean>>();
+        (data.templates || []).forEach((t: any) => {
+          saved.set(t.doc_type, { ...(DEFAULTS[t.doc_type] || {}), ...(t.content || {}) });
+        });
+        if (saved.has(sel)) setTpl(saved.get(sel)!);
+        // Store full map for switching docs
+        (window as any).__savedTemplates = saved;
+      } catch {
+        // fall back to defaults silently
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   const update = (key: string, val: string | boolean) => setTpl({ ...tpl, [key]: val });
-  const reset = () => { setTpl(DEFAULTS[sel]); setSaved(false); };
-  const save = async () => { setSaving(true); await new Promise(r => setTimeout(r, 800)); setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000); };
+  const reset = () => {
+    const saved = (window as any).__savedTemplates as Map<string, Record<string, string | boolean>> | undefined;
+    setTpl(saved?.get(sel) || DEFAULTS[sel]);
+    setSaved(false);
+    setSaveError(null);
+  };
+  const selectDoc = (key: string) => {
+    setSel(key);
+    const saved = (window as any).__savedTemplates as Map<string, Record<string, string | boolean>> | undefined;
+    setTpl(saved?.get(key) || DEFAULTS[key]);
+    setShowPreview(false);
+    setSaveError(null);
+  };
+  const save = async () => {
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const res = await fetch("/api/admin/document-templates", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ doc_type: sel, content: tpl, version: "1.0.0" }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Save failed");
+      }
+      // Update cached map so switching docs keeps the saved state
+      const saved = (window as any).__savedTemplates as Map<string, Record<string, string | boolean>> | undefined;
+      if (saved) saved.set(sel, { ...tpl });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (e: any) {
+      setSaveError(e.message || "Something went wrong saving");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const Icon = DOC_TYPES.find(d => d.key === sel)?.icon || FileText;
   const color = DOC_TYPES.find(d => d.key === sel)?.color || "#3B66E8";
@@ -55,11 +114,12 @@ export default function TemplateEditorPage() {
               <button onClick={reset} className="px-4 py-2 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm flex items-center gap-1.5">
                 <RotateCcw className="w-3.5 h-3.5" /> Reset
               </button>
-              <button onClick={save} disabled={saving} className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold flex items-center gap-1.5 disabled:opacity-50">
+              <button onClick={save} disabled={saving || loading} className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold flex items-center gap-1.5 disabled:opacity-50">
                 {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : saved ? <CheckCircle className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
-                {saved ? "Saved" : "Save"}
+                {saving ? "Saving..." : saved ? "Saved" : "Save"}
               </button>
             </div>
+            {saveError && <p className="w-full text-xs text-[var(--color-error)] mt-2">{saveError}</p>}
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-1">
@@ -69,7 +129,7 @@ export default function TemplateEditorPage() {
                   {DOC_TYPES.map((d, i) => {
                     const DI = d.icon;
                     return (
-                      <button key={d.key} onClick={() => { setSel(d.key); setTpl(DEFAULTS[d.key]); setShowPreview(false); }}
+                      <button key={d.key} onClick={() => selectDoc(d.key)}
                         className={"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors " + (sel === d.key ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)]" : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-white")}>
                         <DI className="w-4 h-4 shrink-0" style={{ color: sel === d.key ? d.color : undefined }} />
                         <span>{d.label}</span>

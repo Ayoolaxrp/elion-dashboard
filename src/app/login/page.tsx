@@ -54,7 +54,7 @@ function LoginForm() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <a href="/funnel">
-            <Image src="/brand/elion-e-icon.png" alt="ELION" width={48} height={48} className="mx-auto mb-4" />
+            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={48} height={48} className="mx-auto mb-4" />
           </a>
           <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Sign in to your account</p>

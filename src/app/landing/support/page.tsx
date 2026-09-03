@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { validateName, validateEmail, validateMessage } from "@/lib/validation";
 
 const faqs = [
@@ -54,13 +55,15 @@ export default function SupportPage() {
       {/* Header */}
       <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16 text-center">
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded bg-[var(--color-surface)] flex items-center justify-center">
-              <Image src="/brand/elion-e-icon.png" alt="ELION" width={20} height={20} />
-            </div>
-            <span className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight">ELION</span>
-          </div>
-          <h1 className="text-3xl font-bold text-[var(--color-text-primary)] tracking-tight mb-2">Support</h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring" as const, damping: 30, stiffness: 260 }}
+            className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] tracking-tight mb-2"
+            style={{ letterSpacing: "-0.02em" }}
+          >
+            Support
+          </motion.h1>
           <p className="text-sm text-[var(--color-text-muted)]">We are here to help. Contact us through any of the channels below.</p>
         </div>
       </section>

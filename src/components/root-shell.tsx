@@ -107,7 +107,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
     <>
       <div className="flex items-center gap-2.5 px-4 h-14 border-b border-[var(--color-border)] shrink-0">
         <div className="flex items-center gap-2">
-          <Link href="/"><Image src="/brand/elion-e-icon.png" alt="ELION" width={24} height={24} priority /></Link>
+          <Link href="/"><Image src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} priority /></Link>
           {!collapsed && (
             <div>
               <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">ELION</span>
