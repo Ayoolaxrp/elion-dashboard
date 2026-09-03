@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { resolveUserContext } from "@/lib/auth/server";
 
 export async function POST(request: Request) {
   // Rate limit: 5 attempts per minute per IP
@@ -47,9 +48,16 @@ export async function POST(request: Request) {
 
   const isAdmin = adminEmails.includes(email.toLowerCase());
 
+  // Route by actual role, not just email: clients belong in /dashboard,
+  // never dumped on the marketing homepage after signing in.
+  const ctx = await resolveUserContext(data.user!.id);
+  let redirect = "/dashboard";
+  if (isAdmin || ctx.role === "super_admin" || ctx.role === "admin") redirect = "/admin";
+  else if (ctx.role === "client" || ctx.role === "owner" || ctx.role === "staff") redirect = "/dashboard";
+
   return NextResponse.json({
     success: true,
-    redirect: isAdmin ? "/admin" : "/",
+    redirect,
     user: data.user?.email,
   });
 }
