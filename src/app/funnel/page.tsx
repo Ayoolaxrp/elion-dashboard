@@ -119,6 +119,7 @@ export default function FunnelPage() {
         </div>
       </header>
 
+      <main id="main">
       {/* 1. HERO - compact, leads straight into the audit */}
       <section className="pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
@@ -376,9 +377,12 @@ export default function FunnelPage() {
           <p className="text-sm text-[var(--color-text-secondary)] mb-8">Start with the free audit. No commitment.</p>
           <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Audit <ArrowRight className="w-4 h-4" /></a>
         </div>
-      </section>
+      </section>      </main>
 
       <SiteFooter />
+
+
+
 
       {/* Mobile sticky CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom">

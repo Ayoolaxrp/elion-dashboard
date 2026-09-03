@@ -119,11 +119,44 @@ const supportPlans = [
   },
 ];
 
+// Managed channel automations: one-time setup + ongoing monthly management.
+// The monthly fee covers operation, maintenance and optimisation - it is NOT a second setup fee.
+const channelPlans = [
+  {
+    name: "WhatsApp Business Automation",
+    tagline: "Turn WhatsApp into a revenue channel that never sleeps.",
+    setup: "NGN 50,000",
+    monthly: "NGN 25,000 / month",
+    features: [
+      "Official WhatsApp Business API integration",
+      "Automated lead capture and instant responses",
+      "Qualification and routing workflow",
+      "Follow-up sequences on WhatsApp",
+      "Monitoring and monthly optimisation",
+    ],
+    note: "Meta charges separately per conversation. We will confirm the exact rate before launch.",
+    popular: true,
+  },
+  {
+    name: "Email Automation",
+    tagline: "Consistent email follow-up without anyone having to remember.",
+    setup: "NGN 25,000",
+    monthly: "NGN 15,000 / month",
+    features: [
+      "Email automation setup and sequences",
+      "Lead capture and instant autoresponders",
+      "Scheduled follow-up campaigns",
+      "Deliverability management",
+      "Monitoring and monthly optimisation",
+    ],
+    note: "Email-sending provider (e.g. Resend or SMTP) bills separately. We will confirm the rate before launch.",
+    popular: false,
+  },
+];
+
 const addOns = [
-  { name: "WhatsApp Business API", price: "NGN 50,000/mo", desc: "Official WhatsApp Business API setup and management" },
-  { name: "Email Automation", price: "NGN 25,000/mo", desc: "SMTP setup, email sequences, and deliverability management" },
-  { name: "Booking Integration", price: "NGN 75,000", desc: "Calendar sync, automated reminders, and scheduling" },
-  { name: "CRM Setup", price: "NGN 100,000", desc: "HubSpot, Pipedrive, or Zoho CRM configuration" },
+  { name: "Booking Integration", price: "NGN 75,000", desc: "Calendar sync, automated reminders, and scheduling", oneOff: true },
+  { name: "CRM Setup", price: "NGN 100,000", desc: "HubSpot, Pipedrive, or Zoho CRM configuration", oneOff: true },
 ];
 
 const faqs = [
@@ -131,6 +164,8 @@ const faqs = [
   { q: "Can I start with Starter and upgrade later?", a: "Yes. Many businesses start with a single workflow and expand as they see results. Your initial investment counts toward future upgrades." },
   { q: "What happens after my support period ends?", a: "Your automation continues running. You can renew support, upgrade to a higher support tier, or manage it yourself. There is no forced renewal." },
   { q: "Do you offer payment plans?", a: "For projects above NGN 500,000, we can arrange a 50/50 payment split. 50% upfront, 50% on delivery." },
+  { q: "Why do WhatsApp and Email automations have a monthly fee?", a: "The one-time setup builds and launches the automation. The monthly management fee covers the ongoing operation, maintenance, and optimisation of that system after launch, and includes monitoring, adjustments, and support. It is not a second setup fee." },
+  { q: "Are WhatsApp and Meta charges included in your fees?", a: "No. ELION fees cover the automation work we do. Providers such as Meta (WhatsApp Business API) and email-sending services bill separately for their own usage, and we confirm the exact rate before you commit." },
 ];
 
 export default function PricingPage() {
@@ -262,17 +297,90 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Managed channel automations */}
+      <section className="border-b border-[var(--color-border)]">
+        <div className="max-w-5xl mx-auto px-6 py-16">
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">Managed channel automations</h2>
+            <p className="text-sm text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
+              Two pricing parts, clearly separated: a one-time setup fee to build and launch, and a monthly
+              management fee to operate, maintain and optimise it. The monthly fee is not a second setup charge.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {channelPlans.map((plan, i) => (
+              <Reveal key={plan.name} delay={i * 80}>
+                <div className={`h-full rounded-2xl border p-6 md:p-7 flex flex-col ${
+                  plan.popular
+                    ? "border-[var(--color-accent)] bg-[var(--color-surface-raised)] ring-1 ring-[var(--color-accent)]/30"
+                    : "border-[var(--color-border)] bg-[var(--color-surface-raised)]"
+                }`}>
+                  {plan.popular && (
+                    <div className="text-[10px] font-semibold text-[var(--color-accent-bright)] uppercase tracking-wider mb-3">Most requested</div>
+                  )}
+                  <h3 className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight mb-1">{plan.name}</h3>
+                  <p className="text-sm text-[var(--color-text-secondary)] mb-6">{plan.tagline}</p>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface)] p-4">
+                      <p className="text-xs text-[var(--color-text-muted)] mb-1">Setup</p>
+                      <p className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{plan.setup}</p>
+                      <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">one-time</p>
+                    </div>
+                    <div className={`rounded-xl border p-4 ${
+                      plan.popular ? "border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.06]" : "border-[var(--color-border)]/60 bg-[var(--color-surface)]"
+                    }`}>
+                      <p className="text-xs text-[var(--color-text-muted)] mb-1">Management</p>
+                      <p className={`text-2xl font-bold tracking-tight ${plan.popular ? "text-[var(--color-accent-bright)]" : "text-[var(--color-text-primary)]"}`}>{plan.monthly}</p>
+                      <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">ongoing</p>
+                    </div>
+                  </div>
+
+                  <ul className="space-y-2.5 mb-5">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5">
+                        <Check className="w-4 h-4 text-[var(--color-success)] shrink-0 mt-0.5" />
+                        <span className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="text-[11px] text-[var(--color-text-muted)] italic leading-relaxed mb-5">{plan.note}</p>
+
+                  <a
+                    href="/audit"
+                    className={`mt-auto block w-full text-center py-3 rounded-xl text-sm font-semibold transition-colors ${
+                      plan.popular
+                        ? "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)]"
+                        : "bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)]"
+                    }`}
+                  >
+                    Run Your Free Audit
+                  </a>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Add-Ons */}
       <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">Add-ons</h2>
-          <p className="text-sm text-[var(--color-text-muted)] mb-8">Additional services that can be added to any plan.</p>
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">One-off add-ons</h2>
+          <p className="text-sm text-[var(--color-text-muted)] mb-8">Single integrations that can be added to any setup.</p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
             {addOns.map((addon) => (
-              <div key={addon.name} className="border border-[var(--color-border)] rounded-lg p-4">
-                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{addon.name}</h3>
-                <p className="text-lg font-bold text-[var(--color-text-primary)] mb-2">{addon.price}</p>
+              <div key={addon.name} className="border border-[var(--color-border)] rounded-xl p-5 bg-[var(--color-surface-raised)]">
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">{addon.name}</h3>
+                  <div className="text-right shrink-0">
+                    <p className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight">{addon.price}</p>
+                    <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">one-time</p>
+                  </div>
+                </div>
                 <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{addon.desc}</p>
               </div>
             ))}
