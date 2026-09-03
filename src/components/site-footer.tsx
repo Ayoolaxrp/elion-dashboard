@@ -26,7 +26,7 @@ const FOOTER_COLUMNS = [
     title: "Resources",
     links: [
       { label: "How It Works", href: "/demo" },
-      { label: "FAQ", href: "/funnel#faq" },
+      { label: "FAQ", href: "/#faq" },
       { label: "Case Studies", href: "/landing/about" },
       { label: "Documentation", href: "/landing/support" },
     ],
