@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Rocket } from "lucide-react";
 interface Client { id: string; contact_name: string; email: string; company_name: string; plan_name: string; onboarding_status: string; status: string; created_at: string; client_automations: Array<{ id: string; status: string; workflow_templates: { name: string; category: string } }>; client_integrations: Array<{ integration_type: string; status: string }>; }
 const SC: Record<string, string> = { active: "text-green-400 bg-green-400/10", paused: "text-yellow-400 bg-yellow-400/10", churned: "text-red-400 bg-red-400/10", completed: "text-blue-400 bg-blue-400/10" };
 const OC: Record<string, string> = { pending: "text-gray-400 bg-gray-400/10", in_review: "text-yellow-400 bg-yellow-400/10", building: "text-blue-400 bg-blue-400/10", testing: "text-purple-400 bg-purple-400/10", go_live: "text-green-400 bg-green-400/10", completed: "text-green-400 bg-green-400/10" };
@@ -12,14 +13,17 @@ export default function ClientsPage() {
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div><h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Clients</h1><p className="text-sm text-[var(--color-text-muted)] mt-1">Manage client accounts, automations, and onboarding.</p></div>
-        <span className="text-xs text-[var(--color-text-muted)]">{clients.length} clients</span>
+        <div className="flex items-center gap-3">
+          <Link href="/admin/deploy" className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity"><Rocket className="w-4 h-4" /> New Client + Deploy</Link>
+          <span className="text-xs text-[var(--color-text-muted)]">{clients.length} clients</span>
+        </div>
       </div>
       {loading ? (<div className="flex items-center justify-center py-20"><div className="w-6 h-6 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" /></div>
       ) : clients.length === 0 ? (
         <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)]/50">
           <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">No clients yet</p>
           <p className="text-sm text-[var(--color-text-muted)]">Clients appear here after a lead converts and is onboarded.</p>
-          <div className="flex gap-2 justify-center mt-4"><Link href="/admin/clients/new" className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B66E8] text-white text-sm font-semibold rounded-lg hover:bg-[#3B66E8] transition-colors">Add Client</Link><Link href="/admin/leads" className="inline-flex items-center gap-2 px-4 py-2 bg-[#1F2937] text-white text-sm font-semibold rounded-lg hover:bg-[#2A3548] border border-[#1F2937] transition-colors">View Leads</Link></div>
+          <div className="flex gap-2 justify-center mt-4"><Link href="/admin/deploy" className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity"><Rocket className="w-4 h-4" /> New Client + Deploy</Link><Link href="/admin/clients/new" className="inline-flex items-center gap-2 px-4 py-2 bg-[#1F2937] text-white text-sm font-semibold rounded-lg hover:bg-[#2A3548] border border-[#1F2937] transition-colors">Quick Add</Link></div>
         </div>
       ) : (
         <div className="space-y-3">

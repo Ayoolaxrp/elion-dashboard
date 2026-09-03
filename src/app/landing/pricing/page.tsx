@@ -404,7 +404,8 @@ export default function PricingPage() {
                 "Email providers like SendGrid, Resend, or SMTP services",
                 "CRM software (HubSpot, Pipedrive, Zoho) if applicable",
                 "Calendar and scheduling tools",
-                "Hosting for custom endpoints if needed",
+                "Voice AI infrastructure (e.g. Vapi) for AI receptionist voice calls; billed separately by the provider",
+                "AI model usage, which may incur additional third-party charges depending on configuration and volume",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-2">
                   <span className="text-[var(--color-text-muted)] mt-0.5">-</span>
@@ -413,7 +414,10 @@ export default function PricingPage() {
               ))}
             </div>
             <p className="text-xs text-[var(--color-text-muted)] mt-3">
-              We will always clarify which costs are ELION implementation fees and which are third-party service charges before you commit.
+              Voice AI infrastructure and usage charges are billed separately where applicable, and AI model usage may incur
+              additional third-party charges depending on configuration and volume. ELION implementation and management fees never
+              include provider charges. We will always clarify which costs are ELION fees and which are third-party service
+              charges before you commit.
             </p>
           </div>
         </div>

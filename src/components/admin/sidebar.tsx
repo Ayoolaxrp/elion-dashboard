@@ -1,12 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell, Database } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell, Database, Rocket } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/clients", label: "Clients", icon: Users },
+  { href: "/admin/deploy/catalog", label: "System Catalog", icon: Layers },
+  { href: "/admin/deploy", label: "Deploy Systems", icon: Rocket },
   { href: "/admin/leads", label: "Leads", icon: UserPlus },
   { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
   { href: "/admin/contracts", label: "Contracts", icon: FileText },
