@@ -71,7 +71,7 @@ const adminSections = [
 
 export function RootShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLanding = !pathname || pathname === "/" || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status" || pathname === "/privacy" || pathname === "/terms" || pathname === "/pricing" || pathname === "/about" || pathname === "/support";
+  const isLanding = !pathname || pathname === "/" || pathname.startsWith("/landing") || pathname === "/funnel" || pathname === "/login" || pathname === "/audit" || pathname === "/demo" || pathname === "/status" || pathname === "/privacy" || pathname === "/terms" || pathname === "/pricing" || pathname === "/about" || pathname === "/support" || pathname.startsWith("/docs") || pathname === "/cookie-policy" || pathname === "/acceptable-use" || pathname === "/third-party-services";
   const isAdminRoute = pathname.startsWith("/admin");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

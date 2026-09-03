@@ -9,6 +9,7 @@ import { Menu, X } from "lucide-react";
 const landingNav = [
   { label: "Home", href: "/" },
   { label: "Pricing", href: "/landing/pricing" },
+  { label: "Docs", href: "/docs" },
   { label: "About", href: "/landing/about" },
   { label: "Support", href: "/landing/support" },
 ];
