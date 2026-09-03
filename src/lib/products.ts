@@ -73,6 +73,8 @@ export interface ProductPricing {
 export interface ProductDefinition {
   id: string;
   slug: string;
+  /** slug of the matching row in the `workflow_templates` table */
+  template_slug: string;
   name: string;
   short_name: string;
   kind: "automation" | "agent";
@@ -100,6 +102,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_wa_lead_response",
     slug: "whatsapp-lead-response",
+    template_slug: "lead_response",
     name: "WhatsApp Lead Response",
     short_name: "Lead Response",
     kind: "automation",
@@ -195,6 +198,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_ai_receptionist",
     slug: "ai-receptionist",
+    template_slug: "ai_receptionist",
     name: "AI Receptionist",
     short_name: "AI Receptionist",
     kind: "agent",
@@ -286,6 +290,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_email_assistant",
     slug: "email-assistant",
+    template_slug: "email_assistant",
     name: "Email Assistant",
     short_name: "Email Assistant",
     kind: "automation",
@@ -337,6 +342,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_ai_sales_agent",
     slug: "ai-sales-agent",
+    template_slug: "ai_sales_agent",
     name: "AI Sales Agent",
     short_name: "Sales Agent",
     kind: "agent",
@@ -401,6 +407,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_follow_up",
     slug: "follow-up-system",
+    template_slug: "follow_up",
     name: "Follow-Up System",
     short_name: "Follow-Up",
     kind: "automation",
@@ -447,6 +454,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_booking",
     slug: "booking-automation",
+    template_slug: "booking",
     name: "Booking Automation",
     short_name: "Booking",
     kind: "automation",
@@ -491,6 +499,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_revenue_recovery",
     slug: "revenue-recovery",
+    template_slug: "revenue_recovery",
     name: "Revenue Recovery",
     short_name: "Recovery",
     kind: "automation",
@@ -527,6 +536,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
   {
     id: "prod_operations",
     slug: "operations-automation",
+    template_slug: "operations",
     name: "Operations Automation",
     short_name: "Operations",
     kind: "automation",
@@ -690,7 +700,7 @@ export interface ClientDeployment {
   clientId: string;
   clientName: string;
   companyName: string;
-  products: Record<string, { selected: boolean; config: ProductConfigValue; providerStatus: Record<string, ProviderStatus>; status: "pending_config" | "ready" | "provisioning" | "testing" | "live" | "failed"; last_action?: string }>;
+  products: Record<string, { selected: boolean; config: ProductConfigValue; providerStatus: Record<string, ProviderStatus>; status: "pending_config" | "ready" | "provisioning" | "testing" | "live" | "failed"; last_action?: string; automation_id?: string | null }>;
   created_at: string;
 }
 

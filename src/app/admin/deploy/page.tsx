@@ -142,9 +142,10 @@ export default function DeployPage() {
     setProviderStatus(provNext);
     setStepIdx(3);
     setCreated(null);
+    setSavedError("");
   };
 
-  /** Real client creation + deployment draft record. Mock provisioning state; real when infra + n8n exist. */
+  /** Real client creation + real client_automations rows. Provisioning status stays honest: rows are created as "pending", never "live". */
   const saveDeployment = async () => {
     const e = clientFieldsOk();
     if (Object.keys(e).length > 0) { setErrors(e); setStepIdx(0); return; }
@@ -187,10 +188,38 @@ export default function DeployPage() {
       if (!res.ok || !data.client) throw new Error(data.error || "Failed to create client");
       dep.clientId = data.client.id as string;
 
-      // 2. Save the deployment draft locally (mock provisioning record)
+      // 2. Create real client_automations rows (idempotent, status pending)
+      const deployRes = await fetch("/api/admin/deploy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_id: dep.clientId,
+          products: selectedProducts.map((p) => ({
+            template_slug: p.template_slug,
+            custom_name: p.name,
+            config: configs[p.id] || {},
+          })),
+        }),
+      });
+      const deployData = await deployRes.json();
+      if (!deployRes.ok) throw new Error(deployData.error || "Failed to create automations");
+      for (const rec of deployData.automations || []) {
+        const product = selectedProducts.find((p) => p.template_slug === rec.template_slug);
+        if (product && productRecs[product.id]) {
+          productRecs[product.id].automation_id = rec.automation_id;
+          productRecs[product.id].last_action = rec.automation_id ? "provisioned_record" : "pending_record";
+        }
+      }
+
+      // 3. Persist the deployment draft (round-trip record for the admin)
       persistDeployment(dep);
       refreshDeployments();
-      setCreated({ ok: true, label: "Client created", detail: `${state.company} saved with ${selectedProducts.length} system${selectedProducts.length === 1 ? "" : "s"} marked ready for provisioning.` });
+      const createdCount = deployData.automations?.filter((a: { automation_id: string | null }) => a.automation_id).length || 0;
+      setCreated({
+        ok: true,
+        label: "Client + systems created",
+        detail: `${state.company} saved with ${createdCount} automation record${createdCount === 1 ? "" : "s"} in Supabase (status: pending — provisioning gates still apply before anything goes live).`,
+      });
       setSaving(false);
     } catch (err) {
       setSavedError(err instanceof Error ? err.message : "Failed to save deployment");
@@ -354,20 +383,24 @@ export default function DeployPage() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Deployments in this session</h3>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)]/50 text-[var(--color-text-muted)] uppercase tracking-wide">Mock state</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)]/50 text-[var(--color-text-muted)] uppercase tracking-wide">Session draft</span>
             </div>
             <div className="space-y-2">
               {Object.values(deployments).map((dep) => {
-                const statuses = Object.values(dep.products).filter((r) => r.selected).map((r) => r.status);
-                const total = statuses.length;
-                const ready = statuses.filter((s) => s === "ready").length;
+                const selected = Object.entries(dep.products).filter(([, r]) => r.selected);
+                const total = selected.length;
+                const ready = selected.filter(([, r]) => r.status === "ready").length;
+                const withRecord = selected.filter(([, r]) => r.automation_id).length;
                 return (
                   <div key={dep.clientId || dep.companyName} className="flex items-center justify-between gap-3 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-[var(--color-text-primary)]">{dep.companyName}</p>
                       <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
-                        {Object.keys(dep.products).filter((k) => dep.products[k].selected).map((k) => getProduct(k)?.short_name).filter(Boolean).join(" · ") || "No systems"}
+                        {selected.map(([k]) => getProduct(k)?.short_name).filter(Boolean).join(" · ") || "No systems"}
                       </p>
+                      {withRecord > 0 && (
+                        <p className="text-[10px] text-emerald-400 mt-1">✓ {withRecord}/{total} automation record{withRecord === 1 ? "" : "s"} created in Supabase (pending)</p>
+                      )}
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <span className={"text-[10px] px-2 py-1 rounded-full border " + (ready === total ? "text-emerald-400 border-emerald-400/25 bg-emerald-400/5" : "text-amber-400 border-amber-400/25 bg-amber-400/5")}>
