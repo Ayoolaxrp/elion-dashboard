@@ -89,7 +89,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       const rs = await rsRes.json();
       check("reschedule succeeds", rsRes.status === 200 && rs.status === "rescheduled", `status=${rsRes.status} ${rs.error || ""}`);
       const { data: row2 } = await sb.from("bookings").select("status, start_at").eq("id", bookingId).maybeSingle();
-      check("DB reflects new time", row2?.status === "rescheduled" && row2?.start_at === slot2.start, `${row2?.start_at} vs ${slot2.start}`);
+      const sameInstant = Boolean(row2?.start_at && slot2.start && Date.parse(row2.start_at) === Date.parse(slot2.start));
+      check("DB reflects new time", row2?.status === "rescheduled" && sameInstant, `${row2?.start_at} vs ${slot2.start}`);
       await sleep(1000);
     }
 

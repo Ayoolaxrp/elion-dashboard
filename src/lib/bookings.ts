@@ -364,7 +364,7 @@ export async function createBooking(input: NewBookingInput, clientId?: string | 
       audit_id: input.audit_id || null,
       opportunity_id: input.opportunity_id || null,
     })
-    .select("id, calendar_event_id, google_meet_url, start_at, end_at, timezone")
+    .select("id, status, calendar_event_id, google_meet_url, start_at, end_at, timezone")
     .single();
 
   if (error || !data) {
