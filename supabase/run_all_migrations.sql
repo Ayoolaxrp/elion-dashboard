@@ -169,3 +169,46 @@ DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_policies WHERE schemaname='public' AND
 ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_policies WHERE schemaname='public' AND tablename='invoices' AND policyname='service_role_all') THEN CREATE POLICY "service_role_all" ON invoices FOR ALL TO service_role USING (true) WITH CHECK (true); END IF; END $$;
 GRANT SELECT, INSERT, UPDATE, DELETE ON proposals, contracts, invoices TO service_role;
+
+-- =====================================================
+-- 021 — Public status page (incident updates, daily snapshots)
+-- =====================================================
+BEGIN;
+CREATE TABLE IF NOT EXISTS incident_updates (
+  id TEXT PRIMARY KEY DEFAULT ('incident_update_' || gen_random_uuid()::text),
+  incident_id TEXT NOT NULL REFERENCES incidents(id) ON DELETE CASCADE,
+  status TEXT NOT NULL DEFAULT 'investigating'
+    CHECK (status IN ('investigating', 'identified', 'monitoring', 'resolved')),
+  message TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_incident_updates_incident ON incident_updates(incident_id, created_at);
+CREATE TABLE IF NOT EXISTS status_daily_snapshots (
+  id TEXT PRIMARY KEY DEFAULT ('status_snapshot_' || gen_random_uuid()::text),
+  component_id TEXT NOT NULL REFERENCES system_status(id) ON DELETE CASCADE,
+  date DATE NOT NULL,
+  worst_status TEXT NOT NULL DEFAULT 'operational'
+    CHECK (worst_status IN ('operational', 'degraded', 'partial-outage', 'major-outage', 'maintenance', 'not-configured')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (component_id, date)
+);
+CREATE INDEX IF NOT EXISTS idx_status_snapshots_component ON status_daily_snapshots(component_id, date);
+INSERT INTO system_status (component_name, status, note, sort_order, is_visible)
+SELECT 'Booking System', 'operational', 'Real Google Calendar bookings + Meet', 10, true
+WHERE NOT EXISTS (SELECT 1 FROM system_status WHERE component_name = 'Booking System');
+INSERT INTO system_status (component_name, status, note, sort_order, is_visible)
+SELECT 'Google Calendar Connection', 'operational', 'Connected (awodeyiayoola@gmail.com)', 11, true
+WHERE NOT EXISTS (SELECT 1 FROM system_status WHERE component_name = 'Google Calendar Connection');
+UPDATE system_status SET is_visible = false
+WHERE component_name IN ('n8n Automation', 'Email Notifications', 'WhatsApp', 'CRM Integrations', 'Payments', 'Database');
+INSERT INTO status_daily_snapshots (component_id, date, worst_status)
+SELECT s.id, d.day, s.status
+FROM system_status s
+JOIN LATERAL generate_series((s.created_at)::date, CURRENT_DATE, interval '1 day') AS d(day) ON true
+WHERE s.is_visible = true AND s.status <> 'not-configured'
+  AND NOT EXISTS (
+    SELECT 1 FROM status_daily_snapshots snap
+    WHERE snap.component_id = s.id AND snap.date = d.day
+  )
+ON CONFLICT (component_id, date) DO NOTHING;
+COMMIT;
