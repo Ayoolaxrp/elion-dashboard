@@ -2,9 +2,10 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, PlayCircle, Activity } from "lucide-react";
 import { EnvBackdrop, EnvRingMotif } from "@/components/home/env";
+import { useSafeReduced } from "@/components/home/use-safe-reduced";
 
 /* ------------------------------------------------------------------ */
 /* Layer 02 — abstract operational network (nodes + connections).      */
@@ -115,7 +116,7 @@ function OpsConsole() {
 /* ------------------------------------------------------------------ */
 export function Hero() {
   const ref = useRef<HTMLElement | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReduced();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],

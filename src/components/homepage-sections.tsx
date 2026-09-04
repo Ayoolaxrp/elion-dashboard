@@ -6,6 +6,7 @@ import {
   motion, AnimatePresence, useReducedMotion, useScroll,
   useTransform, useMotionValueEvent,
 } from "framer-motion";
+import { useSafeReduced } from "@/components/home/use-safe-reduced";
 import {
   ArrowRight, ArrowUpRight, CheckCircle2, Zap, Mail, Calendar,
   RotateCcw, Settings, Activity, ChevronDown, PlayCircle, Users,
@@ -227,7 +228,7 @@ export function ProblemSection() {
 /* Mobile renders a simple non-sticky progression.                     */
 /* ------------------------------------------------------------------ */
 function OneSystemPipeline() {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReduced();
   const outerRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: outerRef,
@@ -382,7 +383,7 @@ function OneSystemPipeline() {
 /* Mobile renders as a normal stacked list with sequential reveals.    */
 /* ------------------------------------------------------------------ */
 function ProductStack() {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReduced();
   type SystemCard = (typeof SYSTEMS)[number] & { custom?: boolean };
   const items: SystemCard[] = [
     ...SYSTEMS,
@@ -1315,7 +1316,7 @@ export function FaqSection() {
 /* Final CTA — the environment returns.                                */
 /* ------------------------------------------------------------------ */
 export function FinalCta() {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReduced();
   const sectionRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
