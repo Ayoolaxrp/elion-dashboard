@@ -1,0 +1,1771 @@
+[
+  {
+    "name": "CW Real Estate",
+    "website": "https://cwlagos.com",
+    "type": "Real Estate",
+    "score": 34,
+    "leakCount": 5,
+    "critical": 1,
+    "high": 3,
+    "summary": "Audit for CW Real Estate: 5 potential operational gap(s) identified. Estimated annual opportunity NGN 516,530,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Website Quality",
+        "impact": "Sites scoring below 40 convert 18% fewer visitors into enquiries. With NGN 3,500 avg lead cost, every lost conversion is money left on the table.",
+        "severity": "high",
+        "description": "CW Real Estate's website scored 30/100. Website scored 30/100 in technical analysis. No modern framework detected. A low-scoring website loses visitors to competitors with better user experience and faster load times.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Optimize website for SEO, mobile responsiveness, page speed, and conversion rate. Add clear CTAs and contact methods."
+      },
+      {
+        "id": "2",
+        "area": "WhatsApp Integration",
+        "impact": "78% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,500 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on CW Real Estate's website. In Real Estate, 78% of customers prefer WhatsApp for business communication (Statista 2025). 39% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "3",
+        "area": "Appointment Management",
+        "impact": "18% no-show rate means roughly 1 in 6 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on CW Real Estate's website. Customers must call or message to schedule. Real Estate businesses without online booking experience 18% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "4",
+        "area": "Customer Management",
+        "impact": "77% of leads do not receive consistent follow-up. Manual lead management in Real Estate costs an average of 15 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "CW Real Estate has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "5",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on CW Real Estate's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": []
+    },
+    "auditId": "audit_22c2bdde-4f4f-4b15-b1f6-45d3723818bc",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:01:14.679004+00:00"
+  },
+  {
+    "name": "Homework Group",
+    "website": "https://homeworkgroup.ng",
+    "type": "Real Estate Development",
+    "score": 39,
+    "leakCount": 5,
+    "critical": 1,
+    "high": 3,
+    "summary": "Audit for Homework Group: 5 potential operational gap(s) identified. Estimated annual opportunity NGN 536,947,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Website Quality",
+        "impact": "Sites scoring below 40 convert 16% fewer visitors into enquiries. With NGN 3,800 avg lead cost, every lost conversion is money left on the table.",
+        "severity": "high",
+        "description": "Homework Group's website scored 35/100. Website scored 35/100 in technical analysis. No modern framework detected. A low-scoring website loses visitors to competitors with better user experience and faster load times.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Optimize website for SEO, mobile responsiveness, page speed, and conversion rate. Add clear CTAs and contact methods."
+      },
+      {
+        "id": "2",
+        "area": "WhatsApp Integration",
+        "impact": "75% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,800 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on Homework Group's website. In Real Estate Development, 75% of customers prefer WhatsApp for business communication (Statista 2025). 38% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "3",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Homework Group's website. Customers must call or message to schedule. Real Estate Development businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "4",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Real Estate Development costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Homework Group has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "5",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Homework Group's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add WhatsApp Business API for instant lead response",
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Implement CRM to track all customer interactions",
+        "Improve website SEO and conversion optimization"
+      ]
+    },
+    "auditId": "audit_21d46cb5-a975-4643-8d3c-b49181624732",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:08:42.022361+00:00"
+  },
+  {
+    "name": "Alpha Mead Group",
+    "website": "https://alphamead.com",
+    "type": "Property Management",
+    "score": 39,
+    "leakCount": 4,
+    "critical": 1,
+    "high": 2,
+    "summary": "Audit for Alpha Mead Group: 4 potential operational gap(s) identified. Estimated annual opportunity NGN 524,597,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "WhatsApp Integration",
+        "impact": "75% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,800 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on Alpha Mead Group's website. In Property Management, 75% of customers prefer WhatsApp for business communication (Statista 2025). 38% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "2",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Alpha Mead Group's website. Customers must call or message to schedule. Property Management businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "3",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Property Management costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Alpha Mead Group has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "4",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Alpha Mead Group's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add WhatsApp Business API for instant lead response",
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Implement CRM to track all customer interactions",
+        "Improve website SEO and conversion optimization"
+      ]
+    },
+    "auditId": "audit_7053d7ce-feac-4349-84db-006e8379d700",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:06:17.186589+00:00"
+  },
+  {
+    "name": "Knight Frank Nigeria",
+    "website": "https://www.knightfrank.com.ng",
+    "type": "Real Estate",
+    "score": 44,
+    "leakCount": 5,
+    "critical": 1,
+    "high": 2,
+    "summary": "Audit for Knight Frank Nigeria: 5 potential operational gap(s) identified. Estimated annual opportunity NGN 505,540,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "WhatsApp Integration",
+        "impact": "78% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,500 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on Knight Frank Nigeria's website. In Real Estate, 78% of customers prefer WhatsApp for business communication (Statista 2025). 39% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "2",
+        "area": "Appointment Management",
+        "impact": "18% no-show rate means roughly 1 in 6 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Knight Frank Nigeria's website. Customers must call or message to schedule. Real Estate businesses without online booking experience 18% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "3",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 4 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Knight Frank Nigeria has social media (Instagram, Facebook, Twitter/X, LinkedIn) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      },
+      {
+        "id": "4",
+        "area": "Customer Management",
+        "impact": "77% of leads do not receive consistent follow-up. Manual lead management in Real Estate costs an average of 15 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Knight Frank Nigeria has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "5",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Knight Frank Nigeria's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add WhatsApp Business API for instant lead response",
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Connect social media DMs to automated response system",
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_2c701735-5013-4a47-9443-6bae199decf3",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:30:29.500408+00:00"
+  },
+  {
+    "name": "Broll Nigeria",
+    "website": "https://www.broll.com.ng",
+    "type": "Property Management",
+    "score": 51,
+    "leakCount": 6,
+    "critical": 1,
+    "high": 2,
+    "summary": "Audit for Broll Nigeria: 6 potential operational gap(s) identified. Estimated annual opportunity NGN 526,877,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "WhatsApp Integration",
+        "impact": "75% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,800 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on Broll Nigeria's website. In Property Management, 75% of customers prefer WhatsApp for business communication (Statista 2025). 38% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "2",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Broll Nigeria's website. Customers must call or message to schedule. Property Management businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "3",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 2 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Broll Nigeria has social media (Twitter/X, LinkedIn) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      },
+      {
+        "id": "4",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Property Management costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Broll Nigeria has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "5",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Broll Nigeria's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      },
+      {
+        "id": "6",
+        "area": "Social Media Presence",
+        "impact": "Present on 2 of 5 major platforms. 2 additional platforms represent untapped audiences.",
+        "severity": "low",
+        "description": "Broll Nigeria was found on Twitter/X, LinkedIn but is missing from Instagram, TikTok. Multi-platform presence increases brand reach and reduces dependency on any single algorithm.",
+        "estimateNote": null,
+        "evidenceLevel": "verified",
+        "recommendation": "Expand to Instagram and TikTok to diversify reach and capture different audience segments."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add WhatsApp Business API for instant lead response",
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Connect social media DMs to automated response system",
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_71396bfd-42b9-4615-8037-3f3d7902ab63",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:28:57.637842+00:00"
+  },
+  {
+    "name": "Veritasi Homes",
+    "website": "https://veritasi.com",
+    "type": "Real Estate",
+    "score": 51,
+    "leakCount": 4,
+    "critical": 1,
+    "high": 2,
+    "summary": "Audit for Veritasi Homes: 4 potential operational gap(s) identified. Estimated annual opportunity NGN 504,280,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "WhatsApp Integration",
+        "impact": "78% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,500 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on Veritasi Homes's website. In Real Estate, 78% of customers prefer WhatsApp for business communication (Statista 2025). 39% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "2",
+        "area": "Appointment Management",
+        "impact": "18% no-show rate means roughly 1 in 6 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Veritasi Homes's website. Customers must call or message to schedule. Real Estate businesses without online booking experience 18% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "3",
+        "area": "Customer Management",
+        "impact": "77% of leads do not receive consistent follow-up. Manual lead management in Real Estate costs an average of 15 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Veritasi Homes has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "4",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Veritasi Homes's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add WhatsApp Business API for instant lead response",
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Connect social media DMs to automated response system",
+        "Implement CRM to track all customer interactions",
+        "Add live chat for instant website visitor support"
+      ]
+    },
+    "auditId": "audit_595a1c37-3ddd-46c4-9243-d59fa70c4658",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:08:09.982323+00:00"
+  },
+  {
+    "name": "Gracias Global",
+    "website": "https://graciasglobal.com",
+    "type": "Real Estate",
+    "score": 54,
+    "leakCount": 4,
+    "critical": 0,
+    "high": 2,
+    "summary": "Audit for Gracias Global: 4 potential operational gap(s) identified. Estimated annual opportunity NGN 32,746,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "18% no-show rate means roughly 1 in 6 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Gracias Global's website. Customers must call or message to schedule. Real Estate businesses without online booking experience 18% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 1 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Gracias Global has social media (Instagram) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      },
+      {
+        "id": "3",
+        "area": "Customer Management",
+        "impact": "77% of leads do not receive consistent follow-up. Manual lead management in Real Estate costs an average of 15 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Gracias Global has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "4",
+        "area": "Social Media Presence",
+        "impact": "Present on 1 of 5 major platforms. 2 additional platforms represent untapped audiences.",
+        "severity": "low",
+        "description": "Gracias Global was found on Instagram but is missing from LinkedIn, TikTok. Multi-platform presence increases brand reach and reduces dependency on any single algorithm.",
+        "estimateNote": null,
+        "evidenceLevel": "verified",
+        "recommendation": "Expand to LinkedIn and TikTok to diversify reach and capture different audience segments."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Implement CRM to track all customer interactions",
+        "Improve website SEO and conversion optimization"
+      ]
+    },
+    "auditId": "audit_323b58cc-59ca-49d1-ae60-f7935e1c7fe9",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:08:21.754078+00:00"
+  },
+  {
+    "name": "Megamound",
+    "website": "https://megamound.com",
+    "type": "Real Estate Development",
+    "score": 57,
+    "leakCount": 3,
+    "critical": 0,
+    "high": 2,
+    "summary": "Audit for Megamound: 3 potential operational gap(s) identified. Estimated annual opportunity NGN 32,497,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Megamound's website. Customers must call or message to schedule. Real Estate Development businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 3 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Megamound has social media (Instagram, Facebook, LinkedIn) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      },
+      {
+        "id": "3",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Real Estate Development costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Megamound has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Implement CRM to track all customer interactions",
+        "Improve website SEO and conversion optimization"
+      ]
+    },
+    "auditId": "audit_7702bbbb-06cc-464a-8023-5162fe6d6c99",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:08:32.801599+00:00"
+  },
+  {
+    "name": "Adron Homes",
+    "website": "https://adronhomesproperties.com",
+    "type": "Real Estate Development",
+    "score": 62,
+    "leakCount": 4,
+    "critical": 0,
+    "high": 2,
+    "summary": "Audit for Adron Homes: 4 potential operational gap(s) identified. Estimated annual opportunity NGN 34,397,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Adron Homes's website. Customers must call or message to schedule. Real Estate Development businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 5 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Adron Homes has social media (Instagram, Facebook, Twitter/X, LinkedIn, TikTok) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      },
+      {
+        "id": "3",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Real Estate Development costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Adron Homes has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      },
+      {
+        "id": "4",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Adron Homes's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Implement CRM to track all customer interactions",
+        "Add live chat for instant website visitor support"
+      ]
+    },
+    "auditId": "audit_ed2d06d1-2f38-424e-a131-861d0452cfe8",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:28:48.281109+00:00"
+  },
+  {
+    "name": "Chaman Properties",
+    "website": "https://chamanproperties.com",
+    "type": "Real Estate",
+    "score": 64,
+    "leakCount": 3,
+    "critical": 0,
+    "high": 1,
+    "summary": "Audit for Chaman Properties: 3 potential operational gap(s) identified. Estimated annual opportunity NGN 6,846,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "18% no-show rate means roughly 1 in 6 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Chaman Properties's website. Customers must call or message to schedule. Real Estate businesses without online booking experience 18% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 3 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Chaman Properties has social media (Instagram, Facebook, LinkedIn) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      },
+      {
+        "id": "3",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Chaman Properties's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Set up email automation for lead nurturing sequences",
+        "Add live chat for instant website visitor support"
+      ]
+    },
+    "auditId": "audit_8a6ffa2c-4411-49fb-9e39-c4d232a9a762",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:01:05.964045+00:00"
+  },
+  {
+    "name": "Oparah Realty",
+    "website": "https://oparahrealty.com",
+    "type": "Real Estate",
+    "score": 68,
+    "leakCount": 2,
+    "critical": 1,
+    "high": 1,
+    "summary": "Audit for Oparah Realty: 2 potential operational gap(s) identified. Estimated annual opportunity NGN 498,694,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "WhatsApp Integration",
+        "impact": "78% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately NGN 3,500 to acquire through other channels.",
+        "severity": "critical",
+        "description": "No WhatsApp Business integration detected on Oparah Realty's website. In Real Estate, 78% of customers prefer WhatsApp for business communication (Statista 2025). 39% of potential customers cannot reach you on their preferred channel.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com)."
+      },
+      {
+        "id": "2",
+        "area": "Customer Management",
+        "impact": "77% of leads do not receive consistent follow-up. Manual lead management in Real Estate costs an average of 15 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Oparah Realty has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add WhatsApp Business API for instant lead response",
+        "Connect social media DMs to automated response system",
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_1cb0557e-c26a-4813-abff-1920a2174fc6",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:01:24.166918+00:00"
+  },
+  {
+    "name": "Zylus Group",
+    "website": "https://zylusgroup.com",
+    "type": "Real Estate",
+    "score": 72,
+    "leakCount": 2,
+    "critical": 0,
+    "high": 1,
+    "summary": "Audit for Zylus Group: 2 potential operational gap(s) identified. Estimated annual opportunity NGN 4,536,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "18% no-show rate means roughly 1 in 6 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Zylus Group's website. Customers must call or message to schedule. Real Estate businesses without online booking experience 18% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Social Media Presence",
+        "impact": "Present on 2 of 5 major platforms. 2 additional platforms represent untapped audiences.",
+        "severity": "low",
+        "description": "Zylus Group was found on Instagram, Facebook but is missing from LinkedIn, TikTok. Multi-platform presence increases brand reach and reduces dependency on any single algorithm.",
+        "estimateNote": null,
+        "evidenceLevel": "verified",
+        "recommendation": "Expand to LinkedIn and TikTok to diversify reach and capture different audience segments."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth"
+      ]
+    },
+    "auditId": "audit_d3ce9cd6-9b6c-47c6-ad4b-87eb462f9287",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:28:39.474582+00:00"
+  },
+  {
+    "name": "27th Development",
+    "website": "https://27thdevelopment.com",
+    "type": "Real Estate Development",
+    "score": 74,
+    "leakCount": 2,
+    "critical": 0,
+    "high": 2,
+    "summary": "Audit for 27th Development: 2 potential operational gap(s) identified. Estimated annual opportunity NGN 30,217,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on 27th Development's website. Customers must call or message to schedule. Real Estate Development businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Real Estate Development costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "27th Development has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_b8c9c1c5-b06c-48a7-9f44-2d2f831f96a3",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:08:01.228613+00:00"
+  },
+  {
+    "name": "Palton Morgan Holdings",
+    "website": "https://paltonmorgan.com",
+    "type": "Real Estate Development",
+    "score": 76,
+    "leakCount": 2,
+    "critical": 0,
+    "high": 2,
+    "summary": "Audit for Palton Morgan Holdings: 2 potential operational gap(s) identified. Estimated annual opportunity NGN 30,217,600.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Appointment Management",
+        "impact": "15% no-show rate means roughly 1 in 7 appointments is wasted. Staff spend 5+ hours/week coordinating schedules manually.",
+        "severity": "high",
+        "description": "No online booking system detected on Palton Morgan Holdings's website. Customers must call or message to schedule. Real Estate Development businesses without online booking experience 15% no-show rates, compared to under 5% with automated reminders (Calendly 2025).",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time."
+      },
+      {
+        "id": "2",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Real Estate Development costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Palton Morgan Holdings has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement online booking to eliminate scheduling back-and-forth",
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_a09eecbc-d6ff-4d42-aad6-bf4d7f54e06f",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:01:33.483417+00:00"
+  },
+  {
+    "name": "Jide Taiwo & Co",
+    "website": "https://jidetaiwoandco.com",
+    "type": "Real Estate",
+    "score": 78,
+    "leakCount": 1,
+    "critical": 0,
+    "high": 0,
+    "summary": "Audit for Jide Taiwo & Co: 1 potential operational gap(s) identified. Estimated annual opportunity NGN 1,260,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Email Marketing",
+        "impact": "Social media reach is declining (avg 5-15% of followers see posts). Email reaches 90%+ of subscribers. Without email capture, 3 platform audiences are rented, not owned.",
+        "severity": "medium",
+        "description": "Jide Taiwo & Co has social media (Instagram, Facebook, LinkedIn) but no email marketing integration. Email marketing returns NGN 36 for every NGN 1 spent (Litmus 2025). Social followers not captured via email are lost when algorithms change.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Add email capture forms and automated sequences. Convert social followers into owned email subscribers for consistent reach."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Set up email automation for lead nurturing sequences"
+      ]
+    },
+    "auditId": "audit_49ecbba8-d1a3-43b6-a6eb-2f956bc45dc8",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:30:20.115639+00:00"
+  },
+  {
+    "name": "Vines Realty",
+    "website": "https://www.vinesrealtyng.com",
+    "type": "Real Estate",
+    "score": 79,
+    "leakCount": 1,
+    "critical": 0,
+    "high": 0,
+    "summary": "Audit for Vines Realty: 1 potential operational gap(s) identified. Estimated annual opportunity NGN 1,050,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Live Chat",
+        "impact": "Average website converts 2-5% of visitors. Live chat increases this to 4-8%. For a site with 1,000 monthly visitors, that is 20-30 additional leads per month.",
+        "severity": "medium",
+        "description": "No live chat or chatbot detected on Vines Realty's website. 79% of consumers expect immediate responses to enquiries (Zendesk 2025). Without live chat, visitors who have questions leave without converting.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "verified",
+        "recommendation": "Add live chat or AI chatbot for instant visitor support. Even a basic chatbot captures after-hours enquiries."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Add live chat for instant website visitor support"
+      ]
+    },
+    "auditId": "audit_3b037d53-3461-49a2-802f-7b8b56999477",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:28:29.785127+00:00"
+  },
+  {
+    "name": "Sujimoto Group",
+    "website": "https://sujimotonig.com",
+    "type": "Real Estate Development",
+    "score": 82,
+    "leakCount": 1,
+    "critical": 0,
+    "high": 0,
+    "summary": "Audit for Sujimoto Group: 1 potential operational gap(s) identified. Estimated annual opportunity NGN 0.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Optimization Opportunity",
+        "impact": "Current setup is solid. Optimization can still unlock 15-30% efficiency gains.",
+        "severity": "low",
+        "description": "Sujimoto Group has a strong digital presence: WordPress, Wix technology, Instagram, Facebook, Twitter/X, LinkedIn social media, WhatsApp, online booking, CRM, email marketing. The main opportunity is optimizing conversion rates and automating any remaining manual processes.",
+        "estimateNote": null,
+        "evidenceLevel": "estimated",
+        "recommendation": "Audit internal processes for manual tasks. Focus on conversion rate optimization and marketing automation."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": []
+    },
+    "auditId": "audit_fdc317a2-274f-454b-b7bc-ce080b8ac7af",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:29:09.565863+00:00"
+  },
+  {
+    "name": "Jupitaar",
+    "website": "https://jupitaar.com",
+    "type": "Short-Let / Vacation Rentals",
+    "score": 82,
+    "leakCount": 1,
+    "critical": 0,
+    "high": 1,
+    "summary": "Audit for Jupitaar: 1 potential operational gap(s) identified. Estimated annual opportunity NGN 25,840,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Short-Let / Vacation Rentals costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Jupitaar has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_d7234ed5-b0bc-4cc0-a7a2-f09a732c5425",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:10:03.881175+00:00"
+  },
+  {
+    "name": "Homely (Lagos)",
+    "website": "https://joinhomely.com",
+    "type": "Short-Let / Vacation Rentals",
+    "score": 82,
+    "leakCount": 1,
+    "critical": 0,
+    "high": 1,
+    "summary": "Audit for Homely (Lagos): 1 potential operational gap(s) identified. Estimated annual opportunity NGN 25,840,000.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Customer Management",
+        "impact": "68% of leads do not receive consistent follow-up. Manual lead management in Short-Let / Vacation Rentals costs an average of 16 hours/week in data entry alone.",
+        "severity": "high",
+        "description": "Homely (Lagos) has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.",
+        "estimateNote": "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.",
+        "evidenceLevel": "supported",
+        "recommendation": "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Follow-Up Automation",
+        "Appointment Scheduling",
+        "Data Entry Automation",
+        "Report Generation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Team",
+          "tasks": [
+            "Respond to leads within 5 minutes",
+            "Qualify leads automatically",
+            "Schedule follow-ups",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Team",
+          "tasks": [
+            "Run reactivation campaigns",
+            "Track campaign performance",
+            "Manage social media responses",
+            "Generate marketing reports"
+          ]
+        },
+        {
+          "role": "Operations Team",
+          "tasks": [
+            "Automate data entry between systems",
+            "Generate weekly reports",
+            "Manage task assignments",
+            "Track team productivity"
+          ]
+        }
+      ],
+      "priorityActions": [
+        "Implement CRM to track all customer interactions"
+      ]
+    },
+    "auditId": "audit_89278c97-d974-423c-973d-26e55fd95065",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:09:55.206369+00:00"
+  },
+  {
+    "name": "Ramos Real Estate",
+    "website": "https://ramosrealestateng.com",
+    "type": "Real Estate",
+    "score": 82,
+    "leakCount": 1,
+    "critical": 0,
+    "high": 0,
+    "summary": "Audit for Ramos Real Estate: 1 potential operational gap(s) identified. Estimated annual opportunity NGN 0.",
+    "findings": [
+      {
+        "id": "1",
+        "area": "Optimization Opportunity",
+        "impact": "Current setup is solid. Optimization can still unlock 15-30% efficiency gains.",
+        "severity": "low",
+        "description": "Ramos Real Estate has a strong digital presence: WordPress technology, Instagram, Facebook, LinkedIn social media, WhatsApp, online booking, CRM, email marketing. The main opportunity is optimizing conversion rates and automating any remaining manual processes.",
+        "estimateNote": null,
+        "evidenceLevel": "estimated",
+        "recommendation": "Audit internal processes for manual tasks. Focus on conversion rate optimization and marketing automation."
+      }
+    ],
+    "recommendations": {
+      "needs": [
+        "Lead Response",
+        "Property Listing Distribution",
+        "Viewing Scheduling",
+        "Follow-Up Sequences",
+        "Dormant Lead Reactivation"
+      ],
+      "roles": [
+        {
+          "role": "Sales Agent",
+          "tasks": [
+            "Respond to property enquiries within 5 minutes",
+            "Schedule viewings automatically",
+            "Send property matches via WhatsApp",
+            "Follow up after viewings",
+            "Update CRM after each interaction"
+          ]
+        },
+        {
+          "role": "Marketing Manager",
+          "tasks": [
+            "Distribute listings across platforms",
+            "Run reactivation campaigns for old enquiries",
+            "Track ad performance and ROI",
+            "Generate monthly lead reports"
+          ]
+        },
+        {
+          "role": "Operations",
+          "tasks": [
+            "Sync listings across portals",
+            "Update availability in real-time",
+            "Generate commission reports",
+            "Manage document collection"
+          ]
+        }
+      ],
+      "priorityActions": []
+    },
+    "auditId": "audit_edf16981-0653-4a11-9bea-71e2fa90104f",
+    "totalSavings": null,
+    "hasWhatsApp": null,
+    "hasOnlineBooking": null,
+    "created_at": "2026-09-04T20:00:56.921228+00:00"
+  }
+]
