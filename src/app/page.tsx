@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, PlayCircle, Activity } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { ElionLogo } from "@/components/elion-logo";
+import { Hero } from "@/components/home/hero";
 
 // Lazy-load below-fold sections so the initial bundle stays small
 const ProblemSection = dynamic(() => import("@/components/homepage-sections").then(m => m.ProblemSection), { ssr: true, loading: () => <div className="h-40" aria-hidden /> });
@@ -109,106 +111,10 @@ function SiteNav() {
   );
 }
 
-/* ------------------------------- Hero -------------------------------- */
-
-function HeroGlow({ className, color, drift }: { className: string; color: string; drift: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      // Subtle parallax: glows drift upward slightly as the user scrolls down.
-      el.style.transform = `translateY(${Math.min(0, window.scrollY * -0.04 - drift * 0.25)}px)`;
-    };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [drift]);
-
-  return (
-    <div
-      ref={ref}
-      className={`absolute rounded-full pointer-events-none ${className}`}
-      style={{ background: `radial-gradient(closest-side, ${color}, transparent 70%)` }}
-    />
-  );
-}
-
-function Hero() {
-  // CSS-keyframe entrance (runs at first paint, no JS/hydration dependency,
-  // so LCP is not blocked). Reduced-motion fallback handled in globals.css.
-  return (
-    <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 px-6 overflow-hidden">
-      {/* Radial-gradient glows instead of blur() filters (cheap to paint) */}
-      <HeroGlow className="top-16 left-1/2 -translate-x-1/2 w-[720px] h-[420px]" color="rgba(79,124,255,0.10)" drift={14} />
-      <HeroGlow className="top-40 left-1/4 w-[300px] h-[300px]" color="rgba(0,212,255,0.07)" drift={26} />
-
-      <div className="relative max-w-4xl mx-auto text-center">
-        <div className="animate-hero-in" style={{ animationDelay: "0ms" }}>
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-            <span className="text-xs font-medium text-[var(--color-accent-bright)]">AI Operations for Growing Businesses</span>
-          </span>
-        </div>
-
-        <h1
-          className="animate-hero-slide mt-8 text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] leading-[1.04] tracking-[-0.03em]"
-          style={{ animationDelay: "0ms" }}
-        >
-          Find the leaks in your business.
-          <br />
-          <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)] bg-clip-text text-transparent">
-            Then automate them.
-          </span>
-        </h1>
-
-        <p
-          className="animate-hero-in mt-7 text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed"
-          style={{ animationDelay: "160ms" }}
-        >
-          ELION identifies where leads, follow-ups, bookings, and operational
-          workflows are breaking down, then deploys systems to fix them.
-        </p>
-
-        <div className="animate-hero-in mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style={{ animationDelay: "240ms" }}>
-          <Link
-            href="/audit"
-            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97] px-8 py-4 text-base"
-          >
-            Run Your Free Business Audit
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link
-            href="/demo"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97] px-8 py-4 text-base"
-          >
-            <PlayCircle className="w-4 h-4" />
-            See ELION in Action
-          </Link>
-        </div>
-
-        <p className="animate-hero-in mt-8 text-xs text-[var(--color-text-muted)]" style={{ animationDelay: "320ms" }}>
-          No credit card. No commitment. Evidence-based findings.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 /* ------------------------- Product preview --------------------------- */
 
 function ProductPreview() {
+  const reduced = useReducedMotion();
   const metrics = [
     { label: "Leads processed", value: "127", note: "this week" },
     { label: "Responses sent", value: "94", note: "automated" },
@@ -219,16 +125,34 @@ function ProductPreview() {
     { name: "Follow-Up", status: "Live", tone: "success" as const },
     { name: "Booking", status: "Not configured", tone: "muted" as const },
   ];
+
+  const entrance = (i: number) => ({
+    hidden: { opacity: reduced ? 1 : 0, y: reduced ? 0 : 18 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring" as const, damping: 30, stiffness: 260, delay: reduced ? 0 : i * 0.06 },
+    },
+  });
+
   return (
-    <section className="px-6 pb-24 md:pb-32">
+    <motion.section
+      className="px-6 pb-24 md:pb-32"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+    >
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-10">
+        <motion.div variants={entrance(0)} className="text-center mb-10">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
             Product Preview (Illustrative)
           </p>
-        </div>
+        </motion.div>
 
-        <div className="relative rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] shadow-2xl shadow-black/40 overflow-hidden">
+        <motion.div
+          variants={entrance(1)}
+          className="relative rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] shadow-2xl shadow-black/40 overflow-hidden"
+        >
           <div className="flex items-center gap-1.5 px-5 py-3 border-b border-[var(--color-border)]/50 bg-[var(--color-surface)]/60">
             <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-border-light)]" />
             <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-border-light)]" />
@@ -237,11 +161,17 @@ function ProductPreview() {
           </div>
 
           <div className="p-6 md:p-8 grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-5">
+            <motion.div
+              variants={entrance(2)}
+              className="rounded-xl border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-5"
+            >
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm font-semibold text-[var(--color-text-primary)]">Automation Health</p>
                 <span className="flex items-center gap-1.5 text-[11px] text-[var(--color-success)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)] animate-pulse" />
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-node-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-success)]" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[var(--color-success)]" />
+                  </span>
                   Operational
                 </span>
               </div>
@@ -261,9 +191,9 @@ function ProductPreview() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 gap-3">
+            <motion.div variants={entrance(3)} className="grid grid-cols-1 gap-3">
               {metrics.map((m) => (
                 <div key={m.label} className="rounded-xl border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-4 flex items-center justify-between">
                   <div>
@@ -283,11 +213,11 @@ function ProductPreview() {
                   8 executions
                 </span>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

@@ -232,3 +232,65 @@ p, span, li, td {
 .animate-slide-in-left {
   animation: slideInLeft 0.6s ease-out forwards;
 }
+
+/* ------------------------------------------------------------------ */
+/* ELION layered environment — shared by hero and final CTA so the     */
+/* visual story loops: ENTER -> DESCEND -> EXPLORE -> RETURN.          */
+/* Pure paint: gradients + mask only (no filters, no layout anim).    */
+/* ------------------------------------------------------------------ */
+.env-grid {
+  background-image:
+    linear-gradient(rgba(124, 155, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 155, 255, 0.06) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(ellipse 92% 82% at 50% 42%, #000 26%, transparent 74%);
+  mask-image: radial-gradient(ellipse 92% 82% at 50% 42%, #000 26%, transparent 74%);
+}
+.env-grid-line {
+  background-image:
+    linear-gradient(rgba(124, 155, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 155, 255, 0.07) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 20%, transparent 72%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 20%, transparent 72%);
+}
+.env-scanline {
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(0, 212, 255, 0.05) 0px,
+    rgba(0, 212, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 60%, #000 10%, transparent 78%);
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 60%, #000 10%, transparent 78%);
+}
+
+@keyframes ring-drift {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-ring-drift {
+  animation: ring-drift 80s linear infinite;
+  transform-origin: center;
+}
+@keyframes node-ping-soft {
+  0% { opacity: 0.9; transform: scale(0.7); }
+  70% { opacity: 0; transform: scale(2.1); }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+.animate-node-ping {
+  animation: node-ping-soft 2.6s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+/* Sticky-stack cards: layered depth for the automation product stack. */
+.stack-card {
+  position: sticky;
+  will-change: transform;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+@media (hover: hover) {
+  .stack-card:hover {
+    transform: translateY(-2px);
+  }
+}
