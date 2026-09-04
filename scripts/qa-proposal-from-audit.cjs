@@ -34,6 +34,22 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const uid = "qa-pfa-" + Date.now();
 const qaEmail = uid + "@example.com";
 
+// Node fetch to Supabase occasionally fails transiently; retry a few times.
+async function qry(fn, tries = 3) {
+  let lastErr = null;
+  for (let i = 0; i < tries; i++) {
+    try {
+      const out = await fn();
+      if (out && out.error) throw out.error;
+      return out;
+    } catch (e) {
+      lastErr = e;
+      await sleep(2000);
+    }
+  }
+  return { data: null, error: lastErr };
+}
+
 (async () => {
   const browser = await puppeteer.launch({
     executablePath: CHROME, headless: "new",
@@ -82,17 +98,19 @@ const qaEmail = uid + "@example.com";
 
     // Locate the created audit row via the linked lead (service role).
     await sleep(4000);
-    const { data: qaLeads, error: leadErr } = await sb.from("leads").select("id").eq("email", qaEmail).limit(1);
+    const { data: qaLeads, error: leadErr } = await qry(() => sb.from("leads").select("id").eq("email", qaEmail).limit(1));
     const qaLeadId = qaLeads && qaLeads[0] && qaLeads[0].id;
     if (!qaLeadId) console.log("DEBUG lead lookup: email=", qaEmail, "rows=", JSON.stringify(qaLeads), "err=", leadErr && leadErr.message);
     let audit = null;
     if (qaLeadId) {
-      const { data: audits } = await sb
-        .from("audits")
-        .select("id, status, overall_score, critical_leaks, high_leaks, findings, lead_id, company_name")
-        .eq("lead_id", qaLeadId)
-        .order("created_at", { ascending: false })
-        .limit(1);
+      const { data: audits } = await qry(() =>
+        sb
+          .from("audits")
+          .select("id, status, overall_score, critical_leaks, high_leaks, findings, lead_id, company_name")
+          .eq("lead_id", qaLeadId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+      );
       audit = audits && audits[0];
     }
     check("audit row persisted (status completed)", !!audit && audit.status === "completed", audit ? `score=${audit.overall_score} critical=${audit.critical_leaks}` : "no row");
@@ -170,20 +188,22 @@ const qaEmail = uid + "@example.com";
 
     let pendingLeadId = null;
     if (qaLeadId) {
-      const { data: pl } = await sb.from("leads").select("id").eq("id", qaLeadId).maybeSingle();
+      const { data: pl } = await qry(() => sb.from("leads").select("id").eq("id", qaLeadId).maybeSingle());
       pendingLeadId = (pl && pl.id) || null;
     }
-    const { data: pendingAudit } = await sb
-      .from("audits")
-      .insert({
-        lead_id: pendingLeadId,
-        company_name: "QA Pending Co",
-        status: "pending",
-        overall_score: 0,
-        findings: [],
-      })
-      .select("id")
-      .single();
+    const { data: pendingAudit } = await qry(() =>
+      sb
+        .from("audits")
+        .insert({
+          lead_id: pendingLeadId,
+          company_name: "QA Pending Co",
+          status: "processing",
+          overall_score: 0,
+          findings: [],
+        })
+        .select("id")
+        .single()
+    );
     if (pendingAudit) {
       const respPending = await page.evaluate(async (id) => {
         const r = await fetch("/api/admin/proposals", {
