@@ -1,9 +1,51 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { validateName, validateEmail, validateMessage } from "@/lib/validation";
+
+// Business hours: Monday–Friday 09:00–18:00 WAT (Africa/Lagos).
+function getWATNow() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Lagos",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date());
+  const get = (t: string) => parts.find((p) => p.type === t)?.value || "";
+  return {
+    weekday: get("weekday") as string, // Mon..Sun
+    minutes: parseInt(get("hour"), 10) * 60 + parseInt(get("minute"), 10),
+  };
+}
+
+function nextBusinessDayLabel(weekday: string, beforeOpen: boolean): string {
+  if (beforeOpen) return "today";
+  if (weekday === "Fri" || weekday === "Sat" || weekday === "Sun") return "Monday";
+  return "tomorrow";
+}
+
+function useSupportStatus() {
+  const [status, setStatus] = useState(() => computeStatus());
+  useEffect(() => {
+    const id = setInterval(() => setStatus(computeStatus()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+  return status;
+}
+
+function computeStatus() {
+  const { weekday, minutes } = getWATNow();
+  const isWeekday = ["Mon", "Tue", "Wed", "Thu", "Fri"].includes(weekday);
+  const open = 9 * 60;
+  const close = 18 * 60;
+  const online = isWeekday && minutes >= open && minutes < close;
+  const beforeOpen = isWeekday && minutes < open;
+  const label = online ? "We\u2019re online now" : `Outside business hours \u2014 we\u2019ll respond by ${nextBusinessDayLabel(weekday, beforeOpen)}`;
+  return { online, label };
+}
 
 const faqs = [
   { q: "How do I get started?", a: "Run a free Leak Audit on our website. We will analyse your business and identify automation opportunities. From there, we recommend the right plan." },
@@ -18,6 +60,7 @@ export default function SupportPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const status = useSupportStatus();
 
   const [submitting, setSubmitting] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,34 +114,51 @@ export default function SupportPage() {
       {/* Contact Methods */}
       <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
+          {/* Live status — computed from the current WAT time, never hardcoded */}
+          <div
+            className={`inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border text-xs sm:text-sm font-medium mb-8 min-h-[44px] ${
+              status.online
+                ? "bg-[var(--color-success)]/10 border-[var(--color-success)]/30 text-[var(--color-success)]"
+                : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-secondary)]"
+            }`}
+            role="status"
+            aria-live="polite"
+          >
+            <span className={`relative flex w-2.5 h-2.5 ${status.online ? "" : "opacity-50"}`}>
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 ${status.online ? "bg-[var(--color-success)]" : "bg-[var(--color-text-muted)]"}`} />
+              <span className={`relative inline-flex rounded-full w-2.5 h-2.5 ${status.online ? "bg-[var(--color-success)]" : "bg-[var(--color-text-muted)]"}`} />
+            </span>
+            {status.label}
+          </div>
+
           <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-8">Contact us</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <a
               href="https://wa.me/2349126281855?text=Hello%20ELION%2C%20I%20need%20support"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block">
+              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block min-h-[44px]">
               <div className="w-10 h-10 rounded-lg bg-[var(--color-success)]/10 flex items-center justify-center text-[var(--color-success)] mb-3">
                 <MessageSquare className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">WhatsApp</h3>
-              <p className="text-xs text-[var(--color-text-muted)] mb-2">Fastest response. Available during business hours.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">Send a message</p>
+              <p className="text-xs text-[var(--color-text-muted)] mb-2">Usually within 1 hour during business hours.</p>
+              <p className="text-xs text-[var(--color-accent-bright)] font-medium">Send a message</p>
             </a>
 
             <a
               href="mailto:support@elion.com.ng"
-              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block"
+              className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block min-h-[44px]"
             >
               <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)] mb-3">
                 <Mail className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Email</h3>
-              <p className="text-xs text-[var(--color-text-muted)] mb-2">For detailed enquiries and support requests.</p>
-              <p className="text-xs text-[var(--color-text-muted)]">Send a message</p>
+              <p className="text-xs text-[var(--color-text-muted)] mb-2">Within 24 hours on business days.</p>
+              <p className="text-xs text-[var(--color-accent-bright)] font-medium">support@elion.com.ng</p>
             </a>
 
-            <a href="tel:+2349126281855" className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block">
+            <a href="tel:+2349126281855" className="border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors block min-h-[44px]">
               <div className="w-10 h-10 rounded-lg bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-secondary)] mb-3">
                 <Phone className="w-5 h-5" />
               </div>
@@ -108,10 +168,11 @@ export default function SupportPage() {
             </a>
           </div>
 
+          {/* Single expectations block — hours + urgent guidance only (channel times live in the cards above) */}
           <div className="mt-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
             <p className="text-xs text-[var(--color-text-muted)]">
-              <strong>Response expectations:</strong> We aim to respond to all enquiries during business hours (Monday to Friday, 9am to 6pm WAT).
-              WhatsApp is typically the fastest channel. For urgent issues, mention "urgent" in your message.
+              <strong>Response expectations:</strong> All channels are monitored Monday to Friday, 9am to 6pm WAT.
+              For urgent issues, mention &quot;urgent&quot; in your message. Messages received outside business hours are picked up the next business day.
             </p>
           </div>
         </div>

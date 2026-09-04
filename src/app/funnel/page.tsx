@@ -66,7 +66,30 @@ export default function FunnelPage() {
   const [submitting, setSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  // Hide the mobile sticky CTA while the on-screen keyboard is open so it
+  // never covers the form fields or fights the keyboard for space.
+  const [kbOpen, setKbOpen] = useState(false);
   const [auditResult, setAuditResult] = useState<{ score: number; leaks: Array<{ id?: string; area: string; title?: string; severity: string; recommendation?: string }>; critical: number; high: number; company: string; recommendations: unknown } | null>(null);
+
+  // Leak-cost calculator — instant, slider-driven, transparent assumptions.
+  const [calcLeads, setCalcLeads] = useState(60);
+  const [calcResponseMin, setCalcResponseMin] = useState(60);
+  const [calcValue, setCalcValue] = useState(250000);
+  // Contact probability decays with response time (industry lead-response data):
+  // ~85% of leads are reachable on an instant reply, falling fast in the first hour.
+  const calcCaptureRate = (minutes: number) => {
+    if (minutes <= 5) return 0.85;
+    return Math.max(0.05, 0.85 * Math.exp(-(minutes - 5) / 40));
+  };
+  const calcLeadsLost = Math.round(calcLeads * (0.85 - calcCaptureRate(calcResponseMin)));
+  const calcMonthlyLeak = Math.round(calcLeadsLost * 0.1 * calcValue); // ~1 in 10 contacted leads becomes a customer
+  const fmtNgn = (n: number) => "₦" + n.toLocaleString("en-NG");
+  const fmtResponse = (min: number) => {
+    if (min < 60) return `${min} min`;
+    if (min < 1440) return `${(min / 60).toFixed(min % 60 === 0 ? 0 : 1)} hr${min >= 120 ? "s" : ""}`;
+    return `${(min / 1440).toFixed(min % 1440 === 0 ? 0 : 1)} day${min >= 2880 ? "s" : ""}`;
+  };
+
   const cs = STEPS[step];
   const pct = ((step + 1) / STEPS.length) * 100;
 
@@ -156,7 +179,50 @@ export default function FunnelPage() {
       {/* 2. AUDIT - immediately after hero */}
       <section id="audit" className="pb-16 sm:pb-20 px-4 sm:px-6 scroll-mt-16">
         <div className="max-w-lg mx-auto">
-          <div className="rounded-2xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 p-6 sm:p-8 overflow-hidden shadow-2xl shadow-black/30">
+
+          {/* Leak-cost calculator — before the audit form, instant and slider-driven */}
+          <div className="mb-6 rounded-2xl bg-[var(--color-surface-raised)] border border-[var(--color-accent)]/25 p-5 sm:p-6">
+            <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-1">Leak cost calculator</p>
+            <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-primary)] mb-1" style={{letterSpacing:"-0.02em"}}>How much is slow response really costing you?</h2>
+            <p className="text-xs text-[var(--color-text-muted)] mb-5">Move the sliders — the estimate updates instantly.</p>
+
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label htmlFor="calc-leads" className="text-xs font-medium text-[var(--color-text-secondary)]">Leads per month</label>
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{calcLeads}</span>
+                </div>
+                <input id="calc-leads" type="range" min={5} max={500} step={5} value={calcLeads} onChange={(e) => setCalcLeads(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${calcLeads} leads per month`} />
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label htmlFor="calc-response" className="text-xs font-medium text-[var(--color-text-secondary)]">Average response time</label>
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{fmtResponse(calcResponseMin)}</span>
+                </div>
+                <input id="calc-response" type="range" min={5} max={2880} step={5} value={calcResponseMin} onChange={(e) => setCalcResponseMin(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${fmtResponse(calcResponseMin)} average response time`} />
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label htmlFor="calc-value" className="text-xs font-medium text-[var(--color-text-secondary)]">Average customer value</label>
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{fmtNgn(calcValue)}</span>
+                </div>
+                <input id="calc-value" type="range" min={50000} max={5000000} step={10000} value={calcValue} onChange={(e) => setCalcValue(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${fmtNgn(calcValue)} average customer value`} />
+              </div>
+            </div>
+
+            <div className="mt-5 p-4 rounded-xl bg-[var(--color-accent)]/[0.08] border border-[var(--color-accent)]/20 text-center">
+              <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider mb-1">Estimated monthly leakage</p>
+              <p className="text-2xl sm:text-3xl font-bold text-[var(--color-accent-bright)]" data-calc-result>≈ {fmtNgn(calcMonthlyLeak)}<span className="text-sm font-medium text-[var(--color-text-muted)]">/month</span></p>
+              <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5">~{calcLeadsLost} leads lost to slow response per month</p>
+            </div>
+            <p className="text-[10px] text-[var(--color-text-muted)] mt-3 leading-relaxed">Estimate based on your inputs and typical lead-response research. Assumes roughly 1 in 10 contacted leads becomes a customer — adjust the sliders to match your business.</p>
+          </div>
+
+          <div
+            className="rounded-2xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 p-6 sm:p-8 overflow-hidden shadow-2xl shadow-black/30"
+            onFocusCapture={() => setKbOpen(true)}
+            onBlurCapture={() => setKbOpen(false)}
+          >
             {submitted ? (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={SPRING_STEP} className="text-center py-4">
                 <CheckCircle2 className="w-12 h-12 text-[var(--color-success)] mx-auto mb-4" />
@@ -450,10 +516,12 @@ export default function FunnelPage() {
 
       <SiteFooter />
 
-      {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom">
+      {/* Mobile sticky CTA — hidden while the keyboard is open so it never covers the form */}
+      <div className={`fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom ${kbOpen ? "hidden" : ""}`}>
         <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
       </div>
+      {/* Spacer so the fixed CTA never covers footer content on mobile */}
+      <div className="sm:hidden h-20" aria-hidden="true" />
     </div>
   );
 }
