@@ -10,13 +10,39 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 import { sendLeadToN8n } from "@/lib/n8n-client";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+/**
+ * Webhook auth: this endpoint writes leads with the service role, so only
+ * trusted callers (n8n, configured with N8N_WEBHOOK_SECRET) may post. When a
+ * secret is configured the caller must present it via x-webhook-secret.
+ * Without a configured secret the endpoint fails closed to an authenticated
+ * admin session rather than accepting anonymous writes.
+ */
+async function requireWebhookAuth(request: NextRequest): Promise<boolean> {
+  const expected = process.env.N8N_WEBHOOK_SECRET;
+  if (expected) {
+    return request.headers.get("x-webhook-secret") === expected;
+  }
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return false;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  return adminEmails.includes((user.email || "").toLowerCase());
+}
 
 interface LeadIngestionRequest {
   name: string;
@@ -106,6 +132,10 @@ function determineChannel(
 
 export async function POST(request: NextRequest) {
   try {
+    if (!(await requireWebhookAuth(request))) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body: LeadIngestionRequest = await request.json();
 
     if (!body.name || body.name.trim().length === 0) {

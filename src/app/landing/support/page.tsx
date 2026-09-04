@@ -104,7 +104,7 @@ export default function SupportPage() {
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Phone</h3>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">Monday to Friday, 9am to 6pm WAT.</p>
-              <p className="text-xs text-[var(--color-accent)]">0912 628 1855</p>
+              <p className="text-xs font-medium text-[var(--color-accent-bright)]">0912 628 1855</p>
             </a>
           </div>
 
@@ -133,8 +133,9 @@ export default function SupportPage() {
             <form onSubmit={handleSubmit} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Name</label>
+                  <label htmlFor="support-name" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Name</label>
                   <input
+                    id="support-name"
                     type="text"
                     required
                     value={form.name}
@@ -143,8 +144,9 @@ export default function SupportPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Email</label>
+                  <label htmlFor="support-email" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Email</label>
                   <input
+                    id="support-email"
                     type="email"
                     required
                     value={form.email}
@@ -154,8 +156,9 @@ export default function SupportPage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Subject</label>
+                <label htmlFor="support-subject" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Subject</label>
                 <select
+                  id="support-subject"
                   value={form.subject}
                   onChange={(e) => setForm({ ...form, subject: e.target.value })}
                   className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 appearance-none cursor-pointer"
@@ -169,8 +172,9 @@ export default function SupportPage() {
                 </select>
               </div>
               <div>
-                <label className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Message</label>
+                <label htmlFor="support-message" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Message</label>
                 <textarea
+                  id="support-message"
                   required
                   rows={4}
                   value={form.message}

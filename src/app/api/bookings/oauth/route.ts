@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
-import { authUrl, googleConfigured } from "@/lib/google-calendar";
+import { authUrl, googleConfigured, signOAuthState } from "@/lib/google-calendar";
 
 function isAdmin(email: string | undefined): boolean {
   if (!email) return false;
@@ -66,7 +66,7 @@ export async function GET(request: Request) {
   }
 
   const origin = request.headers.get("origin") || new URL(request.url).origin;
-  const state = Buffer.from(JSON.stringify({ t: Date.now(), clientId: clientId || null })).toString("base64url");
+  const state = signOAuthState({ t: Date.now(), clientId: clientId || null });
   const redirect = authUrl(state, origin);
   return NextResponse.redirect(redirect);
 }

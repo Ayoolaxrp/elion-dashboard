@@ -3,6 +3,7 @@ import { execSync } from "child_process";
 import path from "path";
 import { URL } from "url";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getSupabaseAdmin } from "@/lib/supabase/server";
 
 // SSRF protection: validate URLs before fetching
 function isSafeUrl(urlStr: string): boolean {
@@ -715,6 +716,94 @@ export async function POST(req: NextRequest) {
       reporting: (research.hasCRM ? 40 : 15) + (research.hasEmailMarketing ? 15 : 0),
       digital_presence: research.digitalPresenceScore,
     };
+
+    // ── Persist the audit (best-effort; never blocks or alters the response) ──
+    // The audit is the entry point of the pipeline: keep a record so the
+    // admin console can see every audit (and its findings) and the lead gets
+    // marked as audited. lead_id is nullable (migration 018); when that
+    // migration is missing the insert is retried with a created lead so no
+    // audit is ever silently dropped.
+    try {
+      const sb = getSupabaseAdmin();
+      const emailNorm = String(email || "").trim().toLowerCase();
+      let leadId: string | null = null;
+      if (emailNorm) {
+        const { data: existing } = await sb.from("leads").select("id").eq("email", emailNorm).limit(1);
+        if (existing && existing.length > 0) {
+          leadId = existing[0].id;
+        } else {
+          const { data: created } = await sb
+            .from("leads")
+            .insert({
+              contact_name: String(name || company_name).trim().slice(0, 100),
+              email: emailNorm.slice(0, 200),
+              company_name: String(company_name).trim().slice(0, 200),
+              website: website || null,
+              industry: ind || null,
+              audit_status: "completed",
+              lead_status: "audited",
+              source: "audit",
+            })
+            .select("id")
+            .single();
+          leadId = created?.id || null;
+        }
+      }
+      const recommendations = {
+        needs: benchmark.topAutomationNeeds,
+        roles: benchmark.recommendedRoles,
+        priorityActions: research.quickWins.slice(0, 5),
+      };
+      const auditRow = {
+        lead_id: leadId,
+        company_name: String(company_name).slice(0, 200),
+        industry: ind || null,
+        website: website || null,
+        overall_score: overallScore,
+        leak_count: leaks.length,
+        critical_leaks: leaks.filter((l) => l.severity === "critical").length,
+        high_leaks: leaks.filter((l) => l.severity === "high").length,
+        summary: `Audit for ${company_name}: ${leaks.length} potential operational gap(s) identified. Estimated annual opportunity NGN ${totalSavings.toLocaleString()}.`,
+        findings: leaks.map((l) => ({
+          id: l.id,
+          area: l.area,
+          severity: l.severity,
+          description: l.description,
+          impact: l.impact,
+          recommendation: l.recommendation,
+          evidenceLevel: l.evidenceLevel || "estimated",
+          estimateNote: l.estimateNote || null,
+        })),
+        recommendations,
+        status: "completed",
+        completed_at: new Date().toISOString(),
+      };
+      const { error: insError } = await sb.from("audits").insert(auditRow);
+      if (insError && /lead_id/i.test(insError.message || "")) {
+        // Migration 018 not applied — create a lead so the audit row is kept.
+        const fallbackEmail = emailNorm || `audit+${Date.now()}@elion.local`;
+        const { data: fbLead } = await sb
+          .from("leads")
+          .insert({
+            contact_name: String(name || company_name).trim().slice(0, 100),
+            email: fallbackEmail.slice(0, 200),
+            company_name: String(company_name).trim().slice(0, 200),
+            website: website || null,
+            industry: ind || null,
+            audit_status: "completed",
+            lead_status: "audited",
+            source: "audit",
+          })
+          .select("id")
+          .single();
+        if (fbLead) await sb.from("audits").insert({ ...auditRow, lead_id: fbLead.id });
+      } else if (!insError && leadId) {
+        await sb.from("leads").update({ audit_status: "completed" }).eq("id", leadId);
+      }
+    } catch (persistError) {
+      // The audit result is still returned — persistence must never fail the request.
+      console.error("[AUDIT] Persist skipped (result returned):", persistError);
+    }
 
     const response = NextResponse.json({
       company: company_name, industry: ind, website: website || "",

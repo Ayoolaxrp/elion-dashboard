@@ -48,3 +48,9 @@ ALTER TABLE public.leads
   ADD COLUMN IF NOT EXISTS archived_at TIMESTAMPTZ NULL;
 CREATE INDEX IF NOT EXISTS leads_archived_at_idx ON public.leads (archived_at)
   WHERE archived_at IS NOT NULL;
+
+
+-- 018_audits_nullable_lead.sql — audits can persist without a lead/email
+ALTER TABLE public.audits
+  ALTER COLUMN lead_id DROP NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_audits_created ON public.audits (created_at DESC);

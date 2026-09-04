@@ -101,6 +101,49 @@ export function authUrl(state: string, reqOrigin?: string): string {
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
+// ---------------------------------------------------------------
+// OAuth state signing — the state carries the client_id for per-client
+// connections. It is signed (HMAC-SHA256) so a callback with a tampered
+// state cannot misattribute tokens to another client's scope.
+// ---------------------------------------------------------------
+import { createHmac, timingSafeEqual } from "crypto";
+
+function stateSecret(): string {
+  return (
+    process.env.OAUTH_STATE_SECRET ||
+    process.env.GOOGLE_CLIENT_SECRET ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    "elion-state-signing"
+  );
+}
+
+export function signOAuthState(payload: object): string {
+  const body = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const sig = createHmac("sha256", stateSecret()).update(body).digest("hex");
+  return `${body}.${sig}`;
+}
+
+/** Verify an OAuth state string. Returns the payload when valid, null otherwise. */
+export function verifyOAuthState(state: string | null): { t?: number; clientId?: string | null } | null {
+  if (!state) return null;
+  const dot = state.lastIndexOf(".");
+  if (dot <= 0) return null;
+  const body = state.slice(0, dot);
+  const sig = state.slice(dot + 1);
+  const expected = createHmac("sha256", stateSecret()).update(body).digest("hex");
+  if (sig.length !== expected.length || !timingSafeEqual(Buffer.from(sig, "hex"), Buffer.from(expected, "hex"))) {
+    return null;
+  }
+  try {
+    const payload = JSON.parse(Buffer.from(body, "base64url").toString());
+    // State expires after 10 minutes.
+    if (payload?.t && Date.now() - Number(payload.t) > 10 * 60 * 1000) return null;
+    return { t: payload?.t, clientId: payload?.clientId ?? null };
+  } catch {
+    return null;
+  }
+}
+
 export async function exchangeCode(code: string, reqOrigin?: string): Promise<GoogleTokens> {
   const res = await fetch(OAUTH_TOKEN_URL, {
     method: "POST",
