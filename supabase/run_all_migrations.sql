@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS invoices (
 CREATE INDEX IF NOT EXISTS idx_invoices_client ON invoices(client_id);
 CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status);
 CREATE INDEX IF NOT EXISTS idx_invoices_created ON invoices(created_at DESC);
+ALTER TABLE payments ALTER COLUMN lead_id DROP NOT NULL;
 ALTER TABLE payments ADD COLUMN IF NOT EXISTS client_id TEXT REFERENCES clients(id) ON DELETE SET NULL;
 ALTER TABLE payments ADD COLUMN IF NOT EXISTS invoice_id TEXT REFERENCES invoices(id) ON DELETE SET NULL;
 ALTER TABLE payments ADD COLUMN IF NOT EXISTS contract_id TEXT REFERENCES contracts(id) ON DELETE SET NULL;

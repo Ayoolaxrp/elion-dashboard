@@ -124,6 +124,9 @@ CREATE INDEX IF NOT EXISTS idx_invoices_created ON invoices(created_at DESC);
 -- PAYMENTS — extend the existing 001 (Paystack) table
 -- with client/invoice/commercial columns.
 -- -----------------------------------------------------
+-- lead_id is NOT NULL in 001 but client-level payments (against
+-- invoices/contracts) are not tied to a lead; drop the constraint.
+ALTER TABLE payments ALTER COLUMN lead_id DROP NOT NULL;
 ALTER TABLE payments ADD COLUMN IF NOT EXISTS client_id TEXT REFERENCES clients(id) ON DELETE SET NULL;
 ALTER TABLE payments ADD COLUMN IF NOT EXISTS invoice_id TEXT REFERENCES invoices(id) ON DELETE SET NULL;
 ALTER TABLE payments ADD COLUMN IF NOT EXISTS contract_id TEXT REFERENCES contracts(id) ON DELETE SET NULL;
