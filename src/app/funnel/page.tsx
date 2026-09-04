@@ -127,7 +127,7 @@ export default function FunnelPage() {
             ))}
           </nav>
           <div className="hidden sm:flex items-center gap-3">
-            <a href="/demo" className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm hover:bg-[var(--color-surface-elevated)] transition-all">
+            <a href="#demo" className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm hover:bg-[var(--color-surface-elevated)] transition-all">
               <PlayCircle className="w-4 h-4" /> Demo
             </a>
             <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97]">Run Free Audit</a>

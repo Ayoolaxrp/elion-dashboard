@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AdminSidebar } from "@/components/admin/sidebar";
+import { DemoDataBanner } from "@/components/admin/demo-data-banner";
 import { FileText, CheckCircle, Clock, Send, Download, Eye } from "lucide-react";
 import { allPayments, allContracts } from "@/lib/mock-lifecycle";
 
@@ -92,6 +93,7 @@ export default function InvoicesPage() {
             <h1 className="text-3xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Invoices</h1>
             <p className="text-sm text-[var(--color-text-muted)] mt-1">{mockInvoices.length} invoices. Part of the 6-document onboarding system.</p>
           </div>
+          <DemoDataBanner text="Illustrative demo data — sample invoices from the onboarding journey demo. Sending and PDF download are not wired to a live invoicing provider yet." />
 
           {/* 6-Document System Overview */}
           <div className="mb-8 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
@@ -149,10 +151,8 @@ export default function InvoicesPage() {
                         <span className="text-xs text-[var(--color-text-muted)]">Issued: {new Date(inv.issued_at).toLocaleDateString("en-NG")}</span>
                         {inv.paid_at && <span className="text-xs text-emerald-400">Paid: {new Date(inv.paid_at).toLocaleDateString("en-NG")}</span>}
                       </div>
-                      <div className="flex gap-2 mt-4">
-                        {inv.status === "draft" && <button className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-semibold hover:bg-[var(--color-accent-hover)] transition-colors">Send Invoice</button>}
-                        {inv.status === "sent" && <button className="px-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-xs font-medium hover:text-white transition-colors">Resend</button>}
-                        <button className="px-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-xs font-medium hover:text-white transition-colors flex items-center gap-1.5"><Download className="w-3 h-3" /> Download PDF</button>
+                      <div className="flex items-center gap-2 mt-4">
+                        <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">Send / Download unavailable — demo data</span>
                       </div>
                     </div>
                   )}

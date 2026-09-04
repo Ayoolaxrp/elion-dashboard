@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { FileText, Clock, CheckCircle, XCircle, Eye } from "lucide-react";
 import { allProposals } from "@/lib/mock-lifecycle";
+import { AdminSidebar } from "@/components/admin/sidebar";
+import { DemoDataBanner } from "@/components/admin/demo-data-banner";
 
 const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string }> = {
   draft: { color: "text-gray-400 bg-gray-400/10", icon: FileText, label: "Draft" },
@@ -18,11 +20,15 @@ function Send(props: any) {
 
 export default function ProposalsPage() {
   return (
-    <div className="max-w-5xl p-6">
+    <div className="flex min-h-screen bg-[var(--color-surface)]">
+      <AdminSidebar />
+      <main className="flex-1 p-4 md:p-6">
+      <div className="max-w-5xl mx-auto">
       <div className="mb-8">
         <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Proposals</h1>
         <p className="text-sm text-[var(--color-text-muted)]">{allProposals.length} proposals</p>
       </div>
+      <DemoDataBanner text="Illustrative demo data — sample proposals from the onboarding journey demo. Live proposal generation is not wired to a proposals table yet." />
       <div className="space-y-3">
         {allProposals.map(p => {
           const sc = STATUS_CONFIG[p.status] || STATUS_CONFIG.draft;
@@ -48,6 +54,8 @@ export default function ProposalsPage() {
           );
         })}
       </div>
+      </div>
+      </main>
     </div>
   );
 }

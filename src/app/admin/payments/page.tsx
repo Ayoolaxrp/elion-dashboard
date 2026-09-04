@@ -2,6 +2,7 @@
 import { CheckCircle, Clock, AlertCircle, ArrowLeft } from "lucide-react";
 import { allPayments } from "@/lib/mock-lifecycle";
 import { AdminSidebar } from "@/components/admin/sidebar";
+import { DemoDataBanner } from "@/components/admin/demo-data-banner";
 import Link from "next/link";
 
 const STATUS_CONFIG: Record<string, { color: string; icon: any }> = {
@@ -21,6 +22,7 @@ export default function PaymentsPage() {
         <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Payments</h1>
         <p className="text-sm text-[var(--color-text-muted)]">{allPayments.length} payments</p>
       </div>
+      <DemoDataBanner text="Illustrative demo data — sample payments from the onboarding journey demo, not live payment records." />
       <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl overflow-hidden">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4 px-3 sm:px-5 py-3 border-b border-[var(--color-border)] text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">
           <span>Client</span>

@@ -3,14 +3,20 @@ import Link from "next/link";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 import { allProposals } from "@/lib/mock-lifecycle";
 import { useParams } from "next/navigation";
+import { AdminSidebar } from "@/components/admin/sidebar";
+import { DemoDataBanner } from "@/components/admin/demo-data-banner";
 
 export default function ProposalDetailPage() {
   const params = useParams();
   const proposal = allProposals.find(p => p.id === params.id);
-  if (!proposal) return <div className="max-w-3xl p-6"><p className="text-[var(--color-text-muted)]">Proposal not found.</p></div>;
+  if (!proposal) return <div className="flex min-h-screen bg-[var(--color-surface)]"><AdminSidebar /><main className="flex-1 p-6"><p className="text-[var(--color-text-muted)]">Proposal not found.</p></main></div>;
 
   return (
-    <div className="max-w-3xl p-6">
+    <div className="flex min-h-screen bg-[var(--color-surface)]">
+      <AdminSidebar />
+      <main className="flex-1 p-4 md:p-6">
+      <div className="max-w-3xl mx-auto">
+      <DemoDataBanner text="Illustrative demo data — sample proposal from the onboarding journey demo." />
       <div className="flex items-center gap-3 mb-8">
         <Link href="/admin/proposals" className="p-2 rounded-lg hover:bg-[var(--color-surface-raised)]"><ArrowLeft className="w-5 h-5 text-[var(--color-text-muted)]" /></Link>
         <div>
@@ -60,6 +66,8 @@ export default function ProposalDetailPage() {
           <p>Valid until: {new Date(proposal.valid_until).toLocaleDateString("en-NG")}</p>
         </div>
       </div>
+      </div>
+      </main>
     </div>
   );
 }

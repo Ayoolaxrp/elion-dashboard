@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FileText, CheckCircle, Clock, Send, ArrowLeft } from "lucide-react";
 import { allContracts } from "@/lib/mock-lifecycle";
 import { AdminSidebar } from "@/components/admin/sidebar";
+import { DemoDataBanner } from "@/components/admin/demo-data-banner";
 
 const STATUS_CONFIG: Record<string, { color: string; icon: any }> = {
   draft: { color: "text-gray-400 bg-gray-400/10", icon: FileText },
@@ -22,6 +23,7 @@ export default function ContractsPage() {
         <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Contracts</h1>
         <p className="text-sm text-[var(--color-text-muted)]">{allContracts.length} contracts</p>
       </div>
+      <DemoDataBanner text="Illustrative demo data — sample contracts from the onboarding journey demo. Live contract records are not wired to a contracts table yet." />
       <div className="space-y-3">
         {allContracts.map(c => {
           const sc = STATUS_CONFIG[c.status] || STATUS_CONFIG.draft;
