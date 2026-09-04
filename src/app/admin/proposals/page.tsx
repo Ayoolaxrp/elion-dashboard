@@ -1,8 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import type { ComponentType } from "react";
 import { FileText, Clock, CheckCircle, XCircle, Eye, Loader2, Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/sidebar";
+
+type IconType = ComponentType<{ className?: string }>;
+
+function errMsg(e: unknown): string {
+  return e instanceof Error ? e.message : "unknown error";
+}
 
 interface ProposalItem {
   id?: string;
@@ -34,7 +41,18 @@ interface Proposal {
   clients?: { company_name: string | null; contact_name: string | null; email: string | null } | null;
 }
 
-const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string }> = {
+interface AuditOption {
+  id: string;
+  company_name: string;
+  status?: string;
+  overall_score: number | null;
+  critical_leaks: number | null;
+  high_leaks: number | null;
+  created_at: string;
+  leads?: { contact_name: string | null; email: string | null; company_name: string | null } | Array<{ contact_name: string | null; email: string | null; company_name: string | null }> | null;
+}
+
+const STATUS_CONFIG: Record<string, { color: string; icon: IconType; label: string }> = {
   draft: { color: "text-gray-400 bg-gray-400/10", icon: FileText, label: "Draft" },
   sent: { color: "text-blue-400 bg-blue-400/10", icon: SendIcon, label: "Sent" },
   viewed: { color: "text-amber-400 bg-amber-400/10", icon: Eye, label: "Viewed" },
@@ -43,7 +61,7 @@ const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string }>
   expired: { color: "text-gray-400 bg-gray-400/10", icon: Clock, label: "Expired" },
 };
 
-function SendIcon(props: any) {
+function SendIcon(props: { className?: string }) {
   return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>;
 }
 
@@ -55,6 +73,11 @@ export default function ProposalsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({ title: "", company_name: "", client_name: "", client_email: "", total_setup: "", total_monthly: "", valid_until: "" });
+  const [audits, setAudits] = useState<AuditOption[]>([]);
+  const [auditLoadError, setAuditLoadError] = useState<string | null>(null);
+  const [selectedAudit, setSelectedAudit] = useState("");
+  const [fromAuditPrice, setFromAuditPrice] = useState("350000");
+  const [fromAuditMonthly, setFromAuditMonthly] = useState("");
 
   const load = () => {
     fetch("/api/admin/proposals")
@@ -77,8 +100,8 @@ export default function ProposalsPage() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || "Request failed");
       load();
-    } catch (e: any) {
-      alert("Failed: " + (e.message || "unknown error"));
+    } catch (e) {
+      alert("Failed: " + errMsg(e));
     } finally {
       setBusy(false);
     }
@@ -106,11 +129,57 @@ export default function ProposalsPage() {
       setShowCreate(false);
       setForm({ title: "", company_name: "", client_name: "", client_email: "", total_setup: "", total_monthly: "", valid_until: "" });
       load();
-    } catch (e: any) {
-      alert("Failed: " + (e.message || "unknown error"));
+    } catch (e) {
+      alert("Failed: " + errMsg(e));
     } finally {
       setBusy(false);
     }
+  };
+
+  // Create a proposal directly from a completed audit: the API maps the
+  // audit findings into Problem -> Evidence -> Recommended system -> Scope -> Price.
+  const loadAudits = async () => {
+    setAuditLoadError(null);
+    try {
+      const r = await fetch("/api/admin/audits");
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Request failed");
+      setAudits((d.audits || []).filter((a: AuditOption) => a.status === "completed"));
+    } catch (e) {
+      setAuditLoadError("Could not load audits: " + errMsg(e));
+    }
+  };
+
+  const createFromAudit = async () => {
+    if (!selectedAudit) { alert("Pick an audit first"); return; }
+    setBusy(true);
+    try {
+      const r = await fetch("/api/admin/proposals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          audit_id: selectedAudit,
+          total_setup: Number(fromAuditPrice) || 0,
+          total_monthly: Number(fromAuditMonthly) || 0,
+          valid_until: new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10),
+        }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Request failed");
+      setShowCreate(false);
+      setSelectedAudit("");
+      load();
+      alert("Proposal created from audit");
+    } catch (e) {
+      alert("Failed: " + errMsg(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const toggleCreate = () => {
+    setShowCreate(!showCreate);
+    if (!showCreate) loadAudits();
   };
 
   const inputCls = "w-full px-3 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-primary)] text-sm";
@@ -126,7 +195,7 @@ export default function ProposalsPage() {
               <p className="text-sm text-[var(--color-text-muted)] mt-1">{loading ? "Loading…" : `${proposals.length} proposals`}</p>
             </div>
             <button
-              onClick={() => setShowCreate(!showCreate)}
+              onClick={toggleCreate}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <Plus className="w-4 h-4" /> New Proposal
@@ -138,6 +207,41 @@ export default function ProposalsPage() {
           {showCreate && (
             <div className="mb-6 p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Create a proposal</h3>
+
+              {/* Create from a completed audit — the first-client sales flow */}
+              <div className="mb-5 p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-accent)]/20">
+                <p className="text-xs font-semibold text-[var(--color-accent)] mb-2 uppercase tracking-wider">From a completed audit</p>
+                {auditLoadError ? (
+                  <p className="text-xs text-red-400 mb-2">{auditLoadError}</p>
+                ) : audits.length === 0 ? (
+                  <p className="text-xs text-[var(--color-text-muted)] mb-2">No completed audits yet. Run an audit first, then build the proposal from its findings.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <select className={inputCls} value={selectedAudit} onChange={(e) => setSelectedAudit(e.target.value)}>
+                      <option value="">Select a completed audit…</option>
+                      {audits.map((a) => (
+                        <option key={a.id} value={a.id}>
+                          {a.company_name} — score {a.overall_score ?? "n/a"} ({a.critical_leaks ?? 0} critical / {a.high_leaks ?? 0} high)
+                        </option>
+                      ))}
+                    </select>
+                    <div className="grid grid-cols-2 gap-3">
+                      <input className={inputCls} placeholder="Setup (₦)" type="number" value={fromAuditPrice} onChange={(e) => setFromAuditPrice(e.target.value)} />
+                      <input className={inputCls} placeholder="Monthly (₦)" type="number" value={fromAuditMonthly} onChange={(e) => setFromAuditMonthly(e.target.value)} />
+                    </div>
+                  </div>
+                )}
+                {audits.length > 0 && (
+                  <button
+                    onClick={createFromAudit}
+                    disabled={busy || !selectedAudit}
+                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)]/90 text-white text-xs font-semibold hover:bg-[var(--color-accent)] disabled:opacity-40"
+                  >
+                    {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null} Build proposal from audit
+                  </button>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <input className={inputCls} placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
                 <input className={inputCls} placeholder="Company name" value={form.company_name} onChange={(e) => setForm({ ...form, company_name: e.target.value })} />

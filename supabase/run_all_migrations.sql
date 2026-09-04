@@ -82,6 +82,8 @@ CREATE TABLE IF NOT EXISTS proposals (
 ALTER TABLE proposals ADD COLUMN IF NOT EXISTS company_name TEXT;
 ALTER TABLE proposals ADD COLUMN IF NOT EXISTS client_name TEXT;
 ALTER TABLE proposals ADD COLUMN IF NOT EXISTS client_email TEXT;
+ALTER TABLE proposals ADD COLUMN IF NOT EXISTS source_audit_id TEXT REFERENCES audits(id) ON DELETE SET NULL;
+CREATE INDEX IF NOT EXISTS idx_proposals_source_audit ON proposals(source_audit_id);
 ALTER TABLE proposals ADD COLUMN IF NOT EXISTS summary TEXT;
 ALTER TABLE proposals ADD COLUMN IF NOT EXISTS total_monthly INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE proposals ADD COLUMN IF NOT EXISTS implementation_timeline TEXT;
