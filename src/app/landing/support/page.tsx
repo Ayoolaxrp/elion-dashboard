@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
+import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle, Send, User, Tag } from "lucide-react";
 import { motion } from "framer-motion";
 import { validateName, validateEmail, validateMessage } from "@/lib/validation";
 
@@ -185,71 +185,102 @@ export default function SupportPage() {
           <p className="text-sm text-[var(--color-text-muted)] mb-8">Fill out the form below and we will get back to you within 24 hours.</p>
 
           {submitted ? (
-            <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/30 rounded-lg p-6 text-center">
-              <CheckCircle className="w-8 h-8 text-[var(--color-success)] mx-auto mb-3" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/30 rounded-lg p-6 text-center"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 320, damping: 18, delay: 0.1 }}
+                className="w-12 h-12 rounded-full bg-[var(--color-success)]/15 flex items-center justify-center mx-auto mb-3"
+              >
+                <CheckCircle className="w-6 h-6 text-[var(--color-success)]" />
+              </motion.div>
               <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">Request submitted</h3>
               <p className="text-sm text-[var(--color-text-muted)]">We will respond during business hours. For urgent issues, contact us via WhatsApp.</p>
-            </div>
+            </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="support-name" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Name</label>
-                  <input
-                    id="support-name"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
-                  />
+                  <label htmlFor="support-name" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1.5">Name</label>
+                  <div className="relative group">
+                    <User className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-[var(--color-accent)]" />
+                    <input
+                      id="support-name"
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full pl-10 pr-3 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60"
+                      placeholder="Your name"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <label htmlFor="support-email" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Email</label>
-                  <input
-                    id="support-email"
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
-                  />
+                  <label htmlFor="support-email" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1.5">Email</label>
+                  <div className="relative group">
+                    <Mail className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-[var(--color-accent)]" />
+                    <input
+                      id="support-email"
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="w-full pl-10 pr-3 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60"
+                      placeholder="you@business.com"
+                    />
+                  </div>
                 </div>
               </div>
               <div>
-                <label htmlFor="support-subject" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Subject</label>
-                <select
-                  id="support-subject"
-                  value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                  className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 appearance-none cursor-pointer"
-                >
-                  <option value="">Select a topic</option>
-                  <option value="general">General enquiry</option>
-                  <option value="support">Technical support</option>
-                  <option value="billing">Billing question</option>
-                  <option value="feature">Feature request</option>
-                  <option value="bug">Bug report</option>
-                </select>
+                <label htmlFor="support-subject" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1.5">Subject</label>
+                <div className="relative group">
+                  <Tag className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-[var(--color-accent)] pointer-events-none" />
+                  <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <select
+                    id="support-subject"
+                    value={form.subject}
+                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                    className="w-full pl-10 pr-9 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60 appearance-none cursor-pointer"
+                  >
+                    <option value="">Select a topic</option>
+                    <option value="general">General enquiry</option>
+                    <option value="support">Technical support</option>
+                    <option value="billing">Billing question</option>
+                    <option value="feature">Feature request</option>
+                    <option value="bug">Bug report</option>
+                  </select>
+                </div>
               </div>
               <div>
-                <label htmlFor="support-message" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1">Message</label>
-                <textarea
-                  id="support-message"
-                  required
-                  rows={4}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 resize-none"
-                  placeholder="Describe your issue or question..."
-                />
+                <label htmlFor="support-message" className="text-xs font-semibold text-[var(--color-text-secondary)] block mb-1.5">Message</label>
+                <div className="relative group">
+                  <MessageSquare className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-3.5 transition-colors group-focus-within:text-[var(--color-accent)]" />
+                  <textarea
+                    id="support-message"
+                    required
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    className="w-full pl-10 pr-3 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60 resize-none"
+                    placeholder="Describe your issue or question..."
+                  />
+                </div>
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-2.5 bg-[var(--color-accent)] text-white rounded text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors cursor-pointer disabled:opacity-50"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 bg-[var(--color-accent)] text-white rounded-lg text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all cursor-pointer disabled:opacity-50 shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.98]"
               >
-                {submitting ? "Sending..." : "Send Request"}
+                {submitting ? (
+                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending...</>
+                ) : (
+                  <>Send Request <Send className="w-3.5 h-3.5" /></>
+                )}
               </button>
             </form>
           )}

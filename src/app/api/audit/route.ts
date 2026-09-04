@@ -122,7 +122,7 @@ const INDUSTRY_BENCHMARKS: Record<string, {
   },
 };
 
-type EvidenceLevel = "verified" | "supported" | "estimated" | "unknown";
+type EvidenceLevel = "verified" | "supported" | "detected" | "estimated" | "unavailable" | "unknown";
 
 interface WebResearch {
   hasWebsite: boolean;
@@ -131,6 +131,10 @@ interface WebResearch {
   hasWhatsApp: boolean;
   hasSocialMedia: boolean;
   socialPlatforms: string[];
+  // Public social profile URLs directly observed on the page (never invented)
+  socialLinks: Array<{ platform: string; url: string }>;
+  // True only when an actual wa.me / api.whatsapp.com deep link exists
+  hasWhatsAppDeepLink: boolean;
   hasOnlineBooking: boolean;
   hasCRM: boolean;
   hasEmailMarketing: boolean;
@@ -214,7 +218,8 @@ async function scraplingDeepAnalysis(website: string): Promise<Record<string, un
 async function researchBusiness(companyName: string, website: string): Promise<WebResearch> {
   const research: WebResearch = {
     hasWebsite: false, websiteScore: 0, websiteTech: [], hasWhatsApp: false,
-    hasSocialMedia: false, socialPlatforms: [], hasOnlineBooking: false, hasCRM: false,
+    hasSocialMedia: false, socialPlatforms: [], socialLinks: [], hasWhatsAppDeepLink: false,
+    hasOnlineBooking: false, hasCRM: false,
     hasEmailMarketing: false, hasLiveChat: false, hasEcommerce: false,
     responseTimeIndicator: "unknown", digitalPresenceScore: 0, quickWins: [],
     foundPhones: [], foundEmails: [], checkedAt: new Date().toISOString(),
@@ -270,15 +275,37 @@ async function researchBusiness(companyName: string, website: string): Promise<W
         }
         research.foundEmails = [...emailSet].slice(0, 3);
 
-        // WhatsApp detection
-        research.hasWhatsApp = lowerHtml.includes("wa.me") || lowerHtml.includes("whatsapp") || lowerHtml.includes("api.whatsapp");
+        // WhatsApp detection — a deep link (wa.me / api.whatsapp.com) is a real
+        // conversion path; a bare mention of the word is not.
+        const waDeepLink = lowerHtml.includes("wa.me") || lowerHtml.includes("api.whatsapp.com");
+        research.hasWhatsApp = waDeepLink || lowerHtml.includes("whatsapp");
+        research.hasWhatsAppDeepLink = waDeepLink;
 
-        // Social media detection
-        if (lowerHtml.includes("instagram.com")) research.socialPlatforms.push("Instagram");
-        if (lowerHtml.includes("facebook.com") || lowerHtml.includes("fb.com")) research.socialPlatforms.push("Facebook");
-        if (lowerHtml.includes("twitter.com") || lowerHtml.includes("x.com")) research.socialPlatforms.push("Twitter/X");
-        if (lowerHtml.includes("linkedin.com")) research.socialPlatforms.push("LinkedIn");
-        if (lowerHtml.includes("tiktok.com")) research.socialPlatforms.push("TikTok");
+        // Social media detection — platform presence + the public profile URLs
+        // actually linked from the page (directly observable, confidence: verified).
+        const socialHref = (re: RegExp) => {
+          for (const m of html.matchAll(/href\s*=\s*["'][^"']*["']/gi)) {
+            const href = m[0].replace(/^href\s*=\s*["']|["']$/gi, "");
+            const match = href.match(re);
+            if (match) return match[0];
+          }
+          return "";
+        };
+        const trySocial = (platform: string, re: RegExp, marker: string) => {
+          if (lowerHtml.includes(marker)) {
+            if (!research.socialPlatforms.includes(platform)) research.socialPlatforms.push(platform);
+            const url = socialHref(re);
+            if (url && !research.socialLinks.some((l) => l.platform === platform)) {
+              research.socialLinks.push({ platform, url: url.startsWith("http") ? url : `https://${url}` });
+            }
+          }
+        };
+        trySocial("Instagram", /(?:https?:\/\/)?(?:www\.)?instagram\.com\/[A-Za-z0-9_.]+/i, "instagram.com");
+        trySocial("Facebook", /(?:https?:\/\/)?(?:www\.)?(?:facebook|fb)\.com\/[A-Za-z0-9.]+/i, "facebook.com");
+        trySocial("Twitter/X", /(?:https?:\/\/)?(?:www\.)?(?:twitter|x)\.com\/[A-Za-z0-9_]+/i, "x.com");
+        if (lowerHtml.includes("twitter.com") && !research.socialPlatforms.includes("Twitter/X")) research.socialPlatforms.push("Twitter/X");
+        trySocial("LinkedIn", /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/(?:company|in)\/[A-Za-z0-9-]+/i, "linkedin.com");
+        trySocial("TikTok", /(?:https?:\/\/)?(?:www\.)?tiktok\.com\/@[A-Za-z0-9_.]+/i, "tiktok.com");
         research.hasSocialMedia = research.socialPlatforms.length > 0;
 
         // Booking detection
@@ -559,6 +586,22 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Leak: Social presence that dead-ends (followers exist, but the journey
+    // stops at a profile/contact form with no observable automated next step)
+    if (hasSocial && hasWebsite && !research.hasWhatsAppDeepLink && !hasBooking) {
+      const leadFrom = socialPlatforms[0] || "Social";
+      leaks.push({
+        id: String(leakId++), area: "Social → Lead Flow", severity: "high",
+        description: `${company_name} has an active-looking social footprint (${socialPlatforms.join(", ")}) but no clear automated conversion path from it — no WhatsApp deep link and no online booking on the website. A prospect who finds you on ${leadFrom} and visits the site can reach a contact form, then waits with no visible automated response.`,
+        impact: `Social traffic is one of the least expensive sources of interest, yet it ends in a dead end. ${socialPlatforms.length} platform${socialPlatforms.length === 1 ? "" : "s"} push visitors into a manual, unmeasured response flow.`,
+        recommendation: "Connect social profiles to a single conversion path: WhatsApp deep link with instant auto-response, plus an online booking link. ELION installs the Lead Response → Follow-Up → Booking flow that turns social reach into scheduled viewings.",
+        estimatedSavings: `Varies with follower reach and response rate — typically the largest untracked source of lost enquiries for ${ind} businesses`,
+        source: "Internal digital-footprint analysis",
+        evidence: [`Social detected: ${socialPlatforms.join(", ")}`, "No wa.me / WhatsApp API deep link found on the website", "No online booking or scheduling link found", `${leadFrom} → Website → Contact form → no automated response`],
+        evidenceLevel: "detected",
+      });
+    }
+
     // Leak: No CRM
     if (!hasCRM && hasWebsite) {
       const followUpLoss = Math.round(100 - benchmark.followUpRate);
@@ -715,6 +758,11 @@ export async function POST(req: NextRequest) {
       reactivation: research.hasCRM ? 60 : 20,
       reporting: (research.hasCRM ? 40 : 15) + (research.hasEmailMarketing ? 15 : 0),
       digital_presence: research.digitalPresenceScore,
+      // Social → lead flow: does social traffic have an observable conversion
+      // path (WhatsApp deep link / booking / email capture) beyond a dead-end profile?
+      social_to_lead: research.hasSocialMedia
+        ? Math.min(100, 25 + (research.hasWhatsAppDeepLink ? 35 : 0) + (research.hasOnlineBooking ? 25 : 0) + (research.hasEmailMarketing ? 15 : 0))
+        : 10,
     };
 
     // ── Persist the audit (best-effort; never blocks or alters the response) ──
@@ -816,6 +864,7 @@ export async function POST(req: NextRequest) {
         hasWebsite: research.hasWebsite, websiteScore: research.websiteScore,
         websiteTech: research.websiteTech, hasWhatsApp: research.hasWhatsApp,
         hasSocialMedia: research.hasSocialMedia, socialPlatforms: research.socialPlatforms,
+        socialLinks: research.socialLinks,
         hasOnlineBooking: research.hasOnlineBooking, hasCRM: research.hasCRM,
         hasEmailMarketing: research.hasEmailMarketing, hasLiveChat: research.hasLiveChat,
         hasEcommerce: research.hasEcommerce, digitalPresenceScore: research.digitalPresenceScore,

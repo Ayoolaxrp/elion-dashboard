@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle, FileSearch, Timer, MessagesSquare } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SiteFooter } from "@/components/site-footer";
 import StageStory from "@/components/funnel/stage-story";
@@ -69,7 +69,7 @@ export default function FunnelPage() {
   // Hide the mobile sticky CTA while the on-screen keyboard is open so it
   // never covers the form fields or fights the keyboard for space.
   const [kbOpen, setKbOpen] = useState(false);
-  const [auditResult, setAuditResult] = useState<{ score: number; leaks: Array<{ id?: string; area: string; title?: string; severity: string; recommendation?: string }>; critical: number; high: number; company: string; recommendations: unknown } | null>(null);
+  const [auditResult, setAuditResult] = useState<{ score: number; scores?: Record<string, number>; leaks: Array<{ id?: string; area: string; title?: string; severity: string; recommendation?: string }>; critical: number; high: number; company: string; recommendations: unknown } | null>(null);
 
   // Leak-cost calculator — instant, slider-driven, transparent assumptions.
   const [calcLeads, setCalcLeads] = useState(60);
@@ -127,7 +127,7 @@ export default function FunnelPage() {
       const auditRes = await fetch("/api/audit", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ company_name: (answers[2]||"business") + (answers[0]?" — "+answers[0]:""), industry: answers[0]||"General", website: answers[4]||"", name: name.trim(), email: email.trim() }) });
       if (auditRes.ok) {
         const ar = await auditRes.json();
-        setAuditResult({ score: ar.overallScore ?? 0, leaks: ar.leaks || [], critical: ar.criticalLeaks ?? 0, high: ar.highLeaks ?? 0, recommendations: ar.automationRecommendations || null, company: ar.company || "" });
+        setAuditResult({ score: ar.overallScore ?? 0, scores: ar.scores || {}, leaks: ar.leaks || [], critical: ar.criticalLeaks ?? 0, high: ar.highLeaks ?? 0, recommendations: ar.automationRecommendations || null, company: ar.company || "" });
       }
     } catch { /* audit display is best-effort; the lead is still recorded */ }
     setSubmitting(false); setSubmitted(true);
@@ -230,20 +230,56 @@ export default function FunnelPage() {
                   <>
                     <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Your audit is ready.</h2>
                     <p className="text-sm text-[var(--color-text-secondary)] mb-5">{auditResult.company ? `Here is what ELION found for ${auditResult.company}.` : "Here is what ELION found."}</p>
-                    <div className="grid grid-cols-3 gap-3 mb-6">
+                    <div className="grid grid-cols-3 gap-3 mb-5">
                       <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50">
-                        <p className="text-3xl font-bold text-[var(--color-text-primary)]">{auditResult.score}</p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">Automation score</p>
+                        <p className="text-3xl font-bold text-[var(--color-text-primary)]">{auditResult.score}<span className="text-sm text-[var(--color-text-muted)] font-medium">/100</span></p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">Digital operations score</p>
                       </div>
                       <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-red-500/15">
                         <p className="text-3xl font-bold text-red-400">{auditResult.critical}</p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">Critical</p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">Critical leaks</p>
                       </div>
                       <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-amber-500/15">
                         <p className="text-3xl font-bold text-amber-400">{auditResult.high}</p>
                         <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">High priority</p>
                       </div>
                     </div>
+
+                    {/* Digital operations sub-scores — real, measured per channel */}
+                    {auditResult.scores && Object.keys(auditResult.scores).length > 0 && (
+                      <div className="mb-6 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50">
+                        <p className="text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Where the score is lost</p>
+                        <div className="space-y-2.5">
+                          {[
+                            ["digital_presence", "Website & presence"],
+                            ["lead_response", "Lead response"],
+                            ["follow_up", "Follow-up"],
+                            ["scheduling", "Booking"],
+                            ["social_to_lead", "Social → lead flow"],
+                          ].map(([key, label]) => {
+                            const v = auditResult.scores?.[key];
+                            if (typeof v !== "number") return null;
+                            const color = v >= 70 ? "bg-[var(--color-success)]" : v >= 40 ? "bg-amber-400" : "bg-red-400";
+                            return (
+                              <div key={key}>
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-[11px] text-[var(--color-text-secondary)]">{label}</span>
+                                  <span className={`text-[11px] font-bold ${v >= 70 ? "text-[var(--color-success)]" : v >= 40 ? "text-amber-400" : "text-red-400"}`}>{v}</span>
+                                </div>
+                                <div className="h-1.5 rounded-full bg-[var(--color-surface-elevated)] overflow-hidden">
+                                  <motion.div
+                                    className={`h-full rounded-full ${color}`}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${v}%` }}
+                                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                     <div className="space-y-2 mb-6 text-left">
                       {(auditResult.leaks || []).slice(0, 3).map((l) => (
                         <div key={l.id || l.area} className="p-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]/50">
@@ -326,14 +362,17 @@ export default function FunnelPage() {
           {/* Short trust strip */}
           <div className="mt-6 grid grid-cols-3 gap-3 text-center">
             <div className="p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/40">
+              <FileSearch className="w-4 h-4 text-[var(--color-accent)] mx-auto mb-1.5" />
               <p className="text-[11px] font-semibold text-[var(--color-text-primary)]">What you receive</p>
               <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">Evidence-based findings</p>
             </div>
             <div className="p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/40">
+              <Timer className="w-4 h-4 text-[var(--color-accent)] mx-auto mb-1.5" />
               <p className="text-[11px] font-semibold text-[var(--color-text-primary)]">When</p>
               <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">Results in minutes</p>
             </div>
             <div className="p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/40">
+              <MessagesSquare className="w-4 h-4 text-[var(--color-accent)] mx-auto mb-1.5" />
               <p className="text-[11px] font-semibold text-[var(--color-text-primary)]">Next step</p>
               <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">We contact you with results</p>
             </div>
@@ -430,9 +469,28 @@ export default function FunnelPage() {
       {/* 7. PRICING - canonical 3-tier model shared with / and /landing/pricing */}
       <section id="pricing" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)] scroll-mt-16">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">Simple, upfront pricing</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>The same three packages, everywhere.</h2>
-          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Choose the level of automation your business needs. One-time implementation fee — you own everything we build. Third-party provider and usage charges are always shown separately.</p>
+          <motion.p
+            initial={reduced ? false : { opacity: 0, y: 12 }}
+            whileInView={reduced ? {} : { opacity: 1, y: 0 }}
+            viewport={reduced ? undefined : { once: true, amount: 0.5 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center"
+          >Simple, upfront pricing</motion.p>
+          <motion.h2
+            initial={reduced ? false : { opacity: 0, y: 16 }}
+            whileInView={reduced ? {} : { opacity: 1, y: 0 }}
+            viewport={reduced ? undefined : { once: true, amount: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.05, ease: "easeOut" }}
+            className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3"
+            style={{ letterSpacing: "-0.02em" }}
+          >Choose the level your operation needs. You own what we build.</motion.h2>
+          <motion.p
+            initial={reduced ? false : { opacity: 0, y: 12 }}
+            whileInView={reduced ? {} : { opacity: 1, y: 0 }}
+            viewport={reduced ? undefined : { once: true, amount: 0.5 }}
+            transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
+            className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto"
+          >One-time implementation fee — no subscription required to keep what we build. Optional ongoing support and third-party charges are always shown separately.</motion.p>
           <TierCards ctaHref="#audit" ctaLabel="audit" showPayment callout="Most businesses start with Growth — lead response, follow-up and booking in one pipeline. Not sure? The free audit shows you the gap first." />
         </div>
       </section>
