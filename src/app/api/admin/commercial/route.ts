@@ -13,12 +13,31 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+// Every handler in this route performs privileged operations (creating
+// entitlements, advancing provisioning states, reading client lifecycle
+// data). Require an authenticated admin session on every method.
+async function requireAdmin() {
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return null;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  if (!adminEmails.includes((user.email || "").toLowerCase())) return null;
+  return user;
+}
 
 /**
  * STEP 1: Verify payment and create entitlement + onboarding
@@ -119,20 +138,32 @@ async function handlePaymentVerified(body: {
     });
   }
 
-  // 5. Create payment record
-  await supabase.from("payments").insert({
-    lead_id: client_id, // Using client_id as reference
-    amount: amount * 100, // Convert to kobo
+  // 5. Create payment record (client-level: use the client_id column,
+  // never write a client UUID into lead_id which is an FK to leads).
+  // Amounts are integer NGN, consistent with the rest of the commercial
+  // lifecycle tables. Fail loudly if the payment cannot be recorded.
+  const { error: payError } = await supabase.from("payments").insert({
+    client_id,
+    amount,
     currency: "NGN",
     description: `Payment for ${purchased_automations.join(", ")}`,
     paystack_ref: payment_ref,
     status: "success",
+    paid_at: new Date().toISOString(),
+    method: "online",
     metadata: {
       client_id,
       order_id,
       purchased_automations,
     },
   });
+  if (payError) {
+    console.error("Payment record insert failed:", payError);
+    return NextResponse.json(
+      { error: `Payment verified but payment record could not be saved: ${payError.message}` },
+      { status: 500 }
+    );
+  }
 
   // 6. Log the event
   await supabase.from("activity_log").insert({
@@ -344,6 +375,13 @@ async function handleGet(request: NextRequest) {
     .select("doc_type, status, sent_at, viewed_at, completed_at")
     .eq("client_id", clientId);
 
+  // Has this client actually paid? (replaces a previously hardcoded true)
+  const { count: paymentCount } = await supabase
+    .from("payments")
+    .select("id", { count: "exact", head: true })
+    .eq("client_id", clientId)
+    .in("status", ["success", "confirmed"]);
+
   // Determine blockers
   const blockers: string[] = [];
   (automations || []).forEach((a) => {
@@ -367,7 +405,7 @@ async function handleGet(request: NextRequest) {
     documents: documents || [],
     blockers,
     lifecycle: {
-      has_payment: true, // Derived from payments table
+      has_payment: (paymentCount || 0) > 0,
       has_entitlements: (automations || []).length > 0,
       has_onboarding: !!onboarding,
       all_configured: (automations || []).every(
@@ -382,6 +420,8 @@ async function handleGet(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     return await handleGet(request);
   } catch (error) {
@@ -391,6 +431,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await request.json();
 
@@ -406,6 +448,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await request.json();
     return await handleAdvance(body);

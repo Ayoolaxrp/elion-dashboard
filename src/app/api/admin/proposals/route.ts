@@ -98,27 +98,53 @@ export async function PATCH(req: Request) {
 
   const supabase = data();
 
-  if (typeof body.status === "string" && VALID_STATUS.includes(body.status)) {
-    const status = body.status as string;
-    const patch: Record<string, unknown> = { status };
-    const now = new Date().toISOString();
-    if (status === "sent") patch.sent_at = now;
-    else if (status === "accepted") patch.accepted_at = now;
-    else if (status === "rejected") patch.declined_at = now;
-    else if (status === "draft") {
-      patch.sent_at = null;
-      patch.accepted_at = null;
-      patch.declined_at = null;
-    }
-    const { data: row, error } = await supabase
-      .from("proposals")
-      .update(patch)
-      .eq("id", id)
-      .select()
-      .single();
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ proposal: row });
+  if (typeof body.status !== "string" || !VALID_STATUS.includes(body.status)) {
+    return NextResponse.json({ error: "Unknown action" }, { status: 400 });
+  }
+  const status = body.status as string;
+
+  // Load the current proposal to reject invalid transitions and return
+  // 404 for unknown records.
+  const { data: existing, error: gErr } = await supabase
+    .from("proposals")
+    .select("id, status")
+    .eq("id", id)
+    .maybeSingle();
+  if (gErr) return NextResponse.json({ error: gErr.message }, { status: 500 });
+  if (!existing) return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
+
+  const current = existing.status as string;
+  const ALLOWED: Record<string, string[]> = {
+    draft: ["sent"],
+    sent: ["viewed", "accepted", "rejected", "draft", "expired"],
+    viewed: ["accepted", "rejected", "draft", "expired"],
+    accepted: ["draft"],
+    rejected: ["draft"],
+    expired: [],
+  };
+  if (!(ALLOWED[current] || []).includes(status)) {
+    return NextResponse.json(
+      { error: `Invalid transition: cannot move proposal from ${current} to ${status}` },
+      { status: 400 }
+    );
   }
 
-  return NextResponse.json({ error: "Unknown action" }, { status: 400 });
+  const patch: Record<string, unknown> = { status };
+  const now = new Date().toISOString();
+  if (status === "sent") patch.sent_at = now;
+  else if (status === "accepted") patch.accepted_at = now;
+  else if (status === "rejected") patch.declined_at = now;
+  else if (status === "draft") {
+    patch.sent_at = null;
+    patch.accepted_at = null;
+    patch.declined_at = null;
+  }
+  const { data: row, error } = await supabase
+    .from("proposals")
+    .update(patch)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ proposal: row });
 }

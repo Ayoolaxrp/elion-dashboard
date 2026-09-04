@@ -141,6 +141,11 @@ CREATE INDEX IF NOT EXISTS idx_payments_client ON payments(client_id);
 CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
 CREATE INDEX IF NOT EXISTS idx_payments_created ON payments(created_at DESC);
 
+-- One payment record per invoice: idempotency backstop so repeated
+-- "mark invoice paid" calls can never create duplicate payments.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_one_per_invoice
+  ON payments (invoice_id) WHERE invoice_id IS NOT NULL;
+
 -- -----------------------------------------------------
 -- RLS: service-role only (admin console reads/writes
 -- via the server-side service role; clients never

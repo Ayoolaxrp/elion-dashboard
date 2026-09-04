@@ -100,56 +100,58 @@ export async function PATCH(req: Request) {
 
   const supabase = data();
 
-  if (typeof body.status === "string" && VALID_STATUS.includes(body.status)) {
-    const status = body.status as string;
-    const patch: Record<string, unknown> = { status };
-    const now = new Date().toISOString();
-    if (status === "sent") patch.sent_at = now;
-    else if (status === "draft") {
-      patch.sent_at = null;
-      patch.paid_at = null;
-    }
+  if (typeof body.status !== "string" || !VALID_STATUS.includes(body.status)) {
+    return NextResponse.json({ error: "Unknown action" }, { status: 400 });
+  }
+  const status = body.status as string;
 
-    if (status === "paid") {
-      // Mark paid and create a confirmed payment record in the same flow.
-      patch.paid_at = now;
-      const { data: invoice, error: iErr } = await supabase
-        .from("invoices")
-        .select("id, client_id, contract_id, company_name, client_name, amount, currency, invoice_number")
-        .eq("id", id)
-        .single();
-      if (iErr) return NextResponse.json({ error: iErr.message }, { status: 500 });
+  // Load the current invoice so we can reject invalid transitions, return
+  // 404 for unknown records, and keep mark-paid idempotent.
+  const { data: invoice, error: iErr } = await supabase
+    .from("invoices")
+    .select("id, client_id, contract_id, company_name, client_name, amount, currency, invoice_number, status, paid_at")
+    .eq("id", id)
+    .maybeSingle();
+  if (iErr) return NextResponse.json({ error: iErr.message }, { status: 500 });
+  if (!invoice) return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
 
-      const { data: row, error } = await supabase
-        .from("invoices")
-        .update(patch)
-        .eq("id", id)
-        .select()
-        .single();
-      if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const current = invoice.status as string;
+  const ALLOWED: Record<string, string[]> = {
+    draft: ["sent", "paid", "cancelled"],
+    sent: ["draft", "paid", "overdue", "cancelled"],
+    overdue: ["paid", "cancelled"],
+    paid: [],
+    cancelled: [],
+  };
+  if (!(ALLOWED[current] || []).includes(status)) {
+    return NextResponse.json(
+      { error: `Invalid transition: cannot move invoice from ${current} to ${status}` },
+      { status: 400 }
+    );
+  }
 
-      if (invoice) {
-        const { error: payErr } = await supabase.from("payments").insert({
-          invoice_id: invoice.id,
-          client_id: invoice.client_id,
-          contract_id: invoice.contract_id,
-          company_name: invoice.company_name || body.company_name || null,
-          client_name: invoice.client_name || body.client_name || null,
-          amount: invoice.amount,
-          currency: invoice.currency || "NGN",
-          method: typeof body.method === "string" ? body.method : "bank_transfer",
-          reference: typeof body.reference === "string" && body.reference.trim() ? body.reference.trim() : `PAY-${invoice.invoice_number || invoice.id}`,
-          status: "success",
-          paid_at: now,
-          notes: typeof body.notes === "string" ? body.notes : null,
-        });
-        if (payErr) {
-          // The invoice is paid; surface the payment-creation failure clearly.
-          return NextResponse.json({ invoice: row, paymentWarning: `Invoice marked paid but payment record failed: ${payErr.message}` }, { status: 200 });
-        }
-      }
-      return NextResponse.json({ invoice: row });
-    }
+  const now = new Date().toISOString();
+  const patch: Record<string, unknown> = { status };
+  if (status === "sent") patch.sent_at = now;
+  else if (status === "draft") {
+    patch.sent_at = null;
+    patch.paid_at = null;
+  }
+
+  if (status === "paid") {
+    // Idempotent: an invoice that is already paid returns without side effects.
+    if (current === "paid") return NextResponse.json({ invoice });
+    patch.paid_at = now;
+
+    // Create a confirmed payment record unless one already exists for this
+    // invoice (a partial unique index on payments(invoice_id) backs this at
+    // the database level as well).
+    const { data: existingPay } = await supabase
+      .from("payments")
+      .select("id")
+      .eq("invoice_id", invoice.id)
+      .limit(1);
+    const hasPayment = Array.isArray(existingPay) && existingPay.length > 0;
 
     const { data: row, error } = await supabase
       .from("invoices")
@@ -158,8 +160,39 @@ export async function PATCH(req: Request) {
       .select()
       .single();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    if (!hasPayment) {
+      const { error: payErr } = await supabase.from("payments").insert({
+        invoice_id: invoice.id,
+        client_id: invoice.client_id,
+        contract_id: invoice.contract_id,
+        company_name: invoice.company_name || body.company_name || null,
+        client_name: invoice.client_name || body.client_name || null,
+        amount: invoice.amount,
+        currency: invoice.currency || "NGN",
+        method: typeof body.method === "string" ? body.method : "bank_transfer",
+        reference: typeof body.reference === "string" && body.reference.trim() ? body.reference.trim() : `PAY-${invoice.invoice_number || invoice.id}`,
+        status: "success",
+        paid_at: now,
+        notes: typeof body.notes === "string" ? body.notes : null,
+      });
+      if (payErr) {
+        // A unique violation means another call already recorded the payment.
+        const isDup = /duplicate|unique/i.test(payErr.message || "");
+        if (!isDup) {
+          return NextResponse.json({ invoice: row, paymentWarning: `Invoice marked paid but payment record failed: ${payErr.message}` }, { status: 200 });
+        }
+      }
+    }
     return NextResponse.json({ invoice: row });
   }
 
-  return NextResponse.json({ error: "Unknown action" }, { status: 400 });
+  const { data: row, error } = await supabase
+    .from("invoices")
+    .update(patch)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ invoice: row });
 }

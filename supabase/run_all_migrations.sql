@@ -159,6 +159,7 @@ ALTER TABLE payments ADD COLUMN IF NOT EXISTS notes TEXT;
 CREATE INDEX IF NOT EXISTS idx_payments_client ON payments(client_id);
 CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
 CREATE INDEX IF NOT EXISTS idx_payments_created ON payments(created_at DESC);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_one_per_invoice ON payments (invoice_id) WHERE invoice_id IS NOT NULL;
 ALTER TABLE proposals ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_policies WHERE schemaname='public' AND tablename='proposals' AND policyname='service_role_all') THEN CREATE POLICY "service_role_all" ON proposals FOR ALL TO service_role USING (true) WITH CHECK (true); END IF; END $$;
 ALTER TABLE contracts ENABLE ROW LEVEL SECURITY;

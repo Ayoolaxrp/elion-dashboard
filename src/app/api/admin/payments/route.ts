@@ -51,16 +51,40 @@ export async function POST(req: Request) {
   if (amount <= 0) return NextResponse.json({ error: "Payment amount must be greater than zero" }, { status: 400 });
 
   const status = body.status === "failed" ? "failed" : "success";
-
   const supabase = data();
+
+  // Lead-linked payments: when only a lead_id is supplied, resolve the
+  // lead's company/contact so the record is human-readable and the
+  // client relationship can be kept when a client exists for that lead.
+  const lead_id: string | null = typeof body.lead_id === "string" && body.lead_id ? body.lead_id : null;
+  let company_name: string | null = typeof body.company_name === "string" && body.company_name ? body.company_name : null;
+  let client_name: string | null = typeof body.client_name === "string" && body.client_name ? body.client_name : null;
+  const client_id: string | null = typeof body.client_id === "string" && body.client_id ? body.client_id : null;
+
+  if (lead_id) {
+    const { data: lead } = await supabase
+      .from("leads")
+      .select("id, company_name, contact_name")
+      .eq("id", lead_id)
+      .maybeSingle();
+    if (lead) {
+      company_name = company_name || lead.company_name || null;
+      client_name = client_name || lead.contact_name || null;
+    } else {
+      // Unknown lead id: reject rather than write a dangling FK.
+      return NextResponse.json({ error: "Lead not found" }, { status: 404 });
+    }
+  }
+
   const { data: row, error } = await supabase
     .from("payments")
     .insert({
-      client_id: body.client_id || null,
+      lead_id,
+      client_id,
       invoice_id: body.invoice_id || null,
       contract_id: body.contract_id || null,
-      company_name: body.company_name || null,
-      client_name: body.client_name || null,
+      company_name,
+      client_name,
       amount,
       currency: body.currency || "NGN",
       method: typeof body.method === "string" ? body.method : "bank_transfer",

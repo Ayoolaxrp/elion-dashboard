@@ -126,28 +126,54 @@ export async function PATCH(req: Request) {
 
   const supabase = data();
 
-  if (typeof body.status === "string" && VALID_STATUS.includes(body.status)) {
-    const status = body.status as string;
-    const patch: Record<string, unknown> = { status };
-    const now = new Date().toISOString();
-    if (status === "sent") patch.sent_at = now;
-    else if (status === "signed") {
-      patch.signed_at = now;
-      if (typeof body.signatory === "string" && body.signatory.trim()) patch.signatory = body.signatory.trim();
-    } else if (status === "draft") {
-      patch.sent_at = null;
-      patch.signed_at = null;
-      patch.signatory = null;
-    }
-    const { data: row, error } = await supabase
-      .from("contracts")
-      .update(patch)
-      .eq("id", id)
-      .select()
-      .single();
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ contract: row });
+  if (typeof body.status !== "string" || !VALID_STATUS.includes(body.status)) {
+    return NextResponse.json({ error: "Unknown action" }, { status: 400 });
+  }
+  const status = body.status as string;
+
+  // Load the current contract to reject invalid transitions and return
+  // 404 for unknown records.
+  const { data: existing, error: gErr } = await supabase
+    .from("contracts")
+    .select("id, status")
+    .eq("id", id)
+    .maybeSingle();
+  if (gErr) return NextResponse.json({ error: gErr.message }, { status: 500 });
+  if (!existing) return NextResponse.json({ error: "Contract not found" }, { status: 404 });
+
+  const current = existing.status as string;
+  const ALLOWED: Record<string, string[]> = {
+    draft: ["sent"],
+    sent: ["viewed", "signed", "declined", "draft", "expired"],
+    viewed: ["signed", "declined", "draft", "expired"],
+    signed: ["draft"],
+    declined: ["draft"],
+    expired: [],
+  };
+  if (!(ALLOWED[current] || []).includes(status)) {
+    return NextResponse.json(
+      { error: `Invalid transition: cannot move contract from ${current} to ${status}` },
+      { status: 400 }
+    );
   }
 
-  return NextResponse.json({ error: "Unknown action" }, { status: 400 });
+  const patch: Record<string, unknown> = { status };
+  const now = new Date().toISOString();
+  if (status === "sent") patch.sent_at = now;
+  else if (status === "signed") {
+    patch.signed_at = now;
+    if (typeof body.signatory === "string" && body.signatory.trim()) patch.signatory = body.signatory.trim();
+  } else if (status === "draft") {
+    patch.sent_at = null;
+    patch.signed_at = null;
+    patch.signatory = null;
+  }
+  const { data: row, error } = await supabase
+    .from("contracts")
+    .update(patch)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ contract: row });
 }
