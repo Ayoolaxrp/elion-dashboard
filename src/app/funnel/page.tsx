@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SiteFooter } from "@/components/site-footer";
+import StageStory from "@/components/funnel/stage-story";
+import DemoExperience from "@/components/demo-experience";
+import { PRODUCT_CATALOG, fmtNgn } from "@/lib/products";
 
 const STEPS = [
   { title: "Business type", question: "What type of business do you run?", options: ["Service Business","E-commerce","Real Estate","Healthcare","Education","Professional Services","Hospitality","Other"] },
@@ -29,19 +32,26 @@ const FAQ_DATA = [
 ];
 
 const PAIN_POINTS = [
-  { title: "Lead Response", desc: "A lead arrives. Nobody responds quickly enough." },
-  { title: "Follow-Up", desc: "Interested prospects disappear because nobody follows up consistently." },
-  { title: "Booking", desc: "Conversations happen, but appointments are not captured systematically." },
-  { title: "Operations", desc: "Your team spends hours doing work software should handle." },
+  { title: "Lead Response", desc: "A lead arrives. Nobody responds quickly enough.", fix: "WhatsApp Lead Response" },
+  { title: "Follow-Up", desc: "Interested prospects disappear because nobody follows up consistently.", fix: "Follow-Up System" },
+  { title: "Booking", desc: "Conversations happen, but appointments are not captured systematically.", fix: "Booking Automation" },
+  { title: "Operations", desc: "Your team spends hours doing work software should handle.", fix: "Operations Automation" },
 ];
 
-const PROCESS = [
-  { n: "01", title: "Discover", desc: "We examine your business and find where opportunities are being lost." },
-  { n: "02", title: "Diagnose", desc: "Gaps become specific, evidence-based automation opportunities." },
-  { n: "03", title: "Design", desc: "Systems are configured around how your business actually operates." },
-  { n: "04", title: "Build", desc: "The automation is implemented, connected, and tested." },
-  { n: "05", title: "Operate", desc: "Systems run continuously while you retain full ownership." },
+const NAV_ANCHORS = [
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Findings", href: "#findings" },
+  { label: "Systems", href: "#systems" },
+  { label: "Demo", href: "#demo" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
 ];
+
+// Pricing data comes from the shared ELION product catalog (src/lib/products.ts).
+const CORE_SYSTEMS = PRODUCT_CATALOG.filter(
+  (p) => p.status === "active" && p.kind === "automation" && p.slug !== "email-assistant"
+);
+const AI_AGENTS = PRODUCT_CATALOG.filter((p) => p.status === "active" && p.kind === "agent");
 
 const SPRING_STEP = { type: "spring" as const, damping: 30, stiffness: 300, mass: 0.8 };
 const SPRING_FAQ = { type: "spring" as const, damping: 28, stiffness: 260, mass: 0.7 };
@@ -102,20 +112,27 @@ export default function FunnelPage() {
     <div className="min-h-screen bg-[var(--color-surface)]">
       <a href="#audit" className="skip-to-content">Skip to audit</a>
 
-      {/* Glass nav */}
+      {/* Glass nav — anchor-based, self-contained */}
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <Image src="/brand/elion-e-icon.svg" alt="ELION" width={32} height={32} priority />
+          <a href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="ELION home">
+            <Image src="/brand/elion-e-icon.svg" alt="" width={32} height={32} priority />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
           </a>
-          <div className="hidden sm:flex items-center gap-6 text-sm">
-            <a href="#method" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">How It Works</a>
-            <a href="#findings" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Sample Findings</a>
-            <a href="/demo" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Demo</a>
-            <a href="/landing/pricing" className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">Pricing</a>
+          <nav className="hidden lg:flex items-center gap-6 text-sm" aria-label="Funnel sections">
+            {NAV_ANCHORS.map((item) => (
+              <a key={item.href} href={item.href} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          <div className="hidden sm:flex items-center gap-3">
+            <a href="/demo" className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm hover:bg-[var(--color-surface-elevated)] transition-all">
+              <PlayCircle className="w-4 h-4" /> Demo
+            </a>
+            <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97]">Run Free Audit</a>
           </div>
-          <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97]">Start Free Audit</a>
+          <a href="#audit" className="sm:hidden inline-flex items-center px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold">Audit</a>
         </div>
       </header>
 
@@ -125,7 +142,8 @@ export default function FunnelPage() {
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-6">AI Operations for Growing Businesses</p>
           <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.08] mb-6" style={{letterSpacing:"-0.025em"}}>Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
-          <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">Answer six quick questions. We analyze your business and show you exactly where leads, time, and revenue are leaking.</p>
+          <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed mb-3">Answer six quick questions. We analyze your business and show you exactly where leads, time, and revenue are leaking.</p>
+          <p className="text-xs sm:text-sm text-[var(--color-text-muted)] max-w-xl mx-auto">Built for businesses where operational leakage is already expensive — not a generic automation marketplace.</p>
         </div>
       </section>
 
@@ -215,36 +233,30 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 3. SHORT TRUST / EXPLANATION - why this matters */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
+      {/* 3. SYSTEMS - leaks are not isolated problems; each has an ELION system */}
+      <section id="systems" className="py-12 sm:py-16 px-4 sm:px-6 bg-[var(--color-surface-raised)] scroll-mt-16">
         <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">Systems, not band-aids</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-4" style={{letterSpacing:"-0.02em"}}>These are not isolated problems. They are operational leaks.</h2>
-          <p className="text-center text-[var(--color-text-secondary)] mb-10 max-w-xl mx-auto text-sm">Every business loses revenue through processes nobody notices, until someone measures them.</p>
+          <p className="text-center text-[var(--color-text-secondary)] mb-10 max-w-xl mx-auto text-sm">Every business loses revenue through processes nobody notices, until someone measures them. Each leak maps to a system ELION installs.</p>
           <div className="grid sm:grid-cols-2 gap-4">
             {PAIN_POINTS.map((p,i)=>(
-              <div key={i} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all">
+              <div key={i} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all flex flex-col">
                 <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{p.title}</h3>
-                <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{p.desc}</p>
+                <p className="text-sm text-[var(--color-text-muted)] leading-relaxed flex-1">{p.desc}</p>
+                <p className="mt-4 pt-3 border-t border-[var(--color-border)]/50 text-xs"><span className="text-[var(--color-text-muted)]">What ELION installs — </span><span className="text-[var(--color-accent-bright)] font-semibold">{p.fix}</span></p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. HOW WE FIX IT */}
-      <section id="method" className="py-12 sm:py-20 px-4 sm:px-6 scroll-mt-16">
-        <div className="max-w-4xl mx-auto">
+      {/* 4. HOW WE FIX IT - sticky five-stage story */}
+      <section id="how-it-works" className="py-12 sm:py-20 px-4 sm:px-6 scroll-mt-16">
+        <div className="max-w-6xl mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">From finding the leak to fixing it</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12" style={{letterSpacing:"-0.02em"}}>You do not buy another dashboard. You get an operating system for the workflow that matters.</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-            {PROCESS.map((m)=>(
-              <div key={m.n} className="relative p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all">
-                <span aria-hidden="true" className="text-2xl font-bold text-[var(--color-accent)]/15 absolute top-3 right-4">{m.n}</span>
-                <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{m.title}</h3>
-                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{m.desc}</p>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12 max-w-3xl mx-auto" style={{letterSpacing:"-0.02em"}}>You do not buy another dashboard. You get an operating system for the workflow that matters.</h2>
+          <StageStory />
         </div>
       </section>
 
@@ -278,34 +290,94 @@ export default function FunnelPage() {
                 <div className="flex items-center gap-2 mb-1"><span className="w-2 h-2 rounded-full bg-red-400" /><span className="text-xs font-semibold text-red-400 uppercase tracking-wider">Critical</span></div>
                 <p className="text-sm font-medium text-[var(--color-text-primary)]">Lead Response Gap</p>
                 <p className="text-xs text-[var(--color-text-muted)] mt-1">Website visitors are directed to WhatsApp, but there is no automated qualification step before the conversation begins.</p>
+                <p className="text-[10px] text-[var(--color-accent-bright)] mt-2 uppercase tracking-wider font-semibold">→ WhatsApp Lead Response</p>
               </div>
               <div className="p-4 rounded-lg bg-red-500/5 border border-red-500/15">
                 <div className="flex items-center gap-2 mb-1"><span className="w-2 h-2 rounded-full bg-red-400" /><span className="text-xs font-semibold text-red-400 uppercase tracking-wider">Critical</span></div>
                 <p className="text-sm font-medium text-[var(--color-text-primary)]">No Follow-Up System</p>
                 <p className="text-xs text-[var(--color-text-muted)] mt-1">There is no evidence of automated follow-up sequences for leads who do not convert on first contact.</p>
+                <p className="text-[10px] text-[var(--color-accent-bright)] mt-2 uppercase tracking-wider font-semibold">→ Follow-Up System</p>
               </div>
               <div className="p-4 rounded-lg bg-amber-500/5 border border-amber-500/15">
                 <div className="flex items-center gap-2 mb-1"><span className="w-2 h-2 rounded-full bg-amber-400" /><span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">High</span></div>
                 <p className="text-sm font-medium text-[var(--color-text-primary)]">Manual Booking Process</p>
                 <p className="text-xs text-[var(--color-text-muted)] mt-1">Property viewings require back-and-forth scheduling instead of automated booking.</p>
+                <p className="text-[10px] text-[var(--color-accent-bright)] mt-2 uppercase tracking-wider font-semibold">→ Booking Automation</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. PRODUCT PROOF - brief */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4">See the system working</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-6" style={{letterSpacing:"-0.02em"}}>Every enquiry handled. Every step visible.</h2>
-          <p className="text-sm text-[var(--color-text-secondary)] mb-8 max-w-xl mx-auto">Watch how a lead moves through the full workflow, from capture to booking, in the ELION demo.</p>
-          <a href="/demo" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]"><PlayCircle className="w-4 h-4" />Run the Full Demo</a>
+      {/* 6. DEMO - embedded inside the funnel, no context break */}
+      <section id="demo" className="py-12 sm:py-20 px-4 sm:px-6 scroll-mt-16">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">See the system working</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>Every enquiry handled. Every step visible.</h2>
+          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Watch how a lead moves through the full workflow — capture, qualification, response, booking, follow-up — right here.</p>
+          <DemoExperience ctaHref="#audit" />
         </div>
       </section>
 
-      {/* 7. OWNERSHIP */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)]">
+      {/* 7. PRICING - self-contained, driven by the shared catalog */}
+      <section id="pricing" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)] scroll-mt-16">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">Simple, upfront pricing</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>One-time setup. A monthly operating fee. Nothing hidden.</h2>
+          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Every system is diagnosed, configured and tested before it runs. Third-party provider and usage charges are always shown separately.</p>
+
+          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-[var(--color-text-muted)] mb-4">Automation systems</p>
+          <div className="grid sm:grid-cols-2 gap-4 mb-10">
+            {CORE_SYSTEMS.map((p) => (
+              <div key={p.id} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-accent)]/30 transition-all">
+                <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1.5">{p.name}</h3>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-5">{p.tagline}</p>
+                <div className="flex items-end gap-5">
+                  <div>
+                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.setup_fee)}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Setup</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.monthly_fee)}<span className="text-xs font-medium text-[var(--color-text-muted)]">/mo</span></p>
+                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Ongoing management</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-[var(--color-text-muted)] mb-4">AI agents</p>
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {AI_AGENTS.map((p) => (
+              <div key={p.id} className="p-6 rounded-xl bg-[var(--color-accent)]/[0.04] border border-[var(--color-accent)]/20 hover:border-[var(--color-accent)]/40 transition-all">
+                <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1.5">{p.name}</h3>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-5">{p.tagline}</p>
+                <div className="flex items-end gap-5">
+                  <div>
+                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.setup_fee)}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Setup</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.monthly_fee)}<span className="text-xs font-medium text-[var(--color-text-muted)]">/mo</span></p>
+                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Ongoing management</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-xs text-[var(--color-text-muted)] max-w-2xl mx-auto text-center leading-relaxed mb-8">
+            ELION fees cover implementation, configuration, monitoring and ongoing management. Third-party provider and usage charges (WhatsApp/Meta, voice AI, AI model usage, email volume, calendar/CRM subscriptions) are billed separately where applicable and are never hidden inside the monthly fee.
+          </p>
+          <div className="text-center">
+            <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Start with the Free Audit <ArrowRight className="w-4 h-4" /></a>
+            <p className="text-xs text-[var(--color-text-muted)] mt-3">Not sure which system fits? The audit tells you — free.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. OWNERSHIP */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4">The ELION difference</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6" style={{letterSpacing:"-0.02em"}}>Built for your business.<br />Owned by you.</h2>
@@ -319,7 +391,7 @@ export default function FunnelPage() {
               { title: "Third-party costs are disclosed", desc: "No hidden software subscriptions." },
               { title: "We can maintain it or hand it over", desc: "Full support or full handoff. Your choice." },
             ].map((item,i)=>(
-              <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50">
+              <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50">
                 <span className="text-[var(--color-success)] text-lg mt-0.5 shrink-0">&#10003;</span>
                 <div>
                   <span className="text-sm font-semibold text-[var(--color-text-primary)]">{item.title}</span>
@@ -332,19 +404,19 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 8. FAQ */}
-      <section id="faq" className="py-12 sm:py-20 px-4 sm:px-6 scroll-mt-16">
+      {/* 9. FAQ */}
+      <section id="faq" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)] scroll-mt-16">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12" style={{letterSpacing:"-0.02em"}}>Frequently asked questions</h2>
           <div className="space-y-2">
             {FAQ_DATA.map((f,i)=>(
               <div key={i} className="border border-[var(--color-border)]/50 rounded-xl overflow-hidden">
-                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer hover:bg-[var(--color-surface-raised)] transition-colors active:scale-[0.99]" aria-expanded={openFaq===i}>
+                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer hover:bg-[var(--color-surface)] transition-colors active:scale-[0.99]" aria-expanded={openFaq===i}>
                   <span className="text-sm font-medium text-[var(--color-text-primary)] pr-4">{f.q}</span>
                   <motion.div
                     animate={reduced ? {} : { rotate: openFaq === i ? 180 : 0 }}
                     transition={SPRING_FAQ}
-                    className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", openFaq===i ? "bg-[var(--color-accent)]/10" : "bg-[var(--color-surface-raised)]")}
+                    className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", openFaq===i ? "bg-[var(--color-accent)]/10" : "bg-[var(--color-surface)]")}
                   >
                     <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)]" />
                   </motion.div>
@@ -370,19 +442,18 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 9. FINAL CTA */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6">
+      {/* 10. FINAL CTA */}
+      <section className="py-12 sm:py-24 px-4 sm:px-6">
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4" style={{letterSpacing:"-0.02em"}}>Find your leaks. Fix what matters. Automate what repeats.</h2>
-          <p className="text-sm text-[var(--color-text-secondary)] mb-8">Start with the free audit. No commitment.</p>
-          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Audit <ArrowRight className="w-4 h-4" /></a>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4" style={{letterSpacing:"-0.02em"}}>Your next operational leak is probably already costing you money.</h2>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-8">Run the free audit. See what ELION finds — then decide.</p>
+          <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
+          <p className="text-xs text-[var(--color-text-muted)] mt-4"><a href="#demo" className="text-[var(--color-accent)] hover:text-[var(--color-accent-bright)] transition-colors">See the demo first</a> or <a href="/audit" className="text-[var(--color-accent)] hover:text-[var(--color-accent-bright)] transition-colors">try the full audit</a>.</p>
         </div>
-      </section>      </main>
+      </section>
+      </main>
 
       <SiteFooter />
-
-
-
 
       {/* Mobile sticky CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom">
