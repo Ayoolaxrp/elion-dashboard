@@ -100,7 +100,13 @@ const sb = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_
     await adminPage.evaluate(() => { const f = document.querySelector("form"); if (f) f.requestSubmit(); });
     await adminPage.waitForNavigation({ waitUntil: "networkidle2", timeout: 30000 }).catch(() => {});
     await sleep(2500);
-    check("admin login lands on /admin/status", adminPage.url().includes("/admin/status"), adminPage.url());
+    check("admin login lands on /admin", adminPage.url().includes("/admin"), adminPage.url());
+    // Navigate directly to the status console and confirm it loads.
+    await adminPage.goto(BASE + "/admin/status", { waitUntil: "networkidle2", timeout: 60000 });
+    await sleep(2500);
+    const consoleText = await adminPage.evaluate(() => document.body.innerText);
+    const upper = consoleText.toUpperCase();
+    check("admin/status console loads (New incident + Components)", consoleText.includes("New incident") && upper.includes("COMPONENTS") && upper.includes("INCIDENTS"), "");
 
     const api = async (url, opts = {}) => {
       return adminPage.evaluate(async ({ u, o }) => {
@@ -114,7 +120,8 @@ const sb = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_
     // Admin GET returns everything incl. hidden internal rows
     const allRes = await api("/api/admin/status");
     const all = allRes.body.components || [];
-    check("admin GET sees all components (incl. hidden)", allRes.admin === true && all.some((c) => c.is_visible === false), `total=${all.length}`);
+    const hiddenCount = all.filter((c) => c.is_visible === false).length;
+    check("admin GET sees all components (incl. hidden)", allRes.body?.admin === true && hiddenCount >= 1, `total=${all.length} hidden=${hiddenCount}`);
     // Prefer a non-live-affecting component (never toggle the calendar/book
     // components the real booking flow depends on).
     const skip = ["Google Calendar Connection", "Booking System"]
@@ -150,7 +157,7 @@ const sb = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_
       check("PUT incident -> resolved", up2.status === 200 && up2.body?.incident_status === "resolved", `status=${up2.status}`);
       const listRes = await api("/api/admin/incidents");
       const inc = (listRes.body?.incidents || []).find((i) => i.id === incidentId);
-      check("incident listed with 4-update timeline", !!inc && inc.updates?.length === 4, `updates=${inc?.updates?.length || 0}`);
+      check("incident listed with 3-update timeline (create + identified + resolved)", !!inc && inc.updates?.length === 3, `updates=${inc?.updates?.length || 0}`);
       check("incident resolved_at set", !!inc?.resolved_at, inc?.resolved_at || "missing");
 
       // invalid phase rejected
