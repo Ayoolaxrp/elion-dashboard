@@ -13,6 +13,7 @@ import {
   Layers, ServerCog, Globe, FileSearch, Gauge, Boxes, ScanLine,
 } from "lucide-react";
 import { EnvBackdrop, EnvRingMotif } from "@/components/home/env";
+import { ELION_TIERS } from "@/lib/pricing";
 
 const spring = { type: "spring" as const, damping: 30, stiffness: 300, mass: 0.8 };
 const reveal = { opacity: 0, y: 24 };
@@ -1144,11 +1145,14 @@ export function OwnershipSection() {
 /* ------------------------------------------------------------------ */
 export function PricingSection() {
   const reduced = useReducedMotion();
-  const plans = [
-    { name: "Starter", price: "NGN 100,000", note: "One automation system, implemented and handed over." },
-    { name: "Growth", price: "NGN 350,000", note: "Multiple systems working together, with optional support.", featured: true },
-    { name: "Scale", price: "NGN 750,000", note: "Full operations layer across lead, booking, and recovery." },
-  ];
+  // Canonical pricing lives in src/lib/pricing.ts (ELION_TIERS) — the same
+  // model as /funnel and /landing/pricing, so no page can drift.
+  const plans = ELION_TIERS.map((t) => ({
+    name: t.name,
+    price: t.price,
+    note: t.bestFor.charAt(0).toUpperCase() + t.bestFor.slice(1) + " — one-time implementation fee. " + t.supportDays + ".",
+    featured: t.popular,
+  }));
   return (
     <section className="py-24 md:py-32 px-6 bg-[var(--color-surface-raised)]/40 border-y border-[var(--color-border)]/30">
       <div className="max-w-5xl mx-auto">
@@ -1164,8 +1168,9 @@ export function PricingSection() {
             Automation that pays for itself.
           </h2>
           <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
-            Pricing depends on the systems and scope your business needs. Start
-            with the free audit to find out what&apos;s actually leaking.
+            One-time implementation fee. Optional monthly support. Pricing
+            depends on the systems and scope your business needs — start with
+            the free audit to find out what&apos;s actually leaking.
           </p>
         </motion.div>
 
@@ -1203,6 +1208,16 @@ export function PricingSection() {
             </motion.div>
           ))}
         </div>
+
+        <motion.p
+          initial={reduced ? undefined : { opacity: 0, y: 10 }}
+          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ delay: 0.2 }}
+          className="mt-8 text-center text-xs text-[var(--color-text-muted)]"
+        >
+          Every implementation: Discover → Configure → Build → Test → Deploy → Handover. Optional ongoing support from ₦50,000/month.
+        </motion.p>
 
         <motion.div
           initial={reduced ? undefined : { opacity: 0 }}

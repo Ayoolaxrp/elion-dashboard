@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle } from "lucide-react";
@@ -7,7 +8,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SiteFooter } from "@/components/site-footer";
 import StageStory from "@/components/funnel/stage-story";
 import DemoExperience from "@/components/demo-experience";
-import { PRODUCT_CATALOG, fmtNgn } from "@/lib/products";
+import TierCards from "@/components/pricing/tier-cards";
 
 const STEPS = [
   { title: "Business type", question: "What type of business do you run?", options: ["Service Business","E-commerce","Real Estate","Healthcare","Education","Professional Services","Hospitality","Other"] },
@@ -47,11 +48,8 @@ const NAV_ANCHORS = [
   { label: "FAQ", href: "#faq" },
 ];
 
-// Pricing data comes from the shared ELION product catalog (src/lib/products.ts).
-const CORE_SYSTEMS = PRODUCT_CATALOG.filter(
-  (p) => p.status === "active" && p.kind === "automation" && p.slug !== "email-assistant"
-);
-const AI_AGENTS = PRODUCT_CATALOG.filter((p) => p.status === "active" && p.kind === "agent");
+// Pricing is the canonical 3-tier model from src/lib/pricing.ts (shared with
+// the homepage and /landing/pricing), shown via <TierCards />.
 
 const SPRING_STEP = { type: "spring" as const, damping: 30, stiffness: 300, mass: 0.8 };
 const SPRING_FAQ = { type: "spring" as const, damping: 28, stiffness: 260, mass: 0.7 };
@@ -68,6 +66,7 @@ export default function FunnelPage() {
   const [submitting, setSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [auditResult, setAuditResult] = useState<{ score: number; leaks: Array<{ id?: string; area: string; title?: string; severity: string; recommendation?: string }>; critical: number; high: number; company: string; recommendations: unknown } | null>(null);
   const cs = STEPS[step];
   const pct = ((step + 1) / STEPS.length) * 100;
 
@@ -97,10 +96,17 @@ export default function FunnelPage() {
     if (Object.keys(errors).length > 0) { setFieldErrors(errors); return; }
     setFieldErrors({});
     setSubmitting(true);
+    const sheet = answers[2]||"";
     try {
-      const res = await fetch("/api/request", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ name: name.trim(), email: email.trim(), phone, website: answers[4]||"", businessType: answers[0]||"", primaryProblem: answers[1]||"", enquiryChannels: answers[2]||"", teamSize: answers[3]||"", source: "funnel" }) });
-      if (!res.ok) throw new Error("Submission failed");
-    } catch { setFieldErrors({ submit: "Something went wrong. Please try again." }); setSubmitting(false); return; }
+      // Fire the lead record so the enquiry enters the pipeline.
+      await fetch("/api/request", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ name: name.trim(), email: email.trim(), phone, website: answers[4]||"", businessType: answers[0]||"", primaryProblem: answers[1]||"", enquiryChannels: sheet, teamSize: answers[3]||"", source: "funnel" }) }).catch(()=>{});
+      // Run the real audit now — results return in seconds, not hours.
+      const auditRes = await fetch("/api/audit", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ company_name: (answers[2]||"business") + (answers[0]?" — "+answers[0]:""), industry: answers[0]||"General", website: answers[4]||"", name: name.trim(), email: email.trim() }) });
+      if (auditRes.ok) {
+        const ar = await auditRes.json();
+        setAuditResult({ score: ar.overallScore ?? 0, leaks: ar.leaks || [], critical: ar.criticalLeaks ?? 0, high: ar.highLeaks ?? 0, recommendations: ar.automationRecommendations || null, company: ar.company || "" });
+      }
+    } catch { /* audit display is best-effort; the lead is still recorded */ }
     setSubmitting(false); setSubmitted(true);
   };
 
@@ -115,10 +121,10 @@ export default function FunnelPage() {
       {/* Glass nav — anchor-based, self-contained */}
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="ELION home">
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="ELION home">
             <Image src="/brand/elion-e-icon.svg" alt="" width={32} height={32} priority />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
-          </a>
+          </Link>
           <nav className="hidden lg:flex items-center gap-6 text-sm" aria-label="Funnel sections">
             {NAV_ANCHORS.map((item) => (
               <a key={item.href} href={item.href} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">
@@ -152,11 +158,47 @@ export default function FunnelPage() {
         <div className="max-w-lg mx-auto">
           <div className="rounded-2xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 p-6 sm:p-8 overflow-hidden shadow-2xl shadow-black/30">
             {submitted ? (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={SPRING_STEP} className="text-center py-6">
-                <CheckCircle2 className="w-14 h-14 text-[var(--color-success)] mx-auto mb-5" />
-                <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Audit request received.</h2>
-                <p className="text-sm text-[var(--color-text-secondary)] mb-2">Your business information has been submitted.</p>
-                <p className="text-sm text-[var(--color-text-muted)]">We will review the information, identify the most relevant automation opportunities, and contact you to schedule a discovery call.</p>
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={SPRING_STEP} className="text-center py-4">
+                <CheckCircle2 className="w-12 h-12 text-[var(--color-success)] mx-auto mb-4" />
+                {auditResult ? (
+                  <>
+                    <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Your audit is ready.</h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] mb-5">{auditResult.company ? `Here is what ELION found for ${auditResult.company}.` : "Here is what ELION found."}</p>
+                    <div className="grid grid-cols-3 gap-3 mb-6">
+                      <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50">
+                        <p className="text-3xl font-bold text-[var(--color-text-primary)]">{auditResult.score}</p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">Automation score</p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-red-500/15">
+                        <p className="text-3xl font-bold text-red-400">{auditResult.critical}</p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">Critical</p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-amber-500/15">
+                        <p className="text-3xl font-bold text-amber-400">{auditResult.high}</p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 uppercase tracking-wider">High priority</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2 mb-6 text-left">
+                      {(auditResult.leaks || []).slice(0, 3).map((l) => (
+                        <div key={l.id || l.area} className="p-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]/50">
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                            <p className="text-xs font-semibold text-[var(--color-text-primary)]">{l.title || l.area}</p>
+                            <span className={`text-[10px] font-semibold uppercase tracking-wider ${l.severity === "critical" ? "text-red-400" : l.severity === "high" ? "text-amber-400" : "text-[var(--color-text-muted)]"}`}>{l.severity}</span>
+                          </div>
+                          {l.recommendation && <p className="text-[10px] text-[var(--color-accent-bright)] mt-1">→ {l.recommendation}</p>}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-[10px] text-[var(--color-text-muted)] mb-4">Labeled with evidence levels — verified facts, supported signals, and clearly marked estimates. We will also reach out to schedule a discovery call.</p>
+                    <a href="#pricing" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Fix these leaks <ArrowRight className="w-3.5 h-3.5" /></a>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">Audit request received.</h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] mb-2">Your business information has been submitted.</p>
+                    <p className="text-sm text-[var(--color-text-muted)]">We will review the information, identify the most relevant automation opportunities, and contact you to schedule a discovery call.</p>
+                  </>
+                )}
               </motion.div>
             ) : (
               <>
@@ -210,7 +252,7 @@ export default function FunnelPage() {
                 </AnimatePresence>
 
                 {fieldErrors.submit && <p className="text-xs text-red-400 text-center mb-2">{fieldErrors.submit}</p>}
-                <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. We will review your information and contact you within 24 hours with findings. <a href="/privacy" className="text-[var(--color-accent)] underline underline-offset-2 hover:text-[var(--color-accent-bright)]">Privacy policy</a></p>
+                <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. Results in minutes — every finding is labeled with its evidence level. <a href="/privacy" className="text-[var(--color-accent)] underline underline-offset-2 hover:text-[var(--color-accent-bright)]">Privacy policy</a></p>
               </>
             )}
           </div>
@@ -223,7 +265,7 @@ export default function FunnelPage() {
             </div>
             <div className="p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/40">
               <p className="text-[11px] font-semibold text-[var(--color-text-primary)]">When</p>
-              <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">Within 24 hours</p>
+              <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">Results in minutes</p>
             </div>
             <div className="p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/40">
               <p className="text-[11px] font-semibold text-[var(--color-text-primary)]">Next step</p>
@@ -319,60 +361,13 @@ export default function FunnelPage() {
         </div>
       </section>
 
-      {/* 7. PRICING - self-contained, driven by the shared catalog */}
+      {/* 7. PRICING - canonical 3-tier model shared with / and /landing/pricing */}
       <section id="pricing" className="py-12 sm:py-20 px-4 sm:px-6 bg-[var(--color-surface-raised)] scroll-mt-16">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">Simple, upfront pricing</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>One-time setup. A monthly operating fee. Nothing hidden.</h2>
-          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Every system is diagnosed, configured and tested before it runs. Third-party provider and usage charges are always shown separately.</p>
-
-          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-[var(--color-text-muted)] mb-4">Automation systems</p>
-          <div className="grid sm:grid-cols-2 gap-4 mb-10">
-            {CORE_SYSTEMS.map((p) => (
-              <div key={p.id} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-accent)]/30 transition-all">
-                <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1.5">{p.name}</h3>
-                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-5">{p.tagline}</p>
-                <div className="flex items-end gap-5">
-                  <div>
-                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.setup_fee)}</p>
-                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Setup</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.monthly_fee)}<span className="text-xs font-medium text-[var(--color-text-muted)]">/mo</span></p>
-                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Ongoing management</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-[var(--color-text-muted)] mb-4">AI agents</p>
-          <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {AI_AGENTS.map((p) => (
-              <div key={p.id} className="p-6 rounded-xl bg-[var(--color-accent)]/[0.04] border border-[var(--color-accent)]/20 hover:border-[var(--color-accent)]/40 transition-all">
-                <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1.5">{p.name}</h3>
-                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-5">{p.tagline}</p>
-                <div className="flex items-end gap-5">
-                  <div>
-                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.setup_fee)}</p>
-                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Setup</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-[var(--color-text-primary)]">{fmtNgn(p.pricing.monthly_fee)}<span className="text-xs font-medium text-[var(--color-text-muted)]">/mo</span></p>
-                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">Ongoing management</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-[var(--color-text-muted)] max-w-2xl mx-auto text-center leading-relaxed mb-8">
-            ELION fees cover implementation, configuration, monitoring and ongoing management. Third-party provider and usage charges (WhatsApp/Meta, voice AI, AI model usage, email volume, calendar/CRM subscriptions) are billed separately where applicable and are never hidden inside the monthly fee.
-          </p>
-          <div className="text-center">
-            <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Start with the Free Audit <ArrowRight className="w-4 h-4" /></a>
-            <p className="text-xs text-[var(--color-text-muted)] mt-3">Not sure which system fits? The audit tells you — free.</p>
-          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>The same three packages, everywhere.</h2>
+          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Choose the level of automation your business needs. One-time implementation fee — you own everything we build. Third-party provider and usage charges are always shown separately.</p>
+          <TierCards ctaHref="#audit" ctaLabel="audit" showPayment callout="Most businesses start with Growth — lead response, follow-up and booking in one pipeline. Not sure? The free audit shows you the gap first." />
         </div>
       </section>
 
