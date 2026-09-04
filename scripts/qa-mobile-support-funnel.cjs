@@ -149,15 +149,17 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
       const sliderH = await page.evaluate(() => document.getElementById("calc-leads")?.getBoundingClientRect().height || 0);
       check(`${label} funnel: slider touch targets ≥44px`, sliderH >= 44, `h=${sliderH}`);
 
-      // Drag the response slider with touch-like pointer (mouse drag over range input)
+      // Drag the response slider (scroll it into view first, then drag the thumb)
+      await page.evaluate(() => document.getElementById("calc-response").scrollIntoView({ block: "center" }));
+      await sleep(400);
       const responseValBefore = await page.evaluate(() => document.getElementById("calc-response").value);
       const box = await page.evaluate(() => {
         const r = document.getElementById("calc-response").getBoundingClientRect();
         return { x: r.x, y: r.y + r.height / 2, w: r.width };
       });
-      await page.mouse.move(box.x + box.w * 0.9, box.y);
+      await page.mouse.move(box.x + box.w * 0.85, box.y);
       await page.mouse.down();
-      await page.mouse.move(box.x + box.w * 0.6, box.y, { steps: 6 });
+      await page.mouse.move(box.x + box.w * 0.55, box.y, { steps: 8 });
       await page.mouse.up();
       await sleep(400);
       const responseValAfter = await page.evaluate(() => document.getElementById("calc-response").value);
@@ -183,10 +185,14 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
       await sleep(400);
 
       // Audit form: walk all 6 steps via touch taps (options or Continue)
+      await page.evaluate(() => document.querySelector("#audit")?.scrollIntoView({ block: "center" }));
+      await sleep(600);
       let formOk = true;
       for (let s = 0; s < 5; s++) {
         const progressed = await page.evaluate(() => {
-          const btns = [...document.querySelectorAll("button")];
+          const card = document.querySelector("#audit");
+          if (!card) return false;
+          const btns = [...card.querySelectorAll("button")];
           const option = btns.find((b) => b.textContent.trim().length > 2 && !/back|continue|analyze|submitting/i.test(b.textContent) && b.getBoundingClientRect().height >= 40);
           const cont = btns.find((b) => /continue/i.test(b.textContent));
           if (option) option.click();
@@ -195,7 +201,7 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
           return true;
         });
         if (!progressed) { formOk = false; break; }
-        await sleep(450);
+        await sleep(700);
       }
       // Fill contact fields and check keyboard/CTA behavior
       const contactFilled = await page.evaluate(() => {
