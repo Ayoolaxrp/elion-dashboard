@@ -26,7 +26,7 @@ export function googleConfigured(): boolean {
 export function googleRedirectUri(reqOrigin?: string): string {
   return (
     process.env.GOOGLE_REDIRECT_URI ||
-    `${process.env.NEXT_PUBLIC_SITE_URL || reqOrigin || "http://localhost:3000"}/api/bookings/oauth/callback`
+    `${process.env.NEXT_PUBLIC_SITE_URL || reqOrigin || "https://elion.com.ng"}/api/bookings/oauth/callback`
   );
 }
 

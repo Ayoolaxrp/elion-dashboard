@@ -52,7 +52,7 @@ export async function sendClientWelcome(to: string, clientData: {
   if (!r) return { ok: false, skipped: true };
 
   try {
-    const loginUrl = clientData.loginUrl || "https://elion-sooty.vercel.app/login";
+    const loginUrl = clientData.loginUrl || (process.env.NEXT_PUBLIC_SITE_URL || "https://elion.com.ng") + "/login";
     const result = await r.emails.send({
       from: "ELION <onboarding@resend.dev>",
       to,

@@ -4,7 +4,7 @@ export interface CompletionEmailData { firstName: string; automationName: string
 export interface AuditNotificationData { contactName: string; email: string; businessType?: string; website?: string; primaryProblem?: string; teamSize?: string; }
 
 function hdr(): string {
-  return '<div style="margin-bottom:32px"><img src="https://elion-sooty.vercel.app/brand/elion-e-icon.png" alt="ELION" width="40" height="40" style="display:block" /></div>';
+  return '<div style="margin-bottom:32px"><img src="https://elion.com.ng/brand/elion-e-icon.png" alt="ELION" width="40" height="40" style="display:block" /></div>';
 }
 function wrap(body: string): string {
   return '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#0A0D14;font-family:Inter,system-ui,sans-serif"><div style="max-width:560px;margin:0 auto;padding:40px 24px">' + hdr() + body + '</div></body></html>';
@@ -41,9 +41,9 @@ export function buildKickoffWhatsApp(data: KickoffWhatsAppData): string {
 }
 
 export function buildCompletionEmail(data: CompletionEmailData) {
-  var subject = "Your ELION Automation is Live - " + data.automationName;
-  var systemsList = data.connectedSystems.map(function(s) { return '<li style="color:#9CA3AF;font-size:14px">' + s + '</li>'; }).join("");
-  var html = wrap(
+  const subject = "Your ELION Automation is Live - " + data.automationName;
+  const systemsList = data.connectedSystems.map(function(s) { return '<li style="color:#9CA3AF;font-size:14px">' + s + '</li>'; }).join("");
+  const html = wrap(
     p("Hi " + data.firstName + ",") + p("We're done. Your ELION automation has now been completed and is ready for use.")
     + '<h3 style="color:#F8FAFC;font-size:15px;font-weight:600;margin:0 0 16px">What has been delivered</h3>'
     + '<div style="background:#11161F;border:1px solid #1F2937;border-radius:8px;padding:20px;margin:0 0 24px">'
@@ -61,8 +61,8 @@ export function buildCompletionEmail(data: CompletionEmailData) {
 }
 
 export function buildAuditNotificationEmail(data: AuditNotificationData) {
-  var subject = "New Audit Submission - " + data.contactName;
-  var html = wrap(
+  const subject = "New Audit Submission - " + data.contactName;
+  const html = wrap(
     '<div style="background:#11161F;border:1px solid #1F2937;border-radius:8px;padding:20px;margin:0 0 24px">'
     + '<p style="color:#6B7280;font-size:12px;margin:0 0 4px;text-transform:uppercase;letter-spacing:1px">New Audit Submission</p>'
     + '<h2 style="color:#F8FAFC;font-size:18px;font-weight:600;margin:8px 0 16px">' + data.contactName + '</h2>'
@@ -70,7 +70,7 @@ export function buildAuditNotificationEmail(data: AuditNotificationData) {
     + '<tr><td style="color:#6B7280;font-size:13px;padding:6px 0">Business</td><td style="color:#F8FAFC;font-size:13px;padding:6px 0;text-align:right">' + (data.businessType || "Not specified") + '</td></tr>'
     + '<tr><td style="color:#6B7280;font-size:13px;padding:6px 0">Website</td><td style="color:#F8FAFC;font-size:13px;padding:6px 0;text-align:right">' + (data.website || "Not provided") + '</td></tr>'
     + '<tr><td style="color:#6B7280;font-size:13px;padding:6px 0">Problem</td><td style="color:#F8FAFC;font-size:13px;padding:6px 0;text-align:right">' + (data.primaryProblem || "Not specified") + '</td></tr></table></div>'
-    + '<a href="https://elion-sooty.vercel.app/admin/leads" style="display:inline-block;background:#4F7CFF;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600">View in Admin →</a>'
+    + '<a href="https://elion.com.ng/admin/leads" style="display:inline-block;background:#4F7CFF;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600">View in Admin →</a>'
   );
   return { subject: subject, html: html, text: "New Audit Submission\nName: " + data.contactName + "\nEmail: " + data.email + "\nBusiness: " + (data.businessType || "N/A") + "\nProblem: " + (data.primaryProblem || "N/A") };
 }
