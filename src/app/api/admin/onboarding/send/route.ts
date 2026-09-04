@@ -1,21 +1,26 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { sendEmail } from "@/lib/emails/sender";
 import { buildWelcomeEmail, buildCompletionEmail } from "@/lib/emails/templates";
 
-async function getAdmin() {
+// Auth check via the browser session (mirrors /api/admin/clients).
+async function requireAdmin() {
   const cookieStore = await cookies();
-  const sb = createServerClient(
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
   );
-  const { data: { user } } = await sb.auth.getUser();
+  const { data: { user } } = await authClient.auth.getUser();
   if (!user) return null;
   const admins = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
-  return admins.includes((user.email || "").toLowerCase()) ? sb : null;
+  return admins.includes((user.email || "").toLowerCase()) ? user : null;
 }
+
+// Data client: service role (same pattern as every other working admin route).
+const data = () => createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export const dynamic = "force-dynamic";
 
@@ -26,9 +31,10 @@ interface ClientRow { id: string; contact_name: string; email: string; company_n
 // welcome stage if missing) so the send is always possible from the client
 // list, then sends the email and logs an admin notification.
 export async function POST(request: Request) {
-  const sb = await getAdmin();
-  if (!sb) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const sb = data();
   const body: { client_id?: unknown; kind?: unknown; automationName?: unknown; connectedSystems?: unknown; workflowDescription?: unknown } = await request.json();
 
   if (typeof body.client_id !== "string" || !body.client_id) {
