@@ -105,6 +105,8 @@ const createdIds = { proposals: [], contracts: [], invoices: [], payments: [] };
     check("contract inherits amount", cont.body?.contract?.total_amount === 250000, String(cont.body?.contract?.total_amount));
     createdIds.contracts.push(contId);
 
+    const cSent = await api("/api/admin/contracts", { method: "PATCH", body: { id: contId, status: "sent" } });
+    check("contract sent", cSent.status === 200 && cSent.body?.contract?.status === "sent", `status=${cSent.status}`);
     const signed = await api("/api/admin/contracts", { method: "PATCH", body: { id: contId, status: "signed", signatory: "QA Signatory" } });
     check("contract sign", signed.status === 200 && signed.body?.contract?.status === "signed" && signed.body?.contract?.signatory === "QA Signatory", `status=${signed.status}`);
 
