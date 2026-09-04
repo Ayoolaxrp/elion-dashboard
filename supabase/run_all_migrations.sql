@@ -42,3 +42,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+-- 017_lead_archive.sql — soft archive for leads (kept idempotent)
+ALTER TABLE public.leads
+  ADD COLUMN IF NOT EXISTS archived_at TIMESTAMPTZ NULL;
+CREATE INDEX IF NOT EXISTS leads_archived_at_idx ON public.leads (archived_at)
+  WHERE archived_at IS NOT NULL;

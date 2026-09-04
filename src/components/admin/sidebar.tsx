@@ -40,6 +40,11 @@ export function AdminSidebar() {
 
   return (
     <>
+      {/* In-flow spacer so the fixed sidebar never overlaps page content.
+          The aside below is position:fixed, so without this offset every
+          admin page's <main> would start at x=0 and the sidebar would cover
+          (and block clicks on) the left ~240px of content. */}
+      <div aria-hidden="true" className={"hidden lg:block shrink-0 transition-all duration-200 " + (collapsed ? "w-16" : "w-60")} />
       <button onClick={() => setMobileOpen(true)} className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)]" aria-label="Open menu"><Menu className="w-5 h-5 text-[var(--color-text-primary)]" /></button>
       {mobileOpen && <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setMobileOpen(false)} />}
       <aside className={"fixed top-0 left-0 bottom-0 z-50 bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col transition-all duration-200 " + (collapsed ? "w-16" : "w-60") + " " + (mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0")}>
