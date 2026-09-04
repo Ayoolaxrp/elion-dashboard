@@ -230,7 +230,7 @@ async function researchBusiness(companyName: string, website: string): Promise<W
       }
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
-      const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "ELIONAuditBot/1.0" } });
+      const response = await fetch(url, { signal: controller.signal, redirect: "follow", headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" } });
       // Enforce response size limit
       const contentLength = response.headers.get("content-length");
       if (contentLength && parseInt(contentLength, 10) > MAX_AUDIT_RESPONSE_BYTES) {
