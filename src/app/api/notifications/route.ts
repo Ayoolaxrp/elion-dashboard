@@ -28,12 +28,12 @@ export async function GET(request: NextRequest) {
   const unreadOnly = url.searchParams.get("unread") === "true";
 
   let query = admin.from("notifications").select("*").order("created_at", { ascending: false }).limit(100);
-  if (unreadOnly) query = query.eq("read", false);
+  if (unreadOnly) query = query.eq("is_read", false);
 
   const { data, error } = await query;
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  const unreadCount = (await admin.from("notifications").select("id", { count: "exact", head: true }).eq("read", false)).count || 0;
+  const unreadCount = (await admin.from("notifications").select("id", { count: "exact", head: true }).eq("is_read", false)).count || 0;
 
   return NextResponse.json({ notifications: data || [], unreadCount });
 }
@@ -67,13 +67,13 @@ export async function PUT(request: NextRequest) {
   const admin = getSupabase();
 
   if (read_all) {
-    await admin.from("notifications").update({ read: true }).eq("read", false);
+    await admin.from("notifications").update({ is_read: true, read_at: new Date().toISOString() }).eq("is_read", false);
     return NextResponse.json({ ok: true });
   }
 
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
-  const { error } = await admin.from("notifications").update({ read: true }).eq("id", id);
+  const { error } = await admin.from("notifications").update({ is_read: true, read_at: new Date().toISOString() }).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   return NextResponse.json({ ok: true });

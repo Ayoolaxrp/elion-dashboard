@@ -50,6 +50,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         welcome_email_sent: true,
         welcome_email_sent_at: new Date().toISOString(),
       }).eq("id", id);
+      await sb.from("notifications").insert({
+        type: "onboarding_email_sent",
+        title: `Welcome email sent — ${client.company_name || client.contact_name}`,
+        message: `Welcome email sent to ${client.email}`, client_id: client.id,
+        metadata: { kind: "welcome", pipeline_id: id },
+      });
     }
   }
 
@@ -69,6 +75,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       kickoff_time: data.time || null,
       kickoff_call_link: data.callLink || null,
     }).eq("id", id);
+    await sb.from("notifications").insert({
+      type: "onboarding_email_sent",
+      title: `Kickoff message drafted — ${client.company_name || client.contact_name}`,
+      message: `Kickoff WhatsApp message generated for ${client.email} (${data.date || "TBD"} ${data.time || ""})`, client_id: client.id,
+      metadata: { kind: "kickoff", pipeline_id: id },
+    });
     return NextResponse.json({ success: true, whatsappMessage: msg, note: "Copy this message and send via WhatsApp" });
   }
 
@@ -85,6 +97,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         completion_email_sent: true,
         completion_email_sent_at: new Date().toISOString(),
       }).eq("id", id);
+      await sb.from("notifications").insert({
+        type: "onboarding_email_sent",
+        title: `Completion email sent — ${client.company_name || client.contact_name}`,
+        message: `Completion email sent to ${client.email}`, client_id: client.id,
+        metadata: { kind: "completion", pipeline_id: id },
+      });
     }
   }
 
