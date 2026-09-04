@@ -1,0 +1,56 @@
+{
+  "prospect_id": "P07",
+  "business_name": "Gracias Global",
+  "website": "https://graciasglobal.com",
+  "url_final": "https://graciasglobal.com/",
+  "fetcher_used": "http",
+  "status_code": 200,
+  "status": "success",
+  "title": "Graciasglobal",
+  "meta_description": "",
+  "tech_stack": [
+    "WordPress",
+    "Angular"
+  ],
+  "social_links": [
+    "Instagram",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [
+    "https://wa.me/2347034100176",
+    "https://wa.me/2347034100177"
+  ],
+  "has_whatsapp": true,
+  "has_booking": false,
+  "has_live_chat": true,
+  "phone_numbers": [
+    "2347034100176"
+  ],
+  "emails_found": [
+    "hello@graciasglobal.com"
+  ],
+  "json_ld_types": [],
+  "headings": [
+    "h2: Your dream home is right here",
+    "h2: Our services",
+    "h2: Property",
+    "h3: What we do",
+    "h3: SERVICE PLOTS, APARTMENTS AND OFFICE SPACE"
+  ],
+  "cta_texts": [
+    "Book Inspection"
+  ],
+  "markdown_preview": "Graciasglobal\nSkip to content\n\n\t\t\tNo results\t\t\nHome\nProperties\nAll Properties\nPlots\nResidences\nJuvenile\nMalls\nLocations\nLagos\nAbuja\nIbadan\nOgun\nAbout Us\nOur Company\nGallery\nFAQ\nBlog\nContact\n+234 703 4100 176\n\n\t\tBook Inspection\t\nHome\nProperties\nAll Properties\nPlots\nResidences\nJuvenile\nMalls\nLocations\nLagos\nAbuja\nIbadan\nOgun\nAbout Us\nOur Company\nGallery\nFAQ\nBlog\nContact\n+234 703 4100 176\n\n\t\tBook Inspection\t\nSearch\nMenu\nSearch\nYour dream home is right here\nBring your dream to reality with our premium real estate properties in choice locations.\nExplore Properties\nWhat we do\nOur services\nProperty\nsales\nWe sell landed properties and more; our client network spreads across Nigeria and beyond.\nFind Properties\nFacility\nmanagement\nWe have the best hands to manage your facility. Contact us to learn more about our premium service.\nTalk to us\nBuilding\nconstruction\nDo you need professionals to manage your building construction projects? we are here for you.\ntalk to us\nAbout us\nAt Gracias Global, we are poised to bring your dream of owning a home to reality.We have a customer experience and satisfaction based business ecosystem that gives to you the best, yet professional services and product delivery.\nWe pride ourselves in the deployment of modern technology, software and machine learning to better understand and cater for your needs.\nLearn more about us\nAbout us\nAt Gracias Global, we are poised to bring your dream of owning a home to reality.We have a customer experience and satisfaction based business ecosystem that gives to you the best, yet professional services and product delivery.\nWe pride ourselves in the deployment of modern technology, software and machine learning to better understand and cater for your needs.\nLearn more about us\nSERVICE PLOTS, APARTMENTS AND OFFICE SPACE\n\nTrusting experienced real estate\nEveryday in Lagos and other major cities across Nigeria, smart people are trusting experience real estate companies like us for the best residences and serviced plots. If you are looking to make wise real estate investment, we invite you to check out our carefully packaged property deals.  \nPlots\nWe sell landed properties and more; our client network spreads across Nigeria and beyond.\nFind Properties\nResidences\nWe have the best hands to manage your facility. Contact us to learn more about our premium service.\nLearn more\nJuvenile\nDo you need professionals to manage your building construction projects? we are here for you.\nlearn more\nMalls\nDo you need professi",
+  "error": null,
+  "researched_at": "2026-09-04T22:08:30.266Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/graciasglobal"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/@graciasglobal"
+    }
+  ]
+}

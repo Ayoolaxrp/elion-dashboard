@@ -1,0 +1,37 @@
+{
+  "prospect_id": "P20",
+  "business_name": "Ramos Real Estate",
+  "website": "https://ramosrealestateng.com",
+  "url_final": "https://ramosrealestateng.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Ramos Real Estate - Luxury Real Estate Agency in Nigeria",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Facebook"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "08133355522"
+  ],
+  "emails_found": [
+    "hello@ramosrealestateng.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:30:54.457Z",
+  "social_links_detail": [
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/ramosoflagosrealty"
+    }
+  ]
+}

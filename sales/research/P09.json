@@ -1,0 +1,81 @@
+{
+  "prospect_id": "P09",
+  "business_name": "Adron Homes",
+  "website": "https://adronhomesproperties.com",
+  "url_final": "https://adronhomes.com/",
+  "fetcher_used": "stealth",
+  "status_code": 200,
+  "status": "success",
+  "title": "Adron Homes - Find Your Dream Property",
+  "meta_description": "Discover premium properties and homes with Adron Homes. Your trusted real estate partner in Nigeria.",
+  "tech_stack": [
+    "Next.js",
+    "React",
+    "Angular",
+    "Google Analytics",
+    "Facebook Pixel",
+    "Tawk.to",
+    "Paystack"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn",
+    "TikTok"
+  ],
+  "whatsapp_deep_links": [
+    "https://wa.me/2348051011951"
+  ],
+  "has_whatsapp": true,
+  "has_booking": false,
+  "has_live_chat": true,
+  "phone_numbers": [],
+  "emails_found": [
+    "%20md@adronhomes.com",
+    "%20telesales@adronhomes.com",
+    "clientservice@adronhomes.com",
+    "md@adronhomes.com",
+    "sales@adronhomes.com",
+    "telesales@adronhomes.com"
+  ],
+  "json_ld_types": [],
+  "headings": [
+    "h2: Sugarland Estate",
+    "h2: About Us",
+    "h2: Discover Our Featured Properties"
+  ],
+  "cta_texts": [
+    "✕",
+    "Decline",
+    "Accept Cookies",
+    "Properties",
+    "Homes Listing",
+    "1"
+  ],
+  "markdown_preview": "Adron Homes - Find Your Dream Property\n✕\nAdron Homes uses cookies and similar technologies as strictly necessary to make our site work. We and our partners would also like to set additional cookies to analyze your use of our site, to personalize and enhance your visit to our site and to show you more relevant content and advertising. For more information, please read our \nPrivacy Statement\n.\nDecline\nAccept Cookies\nHome\nProperties\nOgun\n21\nPlateau\n2\nNassarawa\n3\nLagos\n7\nOsun\n3\nOyo\n7\nEkiti\n1\nAbuja\n3\nNiger\n1\n1\n1\nHomes Listing\nRent\nAdron Court 1\nAdron Court 2\nAdron Court 3\nAdron Court 4\nVidco Series\nVidco Series\nVidco Series 2\nVidco Series 3\n3 Bedroom Detached Bungalow\n2 Bedrooom Terrace Bungalow\n2 Bedroom Semi Detached Bungalow\n2 Bedroom Terrace Bungalow\n4 Bedroom Duplex\n2 Bedroom Semi Detached Bungalow\n3 Bedroom Detached Bungalow\n3 Bedroom Duplex (Home Office)\nOff Plan\n3 Bedroom Terrace Duplex\n4 Bedroom Duplexes (Penthouse Tuck In BQ)\nCompleted\n5 Bedroom Duplex (Penthouse)\n4 Bedroom Piccadilly Duplex (Penthouse)\n5 Bedroom Detached Bungalow (Gatehouse)\nAbout us\nVirtual Tour\nCareer\nContact Us\nLogin to Dashboard\nHome\nProperties\nHomes Listing\nAbout us\nVirtual Tour\nCareer\nContact Us\nLogin to Dashboard\n1\n2\n1\n2\n100+\nProperties\n200K+\nNumber of Clients\n3000+\nTeam Members\n70+\nLocation\n14+\nYears of Exp.\nLatest Offers\nSugarland Estate\nProperty Type: Land\nProperty Size: 500\nIlisan, Ogun Nigeria\nView All Latest Offers\nAbout Us\nAbout Us\nAdron Homes Properties is one of Nigeria’s leading real estate and property development companies, renowned for delivering secure, affordable and premium housing solutions tailored to individuals and families across all economic classes.\r\n\r\nDriven by innovation and excellence, the company has continued to transform the real estate landscape through world-class developments, strategic infrastructure investments and customer-centric solutions that create sustainable long-term value. Beyond developing properties by our arrays of professionals, Adron Homes is committed to building thriving communities where dreams are nurtured, investments are protected and futures are secured. With a rapidly expanding presence across Nigeria and a vision aligned with global real estate standards, the company continues to position itself as a proudly African brand with international relevance and impact.\r\n\r\nThrough visionary leadership, integrity, innovation and an unwavering passion for development, Adron Homes is redefining excellence while creating communities",
+  "error": null,
+  "researched_at": "2026-09-04T22:09:33.994Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/theadronhomes"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/tr"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://www.x.com/adronhomes"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/adron-homes-"
+    },
+    {
+      "platform": "TikTok",
+      "url": "http://www.tiktok.com/@adronhomesofficial"
+    }
+  ]
+}

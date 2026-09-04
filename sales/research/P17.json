@@ -1,0 +1,78 @@
+{
+  "prospect_id": "P17",
+  "business_name": "Sujimoto Group",
+  "website": "https://sujimotonig.com",
+  "url_final": "https://sujimotonig.com/",
+  "fetcher_used": "http",
+  "status_code": 200,
+  "status": "success",
+  "title": "",
+  "meta_description": "",
+  "tech_stack": [
+    "WordPress",
+    "Angular",
+    "Bootstrap",
+    "Google Analytics",
+    "Facebook Pixel"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": true,
+  "phone_numbers": [
+    "2348098521646",
+    "2348183255555"
+  ],
+  "emails_found": [
+    "info@sujimotonig.com",
+    "username@domain.com"
+  ],
+  "json_ld_types": [],
+  "headings": [
+    "h1: Giuliano By Sujimoto",
+    "h1: Lucrezia By Sujimoto",
+    "h1: Leonardo By Sujimoto",
+    "h2: 35",
+    "h2: 400k +",
+    "h2: 5"
+  ],
+  "cta_texts": [
+    "About us",
+    "Learn More",
+    "Learn More",
+    "Learn More",
+    "Learn More"
+  ],
+  "markdown_preview": "Home\nabout\nProjects\nblog\nCareers\nCSR Projects\nMenu\nSchedule Appointment\nHome\nabout\nProjects\nblog\nCareers\nCSR Projects\nSchedule Appointment\nGet in touch with us\ninfo@sujimotonig.com\n+234 809 8521 646\nfind us on\nFØRGET ANY NO†ION OF LUXURY YOU'VE EVER HAÐ!\nSkip Intro\nFeatured Project\nGiuliano By Sujimoto\n The GiulianoBySujimoto is where architectural ingenuity of the 16th century converges with the functionality of the 21st century. With a rare travertine Spanish stone façade that speaks luxury, the Giuliano brings together exclusivity, prime location and unrivalled quality.\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nG\nFeatured Project\nLucrezia By Sujimoto\nThe LuceziaBySujimoto is a record breaking project with a rare combination of Beauty, Affluence and Style.  A product of delicate research and a quest to create a dynamic building that is first amongst equal;\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nL\nFeatured Project\nLeonardo By Sujimoto\nStylishly nurtured, meticulous crafted and intelligently designed, the LeonardoBySujimoto Waterfront Development is a magnificent piece of architectural beauty, never before seen in Africa. It offers strictly exclusive amenities, only for the vital few.\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nL\nAbout us\nAudacious Projects . Superb Designs . Exquisite Finishing!\nBuilt on the pedestal of Diligence, Innovation and Excellence, Sujimoto is dedicated to redefining the luxury real estate industry with transformative experiences through intricately designed architecture.\n\n    \t\t\t\t\t\t  Learn More \n    \t\t\t\t\t\t\nA\nFeatured Project\nQueen Amina By Sujimoto\nA luxury twin tower mixed-used development that combines 16th century northern royalty with 21st century architecture, detailing the beauty, sophistication and outstanding exploits of the great Zazzau warrior – Queen Amina.\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nQ\n\n\t\tCREDIT RATING \nBBB\nOur Story\nFrom the slum of Agege to the suburb of Ikoyi, Sujimoto is fueling the life-long dream of an audacious young man, a dream that has learnt to question the norm and challenge the ordinary; a dream that is founded on the foundation of excellence and erected on the pillars of integrity; a dream that has learnt to ANSWER every ‘What if’ with WHY NOT! A dream that has become a global reality and the standard for Luxury Living in Africa – SUJIMOTO.\n35\nCompleted projects across the world\n400k +\nsq.m of prime land for development\n5\nProjects currently under development\nKnown as the Rolls Royce of Luxury",
+  "error": null,
+  "researched_at": "2026-09-04T22:25:31.003Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/sujimotong"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/sujimotoconstruction"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://twitter.com/sujimotogroup"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/sujimoto-construction-limited/mycompany"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/channel/uc1q3peh495sxxy-npjegtkg"
+    }
+  ]
+}

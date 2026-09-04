@@ -1,0 +1,56 @@
+{
+  "prospect_id": "P16",
+  "business_name": "Vines Realty",
+  "website": "https://www.vinesrealtyng.com",
+  "url_final": "https://www.vinesrealtyng.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Vines Realty Home | Real estate in Nigeria |Best Investment",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "2348004000300",
+    "2347004000300",
+    "2348055559983",
+    "2348111113700"
+  ],
+  "emails_found": [
+    "connect@vinesrealtyng.com",
+    "info@vinesrealtyng.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:25:25.366Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/vinesrealtyng"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/tr"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://www.twitter.com/vinesrealty_ng"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/channel/ucjlcmh1r_phhb8f_vi8q7vw"
+    }
+  ]
+}

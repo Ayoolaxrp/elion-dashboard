@@ -1,0 +1,59 @@
+{
+  "prospect_id": "P14",
+  "business_name": "Palton Morgan Holdings",
+  "website": "https://paltonmorgan.com",
+  "url_final": "https://paltonmorgan.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Luxury Real Estate Company in Lagos &amp; Abuja | Palton Morgan",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "02014535098",
+    "09130007779",
+    "2349130007779"
+  ],
+  "emails_found": [
+    "info@paltonmorgan.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:25:06.092Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/paltonmorgan"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/paltonmorgan"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://x.com/paltonmorgan"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/paltonmorgan"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://youtube.com/@paltonmorganholdings"
+    }
+  ]
+}

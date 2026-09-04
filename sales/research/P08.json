@@ -1,0 +1,48 @@
+{
+  "prospect_id": "P08",
+  "business_name": "Megamound",
+  "website": "https://megamound.com",
+  "url_final": "https://megamound.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Megamound Real Estate &#8211; Real Estate &amp; Construction Group",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "07074908153"
+  ],
+  "emails_found": [
+    "spaciaz@example.com",
+    "info@megamound.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:22:55.836Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/megamoundrealestate"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/megamoundinvestment"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://youtube.com/@megamoundinvestment"
+    }
+  ]
+}

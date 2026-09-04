@@ -1,0 +1,38 @@
+{
+  "prospect_id": "P04",
+  "business_name": "Knight Frank Nigeria",
+  "website": "https://www.knightfrank.com.ng",
+  "url_final": "https://www.knightfrank.com.ng",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Commercial &amp; Residential Estate Agents in Nigeria | Knight Frank",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [],
+  "emails_found": [],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:21:50.637Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/knightfrank"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/knightfrankllp"
+    }
+  ]
+}

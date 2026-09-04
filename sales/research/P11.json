@@ -1,0 +1,63 @@
+{
+  "prospect_id": "P11",
+  "business_name": "Oparah Realty",
+  "website": "https://oparahrealty.com",
+  "url_final": "https://oparahrealty.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Real Estate Agency in Lagos, Nigeria - Rent &amp; Buy Property",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn",
+    "TikTok",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "2348050480659",
+    "23480504806591"
+  ],
+  "emails_found": [
+    "contact@oparahrealty.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:23:29.895Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/oparahrealty"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/oparahrealty"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://twitter.com/oparahrealty"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/oparahrealty"
+    },
+    {
+      "platform": "TikTok",
+      "url": "https://www.tiktok.com/@oparahrealty"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/@oparahrealty"
+    }
+  ]
+}

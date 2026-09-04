@@ -1,0 +1,64 @@
+{
+  "prospect_id": "P13",
+  "business_name": "27th Development",
+  "website": "https://27thdevelopment.com",
+  "url_final": "https://27thdevelopment.com/",
+  "fetcher_used": "stealth",
+  "status_code": 200,
+  "status": "success",
+  "title": "Home - Real Estate Company In Lekki, Lagos | 27th Development",
+  "meta_description": "Transform your real estate journey in Nigeria with 27th Development, a dynamic and forward-thinking company. Property Investing in Lagos",
+  "tech_stack": [
+    "WordPress",
+    "Angular",
+    "Google Analytics",
+    "Mailchimp"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "LinkedIn"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": true,
+  "phone_numbers": [],
+  "emails_found": [],
+  "json_ld_types": [
+    "WebPage",
+    "ReadAction",
+    "ImageObject",
+    "BreadcrumbList",
+    "ListItem",
+    "WebSite",
+    "SearchAction",
+    "EntryPoint",
+    "PropertyValueSpecification",
+    "Organization"
+  ],
+  "headings": [
+    "h1: Building The Future Today",
+    "h2: Why 27th Development?",
+    "h2: We are a dynamic limited liability real estate company that specializes in offering premier lands and distinctive properties to discerning clients",
+    "h2: Trusted by Partners"
+  ],
+  "cta_texts": [],
+  "markdown_preview": "Home - Real Estate Company In Lekki, Lagos | 27th Development\n\n\t\tSkip to content\nHome\nServices\nProjects\nBlog\nAbout Us\nEvents\nContact Us\nMenu\nHome\nServices\nProjects\nBlog\nAbout Us\nEvents\nContact Us\nBook  Inspection\nBuilding The Future Today\nInvesting in real estate can provide great returns, and 27th Development is a brand you can trust to help you make the most of your investment.\nGet Started Here\nWhy 27th Development?\nWe are a dynamic limited liability real estate company that specializes in offering premier lands and distinctive properties to discerning clients\n\n\t\t\t\t\t\t\tExcellence!\t\t\t\t\t\t\n\n\t\t\t\t\t\tStriving for excellence in everything we do, in our activities and products\t\t\t\t\t\n\n\t\t\t\t\t\t\tIntegrity\t\t\t\t\t\t\n\n\t\t\t\t\t\tUpholding the highest critical standards, transparency & trusthworthyness in all our interractions \t\t\t\t\t\n\n\t\t\t\t\t\t\tInnovation\t\t\t\t\t\t\n\n\t\t\t\t\t\tEmbracing innovation, fostering creativity and seeking out new technologies to drive progress and stay ahead.\t\t\t\t\t\n\n\t\t\t\t\t\t\tSustainability\t\t\t\t\t\t\n\n\t\t\t\t\t\tCommitting to sustainable practices, environmental stewardship & social responsibility in all our projects. \t\t\t\t\t\n\n\t\t\t\t\t\t\tCollaboration\t\t\t\t\t\t\n\n\t\t\t\t\t\tEncouraging teamwork and open communication to foster culture of collective success\t\t\t\t\t\n\n\t\t\t\t\t\t\tCustomer Centric \t\t\t\t\t\t\n\n\t\t\t\t\t\tPlacing our customers at the centre of our business, by understanding their needs and delivering exceptional experience\t\t\t\t\t\nTrusted by Partners\nCommunity Building\nCreating vibrant and inclusive communities that enhance the quality of life for residents and stakeholders. \nPartner With Us!\n1A Prince Ibrahim Eletu Ave, Osapa-London 106104, Lekki, Lagos\nUseful Links\nHome\nServices\nProjects\nFAQs\nSubscribe Now\nDon’t miss our future updates! Get Subscribed Today!\n©2026. XXVII Development LTD . All Rights Reserved.\nScroll to Top\nScan the code",
+  "error": null,
+  "researched_at": "2026-09-04T22:14:29.960Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/27thdevelopment"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/27thdevelopment"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/27th-development-llc"
+    }
+  ]
+}

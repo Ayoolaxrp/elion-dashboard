@@ -1,0 +1,71 @@
+{
+  "prospect_id": "P10",
+  "business_name": "Chaman Properties",
+  "website": "https://chamanproperties.com",
+  "url_final": "https://chamanproperties.com/",
+  "fetcher_used": "stealth",
+  "status_code": 200,
+  "status": "success",
+  "title": "Luxury Real Estate Nigeria | Chaman Properties",
+  "meta_description": "Chaman Properties is a luxury real estate company in Nigeria offering property investment, property management, luxury homes, and diaspora real estate services.",
+  "tech_stack": [
+    "Next.js",
+    "React",
+    "Angular",
+    "Google Analytics"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [
+    "https://wa.me/2348065553671"
+  ],
+  "has_whatsapp": true,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "08065553671"
+  ],
+  "emails_found": [
+    "chamanpropertiesltd@gmail.com",
+    "info@chamanproperties.com"
+  ],
+  "json_ld_types": [
+    "PostalAddress",
+    "BreadcrumbList",
+    "ListItem",
+    "FAQPage",
+    "Question",
+    "Answer"
+  ],
+  "headings": [
+    "h1: Premium Real Estate Investment & Property Management in Nigeria",
+    "h2: Verified luxury, rental, land, and investment opportunities",
+    "h2: A complete property company for ownership, income, and long-term asset protection",
+    "h2: Luxury real estate with documentation discipline",
+    "h3: Luxury 5 Bedroom Fully Detached Duplex in Lekki Phase 1",
+    "h3: Verified Residential Land in Arepo, Ogun State"
+  ],
+  "cta_texts": [
+    "Submit Inquiry"
+  ],
+  "markdown_preview": "Luxury Real Estate Nigeria | Chaman Properties\nCHAMAN\nPROPERTIES\nHome\nProperties\nServices\nDiaspora\nManagement\nInvestment\nBlog\nCareers\nContact\nBook Consultation\nHome\n/\nIndex\nLuxury Real Estate | Property Investment | Diaspora Management\nPremium Real Estate Investment & Property Management in Nigeria\nYour Dream Home, Our Work.\nWe help Nigerians at home and in the diaspora buy, sell, lease, manage, and invest in verified real estate assets with confidence.\nView Available Properties\nInvest From Abroad\nPurpose\nBuy\nRent\nShortlet\nInvestment\nProperty type\nApartment\nDetached Duplex\nLand\nCommercial\nShortlet\nBedrooms\n1+\n2+\n3+\n4+\n5+\nSearch\nLegal-backed\nproperty confidence\nDiaspora-ready\ninvestment support\nLagos & Ogun\noffice presence\nSales, Letting\nmanagement and shortlets\nFeatured Properties\nVerified luxury, rental, land, and investment opportunities\nExplore selected properties prepared for buyers, tenants, investors, and diaspora clients seeking confidence before commitment.\nView all listings \nFor Sale\nVerified\nNGN 650,000,000\nLuxury 5 Bedroom Fully Detached Duplex in Lekki Phase 1\nLekki Phase 1, Lagos\n5\n6\n4\nA contemporary family residence with premium finishes, spacious living areas, and verified documentation support.\nView Details\nWhatsApp\nInvestment\nVerified\nNGN 38,000,000 per plot\nVerified Residential Land in Arepo, Ogun State\nArepo, Ogun\n-\n-\n-\nStrategic land opportunity for residential development near the Lagos-Ogun growth corridor.\nView Details\nWhatsApp\nFor Rent\nVerified\nNGN 12,000,000 per annum\nExecutive 3 Bedroom Apartment in Ikeja GRA\nIkeja GRA, Lagos\n3\n4\n2\nSecure executive apartment within a prime Ikeja residential environment, ideal for professionals and corporate tenants.\nView Details\nWhatsApp\nInvestment\nVerified\nFrom NGN 280,000,000\nInvestment Apartments in Maitama, Abuja\nMaitama, FCT\n3\n4\n2\nPrime apartment investment option for capital preservation, executive letting, and portfolio diversification.\nView Details\nWhatsApp\nCore Services\nA complete property company for ownership, income, and long-term asset protection\nFrom acquisition to tenant management, documentation support, investment advisory, and resale, the website is structured around the real property journey.\nVerified Acquisition\nProperty Sales\nPremium property sales support for homes, land, commercial spaces, and investment-grade assets.\nQuality Tenants\nProperty Letting\nLetting services for landlords and tenants seeking secure, professional, and well-documented rental transactions.\nInvest From ",
+  "error": null,
+  "researched_at": "2026-09-04T22:09:44.262Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/chamanproperties"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/chamanproperties"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/@chamanproperties"
+    }
+  ]
+}

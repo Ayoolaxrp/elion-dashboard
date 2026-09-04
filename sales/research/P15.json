@@ -1,0 +1,56 @@
+{
+  "prospect_id": "P15",
+  "business_name": "Jide Taiwo & Co",
+  "website": "https://jidetaiwoandco.com",
+  "url_final": "https://jidetaiwoandco.com/",
+  "fetcher_used": "http",
+  "status_code": 200,
+  "status": "success",
+  "title": "Estate Surveyors and Valuers | Property Management | Property For Sale | jidetaiwo & co.",
+  "meta_description": "jide taiwo & co. is a firm of Estate Surveyors & Valuers in Nigeria. Our services cut across property for sale in Nigeria, We rent and sell flats, houses, land and commercial property for sale in Nigeria, facility and property management in Nigeria",
+  "tech_stack": [
+    "Shopify",
+    "Bootstrap",
+    "Google Analytics"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "07052090092"
+  ],
+  "emails_found": [
+    "info@jidetaiwoandco.com",
+    "jtcbookings@jidetaiwoandco.com"
+  ],
+  "json_ld_types": [],
+  "headings": [
+    "h1: Menu",
+    "h1: How can we be of service?",
+    "h1: We’ll help you find your ideal home"
+  ],
+  "cta_texts": [
+    "Explore More",
+    "LEARN MORE ABOUT US",
+    "FIND A PERSON OR OUR OFFICE",
+    "LEARN MORE ABOUT US"
+  ],
+  "markdown_preview": "Estate Surveyors and Valuers | Property Management | Property For Sale | jidetaiwo & co.\nNavbar\nFind a property\nServices\nEvents & Articles\nClient login\nAgent login\nCreate a free account\nSign in\nSign up\nMenu\nServices\nFeatured Properties\nProperties For Sale\nProperties For Sale in Lagos\nProperties For Rent\nProperties For Rent in Lagos\nProperties Nationwide\nList your property\n Authenticate a valuation report\nBook a virtual meeting appointment\nJidetaiwo & Co.- United Kingdom\nCreate a free account with us\nAgent Login\n Client login\nFAQs\nCareers\nHow can we be of service?\n                \n                \n                \n\n  Explore More\n\n                            We’ll help you find your ideal home\nFind Property For Sale\nFind Property For Rent\nList Your Property\nDetermine the worth of your property\nOur team of experts in valuation are poised to offer prompt, accurate and industry acclaimed services. This helps our clients make better business decisions.\nBook a virtual meeting appointment\nAuthenticate a valuation report\nWe understand the dynamics of\n the property market\nWe Are Experts, We Rock The Game \nYour browser does not support audio.\n\n                           No matter the dynamics, when it comes to letting, buying or selling of properties of any kind and property management in Nigeria, we have over 70,000 apartments, flats and houses for sale and rent in Nigeria . We are experienced and motivated to transact or advice across all residential, commercial, industrial and agricultural markets. \n\n \n\nOur experts are available and ready to meet your needs. We are always poised to offer you the benefits of our strong market knowledge. Our in-house experts will guide you all the way through transaction conceptualization to completion \n\n                        \nLEARN MORE ABOUT US\nHere is a Trusted Ally\nYour browser does not support audio.\n\n                           In our over four decades of existence, we have established our presence as a market leader with 30 business offices nationwide and multiple international partnerships and affiliations. The firm is equip with over 300 licensed surveyors and  five hundred experienced and well-motivated human capital.  \n                        \nFIND A PERSON OR OUR OFFICE\nWe Have Your Interest at Heart - Always \nYour browser does not support audio.\n\n                           We remain committed to expanding the frontiers of our services to you. Our service architecture is built with your overall interest at heart. We ha",
+  "error": null,
+  "researched_at": "2026-09-04T22:20:39.292Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/jidetaiwoandco"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/jidetaiwoandco"
+    }
+  ]
+}

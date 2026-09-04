@@ -1,0 +1,42 @@
+{
+  "prospect_id": "P12",
+  "business_name": "Zylus Group",
+  "website": "https://zylusgroup.com",
+  "url_final": "https://zylusgroup.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "newhome - Zylus Group International",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [],
+  "emails_found": [
+    "info@zylushomes.com",
+    "info@zylusgroup.com",
+    "london@email.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:24:38.847Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/zylusgroup/profilecard"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/tr"
+    }
+  ]
+}

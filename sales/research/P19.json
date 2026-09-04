@@ -1,0 +1,47 @@
+{
+  "prospect_id": "P19",
+  "business_name": "Jupitaar",
+  "website": "https://jupitaar.com",
+  "url_final": "https://jupitaar.com",
+  "fetcher_used": "node-fallback",
+  "status_code": 200,
+  "status": "success",
+  "title": "Home - Jupitaar",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "LinkedIn"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "2349168177807"
+  ],
+  "emails_found": [
+    "Info@jupitaar.com"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "",
+  "error": null,
+  "researched_at": "2026-09-04T22:29:00.805Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/jupitaar_com"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/share/1awwzn49ky"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/jupitaar"
+    }
+  ]
+}

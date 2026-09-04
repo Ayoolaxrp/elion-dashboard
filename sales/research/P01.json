@@ -1,0 +1,86 @@
+{
+  "prospect_id": "P01",
+  "business_name": "CW Real Estate",
+  "website": "https://cwlagos.com",
+  "url_final": "https://cwlagos.com/",
+  "fetcher_used": "http",
+  "status_code": 200,
+  "status": "success",
+  "title": "CW Real Estate — Luxury Property Sales, Rentals & Advisory in Lagos",
+  "meta_description": "Lagos' leading luxury real estate brokerage. Buy, sell or rent residential and commercial property in Ikoyi, Victoria Island, Lekki, Oniru and more. 2,500+ units closed, $500M+ in transactions.",
+  "tech_stack": [
+    "React",
+    "Angular",
+    "Google Analytics"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn",
+    "TikTok"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": true,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "2348146401276",
+    "2347048089358",
+    "2347048089361",
+    "2348144976677",
+    "2347048089362"
+  ],
+  "emails_found": [
+    "hello@cwlagos.com"
+  ],
+  "json_ld_types": [
+    "Organization",
+    "ImageObject",
+    "PostalAddress",
+    "City",
+    "RealEstateAgent",
+    "GeoCoordinates",
+    "OpeningHoursSpecification",
+    "OfferCatalog",
+    "Offer",
+    "Service",
+    "WebSite",
+    "SearchAction",
+    "EntryPoint"
+  ],
+  "headings": [
+    "h1: Properties Curated by CW",
+    "h2: A premium real estate company in Lagos, committed to creating value through trusted property expertise.",
+    "h2: A premium real estate company in Lagos, committed to creating value through trusted property expertise.",
+    "h3: Reviews",
+    "h3: Discover verified homes, land, commercial assets, and investment opportunities across Ikoyi, Victoria Island, Banana Island, and Lekki.",
+    "h3: Our Brands"
+  ],
+  "cta_texts": [],
+  "markdown_preview": "CW Real Estate — Luxury Property Sales, Rentals & Advisory in Lagos\nReviews\nTrusted\nby\nMany,\nLoved\nby\nAll\nExtremely professional service! The team at CW Real Estate Lagos pay exceptional attention to detail and deliver with a level of professionalism that’s rare to find in Nigeria. Truly on par with what you’d expect from top real estate firms abroad. Highly recommended!”\nSamuel Adegoke\nNadi was exceptionally professional throughout the process. She was always responsive, consistently picked up when contacted, and made the transaction very easy and seamless to close\nNadi was exceptionally professional throughout the process. She was always responsive, consistently picked up when contacted, and made the transaction very easy and seamless to close\nFaith Adebanke\nMy experience renting with CW Real Estate was flawless. The process was smooth, professional, and hassle-free from beginning to end. I worked with Thelmae and Rose, who were consistently helpful, responsive, and professional throughout\nMy experience renting with CW Real Estate was flawless. The process was smooth, professional, and hassle-free from beginning to end. I worked with Thelmae and Rose, who were consistently helpful, responsive, and professional throughout\nMichael Adeoye\nRose was quite helpful during my house search. Quite knowledgeable of the Ikoyi RE market and very responsive. It was delightful working with her. I recently referred a client to her.\nRose was quite helpful during my house search. Quite knowledgeable of the Ikoyi RE market and very responsive. It was delightful working with her. I recently referred a client to her.\nHadiza Benson\nL\na\ng\no\ns\nR\ne\na\nl\nE\ns\nt\na\nt\ne\n.\nI\nn\nt\ne\nl\nl\ni\ng\ne\nn\nt\nl\ny\nC\nu\nr\na\nt\ne\nd\n.\nE\nx\np\ne\nr\nt\nl\ny\nM\na\nt\nc\nh\ne\nd\n.\nDiscover verified homes, land, commercial assets, and investment opportunities across Ikoyi, Victoria Island, Banana Island, and Lekki.\nSign up\nSign up\nGet exclusive property updates and new listings delivered to your inbox.\nOur Brands\nOne brand, multiple real estate solutions\nOur Brands\nOne brand, multiple real estate solutions\nCW Properties\nProperties Curated by CW\nActive developments across the city’s most considered addresses — from Parkview’s quiet terraces to Eko Atlantic’s new shoreline.\n3000+\n3000+\nActive Listings\n4\n4\nDistricts\n$6B\n$6B\nHighest Listing\nIkoyi\nThe Cuddle\nView Property\nSmart Search\nListing Status\nAll\nFor Rent\nFor Sale\nLand\nLease\nProperty Type\nAll\nApartment\nMaisonette\nPenthouse\nTerrace\nDetached Duplex\nDetached Bungalow\nSemi ",
+  "error": null,
+  "researched_at": "2026-09-04T22:05:32.131Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/cwrelagos"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/cwrelagosnigeria"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://x.com/cwrelagos"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/cwre-lagos"
+    },
+    {
+      "platform": "TikTok",
+      "url": "https://www.tiktok.com/@cwrelagos"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "prospect_id": "P05",
+  "business_name": "Broll Nigeria",
+  "website": "https://www.broll.com.ng",
+  "url_final": "https://www.broll.com.ng/",
+  "fetcher_used": "http",
+  "status_code": 200,
+  "status": "success",
+  "title": "Broll",
+  "meta_description": "Our mission is to be the leading real estate services provider and the preferred place of employment for our industry's professionals.",
+  "tech_stack": [
+    "Next.js",
+    "Angular"
+  ],
+  "social_links": [
+    "Twitter/X",
+    "LinkedIn"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [
+    "2348148723268"
+  ],
+  "emails_found": [
+    "Brenda@eclipsecoms.com",
+    "hrose@broll.com",
+    "info@broll.com"
+  ],
+  "json_ld_types": [],
+  "headings": [
+    "h1: Professional",
+    "h2: Contact",
+    "h3: Real Estate Services - Since 1975",
+    "h3: Featured Listings",
+    "h3: Chevron Drive"
+  ],
+  "cta_texts": [
+    "Previous",
+    "Next",
+    "Previous",
+    "Next",
+    "Previous",
+    "Next"
+  ],
+  "markdown_preview": "Broll\nHome\nAbout Us\nServices\nProperty Search\nMedia Centre\nCareers\nContact\nPrivacy\n Professional\nReal Estate Services - Since 1975\nOur vision\n is to be a client focused world class real estate service provider and the leading adviser in our market. We aim to provide full life cycle real estate solutions to our clients.\n Previous\n Next\nFind Your Space\nSearch\nDeal Type\nTo Let\nFor Sale\nTo Let\nProperty Type\nAll\nAll\nFeatured Listings\n Previous\nFor Sale\nChevron Drive\nTwin Lakes Estate\n₦0\nGLA 82 177m²\nVacant land\nView\nFor Sale\nChevron Drive\nTwin Lakes Estate\n₦0\nGLA 82 177m²\nVacant land\nView\n Next\nOur Mission\nTo consistently deliver quality results to our clients whilst enabling a high-performance, respectful and dynamic culture.\n Previous\nnews\nCompany News\nBroll Signs Exclusive African Affiliation with Cushman & Wakefield\nBroll Property Group has entered into an exclusive affiliate arrangement with Cushman & Wakefield\n12 June 2019\nBroll Property Group\nnews\nCompany News\nA Case Study of Business Continuity in Times of Crisis\nWhen a services business is faced with an unanticipated disruption or disaster beyond its control, it can quickly result in lost profits, and more.\n22 March 2020\nBroll Property Group\nnews\nAfrica News\nUnpacking Nigeria's Retail & Office Market Performance in 2019\nBroll Property Intel's latest reports grant an insider glance at the performance of Nigeria's retail and property markets throughout last year.\n23 February 2020\nBroll Property Group\nnews\nAfrica News\nBroll Property Intel's Nigeria Snapshot Q3:2018\nIs the slowdown in the pace of Nigeria's economic recovery a turning point in the general economic trend that took off in 2017, or rather a blip in the trend?  \n14 November 2018\nBroll Property Intel\nnews\nCompany News\nNigeria's economic recovery impact in 2018 influences retail and office market performance\nAs Nigeria remains largely a commodity-based economy, the performance of the retail and office sectors in are still influenced by volatility in oil prices.\n11 March 2019\nBroll Property Intel\nnews\nAfrica News\nBroll Group CEO Wins Lifetime Achievement Award\nIndustry Stalwart recognised for years of service and leadership\n22 September 2022\nBroll Property Group\nnews\nGeneral News\nThree Years On Since Hard Lockdown: Real Estate - A Bird’s Eye View\nA consolidated look at how the commercial real estate sector has fared in the “new normal”.\n14 March 2023\nBroll Property Group\ntwitter\n04 September 2026\nnews\nHot off the press\nPioneering a New Era: The Ris",
+  "error": null,
+  "researched_at": "2026-09-04T22:06:21.169Z",
+  "social_links_detail": [
+    {
+      "platform": "Twitter/X",
+      "url": "https://x.com/brollng"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/broll-nigeria"
+    }
+  ]
+}

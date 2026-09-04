@@ -1,0 +1,28 @@
+{
+  "prospect_id": "P02",
+  "business_name": "Homework Group",
+  "website": "https://homeworkgroup.ng",
+  "url_final": "https://homeworkgroup.ng/cgi-sys/suspendedpage.cgi",
+  "fetcher_used": "http",
+  "status_code": 200,
+  "status": "success",
+  "title": "Account Suspended",
+  "meta_description": "",
+  "tech_stack": [],
+  "social_links": [],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [],
+  "emails_found": [
+    "webmaster@homeworkgroup.ng"
+  ],
+  "json_ld_types": [],
+  "headings": [],
+  "cta_texts": [],
+  "markdown_preview": "Account Suspended\n Account Suspended\n            \n\n                        This Account has been suspended.\n                    \nContact your hosting provider\n for more information.",
+  "error": null,
+  "researched_at": "2026-09-04T22:05:35.191Z",
+  "social_links_detail": []
+}

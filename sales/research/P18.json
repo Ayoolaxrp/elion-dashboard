@@ -1,0 +1,78 @@
+{
+  "prospect_id": "P18",
+  "business_name": "Homely (Lagos)",
+  "website": "https://joinhomely.com",
+  "url_final": "https://joinhomely.com/",
+  "fetcher_used": "stealth",
+  "status_code": 200,
+  "status": "success",
+  "title": "Homely | Your preferred company for property management services for Airbnb, Short Let | Lagos, Abuja, Accra, Nigeria, Birmingham, Derby, London, UK",
+  "meta_description": "We are a property technology company helping hosts improve earnings and operations. Contact us today to get started",
+  "tech_stack": [
+    "WordPress",
+    "Angular",
+    "Bootstrap",
+    "Google Analytics"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": true,
+  "has_booking": true,
+  "has_live_chat": true,
+  "phone_numbers": [],
+  "emails_found": [],
+  "json_ld_types": [
+    "WebPage",
+    "ReadAction",
+    "ImageObject",
+    "BreadcrumbList",
+    "ListItem",
+    "WebSite",
+    "SearchAction",
+    "EntryPoint",
+    "PropertyValueSpecification",
+    "Organization"
+  ],
+  "headings": [
+    "h1: Your preferred Airbnb, short let and vacation rental property management partner in EMEA. Available in London, Birmingham, Lagos, Accra, Dubai, Derby, Abuja and more",
+    "h2: Earn More. Stress Less.",
+    "h2: Why Hosts choose Homely",
+    "h2: How it works",
+    "h3: Higher earnings",
+    "h3: More time"
+  ],
+  "cta_texts": [
+    "Accept",
+    "Deny",
+    "View preferences",
+    "Save preferences",
+    "View preferences",
+    "BOOK A CALL"
+  ],
+  "markdown_preview": "Homely | Your preferred company for property management services for Airbnb, Short Let | Lagos, Abuja, Accra, Nigeria, Birmingham, Derby, London, UK\nManage Consent\nTo provide the best experiences, we use technologies like cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behaviour or unique IDs on this site. Not consenting or withdrawing consent, may adversely affect certain features and functions.\nFunctional\nFunctional\n\n\t\t\t\t\t\tAlways active\t\t\t\t\t\nThe technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network.\nPreferences\nPreferences\nThe technical storage or access is necessary for the legitimate purpose of storing preferences that are not requested by the subscriber or user.\nStatistics\nStatistics\nThe technical storage or access that is used exclusively for statistical purposes.\nThe technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this purpose alone cannot usually be used to identify you.\nMarketing\nMarketing\nThe technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes.\nManage options\nManage services\nManage {vendor_count} vendors\nRead more about these purposes\nAccept\nDeny\nView preferences\nSave preferences\nView preferences\n{title}\n{title}\n\n\t\t\tSkip to content\t\t\nHOMELY\nLandlords\nShort Lets\nBUY or SELL\nPHOTO & VIDEO\nTraining\nGuests\nBlog\nBOOK A CALL\nHOMELY\nMenu\nNavigation Menu\n\n\t\t\tNavigation Menu\t\t\t\t\t\nLandlords\nShort Lets\nBUY or SELL\nPHOTO & VIDEO\nTraining\nGuests\nBlog\nEarn More. Stress Less. \nHost Smarter.\nWe turn your property into a top-earning short-term rental. Using dynamic pricing technology and expert marketing, we maximise your occupancy and revenue while you enjoy 100% passive income\nBOOK A CALL\nbacked by\nWhy Hosts choose Homely\nHigher earnings\nHosting on Airbnb & Booking.com is not enough to maximise your earnings. Our tried and tested solution can earn you up to 75% more depending on your property type and location\nMore time\nGuest c",
+  "error": null,
+  "researched_at": "2026-09-04T22:25:45.329Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/joinhomely"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/joinhomely"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://x.com/joinhomely"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/company/joinhomely"
+    }
+  ]
+}

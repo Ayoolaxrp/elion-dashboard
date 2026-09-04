@@ -1,0 +1,66 @@
+{
+  "prospect_id": "P03",
+  "business_name": "Alpha Mead Group",
+  "website": "https://alphamead.com",
+  "url_final": "https://alphamead.com/",
+  "fetcher_used": "stealth",
+  "status_code": 200,
+  "status": "success",
+  "title": "Alpha Mead - Real Estate Solutions",
+  "meta_description": "Buy, rent, or invest in properties with Alpha Mead. Trusted real estate solutions in Nigeria and beyond.",
+  "tech_stack": [
+    "Angular",
+    "Google Analytics",
+    "Paystack"
+  ],
+  "social_links": [
+    "Instagram",
+    "Facebook",
+    "Twitter/X",
+    "LinkedIn",
+    "YouTube"
+  ],
+  "whatsapp_deep_links": [],
+  "has_whatsapp": false,
+  "has_booking": false,
+  "has_live_chat": false,
+  "phone_numbers": [],
+  "emails_found": [],
+  "json_ld_types": [],
+  "headings": [
+    "h1: POWERING POSSIBILITIES",
+    "h2: Our Real Difference",
+    "h2: Where We Make Real Difference",
+    "h2: What Our Customers Say About Our Real Difference",
+    "h3: TOTAL REAL ESTATE SOLUTIONS",
+    "h3: ISO 9001:2015"
+  ],
+  "cta_texts": [
+    "Read More"
+  ],
+  "markdown_preview": "Alpha Mead - Real Estate Solutions\nHome\nAbout Us\nOur Services\nProperty Deals\nInt'l Business\nMedia & Events\nContact Us\n🇬🇧\nEN\nDownload Corporate Brochure\n🇬🇧\nEN\nPOWERING POSSIBILITIES\nFrom real estate to facility services, we develop, manage, and empower environments where people and possibilities flourish.\nRead More\nOur Real Difference\nTOTAL REAL ESTATE SOLUTIONS\nWhether you are a business, individual or govt. agency looking to have an edge; with our solutions, you will Make a Real Difference.\nRead More\nISO 9001:2015\nWhatever your Real Estate objectives are for Africa, we will match your global standards.\nRead More\nCOMPETENT & DIVERSE WORKFORCE\nWith a growing strength of over 1,000 employees across Africa, we have the local capacity to deliver your global standards.\nRead More\nPROVEN TRACK RECORDS\nOur resume of performance include delivering up to 97% SLA, achieving more than 85% customer satisfaction and recording zero fatality from inception to date.\nRead More\nWhere We Make Real Difference\nFrom Nigeria to Ghana, Cameroon to Senegal, South Africa to Kenya; and more than 10 other African countries; we remain true to our vision; growing steady capacity and developing local and international opportunities to help customers make real difference in the things that matter to them.\nNIGERIA\nGHANA\nCAMEROON\nSOUTH AFRICA\nTANZANIA\nSENEGAL\nKENYA\nRWANDA\nBOTSWANA\nIVORY COAST\nMOROCCO\nUGANDA\nWhat Our Customers Say About Our Real Difference\nView More\nReal Insights by Alpha Mead\nGet insights, learn about trends and stay abreast of developments across Real Estate markets, sectors and industries.\nRead More\nHome\nHow We Make Difference\nOur Real Difference\nWhere We Make Difference\nTestimonials\nReal Insights\nContact / Footer\nABOUT US\nOUR SERVICES\nPROPERTY DEALS\nINT'L BUSINESS\nMEDIA & EVENTS\nCONTACT US\nWEB PRIVACY AND COOKIE POLICY\n|\nTERMS OF USE\n🍪\nCookie Preferences\nWe use cookies to enhance your experience on \nalphamead.com\n and understand how visitors interact with our site. Read our \nPrivacy Policy\n for more details.\n▼\nView cookie details\nAccept All\nEssential Only\nalphamead.com · Powered by Alpha Mead Group",
+  "error": null,
+  "researched_at": "2026-09-04T22:05:48.262Z",
+  "social_links_detail": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/alphameadgroup"
+    },
+    {
+      "platform": "Facebook",
+      "url": "http://www.facebook.com/amfacilities"
+    },
+    {
+      "platform": "Twitter/X",
+      "url": "https://x.com/alphameadgroup"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "http://www.linkedin.com/company/alpha-mead-facilities-and-management-services-ltd"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://youtube.com/@alphameadgroup3747"
+    }
+  ]
+}

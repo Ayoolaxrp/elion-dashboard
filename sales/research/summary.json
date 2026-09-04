@@ -1,0 +1,1161 @@
+[
+  {
+    "prospect_id": "P01",
+    "business_name": "CW Real Estate",
+    "website": "https://cwlagos.com",
+    "url_final": "https://cwlagos.com/",
+    "fetcher_used": "http",
+    "status_code": 200,
+    "status": "success",
+    "title": "CW Real Estate — Luxury Property Sales, Rentals & Advisory in Lagos",
+    "meta_description": "Lagos' leading luxury real estate brokerage. Buy, sell or rent residential and commercial property in Ikoyi, Victoria Island, Lekki, Oniru and more. 2,500+ units closed, $500M+ in transactions.",
+    "tech_stack": [
+      "React",
+      "Angular",
+      "Google Analytics"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn",
+      "TikTok"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "2348146401276",
+      "2347048089358",
+      "2347048089361",
+      "2348144976677",
+      "2347048089362"
+    ],
+    "emails_found": [
+      "hello@cwlagos.com"
+    ],
+    "json_ld_types": [
+      "Organization",
+      "ImageObject",
+      "PostalAddress",
+      "City",
+      "RealEstateAgent",
+      "GeoCoordinates",
+      "OpeningHoursSpecification",
+      "OfferCatalog",
+      "Offer",
+      "Service",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint"
+    ],
+    "headings": [
+      "h1: Properties Curated by CW",
+      "h2: A premium real estate company in Lagos, committed to creating value through trusted property expertise.",
+      "h2: A premium real estate company in Lagos, committed to creating value through trusted property expertise.",
+      "h3: Reviews",
+      "h3: Discover verified homes, land, commercial assets, and investment opportunities across Ikoyi, Victoria Island, Banana Island, and Lekki.",
+      "h3: Our Brands"
+    ],
+    "cta_texts": [],
+    "markdown_preview": "CW Real Estate — Luxury Property Sales, Rentals & Advisory in Lagos\nReviews\nTrusted\nby\nMany,\nLoved\nby\nAll\nExtremely professional service! The team at CW Real Estate Lagos pay exceptional attention to detail and deliver with a level of professionalism that’s rare to find in Nigeria. Truly on par with what you’d expect from top real estate firms abroad. Highly recommended!”\nSamuel Adegoke\nNadi was exceptionally professional throughout the process. She was always responsive, consistently picked up when contacted, and made the transaction very easy and seamless to close\nNadi was exceptionally professional throughout the process. She was always responsive, consistently picked up when contacted, and made the transaction very easy and seamless to close\nFaith Adebanke\nMy experience renting with CW Real Estate was flawless. The process was smooth, professional, and hassle-free from beginning to end. I worked with Thelmae and Rose, who were consistently helpful, responsive, and professional throughout\nMy experience renting with CW Real Estate was flawless. The process was smooth, professional, and hassle-free from beginning to end. I worked with Thelmae and Rose, who were consistently helpful, responsive, and professional throughout\nMichael Adeoye\nRose was quite helpful during my house search. Quite knowledgeable of the Ikoyi RE market and very responsive. It was delightful working with her. I recently referred a client to her.\nRose was quite helpful during my house search. Quite knowledgeable of the Ikoyi RE market and very responsive. It was delightful working with her. I recently referred a client to her.\nHadiza Benson\nL\na\ng\no\ns\nR\ne\na\nl\nE\ns\nt\na\nt\ne\n.\nI\nn\nt\ne\nl\nl\ni\ng\ne\nn\nt\nl\ny\nC\nu\nr\na\nt\ne\nd\n.\nE\nx\np\ne\nr\nt\nl\ny\nM\na\nt\nc\nh\ne\nd\n.\nDiscover verified homes, land, commercial assets, and investment opportunities across Ikoyi, Victoria Island, Banana Island, and Lekki.\nSign up\nSign up\nGet exclusive property updates and new listings delivered to your inbox.\nOur Brands\nOne brand, multiple real estate solutions\nOur Brands\nOne brand, multiple real estate solutions\nCW Properties\nProperties Curated by CW\nActive developments across the city’s most considered addresses — from Parkview’s quiet terraces to Eko Atlantic’s new shoreline.\n3000+\n3000+\nActive Listings\n4\n4\nDistricts\n$6B\n$6B\nHighest Listing\nIkoyi\nThe Cuddle\nView Property\nSmart Search\nListing Status\nAll\nFor Rent\nFor Sale\nLand\nLease\nProperty Type\nAll\nApartment\nMaisonette\nPenthouse\nTerrace\nDetached Duplex\nDetached Bungalow\nSemi ",
+    "error": null,
+    "researched_at": "2026-09-04T22:05:32.131Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/cwrelagos"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/cwrelagosnigeria"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://x.com/cwrelagos"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/cwre-lagos"
+      },
+      {
+        "platform": "TikTok",
+        "url": "https://www.tiktok.com/@cwrelagos"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P02",
+    "business_name": "Homework Group",
+    "website": "https://homeworkgroup.ng",
+    "url_final": "https://homeworkgroup.ng/cgi-sys/suspendedpage.cgi",
+    "fetcher_used": "http",
+    "status_code": 200,
+    "status": "success",
+    "title": "Account Suspended",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [],
+    "emails_found": [
+      "webmaster@homeworkgroup.ng"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "Account Suspended\n Account Suspended\n            \n\n                        This Account has been suspended.\n                    \nContact your hosting provider\n for more information.",
+    "error": null,
+    "researched_at": "2026-09-04T22:05:35.191Z",
+    "social_links_detail": []
+  },
+  {
+    "prospect_id": "P03",
+    "business_name": "Alpha Mead Group",
+    "website": "https://alphamead.com",
+    "url_final": "https://alphamead.com/",
+    "fetcher_used": "stealth",
+    "status_code": 200,
+    "status": "success",
+    "title": "Alpha Mead - Real Estate Solutions",
+    "meta_description": "Buy, rent, or invest in properties with Alpha Mead. Trusted real estate solutions in Nigeria and beyond.",
+    "tech_stack": [
+      "Angular",
+      "Google Analytics",
+      "Paystack"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [],
+    "emails_found": [],
+    "json_ld_types": [],
+    "headings": [
+      "h1: POWERING POSSIBILITIES",
+      "h2: Our Real Difference",
+      "h2: Where We Make Real Difference",
+      "h2: What Our Customers Say About Our Real Difference",
+      "h3: TOTAL REAL ESTATE SOLUTIONS",
+      "h3: ISO 9001:2015"
+    ],
+    "cta_texts": [
+      "Read More"
+    ],
+    "markdown_preview": "Alpha Mead - Real Estate Solutions\nHome\nAbout Us\nOur Services\nProperty Deals\nInt'l Business\nMedia & Events\nContact Us\n🇬🇧\nEN\nDownload Corporate Brochure\n🇬🇧\nEN\nPOWERING POSSIBILITIES\nFrom real estate to facility services, we develop, manage, and empower environments where people and possibilities flourish.\nRead More\nOur Real Difference\nTOTAL REAL ESTATE SOLUTIONS\nWhether you are a business, individual or govt. agency looking to have an edge; with our solutions, you will Make a Real Difference.\nRead More\nISO 9001:2015\nWhatever your Real Estate objectives are for Africa, we will match your global standards.\nRead More\nCOMPETENT & DIVERSE WORKFORCE\nWith a growing strength of over 1,000 employees across Africa, we have the local capacity to deliver your global standards.\nRead More\nPROVEN TRACK RECORDS\nOur resume of performance include delivering up to 97% SLA, achieving more than 85% customer satisfaction and recording zero fatality from inception to date.\nRead More\nWhere We Make Real Difference\nFrom Nigeria to Ghana, Cameroon to Senegal, South Africa to Kenya; and more than 10 other African countries; we remain true to our vision; growing steady capacity and developing local and international opportunities to help customers make real difference in the things that matter to them.\nNIGERIA\nGHANA\nCAMEROON\nSOUTH AFRICA\nTANZANIA\nSENEGAL\nKENYA\nRWANDA\nBOTSWANA\nIVORY COAST\nMOROCCO\nUGANDA\nWhat Our Customers Say About Our Real Difference\nView More\nReal Insights by Alpha Mead\nGet insights, learn about trends and stay abreast of developments across Real Estate markets, sectors and industries.\nRead More\nHome\nHow We Make Difference\nOur Real Difference\nWhere We Make Difference\nTestimonials\nReal Insights\nContact / Footer\nABOUT US\nOUR SERVICES\nPROPERTY DEALS\nINT'L BUSINESS\nMEDIA & EVENTS\nCONTACT US\nWEB PRIVACY AND COOKIE POLICY\n|\nTERMS OF USE\n🍪\nCookie Preferences\nWe use cookies to enhance your experience on \nalphamead.com\n and understand how visitors interact with our site. Read our \nPrivacy Policy\n for more details.\n▼\nView cookie details\nAccept All\nEssential Only\nalphamead.com · Powered by Alpha Mead Group",
+    "error": null,
+    "researched_at": "2026-09-04T22:05:48.262Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/alphameadgroup"
+      },
+      {
+        "platform": "Facebook",
+        "url": "http://www.facebook.com/amfacilities"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://x.com/alphameadgroup"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "http://www.linkedin.com/company/alpha-mead-facilities-and-management-services-ltd"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://youtube.com/@alphameadgroup3747"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P04",
+    "business_name": "Knight Frank Nigeria",
+    "website": "https://www.knightfrank.com.ng",
+    "url_final": "https://www.knightfrank.com.ng",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Commercial &amp; Residential Estate Agents in Nigeria | Knight Frank",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [],
+    "emails_found": [],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:21:50.637Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/knightfrank"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/knightfrankllp"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P05",
+    "business_name": "Broll Nigeria",
+    "website": "https://www.broll.com.ng",
+    "url_final": "https://www.broll.com.ng/",
+    "fetcher_used": "http",
+    "status_code": 200,
+    "status": "success",
+    "title": "Broll",
+    "meta_description": "Our mission is to be the leading real estate services provider and the preferred place of employment for our industry's professionals.",
+    "tech_stack": [
+      "Next.js",
+      "Angular"
+    ],
+    "social_links": [
+      "Twitter/X",
+      "LinkedIn"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "2348148723268"
+    ],
+    "emails_found": [
+      "Brenda@eclipsecoms.com",
+      "hrose@broll.com",
+      "info@broll.com"
+    ],
+    "json_ld_types": [],
+    "headings": [
+      "h1: Professional",
+      "h2: Contact",
+      "h3: Real Estate Services - Since 1975",
+      "h3: Featured Listings",
+      "h3: Chevron Drive"
+    ],
+    "cta_texts": [
+      "Previous",
+      "Next",
+      "Previous",
+      "Next",
+      "Previous",
+      "Next"
+    ],
+    "markdown_preview": "Broll\nHome\nAbout Us\nServices\nProperty Search\nMedia Centre\nCareers\nContact\nPrivacy\n Professional\nReal Estate Services - Since 1975\nOur vision\n is to be a client focused world class real estate service provider and the leading adviser in our market. We aim to provide full life cycle real estate solutions to our clients.\n Previous\n Next\nFind Your Space\nSearch\nDeal Type\nTo Let\nFor Sale\nTo Let\nProperty Type\nAll\nAll\nFeatured Listings\n Previous\nFor Sale\nChevron Drive\nTwin Lakes Estate\n₦0\nGLA 82 177m²\nVacant land\nView\nFor Sale\nChevron Drive\nTwin Lakes Estate\n₦0\nGLA 82 177m²\nVacant land\nView\n Next\nOur Mission\nTo consistently deliver quality results to our clients whilst enabling a high-performance, respectful and dynamic culture.\n Previous\nnews\nCompany News\nBroll Signs Exclusive African Affiliation with Cushman & Wakefield\nBroll Property Group has entered into an exclusive affiliate arrangement with Cushman & Wakefield\n12 June 2019\nBroll Property Group\nnews\nCompany News\nA Case Study of Business Continuity in Times of Crisis\nWhen a services business is faced with an unanticipated disruption or disaster beyond its control, it can quickly result in lost profits, and more.\n22 March 2020\nBroll Property Group\nnews\nAfrica News\nUnpacking Nigeria's Retail & Office Market Performance in 2019\nBroll Property Intel's latest reports grant an insider glance at the performance of Nigeria's retail and property markets throughout last year.\n23 February 2020\nBroll Property Group\nnews\nAfrica News\nBroll Property Intel's Nigeria Snapshot Q3:2018\nIs the slowdown in the pace of Nigeria's economic recovery a turning point in the general economic trend that took off in 2017, or rather a blip in the trend?  \n14 November 2018\nBroll Property Intel\nnews\nCompany News\nNigeria's economic recovery impact in 2018 influences retail and office market performance\nAs Nigeria remains largely a commodity-based economy, the performance of the retail and office sectors in are still influenced by volatility in oil prices.\n11 March 2019\nBroll Property Intel\nnews\nAfrica News\nBroll Group CEO Wins Lifetime Achievement Award\nIndustry Stalwart recognised for years of service and leadership\n22 September 2022\nBroll Property Group\nnews\nGeneral News\nThree Years On Since Hard Lockdown: Real Estate - A Bird’s Eye View\nA consolidated look at how the commercial real estate sector has fared in the “new normal”.\n14 March 2023\nBroll Property Group\ntwitter\n04 September 2026\nnews\nHot off the press\nPioneering a New Era: The Ris",
+    "error": null,
+    "researched_at": "2026-09-04T22:06:21.169Z",
+    "social_links_detail": [
+      {
+        "platform": "Twitter/X",
+        "url": "https://x.com/brollng"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/broll-nigeria"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P06",
+    "business_name": "Veritasi Homes",
+    "website": "https://veritasi.com",
+    "url_final": "https://veritasi.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "House of Veritasi ®",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [],
+    "emails_found": [
+      "user@domain.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:22:17.174Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/squarespace"
+      },
+      {
+        "platform": "Facebook",
+        "url": "http://www.facebook.com/2008/fbml"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://x.com/squarespace"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P07",
+    "business_name": "Gracias Global",
+    "website": "https://graciasglobal.com",
+    "url_final": "https://graciasglobal.com/",
+    "fetcher_used": "http",
+    "status_code": 200,
+    "status": "success",
+    "title": "Graciasglobal",
+    "meta_description": "",
+    "tech_stack": [
+      "WordPress",
+      "Angular"
+    ],
+    "social_links": [
+      "Instagram",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [
+      "https://wa.me/2347034100176",
+      "https://wa.me/2347034100177"
+    ],
+    "has_whatsapp": true,
+    "has_booking": false,
+    "has_live_chat": true,
+    "phone_numbers": [
+      "2347034100176"
+    ],
+    "emails_found": [
+      "hello@graciasglobal.com"
+    ],
+    "json_ld_types": [],
+    "headings": [
+      "h2: Your dream home is right here",
+      "h2: Our services",
+      "h2: Property",
+      "h3: What we do",
+      "h3: SERVICE PLOTS, APARTMENTS AND OFFICE SPACE"
+    ],
+    "cta_texts": [
+      "Book Inspection"
+    ],
+    "markdown_preview": "Graciasglobal\nSkip to content\n\n\t\t\tNo results\t\t\nHome\nProperties\nAll Properties\nPlots\nResidences\nJuvenile\nMalls\nLocations\nLagos\nAbuja\nIbadan\nOgun\nAbout Us\nOur Company\nGallery\nFAQ\nBlog\nContact\n+234 703 4100 176\n\n\t\tBook Inspection\t\nHome\nProperties\nAll Properties\nPlots\nResidences\nJuvenile\nMalls\nLocations\nLagos\nAbuja\nIbadan\nOgun\nAbout Us\nOur Company\nGallery\nFAQ\nBlog\nContact\n+234 703 4100 176\n\n\t\tBook Inspection\t\nSearch\nMenu\nSearch\nYour dream home is right here\nBring your dream to reality with our premium real estate properties in choice locations.\nExplore Properties\nWhat we do\nOur services\nProperty\nsales\nWe sell landed properties and more; our client network spreads across Nigeria and beyond.\nFind Properties\nFacility\nmanagement\nWe have the best hands to manage your facility. Contact us to learn more about our premium service.\nTalk to us\nBuilding\nconstruction\nDo you need professionals to manage your building construction projects? we are here for you.\ntalk to us\nAbout us\nAt Gracias Global, we are poised to bring your dream of owning a home to reality.We have a customer experience and satisfaction based business ecosystem that gives to you the best, yet professional services and product delivery.\nWe pride ourselves in the deployment of modern technology, software and machine learning to better understand and cater for your needs.\nLearn more about us\nAbout us\nAt Gracias Global, we are poised to bring your dream of owning a home to reality.We have a customer experience and satisfaction based business ecosystem that gives to you the best, yet professional services and product delivery.\nWe pride ourselves in the deployment of modern technology, software and machine learning to better understand and cater for your needs.\nLearn more about us\nSERVICE PLOTS, APARTMENTS AND OFFICE SPACE\n\nTrusting experienced real estate\nEveryday in Lagos and other major cities across Nigeria, smart people are trusting experience real estate companies like us for the best residences and serviced plots. If you are looking to make wise real estate investment, we invite you to check out our carefully packaged property deals.  \nPlots\nWe sell landed properties and more; our client network spreads across Nigeria and beyond.\nFind Properties\nResidences\nWe have the best hands to manage your facility. Contact us to learn more about our premium service.\nLearn more\nJuvenile\nDo you need professionals to manage your building construction projects? we are here for you.\nlearn more\nMalls\nDo you need professi",
+    "error": null,
+    "researched_at": "2026-09-04T22:08:30.266Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://instagram.com/graciasglobal"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@graciasglobal"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P08",
+    "business_name": "Megamound",
+    "website": "https://megamound.com",
+    "url_final": "https://megamound.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Megamound Real Estate &#8211; Real Estate &amp; Construction Group",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "07074908153"
+    ],
+    "emails_found": [
+      "spaciaz@example.com",
+      "info@megamound.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:22:55.836Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/megamoundrealestate"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/megamoundinvestment"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://youtube.com/@megamoundinvestment"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P09",
+    "business_name": "Adron Homes",
+    "website": "https://adronhomesproperties.com",
+    "url_final": "https://adronhomes.com/",
+    "fetcher_used": "stealth",
+    "status_code": 200,
+    "status": "success",
+    "title": "Adron Homes - Find Your Dream Property",
+    "meta_description": "Discover premium properties and homes with Adron Homes. Your trusted real estate partner in Nigeria.",
+    "tech_stack": [
+      "Next.js",
+      "React",
+      "Angular",
+      "Google Analytics",
+      "Facebook Pixel",
+      "Tawk.to",
+      "Paystack"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn",
+      "TikTok"
+    ],
+    "whatsapp_deep_links": [
+      "https://wa.me/2348051011951"
+    ],
+    "has_whatsapp": true,
+    "has_booking": false,
+    "has_live_chat": true,
+    "phone_numbers": [],
+    "emails_found": [
+      "%20md@adronhomes.com",
+      "%20telesales@adronhomes.com",
+      "clientservice@adronhomes.com",
+      "md@adronhomes.com",
+      "sales@adronhomes.com",
+      "telesales@adronhomes.com"
+    ],
+    "json_ld_types": [],
+    "headings": [
+      "h2: Sugarland Estate",
+      "h2: About Us",
+      "h2: Discover Our Featured Properties"
+    ],
+    "cta_texts": [
+      "✕",
+      "Decline",
+      "Accept Cookies",
+      "Properties",
+      "Homes Listing",
+      "1"
+    ],
+    "markdown_preview": "Adron Homes - Find Your Dream Property\n✕\nAdron Homes uses cookies and similar technologies as strictly necessary to make our site work. We and our partners would also like to set additional cookies to analyze your use of our site, to personalize and enhance your visit to our site and to show you more relevant content and advertising. For more information, please read our \nPrivacy Statement\n.\nDecline\nAccept Cookies\nHome\nProperties\nOgun\n21\nPlateau\n2\nNassarawa\n3\nLagos\n7\nOsun\n3\nOyo\n7\nEkiti\n1\nAbuja\n3\nNiger\n1\n1\n1\nHomes Listing\nRent\nAdron Court 1\nAdron Court 2\nAdron Court 3\nAdron Court 4\nVidco Series\nVidco Series\nVidco Series 2\nVidco Series 3\n3 Bedroom Detached Bungalow\n2 Bedrooom Terrace Bungalow\n2 Bedroom Semi Detached Bungalow\n2 Bedroom Terrace Bungalow\n4 Bedroom Duplex\n2 Bedroom Semi Detached Bungalow\n3 Bedroom Detached Bungalow\n3 Bedroom Duplex (Home Office)\nOff Plan\n3 Bedroom Terrace Duplex\n4 Bedroom Duplexes (Penthouse Tuck In BQ)\nCompleted\n5 Bedroom Duplex (Penthouse)\n4 Bedroom Piccadilly Duplex (Penthouse)\n5 Bedroom Detached Bungalow (Gatehouse)\nAbout us\nVirtual Tour\nCareer\nContact Us\nLogin to Dashboard\nHome\nProperties\nHomes Listing\nAbout us\nVirtual Tour\nCareer\nContact Us\nLogin to Dashboard\n1\n2\n1\n2\n100+\nProperties\n200K+\nNumber of Clients\n3000+\nTeam Members\n70+\nLocation\n14+\nYears of Exp.\nLatest Offers\nSugarland Estate\nProperty Type: Land\nProperty Size: 500\nIlisan, Ogun Nigeria\nView All Latest Offers\nAbout Us\nAbout Us\nAdron Homes Properties is one of Nigeria’s leading real estate and property development companies, renowned for delivering secure, affordable and premium housing solutions tailored to individuals and families across all economic classes.\r\n\r\nDriven by innovation and excellence, the company has continued to transform the real estate landscape through world-class developments, strategic infrastructure investments and customer-centric solutions that create sustainable long-term value. Beyond developing properties by our arrays of professionals, Adron Homes is committed to building thriving communities where dreams are nurtured, investments are protected and futures are secured. With a rapidly expanding presence across Nigeria and a vision aligned with global real estate standards, the company continues to position itself as a proudly African brand with international relevance and impact.\r\n\r\nThrough visionary leadership, integrity, innovation and an unwavering passion for development, Adron Homes is redefining excellence while creating communities",
+    "error": null,
+    "researched_at": "2026-09-04T22:09:33.994Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/theadronhomes"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/tr"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://www.x.com/adronhomes"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/adron-homes-"
+      },
+      {
+        "platform": "TikTok",
+        "url": "http://www.tiktok.com/@adronhomesofficial"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P10",
+    "business_name": "Chaman Properties",
+    "website": "https://chamanproperties.com",
+    "url_final": "https://chamanproperties.com/",
+    "fetcher_used": "stealth",
+    "status_code": 200,
+    "status": "success",
+    "title": "Luxury Real Estate Nigeria | Chaman Properties",
+    "meta_description": "Chaman Properties is a luxury real estate company in Nigeria offering property investment, property management, luxury homes, and diaspora real estate services.",
+    "tech_stack": [
+      "Next.js",
+      "React",
+      "Angular",
+      "Google Analytics"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [
+      "https://wa.me/2348065553671"
+    ],
+    "has_whatsapp": true,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "08065553671"
+    ],
+    "emails_found": [
+      "chamanpropertiesltd@gmail.com",
+      "info@chamanproperties.com"
+    ],
+    "json_ld_types": [
+      "PostalAddress",
+      "BreadcrumbList",
+      "ListItem",
+      "FAQPage",
+      "Question",
+      "Answer"
+    ],
+    "headings": [
+      "h1: Premium Real Estate Investment & Property Management in Nigeria",
+      "h2: Verified luxury, rental, land, and investment opportunities",
+      "h2: A complete property company for ownership, income, and long-term asset protection",
+      "h2: Luxury real estate with documentation discipline",
+      "h3: Luxury 5 Bedroom Fully Detached Duplex in Lekki Phase 1",
+      "h3: Verified Residential Land in Arepo, Ogun State"
+    ],
+    "cta_texts": [
+      "Submit Inquiry"
+    ],
+    "markdown_preview": "Luxury Real Estate Nigeria | Chaman Properties\nCHAMAN\nPROPERTIES\nHome\nProperties\nServices\nDiaspora\nManagement\nInvestment\nBlog\nCareers\nContact\nBook Consultation\nHome\n/\nIndex\nLuxury Real Estate | Property Investment | Diaspora Management\nPremium Real Estate Investment & Property Management in Nigeria\nYour Dream Home, Our Work.\nWe help Nigerians at home and in the diaspora buy, sell, lease, manage, and invest in verified real estate assets with confidence.\nView Available Properties\nInvest From Abroad\nPurpose\nBuy\nRent\nShortlet\nInvestment\nProperty type\nApartment\nDetached Duplex\nLand\nCommercial\nShortlet\nBedrooms\n1+\n2+\n3+\n4+\n5+\nSearch\nLegal-backed\nproperty confidence\nDiaspora-ready\ninvestment support\nLagos & Ogun\noffice presence\nSales, Letting\nmanagement and shortlets\nFeatured Properties\nVerified luxury, rental, land, and investment opportunities\nExplore selected properties prepared for buyers, tenants, investors, and diaspora clients seeking confidence before commitment.\nView all listings \nFor Sale\nVerified\nNGN 650,000,000\nLuxury 5 Bedroom Fully Detached Duplex in Lekki Phase 1\nLekki Phase 1, Lagos\n5\n6\n4\nA contemporary family residence with premium finishes, spacious living areas, and verified documentation support.\nView Details\nWhatsApp\nInvestment\nVerified\nNGN 38,000,000 per plot\nVerified Residential Land in Arepo, Ogun State\nArepo, Ogun\n-\n-\n-\nStrategic land opportunity for residential development near the Lagos-Ogun growth corridor.\nView Details\nWhatsApp\nFor Rent\nVerified\nNGN 12,000,000 per annum\nExecutive 3 Bedroom Apartment in Ikeja GRA\nIkeja GRA, Lagos\n3\n4\n2\nSecure executive apartment within a prime Ikeja residential environment, ideal for professionals and corporate tenants.\nView Details\nWhatsApp\nInvestment\nVerified\nFrom NGN 280,000,000\nInvestment Apartments in Maitama, Abuja\nMaitama, FCT\n3\n4\n2\nPrime apartment investment option for capital preservation, executive letting, and portfolio diversification.\nView Details\nWhatsApp\nCore Services\nA complete property company for ownership, income, and long-term asset protection\nFrom acquisition to tenant management, documentation support, investment advisory, and resale, the website is structured around the real property journey.\nVerified Acquisition\nProperty Sales\nPremium property sales support for homes, land, commercial spaces, and investment-grade assets.\nQuality Tenants\nProperty Letting\nLetting services for landlords and tenants seeking secure, professional, and well-documented rental transactions.\nInvest From ",
+    "error": null,
+    "researched_at": "2026-09-04T22:09:44.262Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/chamanproperties"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/chamanproperties"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@chamanproperties"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P11",
+    "business_name": "Oparah Realty",
+    "website": "https://oparahrealty.com",
+    "url_final": "https://oparahrealty.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Real Estate Agency in Lagos, Nigeria - Rent &amp; Buy Property",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn",
+      "TikTok",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "2348050480659",
+      "23480504806591"
+    ],
+    "emails_found": [
+      "contact@oparahrealty.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:23:29.895Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/oparahrealty"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/oparahrealty"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://twitter.com/oparahrealty"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/oparahrealty"
+      },
+      {
+        "platform": "TikTok",
+        "url": "https://www.tiktok.com/@oparahrealty"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@oparahrealty"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P12",
+    "business_name": "Zylus Group",
+    "website": "https://zylusgroup.com",
+    "url_final": "https://zylusgroup.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "newhome - Zylus Group International",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [],
+    "emails_found": [
+      "info@zylushomes.com",
+      "info@zylusgroup.com",
+      "london@email.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:24:38.847Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/zylusgroup/profilecard"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/tr"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P13",
+    "business_name": "27th Development",
+    "website": "https://27thdevelopment.com",
+    "url_final": "https://27thdevelopment.com/",
+    "fetcher_used": "stealth",
+    "status_code": 200,
+    "status": "success",
+    "title": "Home - Real Estate Company In Lekki, Lagos | 27th Development",
+    "meta_description": "Transform your real estate journey in Nigeria with 27th Development, a dynamic and forward-thinking company. Property Investing in Lagos",
+    "tech_stack": [
+      "WordPress",
+      "Angular",
+      "Google Analytics",
+      "Mailchimp"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "LinkedIn"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": true,
+    "phone_numbers": [],
+    "emails_found": [],
+    "json_ld_types": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "headings": [
+      "h1: Building The Future Today",
+      "h2: Why 27th Development?",
+      "h2: We are a dynamic limited liability real estate company that specializes in offering premier lands and distinctive properties to discerning clients",
+      "h2: Trusted by Partners"
+    ],
+    "cta_texts": [],
+    "markdown_preview": "Home - Real Estate Company In Lekki, Lagos | 27th Development\n\n\t\tSkip to content\nHome\nServices\nProjects\nBlog\nAbout Us\nEvents\nContact Us\nMenu\nHome\nServices\nProjects\nBlog\nAbout Us\nEvents\nContact Us\nBook  Inspection\nBuilding The Future Today\nInvesting in real estate can provide great returns, and 27th Development is a brand you can trust to help you make the most of your investment.\nGet Started Here\nWhy 27th Development?\nWe are a dynamic limited liability real estate company that specializes in offering premier lands and distinctive properties to discerning clients\n\n\t\t\t\t\t\t\tExcellence!\t\t\t\t\t\t\n\n\t\t\t\t\t\tStriving for excellence in everything we do, in our activities and products\t\t\t\t\t\n\n\t\t\t\t\t\t\tIntegrity\t\t\t\t\t\t\n\n\t\t\t\t\t\tUpholding the highest critical standards, transparency & trusthworthyness in all our interractions \t\t\t\t\t\n\n\t\t\t\t\t\t\tInnovation\t\t\t\t\t\t\n\n\t\t\t\t\t\tEmbracing innovation, fostering creativity and seeking out new technologies to drive progress and stay ahead.\t\t\t\t\t\n\n\t\t\t\t\t\t\tSustainability\t\t\t\t\t\t\n\n\t\t\t\t\t\tCommitting to sustainable practices, environmental stewardship & social responsibility in all our projects. \t\t\t\t\t\n\n\t\t\t\t\t\t\tCollaboration\t\t\t\t\t\t\n\n\t\t\t\t\t\tEncouraging teamwork and open communication to foster culture of collective success\t\t\t\t\t\n\n\t\t\t\t\t\t\tCustomer Centric \t\t\t\t\t\t\n\n\t\t\t\t\t\tPlacing our customers at the centre of our business, by understanding their needs and delivering exceptional experience\t\t\t\t\t\nTrusted by Partners\nCommunity Building\nCreating vibrant and inclusive communities that enhance the quality of life for residents and stakeholders. \nPartner With Us!\n1A Prince Ibrahim Eletu Ave, Osapa-London 106104, Lekki, Lagos\nUseful Links\nHome\nServices\nProjects\nFAQs\nSubscribe Now\nDon’t miss our future updates! Get Subscribed Today!\n©2026. XXVII Development LTD . All Rights Reserved.\nScroll to Top\nScan the code",
+    "error": null,
+    "researched_at": "2026-09-04T22:14:29.960Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/27thdevelopment"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/27thdevelopment"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/27th-development-llc"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P14",
+    "business_name": "Palton Morgan Holdings",
+    "website": "https://paltonmorgan.com",
+    "url_final": "https://paltonmorgan.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Luxury Real Estate Company in Lagos &amp; Abuja | Palton Morgan",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": false,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "02014535098",
+      "09130007779",
+      "2349130007779"
+    ],
+    "emails_found": [
+      "info@paltonmorgan.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:25:06.092Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/paltonmorgan"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/paltonmorgan"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://x.com/paltonmorgan"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/paltonmorgan"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://youtube.com/@paltonmorganholdings"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P15",
+    "business_name": "Jide Taiwo & Co",
+    "website": "https://jidetaiwoandco.com",
+    "url_final": "https://jidetaiwoandco.com/",
+    "fetcher_used": "http",
+    "status_code": 200,
+    "status": "success",
+    "title": "Estate Surveyors and Valuers | Property Management | Property For Sale | jidetaiwo & co.",
+    "meta_description": "jide taiwo & co. is a firm of Estate Surveyors & Valuers in Nigeria. Our services cut across property for sale in Nigeria, We rent and sell flats, houses, land and commercial property for sale in Nigeria, facility and property management in Nigeria",
+    "tech_stack": [
+      "Shopify",
+      "Bootstrap",
+      "Google Analytics"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "07052090092"
+    ],
+    "emails_found": [
+      "info@jidetaiwoandco.com",
+      "jtcbookings@jidetaiwoandco.com"
+    ],
+    "json_ld_types": [],
+    "headings": [
+      "h1: Menu",
+      "h1: How can we be of service?",
+      "h1: We’ll help you find your ideal home"
+    ],
+    "cta_texts": [
+      "Explore More",
+      "LEARN MORE ABOUT US",
+      "FIND A PERSON OR OUR OFFICE",
+      "LEARN MORE ABOUT US"
+    ],
+    "markdown_preview": "Estate Surveyors and Valuers | Property Management | Property For Sale | jidetaiwo & co.\nNavbar\nFind a property\nServices\nEvents & Articles\nClient login\nAgent login\nCreate a free account\nSign in\nSign up\nMenu\nServices\nFeatured Properties\nProperties For Sale\nProperties For Sale in Lagos\nProperties For Rent\nProperties For Rent in Lagos\nProperties Nationwide\nList your property\n Authenticate a valuation report\nBook a virtual meeting appointment\nJidetaiwo & Co.- United Kingdom\nCreate a free account with us\nAgent Login\n Client login\nFAQs\nCareers\nHow can we be of service?\n                \n                \n                \n\n  Explore More\n\n                            We’ll help you find your ideal home\nFind Property For Sale\nFind Property For Rent\nList Your Property\nDetermine the worth of your property\nOur team of experts in valuation are poised to offer prompt, accurate and industry acclaimed services. This helps our clients make better business decisions.\nBook a virtual meeting appointment\nAuthenticate a valuation report\nWe understand the dynamics of\n the property market\nWe Are Experts, We Rock The Game \nYour browser does not support audio.\n\n                           No matter the dynamics, when it comes to letting, buying or selling of properties of any kind and property management in Nigeria, we have over 70,000 apartments, flats and houses for sale and rent in Nigeria . We are experienced and motivated to transact or advice across all residential, commercial, industrial and agricultural markets. \n\n \n\nOur experts are available and ready to meet your needs. We are always poised to offer you the benefits of our strong market knowledge. Our in-house experts will guide you all the way through transaction conceptualization to completion \n\n                        \nLEARN MORE ABOUT US\nHere is a Trusted Ally\nYour browser does not support audio.\n\n                           In our over four decades of existence, we have established our presence as a market leader with 30 business offices nationwide and multiple international partnerships and affiliations. The firm is equip with over 300 licensed surveyors and  five hundred experienced and well-motivated human capital.  \n                        \nFIND A PERSON OR OUR OFFICE\nWe Have Your Interest at Heart - Always \nYour browser does not support audio.\n\n                           We remain committed to expanding the frontiers of our services to you. Our service architecture is built with your overall interest at heart. We ha",
+    "error": null,
+    "researched_at": "2026-09-04T22:20:39.292Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://instagram.com/jidetaiwoandco"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://facebook.com/jidetaiwoandco"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P16",
+    "business_name": "Vines Realty",
+    "website": "https://www.vinesrealtyng.com",
+    "url_final": "https://www.vinesrealtyng.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Vines Realty Home | Real estate in Nigeria |Best Investment",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "2348004000300",
+      "2347004000300",
+      "2348055559983",
+      "2348111113700"
+    ],
+    "emails_found": [
+      "connect@vinesrealtyng.com",
+      "info@vinesrealtyng.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:25:25.366Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://instagram.com/vinesrealtyng"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/tr"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://www.twitter.com/vinesrealty_ng"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/ucjlcmh1r_phhb8f_vi8q7vw"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P17",
+    "business_name": "Sujimoto Group",
+    "website": "https://sujimotonig.com",
+    "url_final": "https://sujimotonig.com/",
+    "fetcher_used": "http",
+    "status_code": 200,
+    "status": "success",
+    "title": "",
+    "meta_description": "",
+    "tech_stack": [
+      "WordPress",
+      "Angular",
+      "Bootstrap",
+      "Google Analytics",
+      "Facebook Pixel"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn",
+      "YouTube"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": true,
+    "phone_numbers": [
+      "2348098521646",
+      "2348183255555"
+    ],
+    "emails_found": [
+      "info@sujimotonig.com",
+      "username@domain.com"
+    ],
+    "json_ld_types": [],
+    "headings": [
+      "h1: Giuliano By Sujimoto",
+      "h1: Lucrezia By Sujimoto",
+      "h1: Leonardo By Sujimoto",
+      "h2: 35",
+      "h2: 400k +",
+      "h2: 5"
+    ],
+    "cta_texts": [
+      "About us",
+      "Learn More",
+      "Learn More",
+      "Learn More",
+      "Learn More"
+    ],
+    "markdown_preview": "Home\nabout\nProjects\nblog\nCareers\nCSR Projects\nMenu\nSchedule Appointment\nHome\nabout\nProjects\nblog\nCareers\nCSR Projects\nSchedule Appointment\nGet in touch with us\ninfo@sujimotonig.com\n+234 809 8521 646\nfind us on\nFØRGET ANY NO†ION OF LUXURY YOU'VE EVER HAÐ!\nSkip Intro\nFeatured Project\nGiuliano By Sujimoto\n The GiulianoBySujimoto is where architectural ingenuity of the 16th century converges with the functionality of the 21st century. With a rare travertine Spanish stone façade that speaks luxury, the Giuliano brings together exclusivity, prime location and unrivalled quality.\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nG\nFeatured Project\nLucrezia By Sujimoto\nThe LuceziaBySujimoto is a record breaking project with a rare combination of Beauty, Affluence and Style.  A product of delicate research and a quest to create a dynamic building that is first amongst equal;\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nL\nFeatured Project\nLeonardo By Sujimoto\nStylishly nurtured, meticulous crafted and intelligently designed, the LeonardoBySujimoto Waterfront Development is a magnificent piece of architectural beauty, never before seen in Africa. It offers strictly exclusive amenities, only for the vital few.\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nL\nAbout us\nAudacious Projects . Superb Designs . Exquisite Finishing!\nBuilt on the pedestal of Diligence, Innovation and Excellence, Sujimoto is dedicated to redefining the luxury real estate industry with transformative experiences through intricately designed architecture.\n\n    \t\t\t\t\t\t  Learn More \n    \t\t\t\t\t\t\nA\nFeatured Project\nQueen Amina By Sujimoto\nA luxury twin tower mixed-used development that combines 16th century northern royalty with 21st century architecture, detailing the beauty, sophistication and outstanding exploits of the great Zazzau warrior – Queen Amina.\n\n    \t\t\t\t\t\t  Explore Project \n    \t\t\t\t\t\t\nQ\n\n\t\tCREDIT RATING \nBBB\nOur Story\nFrom the slum of Agege to the suburb of Ikoyi, Sujimoto is fueling the life-long dream of an audacious young man, a dream that has learnt to question the norm and challenge the ordinary; a dream that is founded on the foundation of excellence and erected on the pillars of integrity; a dream that has learnt to ANSWER every ‘What if’ with WHY NOT! A dream that has become a global reality and the standard for Luxury Living in Africa – SUJIMOTO.\n35\nCompleted projects across the world\n400k +\nsq.m of prime land for development\n5\nProjects currently under development\nKnown as the Rolls Royce of Luxury",
+    "error": null,
+    "researched_at": "2026-09-04T22:25:31.003Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://instagram.com/sujimotong"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://facebook.com/sujimotoconstruction"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://twitter.com/sujimotogroup"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/sujimoto-construction-limited/mycompany"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/channel/uc1q3peh495sxxy-npjegtkg"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P18",
+    "business_name": "Homely (Lagos)",
+    "website": "https://joinhomely.com",
+    "url_final": "https://joinhomely.com/",
+    "fetcher_used": "stealth",
+    "status_code": 200,
+    "status": "success",
+    "title": "Homely | Your preferred company for property management services for Airbnb, Short Let | Lagos, Abuja, Accra, Nigeria, Birmingham, Derby, London, UK",
+    "meta_description": "We are a property technology company helping hosts improve earnings and operations. Contact us today to get started",
+    "tech_stack": [
+      "WordPress",
+      "Angular",
+      "Bootstrap",
+      "Google Analytics"
+    ],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "Twitter/X",
+      "LinkedIn"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": true,
+    "has_booking": true,
+    "has_live_chat": true,
+    "phone_numbers": [],
+    "emails_found": [],
+    "json_ld_types": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "headings": [
+      "h1: Your preferred Airbnb, short let and vacation rental property management partner in EMEA. Available in London, Birmingham, Lagos, Accra, Dubai, Derby, Abuja and more",
+      "h2: Earn More. Stress Less.",
+      "h2: Why Hosts choose Homely",
+      "h2: How it works",
+      "h3: Higher earnings",
+      "h3: More time"
+    ],
+    "cta_texts": [
+      "Accept",
+      "Deny",
+      "View preferences",
+      "Save preferences",
+      "View preferences",
+      "BOOK A CALL"
+    ],
+    "markdown_preview": "Homely | Your preferred company for property management services for Airbnb, Short Let | Lagos, Abuja, Accra, Nigeria, Birmingham, Derby, London, UK\nManage Consent\nTo provide the best experiences, we use technologies like cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behaviour or unique IDs on this site. Not consenting or withdrawing consent, may adversely affect certain features and functions.\nFunctional\nFunctional\n\n\t\t\t\t\t\tAlways active\t\t\t\t\t\nThe technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network.\nPreferences\nPreferences\nThe technical storage or access is necessary for the legitimate purpose of storing preferences that are not requested by the subscriber or user.\nStatistics\nStatistics\nThe technical storage or access that is used exclusively for statistical purposes.\nThe technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this purpose alone cannot usually be used to identify you.\nMarketing\nMarketing\nThe technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes.\nManage options\nManage services\nManage {vendor_count} vendors\nRead more about these purposes\nAccept\nDeny\nView preferences\nSave preferences\nView preferences\n{title}\n{title}\n\n\t\t\tSkip to content\t\t\nHOMELY\nLandlords\nShort Lets\nBUY or SELL\nPHOTO & VIDEO\nTraining\nGuests\nBlog\nBOOK A CALL\nHOMELY\nMenu\nNavigation Menu\n\n\t\t\tNavigation Menu\t\t\t\t\t\nLandlords\nShort Lets\nBUY or SELL\nPHOTO & VIDEO\nTraining\nGuests\nBlog\nEarn More. Stress Less. \nHost Smarter.\nWe turn your property into a top-earning short-term rental. Using dynamic pricing technology and expert marketing, we maximise your occupancy and revenue while you enjoy 100% passive income\nBOOK A CALL\nbacked by\nWhy Hosts choose Homely\nHigher earnings\nHosting on Airbnb & Booking.com is not enough to maximise your earnings. Our tried and tested solution can earn you up to 75% more depending on your property type and location\nMore time\nGuest c",
+    "error": null,
+    "researched_at": "2026-09-04T22:25:45.329Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/joinhomely"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/joinhomely"
+      },
+      {
+        "platform": "Twitter/X",
+        "url": "https://x.com/joinhomely"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/joinhomely"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P19",
+    "business_name": "Jupitaar",
+    "website": "https://jupitaar.com",
+    "url_final": "https://jupitaar.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Home - Jupitaar",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Instagram",
+      "Facebook",
+      "LinkedIn"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "2349168177807"
+    ],
+    "emails_found": [
+      "Info@jupitaar.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:29:00.805Z",
+    "social_links_detail": [
+      {
+        "platform": "Instagram",
+        "url": "https://www.instagram.com/jupitaar_com"
+      },
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/share/1awwzn49ky"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/company/jupitaar"
+      }
+    ]
+  },
+  {
+    "prospect_id": "P20",
+    "business_name": "Ramos Real Estate",
+    "website": "https://ramosrealestateng.com",
+    "url_final": "https://ramosrealestateng.com",
+    "fetcher_used": "node-fallback",
+    "status_code": 200,
+    "status": "success",
+    "title": "Ramos Real Estate - Luxury Real Estate Agency in Nigeria",
+    "meta_description": "",
+    "tech_stack": [],
+    "social_links": [
+      "Facebook"
+    ],
+    "whatsapp_deep_links": [],
+    "has_whatsapp": false,
+    "has_booking": true,
+    "has_live_chat": false,
+    "phone_numbers": [
+      "08133355522"
+    ],
+    "emails_found": [
+      "hello@ramosrealestateng.com"
+    ],
+    "json_ld_types": [],
+    "headings": [],
+    "cta_texts": [],
+    "markdown_preview": "",
+    "error": null,
+    "researched_at": "2026-09-04T22:30:54.457Z",
+    "social_links_detail": [
+      {
+        "platform": "Facebook",
+        "url": "https://www.facebook.com/ramosoflagosrealty"
+      }
+    ]
+  }
+]
