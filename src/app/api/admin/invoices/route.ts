@@ -116,6 +116,11 @@ export async function PATCH(req: Request) {
   if (!invoice) return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
 
   const current = invoice.status as string;
+  // Idempotent retry: an invoice already marked paid returns the current
+  // state (no new payment, no error) when the same transition is repeated.
+  if (current === "paid" && status === "paid") {
+    return NextResponse.json({ invoice });
+  }
   const ALLOWED: Record<string, string[]> = {
     draft: ["sent", "paid", "cancelled"],
     sent: ["draft", "paid", "overdue", "cancelled"],
@@ -139,8 +144,6 @@ export async function PATCH(req: Request) {
   }
 
   if (status === "paid") {
-    // Idempotent: an invoice that is already paid returns without side effects.
-    if (current === "paid") return NextResponse.json({ invoice });
     patch.paid_at = now;
 
     // Create a confirmed payment record unless one already exists for this
