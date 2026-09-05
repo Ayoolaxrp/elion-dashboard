@@ -130,7 +130,10 @@ async function tap(page, selector) {
         if (replyText && replyText !== "How much is Growth?" && replyText !== "Typing…") { replied = true; break; }
       }
       check(`${label} chat: reply arrives`, replied, replyText.slice(0, 80));
-      check(`${label} chat: honest fallback copy`, /support form|24 hours/.test(replyText), replyText.slice(0, 80));
+      // Real (keyed) replies should ground pricing; fallback replies point to the form. Both are valid.
+      const grounded = /NGN|350,000|naira/i.test(replyText);
+      const fallbackCopy = /support form|24 hours/.test(replyText);
+      check(`${label} chat: grounded reply or honest fallback`, grounded || fallbackCopy, (grounded ? "grounded: " : "fallback: ") + replyText.slice(0, 80));
 
       // 7. Handoff: "Continue in the support form" -> prefill lands in textarea
       const handoffVisible = await page.evaluate(() => {
