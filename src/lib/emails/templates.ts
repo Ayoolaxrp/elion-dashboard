@@ -16,21 +16,33 @@ function p(text: string, extra?: string): string {
 export function buildWelcomeEmail(data: WelcomeEmailData) {
   const subject = "Welcome to ELION - " + data.businessName;
   const auto = data.automationsPurchased && data.automationsPurchased.length > 0 ? data.automationsPurchased.join(", ") : "your agreed automation systems";
-  const html = wrap(
-    p("Hi " + data.firstName + ",") + p("Welcome to ELION.") + p("We're officially getting started.")
-    + p("Your automation project is now moving into the implementation phase, and I'm looking forward to building something that genuinely improves how " + data.businessName + " operates.")
-    + p("We'll be setting up " + auto + ", configured specifically around how your business works.")
-    + '<p style="color:#F8FAFC;font-size:16px;font-weight:600;letter-spacing:0.5px;margin:0 0 32px">Discover → Configure → Build → Test → Launch</p>'
-    + '<h3 style="color:#F8FAFC;font-size:15px;font-weight:600;margin:0 0 16px">What happens next</h3>'
-    + p("I'll be sending you the details for our kickoff call, where we'll:")
-    + '<ul style="color:#9CA3AF;font-size:14px;line-height:1.8;margin:0 0 24px;padding-left:20px"><li>Confirm the agreed scope</li><li>Walk through your current workflow</li><li>Identify the key requirements</li><li>Confirm the integrations and access we need</li><li>Define what success looks like</li><li>Establish the implementation timeline</li></ul>'
-    + p("Please have any relevant business information, existing processes, accounts, or materials available before the call.")
-    + p("This isn't about simply adding another software tool to your business. The goal is to build a system that actually works around how your business operates.")
-    + p("Welcome to ELION. Let's build.") + p("Thank you in anticipation.", "margin:0 0 8px")
-    + '<p style="color:#F8FAFC;font-size:14px;font-weight:600;margin:16px 0 0">Ayoolamikun</p>'
-    + '<p style="color:#6B7280;font-size:12px;margin:4px 0 0">ELION</p>'
-  );
-  return { subject, html, text: "Hi " + data.firstName + ",\n\nWelcome to ELION.\n\nYour automation project is moving into the implementation phase.\n\nProcess: Discover → Configure → Build → Test → Launch\n\nThank you in anticipation.\nAyoolamikun\nELION" };
+  // Light, email-compatible document style (no gradients required for meaning).
+  const btn = (label: string, href: string) =>
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 24px"><tr><td style="background:#6950A1;border-radius:6px"><a href="' + href + '" style="display:inline-block;padding:14px 28px;font-family:Inter,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:6px">' + label + '</a></td></tr></table>';
+  const link = (label: string, href: string) =>
+    '<a href="' + href + '" style="color:#6950A1;text-decoration:underline;font-size:14px">' + label + '</a>';
+  const html =
+    '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#F7F7F5;font-family:Inter,Arial,sans-serif">'
+    + '<div style="max-width:600px;margin:0 auto;padding:32px 20px">'
+    + '<div style="margin-bottom:24px"><img src="https://elion.com.ng/brand/elion-e-icon.png" alt="ELION" width="36" height="36" style="display:block" /></div>'
+    + '<div style="background:#ffffff;border:1px solid #E4E4E0;border-radius:8px;padding:32px">'
+    + '<h1 style="color:#252525;font-size:24px;line-height:32px;font-weight:700;margin:0 0 16px">Welcome to ELION, ' + data.firstName + '</h1>'
+    + '<p style="color:#646461;font-size:16px;line-height:26px;margin:0 0 16px">Your project for ' + data.businessName + ' is officially underway. We are building ' + auto + ', configured around how your business actually works.</p>'
+    + '<p style="color:#646461;font-size:16px;line-height:26px;margin:0 0 24px">Your first step: complete the short onboarding form. It tells us exactly how your enquiries and bookings work today, so your systems are prepared before kickoff.</p>'
+    + btn("Complete onboarding", "https://elion.com.ng/dashboard/portal/onboarding")
+    + '<p style="color:#646461;font-size:16px;line-height:26px;margin:0 0 8px">Also useful:</p>'
+    + '<p style="margin:0 0 24px">' + link("Your client workspace", "https://elion.com.ng/dashboard/portal") + ' &nbsp;·&nbsp; ' + link("Your agreement", "https://elion.com.ng/dashboard/documents") + '</p>'
+    + '<div style="background:#F1F1EF;border-radius:8px;padding:20px">'
+    + '<p style="color:#252525;font-size:14px;font-weight:600;margin:0 0 8px">What happens next</p>'
+    + '<p style="color:#646461;font-size:14px;line-height:22px;margin:0 0 6px">1. Complete onboarding (5 minutes, saves as you go)</p>'
+    + '<p style="color:#646461;font-size:14px;line-height:22px;margin:0 0 6px">2. We confirm kickoff - Monday to Friday, 9am to 6pm WAT</p>'
+    + '<p style="color:#646461;font-size:14px;line-height:22px;margin:0 0 0">3. We build, test, and hand over your systems. Track everything in your workspace.</p>'
+    + '</div>'
+    + '<p style="color:#646461;font-size:14px;line-height:22px;margin:24px 0 0">Questions? Reply to this email or use the support page. We respond within 24 hours on business days.</p>'
+    + '<p style="color:#252525;font-size:14px;font-weight:600;margin:24px 0 0">Ayoolamikun</p>'
+    + '<p style="color:#777773;font-size:12px;margin:2px 0 0">ELION</p>'
+    + '</div></div></body></html>';
+  return { subject, html, text: "Hi " + data.firstName + ",\n\nWelcome to ELION. Your project for " + data.businessName + " is officially underway.\n\nYour first step: complete the short onboarding form (saves as you go):\nhttps://elion.com.ng/dashboard/portal/onboarding\n\nWhat happens next:\n1. Complete onboarding (5 minutes)\n2. We confirm kickoff (Mon-Fri, 9am-6pm WAT)\n3. We build, test, and hand over your systems\n\nQuestions? Reply here or via the support page.\n\nAyoolamikun\nELION" };
 }
 
 export function buildKickoffWhatsApp(data: KickoffWhatsAppData): string {
