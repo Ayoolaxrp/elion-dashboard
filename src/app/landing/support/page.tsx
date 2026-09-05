@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { MessageSquare, Mail, Phone, ChevronDown, ChevronUp, CheckCircle, Send, User, Tag } from "lucide-react";
 import { motion } from "framer-motion";
 import { validateName, validateEmail, validateMessage } from "@/lib/validation";
+import SupportAssistantWidget from "@/components/support-assistant-widget";
 
 // Business hours: Monday–Friday 09:00–18:00 WAT (Africa/Lagos).
 function getWATNow() {
@@ -95,6 +95,15 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-screen bg-[var(--color-surface-raised)]">
+      <SupportAssistantWidget
+        onHandoff={(context) => {
+          if (!context) return;
+          setForm((f) => ({
+            ...f,
+            message: f.message ? `${f.message}\n\n${context}` : context,
+          }));
+        }}
+      />
       {/* Header */}
       <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16 text-center">
