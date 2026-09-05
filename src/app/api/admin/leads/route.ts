@@ -92,7 +92,7 @@ export async function PATCH(request: Request) {
   if (error) {
     const msg = error.message || "";
     if (/archived_at/.test(msg)) {
-      return NextResponse.json({ error: "Archive is unavailable — apply migration supabase/migrations/017_lead_archive.sql first." }, { status: 400 });
+      return NextResponse.json({ error: "Archive is unavailable : apply migration supabase/migrations/017_lead_archive.sql first." }, { status: 400 });
     }
     return NextResponse.json({ error: msg }, { status: 500 });
   }

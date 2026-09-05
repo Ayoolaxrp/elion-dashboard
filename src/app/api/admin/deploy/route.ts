@@ -11,7 +11,7 @@
  * Gates (never bypassed):
  *   - admin only
  *   - client must exist
- *   - status is always "pending" — a row here is NOT "live"
+ *   - status is always "pending" , a row here is NOT "live"
  *   - idempotent: repeated calls never create a duplicate automation
  *     for the same client + template
  */
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
         template_id: template.id,
         custom_name: product.custom_name || template.name,
         custom_config: product.config || {},
-        status: "pending", // NEVER "live" — provisioning gates apply later
+        status: "pending", // NEVER "live" : provisioning gates apply later
       })
       .select("id, status")
       .single();

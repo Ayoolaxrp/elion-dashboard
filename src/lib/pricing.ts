@@ -1,4 +1,4 @@
-// ELION — Canonical Pricing Model
+// ELION : Canonical Pricing Model
 // ------------------------------------------------------------------
 // Single source of truth for every page that shows pricing:
 //   - homepage (/)
@@ -12,7 +12,7 @@
 // src/lib/products.ts) but pricing is always shown as the bundles
 // below so the numbers reconcile across the site.
 //
-// IMPORTANT: the account name is intentionally NOT set — it must be
+// IMPORTANT: the account name is intentionally NOT set : it must be
 // added only when confirmed by the owner. Never invent it.
 // ------------------------------------------------------------------
 
@@ -165,11 +165,11 @@ export const ELION_PAYMENT = {
   method: "Bank transfer",
   bank: "Opay",
   accountNumber: "9126281855",
-  // NOTE: account name intentionally not set — confirm with the owner
+  // NOTE: account name intentionally not set : confirm with the owner
   // before ever displaying it. Never invent it.
   accountName: null as string | null,
   notice:
-    "Manual payment is currently available. Online card/payment processing is being finalized — you can secure your implementation via bank transfer.",
+    "Manual payment is currently available. Online card/payment processing is being finalized : you can secure your implementation via bank transfer.",
   afterPayment:
     "After payment, send your payment confirmation/reference via the contact channel and we will begin onboarding.",
   onlinePaymentNote: "Secure online payment will be available once our payment processing setup is fully verified.",

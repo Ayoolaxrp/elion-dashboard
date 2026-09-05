@@ -42,7 +42,7 @@ interface WizardState {
 const DEFAULT_STATE: WizardState = { company: "", industry: "", website: "", contact: "", email: "", phone: "", timezone: "Africa/Lagos", currency: "NGN" };
 
 /**
- * Demo provider connection panel — REAL connections require credentials.
+ * Demo provider connection panel : REAL connections require credentials.
  *
  * `covers` maps each row to the exact `provider` strings used by the product
  * infrastructure definitions, so toggling "Connected" satisfies the
@@ -224,7 +224,7 @@ export default function DeployPage() {
       setCreated({
         ok: true,
         label: "Client + systems created",
-        detail: `${state.company} saved with ${createdCount} automation record${createdCount === 1 ? "" : "s"} in Supabase (status: pending — provisioning gates still apply before anything goes live).`,
+        detail: `${state.company} saved with ${createdCount} automation record${createdCount === 1 ? "" : "s"} in Supabase (status: pending : provisioning gates still apply before anything goes live).`,
       });
       setSaving(false);
     } catch (err) {
@@ -449,7 +449,7 @@ export default function DeployPage() {
           </div>
         )}
 
-        {/* STEP 1 — BASIC CLIENT INFO */}
+        {/* STEP 1 : BASIC CLIENT INFO */}
         {stepIdx === 0 && (
           <div className="space-y-4">
             <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl p-6">
@@ -517,7 +517,7 @@ export default function DeployPage() {
           </div>
         )}
 
-        {/* STEP 2 — SELECT SYSTEMS */}
+        {/* STEP 2 : SELECT SYSTEMS */}
         {stepIdx === 1 && (
           <div className="space-y-5">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -581,7 +581,7 @@ export default function DeployPage() {
           </div>
         )}
 
-        {/* STEP 3 — DYNAMIC CONFIG */}
+        {/* STEP 3 : DYNAMIC CONFIG */}
         {stepIdx === 2 && (
           <div className="space-y-5">
             <div>
@@ -625,7 +625,7 @@ export default function DeployPage() {
                   <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Provider connections</h3>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 uppercase tracking-wide">Demo state</span>
                 </div>
-                <p className="text-xs text-[var(--color-text-muted)] mb-4">Required infrastructure for the selected systems. In production these connect to real accounts with credentials. Toggling here only proves the validation gate works — it never sends real messages.</p>
+                <p className="text-xs text-[var(--color-text-muted)] mb-4">Required infrastructure for the selected systems. In production these connect to real accounts with credentials. Toggling here only proves the validation gate works : it never sends real messages.</p>
                 <div className="space-y-2">
                   {activeProviders.map((dp) => {
                     const needed = selectedProducts.filter((p) => p.infrastructure.items.some((i) => dp.covers.includes(i.provider))).map((p) => p.short_name).filter(Boolean).join(", ");
@@ -658,7 +658,7 @@ export default function DeployPage() {
           </div>
         )}
 
-        {/* STEP 4 — REVIEW & DEPLOY */}
+        {/* STEP 4 : REVIEW & DEPLOY */}
         {stepIdx === 3 && (
           <div className="space-y-5">
             <div className="flex items-start justify-between gap-4 flex-wrap">

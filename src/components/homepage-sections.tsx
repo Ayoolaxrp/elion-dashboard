@@ -159,7 +159,7 @@ function SecondaryCta({ href, children, size = "lg" }: { href: string; children:
 }
 
 /* ------------------------------------------------------------------ */
-/* Problem — editorial statement with staggered line reveals.          */
+/* Problem : editorial statement with staggered line reveals.          */
 /* ------------------------------------------------------------------ */
 export function ProblemSection() {
   return (
@@ -224,7 +224,7 @@ export function ProblemSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/* One-system pipeline — sticky scroll story (Lead -> Measure).        */
+/* One-system pipeline : sticky scroll story (Lead -> Measure).        */
 /* The visual anchors while the visitor scrolls; each stage activates. */
 /* Mobile renders a simple non-sticky progression.                     */
 /* ------------------------------------------------------------------ */
@@ -304,12 +304,12 @@ function OneSystemPipeline() {
                 />
               </div>
               <p className="mt-2 text-[11px] text-[var(--color-text-muted)]" data-pipeline-caption>
-                Stage {Math.min(active + 1, 8)} of {SYSTEM_FLOW.length} — keep scrolling
+                Stage {Math.min(active + 1, 8)} of {SYSTEM_FLOW.length}  · keep scrolling
               </p>
             </div>
           </div>
 
-          {/* Visual column — pipeline */}
+          {/* Visual column : pipeline */}
           <div className="rounded-2xl border border-[var(--color-border)]/50 bg-[var(--color-surface-raised)]/70 p-6 md:p-8 relative overflow-hidden">
             <div aria-hidden className="env-grid-line absolute inset-0 opacity-60" />
             <div className="relative">
@@ -380,7 +380,7 @@ function OneSystemPipeline() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Product stack — sticky-stacking cards for the automation systems.   */
+/* Product stack : sticky-stacking cards for the automation systems.   */
 /* Mobile renders as a normal stacked list with sequential reveals.    */
 /* ------------------------------------------------------------------ */
 function ProductStack() {
@@ -464,7 +464,7 @@ function ProductStack() {
         })}
       </div>
 
-      {/* Stack tail — everything converges on one operational system */}
+      {/* Stack tail : everything converges on one operational system */}
       <div className="mt-12 text-center">
         <motion.div
           initial={reduced ? undefined : { opacity: 0, scale: 0.96 }}
@@ -478,7 +478,7 @@ function ProductStack() {
             One architecture. Every leak covered.
           </p>
           <p className="text-sm text-[var(--color-text-muted)] max-w-md">
-            The same parts — configured per business, operated as one system you own.
+            The same parts : configured per business, operated as one system you own.
           </p>
         </motion.div>
       </div>
@@ -503,7 +503,7 @@ export function SystemMap() {
               Every operational leak, covered.
             </h2>
             <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
-              Follow one lead through the system ELION operates — then see the
+              Follow one lead through the system ELION operates, then see the
               reusable systems each business can deploy.
             </p>
           </motion.div>
@@ -544,7 +544,7 @@ export function SystemMap() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Audit — free-audit section with investigation sequence + report.    */
+/* Audit : free-audit section with investigation sequence + report.    */
 /* ------------------------------------------------------------------ */
 export function AuditSection() {
   const reduced = useReducedMotion();
@@ -720,7 +720,7 @@ export function AuditSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Client dashboard — interface progressively assembles + floats.      */
+/* Client dashboard : interface progressively assembles + floats.      */
 /* ------------------------------------------------------------------ */
 export function DashboardPreview() {
   const reduced = useReducedMotion();
@@ -885,7 +885,7 @@ export function DashboardPreview() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Control plane — admin infrastructure with live connection feel.     */
+/* Control plane : admin infrastructure with live connection feel.     */
 /* ------------------------------------------------------------------ */
 export function AdminSection() {
   const reduced = useReducedMotion();
@@ -1000,7 +1000,7 @@ export function AdminSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/* How ELION Works — pipeline progress driven by scroll.               */
+/* How ELION Works : pipeline progress driven by scroll.               */
 /* ------------------------------------------------------------------ */
 export function HowItWorks() {
   const reduced = useReducedMotion();
@@ -1072,7 +1072,7 @@ export function HowItWorks() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Ownership — layers separate, then fold together under one idea.     */
+/* Ownership : layers separate, then fold together under one idea.     */
 /* ------------------------------------------------------------------ */
 export function OwnershipSection() {
   const reduced = useReducedMotion();
@@ -1133,7 +1133,7 @@ export function OwnershipSection() {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="mt-10 text-xs uppercase tracking-[0.2em] text-[var(--color-text-muted)]"
         >
-          Workflows · Configurations · Data · Documentation — all yours.
+          Workflows · Configurations · Data · Documentation : all yours.
         </motion.p>
       </div>
     </section>
@@ -1141,16 +1141,16 @@ export function OwnershipSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Pricing — restrained entrance + depth.                              */
+/* Pricing : restrained entrance + depth.                              */
 /* ------------------------------------------------------------------ */
 export function PricingSection() {
   const reduced = useReducedMotion();
-  // Canonical pricing lives in src/lib/pricing.ts (ELION_TIERS) — the same
+  // Canonical pricing lives in src/lib/pricing.ts (ELION_TIERS) , the same
   // model as /funnel and /landing/pricing, so no page can drift.
   const plans = ELION_TIERS.map((t) => ({
     name: t.name,
     price: t.price,
-    note: t.bestFor.charAt(0).toUpperCase() + t.bestFor.slice(1) + " — one-time implementation fee. " + t.supportDays + ".",
+    note: t.bestFor.charAt(0).toUpperCase() + t.bestFor.slice(1) + " : one-time implementation fee. " + t.supportDays + ".",
     featured: t.popular,
   }));
   return (
@@ -1169,7 +1169,7 @@ export function PricingSection() {
           </h2>
           <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
             One-time implementation fee. Optional monthly support. Pricing
-            depends on the systems and scope your business needs — start with
+            depends on the systems and scope your business needs : start with
             the free audit to find out what&apos;s actually leaking.
           </p>
         </motion.div>
@@ -1237,7 +1237,7 @@ export function PricingSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/* FAQ — accessible premium accordion.                                 */
+/* FAQ : accessible premium accordion.                                 */
 /* ------------------------------------------------------------------ */
 export function FaqSection() {
   const [open, setOpen] = useState<{ cat: number; item: number } | null>({ cat: 0, item: 0 });
@@ -1328,7 +1328,7 @@ export function FaqSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Final CTA — the environment returns.                                */
+/* Final CTA , the environment returns.                                */
 /* ------------------------------------------------------------------ */
 export function FinalCta() {
   const reduced = useSafeReduced();

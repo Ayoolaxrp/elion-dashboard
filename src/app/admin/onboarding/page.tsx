@@ -167,7 +167,7 @@ export default function AdminOnboarding() {
                     </div>
                   </div>
 
-                  {/* Individual sends — always available for this client */}
+                  {/* Individual sends : always available for this client */}
                   <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)]">
                     <h3 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">Send onboarding (individual)</h3>
 
@@ -200,7 +200,7 @@ export default function AdminOnboarding() {
                           <div className="min-w-0">
                             <p className="text-sm font-semibold text-[var(--color-text-primary)]">Kickoff call message</p>
                             <p className="text-xs text-[var(--color-text-muted)]">
-                              {sel.kickoff_message_sent ? `Generated ${fmt(sel.kickoff_message_sent_at)} — copy & send on WhatsApp` : "Draft the kickoff invitation"}
+                              {sel.kickoff_message_sent ? `Generated ${fmt(sel.kickoff_message_sent_at)}  · copy & send on WhatsApp` : "Draft the kickoff invitation"}
                             </p>
                           </div>
                         </div>

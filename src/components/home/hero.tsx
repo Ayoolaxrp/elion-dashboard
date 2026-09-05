@@ -8,7 +8,7 @@ import { EnvBackdrop, EnvRingMotif } from "@/components/home/env";
 import { useSafeReduced } from "@/components/home/use-safe-reduced";
 
 /* ------------------------------------------------------------------ */
-/* Layer 02 — abstract operational network (nodes + connections).      */
+/* Layer 02 : abstract operational network (nodes + connections).      */
 /* Decorative only: aria-hidden, paints as a single SVG.               */
 /* ------------------------------------------------------------------ */
 function NetworkField() {
@@ -40,7 +40,7 @@ function NetworkField() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Layer 03 — the product layer: a compact ELION Operations console.   */
+/* Layer 03 , the product layer: a compact ELION Operations console.   */
 /* ------------------------------------------------------------------ */
 function OpsConsole() {
   const rows = [
@@ -102,7 +102,7 @@ function OpsConsole() {
               <Activity className="w-3.5 h-3.5 text-[var(--color-accent-cyan)]" />
               Leads processed
             </span>
-            <span className="text-sm font-bold text-[var(--color-text-primary)] tabular-nums">—</span>
+            <span className="text-sm font-bold text-[var(--color-text-primary)] tabular-nums">-</span>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@ function OpsConsole() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero — layered environment that separates as the visitor scrolls.   */
+/* Hero : layered environment that separates as the visitor scrolls.   */
 /* Entrance is CSS-keyframed (first paint, no JS) so LCP stays fast.   */
 /* ------------------------------------------------------------------ */
 export function Hero() {
@@ -123,20 +123,20 @@ export function Hero() {
   });
 
   // Layer movement rates (px per 100vh of hero scroll).
-  const yBg = useTransform(scrollYProgress, [0, 1], [0, -46]); // Layer 01 — deep background
-  const yNet = useTransform(scrollYProgress, [0, 1], [0, -150]); // Layer 02 — infrastructure
+  const yBg = useTransform(scrollYProgress, [0, 1], [0, -46]); // Layer 01 : deep background
+  const yNet = useTransform(scrollYProgress, [0, 1], [0, -150]); // Layer 02 : infrastructure
   const oNet = useTransform(scrollYProgress, [0.3, 0.9], [1, 0]);
-  const yConsole = useTransform(scrollYProgress, [0, 1], [0, -250]); // Layer 03 — product
+  const yConsole = useTransform(scrollYProgress, [0, 1], [0, -250]); // Layer 03 : product
   const sConsole = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
   const oConsole = useTransform(scrollYProgress, [0.12, 0.78], [1, 0]);
-  const yMotif = useTransform(scrollYProgress, [0, 1], [0, -360]); // Layer 04 — foreground
+  const yMotif = useTransform(scrollYProgress, [0, 1], [0, -360]); // Layer 04 : foreground
   const oMotif = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
   const yText = useTransform(scrollYProgress, [0, 0.42], [0, -140]);
   const oText = useTransform(scrollYProgress, [0, 0.42], [1, 0]);
 
   return (
     <section ref={ref} className="relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24 px-6">
-      {/* Layer 01 — deep background */}
+      {/* Layer 01 : deep background */}
       {reduced ? (
         <EnvBackdrop />
       ) : (
@@ -145,14 +145,14 @@ export function Hero() {
         </motion.div>
       )}
 
-      {/* Layer 02 — infrastructure */}
+      {/* Layer 02 : infrastructure */}
       {!reduced && (
         <motion.div style={{ y: yNet, opacity: oNet }} className="absolute inset-0">
           <NetworkField />
         </motion.div>
       )}
 
-      {/* Layer 04 — foreground depth accents */}
+      {/* Layer 04 : foreground depth accents */}
       {!reduced && (
         <motion.div style={{ y: yMotif, opacity: oMotif }} className="absolute inset-0">
           <EnvRingMotif className="right-[4%] top-24 w-56 h-56 hidden md:block" />
@@ -218,7 +218,7 @@ export function Hero() {
             </p>
           </motion.div>
 
-          {/* Layer 03 — product layer (desktop) */}
+          {/* Layer 03 : product layer (desktop) */}
           {!reduced ? (
             <motion.div
               style={{ y: yConsole, scale: sConsole, opacity: oConsole }}

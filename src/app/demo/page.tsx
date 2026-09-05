@@ -4,7 +4,7 @@ import Link from "next/link";
 import DemoExperience from "@/components/demo-experience";
 
 export const metadata: Metadata = {
-  title: "Demo — See ELION in Action",
+  title: "Demo : See ELION in Action",
   description:
     "Watch how ELION handles an incoming lead end-to-end: capture, qualification, response, booking and follow-up. Simulated with sample data.",
   alternates: { canonical: "/demo" },

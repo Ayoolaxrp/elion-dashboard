@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 /* ------------------------------------------------------------------ */
-/* Small rendering helpers for documentation bodies. No animation,     */
-/* minimal footprint — reading speed first.                            */
+/* Small rendering helpers for documentation bodies. No animation,    */
+/* minimal footprint : reading speed first.                            */
 /* ------------------------------------------------------------------ */
 
 function Anchor({ id }: { id: string }) {
@@ -125,7 +125,7 @@ export function Callout({
 export function ReviewFlag({ children }: { children: ReactNode }) {
   return (
     <span className="inline-block mt-1 rounded-md border border-[var(--color-warning)]/30 bg-[var(--color-warning)]/5 px-2 py-1 text-xs leading-5 text-[var(--color-warning)]">
-      ⚠ Pending review — {children}
+      ⚠ Pending review  · {children}
     </span>
   );
 }

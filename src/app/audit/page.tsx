@@ -480,7 +480,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
               </a>
             </div>
 
-            {/* status strip — communicates analysis, not live results */}
+            {/* status strip : communicates analysis, not live results */}
             <div className="animate-hero-in mt-14 inline-flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-[var(--color-text-muted)] font-medium tracking-wide" style={{ animationDelay: "280ms" }}>
               <span className="inline-flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]" />
@@ -747,7 +747,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                     </div>
                   </div>
 
-                  {/* Business verification — only when facts were actually found */}
+                  {/* Business verification : only when facts were actually found */}
                   {auditResult.businessVerification && auditResult.businessVerification.facts.length > 0 && (
                     <div>
                       <h3 className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase tracking-[0.16em] mb-4">What ELION Checked</h3>

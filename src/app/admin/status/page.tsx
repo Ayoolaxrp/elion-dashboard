@@ -70,7 +70,7 @@ export default function AdminStatusPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: comp.id, status: u.status, note: u.note, is_visible: u.is_visible }),
     })
-    if (!r.ok) { setErr("Could not save component — " + (await r.json()).error); setSaving(null); return }
+    if (!r.ok) { setErr("Could not save component : " + (await r.json()).error); setSaving(null); return }
     setComps((p) => p.map((c) => (c.id === comp.id ? u : c)))
     setSaving(null)
   }
@@ -152,7 +152,7 @@ export default function AdminStatusPage() {
       {showAdd && (
         <div className="mb-6 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-accent)]/30">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Component name — only add user-facing services" className="flex-1 px-3 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-sm" onKeyDown={(e) => e.key === "Enter" && addNew()} />
+            <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Component name : only add user-facing services" className="flex-1 px-3 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-sm" onKeyDown={(e) => e.key === "Enter" && addNew()} />
             <div className="flex gap-2">
               <button onClick={addNew} className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold">Add</button>
               <button onClick={() => setShowAdd(false)} className="px-4 py-2 rounded-lg bg-[var(--color-surface)] text-sm">Cancel</button>
@@ -322,7 +322,7 @@ export default function AdminStatusPage() {
         {incs.length === 0 && (
           <div className="text-center py-10 rounded-xl border border-dashed border-[var(--color-border)]">
             <p className="text-sm text-[var(--color-text-muted)]">No incidents recorded.</p>
-            <p className="text-xs text-[var(--color-text-muted)]/70 mt-1">Create one above — it will appear on the public page with a full Investigating → Resolved timeline.</p>
+            <p className="text-xs text-[var(--color-text-muted)]/70 mt-1">Create one above : it will appear on the public page with a full Investigating → Resolved timeline.</p>
           </div>
         )}
       </div>

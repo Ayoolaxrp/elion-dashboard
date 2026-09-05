@@ -1,4 +1,4 @@
-// Google Calendar + Google Meet — server-side integration (REST, no client deps).
+// Google Calendar + Google Meet : server-side integration (REST, no client deps).
 // Tokens live ONLY in booking_settings.google_tokens and are never sent to the browser.
 // Nothing here ever fabricates an event or a Meet link: functions return real API results
 // or throw, and callers must surface the failure truthfully.
@@ -31,10 +31,10 @@ export function googleRedirectUri(reqOrigin?: string): string {
 }
 
 // ---------------------------------------------------------------
-// Persistence — booking_settings.<google_tokens[:client_id]>
+// Persistence : booking_settings.<google_tokens[:client_id]>
 // The key without a client_id is ELION's own calendar (strategy
 // calls on /landing/book). A client_id-scoped key is the calendar of
-// one client's Booking Automation — each client's automation gets its
+// one client's Booking Automation : each client's automation gets its
 // own Google Calendar connection (reusable template, per-client
 // credentials). Tokens are only ever read/written server-side.
 // ---------------------------------------------------------------
@@ -102,7 +102,7 @@ export function authUrl(state: string, reqOrigin?: string): string {
 }
 
 // ---------------------------------------------------------------
-// OAuth state signing — the state carries the client_id for per-client
+// OAuth state signing , the state carries the client_id for per-client
 // connections. It is signed (HMAC-SHA256) so a callback with a tampered
 // state cannot misattribute tokens to another client's scope.
 // ---------------------------------------------------------------
@@ -228,7 +228,7 @@ async function rawAuthedRequest<T>(
 // ---------------------------------------------------------------
 // Authenticated request (handles refresh + retry once).
 // clientId selects whose calendar (ELION global vs a client's Booking
-// Automation) — tokens are looked up and stored under the same scope.
+// Automation) : tokens are looked up and stored under the same scope.
 // ---------------------------------------------------------------
 async function authedRequest<T>(
   method: "GET" | "POST" | "PATCH" | "DELETE",

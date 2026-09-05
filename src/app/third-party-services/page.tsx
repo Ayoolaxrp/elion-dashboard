@@ -47,16 +47,16 @@ export default function ThirdPartyServicesPage() {
               <LUL
                 items={[
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Hosting / deployment</strong> —
+                    <strong className="text-[var(--color-text-primary)]">Hosting / deployment</strong> -
                     the website and APIs are deployed on a managed hosting platform (currently Vercel).
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Database / authentication</strong> —
+                    <strong className="text-[var(--color-text-primary)]">Database / authentication</strong> -
                     data and authentication are managed through a database and auth platform (currently
                     Supabase, including its storage and row-level security model).
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Transactional email</strong> —
+                    <strong className="text-[var(--color-text-primary)]">Transactional email</strong> -
                     confirmation and notification emails are sent through an email delivery provider
                     (currently Resend).
                   </>,
@@ -84,25 +84,25 @@ export default function ThirdPartyServicesPage() {
               <LUL
                 items={[
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Google</strong> — Google Calendar and
+                    <strong className="text-[var(--color-text-primary)]">Google</strong> : Google Calendar and
                     Google Meet for booking automation (connected via OAuth only where enabled).
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">WhatsApp / Meta</strong> — WhatsApp
+                    <strong className="text-[var(--color-text-primary)]">WhatsApp / Meta</strong> : WhatsApp
                     Business messaging for lead response, follow-up and AI agents, where a WhatsApp provider
                     has been configured for the client.
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">AI model providers</strong> — for
+                    <strong className="text-[var(--color-text-primary)]">AI model providers</strong> : for
                     AI-assisted responses and agents, where configured.
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Voice providers</strong> — for voice
+                    <strong className="text-[var(--color-text-primary)]">Voice providers</strong> : for voice
                     AI products, where selected.
                   </>,
                   <>
                     <strong className="text-[var(--color-text-primary)]">Email / SMS / CRM / calendar</strong>{" "}
-                    — where a system integrates with them.
+                    : where a system integrates with them.
                   </>,
                 ]}
               />

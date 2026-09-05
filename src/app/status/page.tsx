@@ -66,7 +66,7 @@ export default async function StatusPage() {
 
   // Public view: ONLY deliberately public, configured components. Internal or
   // unconfigured infrastructure (n8n, WhatsApp, CRM, payments, etc.) is
-  // excluded here — it lives in the admin view only.
+  // excluded here : it lives in the admin view only.
   const { data: components } = await sb
     .from("system_status")
     .select("*")
@@ -97,7 +97,7 @@ export default async function StatusPage() {
   const overallMeta = STATUS_META[overall.value];
   const operationalCount = comps.filter((c) => c.status === "operational").length;
 
-  // Uptime math from REAL snapshots only — days with no snapshot are "no data".
+  // Uptime math from REAL snapshots only : days with no snapshot are "no data".
   const snapByComp = new Map<string, Map<string, StatusVal>>();
   for (const s of snaps) {
     if (!snapByComp.has(s.component_id)) snapByComp.set(s.component_id, new Map());
@@ -210,7 +210,7 @@ export default async function StatusPage() {
                     })}
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-sm font-bold text-[#E6E8EE] tabular-nums">{uptime === null ? "—" : `${uptime}%`}</p>
+                    <p className="text-sm font-bold text-[#E6E8EE] tabular-nums">{uptime === null ? "-" : `${uptime}%`}</p>
                     <p className="text-[10px] text-[#6B7385]">{tracked.length} day{tracked.length === 1 ? "" : "s"} tracked</p>
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export default async function StatusPage() {
           })}
         </div>
 
-        {/* 3. Incident log — reverse chronological, clean days included */}
+        {/* 3. Incident log : reverse chronological, clean days included */}
         <div className="mb-10">
           <h2 className="text-base font-bold mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Incident history</h2>
           {historyDays.length === 0 ? (

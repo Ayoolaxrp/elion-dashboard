@@ -28,7 +28,7 @@ export async function generateMetadata({
   const article = getDocArticle(catSlug, slug);
   if (!article) return { title: "Documentation" };
   return {
-    title: `${article.title} — Docs`,
+    title: `${article.title}  · Docs`,
     description: article.description,
     alternates: { canonical: docPath(catSlug, slug) },
   };

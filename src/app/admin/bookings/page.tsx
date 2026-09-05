@@ -162,7 +162,7 @@ export default function AdminBookingsPage() {
                   ) : conn.connected ? (
                     <p className="text-xs text-[var(--color-success)] flex items-center gap-1.5"><CheckCircle2 className="w-3 h-3" /> Connected{conn.account_email ? ` as ${conn.account_email}` : ""} · live availability + Meet creation active</p>
                   ) : (
-                    <p className="text-xs text-[var(--color-warning)]">Configured but not connected — availability is paused until the calendar is linked.</p>
+                    <p className="text-xs text-[var(--color-warning)]">Configured but not connected : availability is paused until the calendar is linked.</p>
                   )}
                 </div>
               </div>
@@ -185,13 +185,13 @@ export default function AdminBookingsPage() {
               <h2 className="text-sm font-semibold text-[var(--color-text-primary)] flex items-center gap-2"><CalendarDays className="w-4 h-4 text-[var(--color-accent)]" /> Client booking automations</h2>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wide">Per-client calendars</span>
             </div>
-            <p className="text-xs text-[var(--color-text-muted)] mb-4">Each client with a Booking Automation gets its own Google Calendar connection. Bookings run against the client's calendar — never ELION's shared one.</p>
+            <p className="text-xs text-[var(--color-text-muted)] mb-4">Each client with a Booking Automation gets its own Google Calendar connection. Bookings run against the client's calendar , never ELION's shared one.</p>
             {loading ? (
               <div className="flex items-center justify-center py-8"><Loader2 className="w-5 h-5 text-[var(--color-accent)] animate-spin" /></div>
             ) : clientCalendars.length === 0 ? (
               <div className="text-center py-8 border border-dashed border-[var(--color-border)]/60 rounded-xl">
                 <p className="text-sm font-semibold text-[var(--color-text-secondary)]">No client booking automations yet</p>
-                <p className="text-xs text-[var(--color-text-muted)] mt-1">Deploy <span className="text-[var(--color-text-primary)]">Booking Automation</span> to a client from the Deploy Systems flow — its calendar connection will appear here.</p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-1">Deploy <span className="text-[var(--color-text-primary)]">Booking Automation</span> to a client from the Deploy Systems flow : its calendar connection will appear here.</p>
               </div>
             ) : (
               <div className="space-y-2.5">

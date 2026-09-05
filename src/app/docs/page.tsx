@@ -35,7 +35,7 @@ export default function DocsHome() {
           ELION Documentation
         </h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-[var(--color-text-muted)]">
-          Everything you need to understand ELION — the audit, the automation systems, how onboarding and
+          Everything you need to understand ELION , the audit, the automation systems, how onboarding and
           activation work, and what each product needs to go live. {totalArticles} guides across{" "}
           {DOC_CATEGORIES.length} sections.
         </p>

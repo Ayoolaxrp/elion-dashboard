@@ -152,7 +152,7 @@ export default function PaymentsPage() {
                 const sc = STATUS_CONFIG[p.status] || STATUS_CONFIG.pending;
                 const Icon = sc.icon;
                 const isOpen = expanded === p.id;
-                const company = p.company_name || p.clients?.company_name || "—";
+                const company = p.company_name || p.clients?.company_name || "-";
                 const client = p.client_name || p.clients?.contact_name || null;
                 return (
                   <div key={p.id}>
@@ -162,12 +162,12 @@ export default function PaymentsPage() {
                     >
                       <div className="lg:col-span-2 min-w-0">
                         <p className="font-medium text-[var(--color-text-primary)] truncate">{company}</p>
-                        <p className="text-xs text-[var(--color-text-muted)] truncate">{client || p.invoices?.invoice_number || "—"}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] truncate">{client || p.invoices?.invoice_number || "-"}</p>
                       </div>
                       <span className="font-semibold text-[var(--color-text-primary)]">₦{(p.amount || 0).toLocaleString()}</span>
                       <span className="text-[var(--color-text-secondary)] capitalize">{(p.method || "bank_transfer").replace("_", " ")}</span>
-                      <span className="hidden sm:block text-xs font-mono text-[var(--color-text-muted)] truncate">{p.reference || "—"}</span>
-                      <span className="hidden lg:block text-xs text-[var(--color-text-muted)]">{(p.paid_at || p.created_at) ? new Date(p.paid_at || p.created_at).toLocaleDateString("en-NG") : "—"}</span>
+                      <span className="hidden sm:block text-xs font-mono text-[var(--color-text-muted)] truncate">{p.reference || "-"}</span>
+                      <span className="hidden lg:block text-xs text-[var(--color-text-muted)]">{(p.paid_at || p.created_at) ? new Date(p.paid_at || p.created_at).toLocaleDateString("en-NG") : "-"}</span>
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold justify-self-start ${sc.color}`}>
                         <Icon className="w-3 h-3" />
                         {sc.label}
@@ -183,7 +183,7 @@ export default function PaymentsPage() {
                           {p.invoices && (
                             <div>
                               <p className="text-[var(--color-text-muted)] mb-1">Invoice</p>
-                              <p className="text-[var(--color-text-secondary)]">{p.invoices.invoice_number || p.invoices.title || "—"}</p>
+                              <p className="text-[var(--color-text-secondary)]">{p.invoices.invoice_number || p.invoices.title || "-"}</p>
                             </div>
                           )}
                           <div>

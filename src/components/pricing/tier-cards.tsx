@@ -17,7 +17,7 @@ interface TierCardsProps {
   detailed?: boolean;
   /** guidance callout shown under the grid, e.g. "Most clients start with Growth" */
   callout?: string;
-  /** "Start with an audit" or "Get Started" — which CTA appears on each card */
+  /** "Start with an audit" or "Get Started" : which CTA appears on each card */
   ctaLabel?: "audit" | "getStarted";
 }
 
@@ -96,7 +96,7 @@ export default function TierCards({ ctaHref = "/audit", showPayment = false, det
         ))}
       </div>
 
-      {/* Implementation pipeline — animated, one-time reveal */}
+      {/* Implementation pipeline : animated, one-time reveal */}
       <motion.div
         initial={reduced ? false : { opacity: 0, y: 18 }}
         whileInView={reduced ? {} : { opacity: 1, y: 0 }}
@@ -146,7 +146,7 @@ export default function TierCards({ ctaHref = "/audit", showPayment = false, det
           className="text-center text-xs text-[var(--color-text-muted)] mt-5 flex items-center justify-center gap-1.5 flex-wrap"
         >
           <ShieldCheck className="w-3.5 h-3.5 text-[var(--color-success)] shrink-0" />
-          One-time implementation fee — you own everything we build. No hidden renewal.
+          One-time implementation fee : you own everything we build. No hidden renewal.
         </motion.p>
       </motion.div>
 

@@ -161,7 +161,7 @@ export function LUL({ items }: { items: ReactNode[] }) {
 export function LegalReview({ children }: { children: ReactNode }) {
   return (
     <div className="rounded-xl border border-[var(--color-warning)]/30 bg-[var(--color-warning)]/5 px-4 py-3 text-sm leading-6 text-[var(--color-warning)]">
-      ⚠ Pending review — {children}
+      ⚠ Pending review  · {children}
     </div>
   );
 }

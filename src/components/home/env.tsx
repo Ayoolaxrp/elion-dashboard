@@ -3,7 +3,7 @@
  *
  * Pure-CSS decorative field (no hooks, no JS): a faint operational grid,
  * two radial light sources and a fine scanline texture. Shared by the hero
- * (top of the page) and the final CTA so the visual story forms a loop —
+ * (top of the page) and the final CTA so the visual story forms a loop -
  * ENTER -> DESCEND -> EXPLORE -> RETURN. Cheap to paint: gradients + masks
  * only, no filters, no layout animation.
  */

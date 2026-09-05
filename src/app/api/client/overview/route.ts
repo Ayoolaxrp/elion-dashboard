@@ -10,7 +10,7 @@ import { createClient } from "@supabase/supabase-js";
 // schema. See the repo-wide admin route pattern.
 
 // ------------------------------------------------------------------
-// Client dashboard overview — everything the client sees is derived
+// Client dashboard overview : everything the client sees is derived
 // server-side from real rows, scoped to the signed-in user's client
 // organization. Nothing is fabricated: no metric is reported unless a
 // real row supports it, and the UI shows "No activity yet" otherwise.
@@ -158,7 +158,7 @@ export async function GET() {
     workflow_templates?: { required_integrations?: string[] | null } | { required_integrations?: string[] | null }[] | null;
   }): Health => {
   const wt = Array.isArray(a.workflow_templates) ? a.workflow_templates[0] : a.workflow_templates;
-  // Only connection types the client can see/own count as required — template
+  // Only connection types the client can see/own count as required : template
   // rows may also list non-connection concepts (e.g. "forms").
   const knownTypes = Object.keys(INTEGRATION_LABELS);
   const required: string[] = Array.isArray(wt?.required_integrations)
@@ -207,7 +207,7 @@ export async function GET() {
   });
 
   // ------------------------------------------------------------------
-  // Outcomes — real counts only; hasData=false when nothing exists
+  // Outcomes : real counts only; hasData=false when nothing exists
   // ------------------------------------------------------------------
   const outcomes: {
     hasData: boolean;
@@ -249,7 +249,7 @@ export async function GET() {
   }
 
   // ------------------------------------------------------------------
-  // Needs attention — real, actionable items only
+  // Needs attention : real, actionable items only
   // ------------------------------------------------------------------
   const needsAttention: { kind: string; title: string; message: string; action: string; href: string }[] = [];
 

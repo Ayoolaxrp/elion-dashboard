@@ -8,7 +8,7 @@ import { useReducedMotion } from "framer-motion";
  *
  * `useReducedMotion()` resolves synchronously on the client, so a markup
  * branch on it (e.g. rendering a static list instead of a sticky story)
- * would produce server HTML that differs from the first client render —
+ * would produce server HTML that differs from the first client render -
  * a React hydration error for reduced-motion users.
  *
  * This hook reports `false` until after mount (matching the SSR render) and

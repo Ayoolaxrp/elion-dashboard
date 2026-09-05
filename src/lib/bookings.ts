@@ -1,5 +1,5 @@
 // Shared booking domain logic (server-side).
-// Availability is computed from the connected Google Calendar via Free/Busy —
+// Availability is computed from the connected Google Calendar via Free/Busy -
 // never fabricated. A booking is only created after the calendar event exists.
 
 import { createServerClient } from "@supabase/ssr";
@@ -279,7 +279,7 @@ export async function computeAvailability(
 }
 
 // ---------------------------------------------------------------
-// Booking creation — the gate: real calendar event BEFORE any row
+// Booking creation , the gate: real calendar event BEFORE any row
 // ---------------------------------------------------------------
 export interface NewBookingInput {
   customer_name: string;
@@ -383,7 +383,7 @@ export async function createBooking(input: NewBookingInput, clientId?: string | 
 
   const booking = data as CreatedBooking;
 
-  // Confirmation email — sent only now that the booking is REAL (calendar
+  // Confirmation email : sent only now that the booking is REAL (calendar
   // event exists + row persisted). Delivery failure never changes the
   // booking outcome; it is logged so it can be retried.
   try {

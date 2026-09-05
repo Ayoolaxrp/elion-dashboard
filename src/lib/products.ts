@@ -2,7 +2,7 @@
 // ------------------------------------------------------------------
 // Every deployable ELION product is defined here as a schema-driven
 // template. The admin UI renders ONLY the configuration a selected
-// product requires — nothing is hardcoded per-client.
+// product requires : nothing is hardcoded per-client.
 //
 // Pricing model (kept explicit):
 //   - elion.setup_fee            one-time ELION implementation fee
@@ -51,7 +51,7 @@ export interface InfrastructureRequirement {
   purpose: string;
   required: boolean;
   billing_type: BillingType;
-  /** indicative only — never treated as a hard price */
+  /** indicative only , never treated as a hard price */
   est_recurring_cost_note?: string;
   usage_based: boolean;
   status: "not_configured" | "connected" | "testing";
@@ -86,7 +86,7 @@ export interface ProductDefinition {
   icon: string;
   pricing: ProductPricing;
   infrastructure: ProductInfrastructure;
-  /** schema-driven configuration — the UI renders exactly this */
+  /** schema-driven configuration , the UI renders exactly this */
   config_groups: ProductConfigGroup[];
   /** human rule summary used by the client-facing "what will happen" view */
   plain_english: string[];
@@ -205,7 +205,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
     category: "communication",
     tagline: "A polite, always-on receptionist for inbound enquiries.",
     description:
-      "An AI agent that answers common questions, collects information, qualifies callers, books appointments and escalates to a human when it should — across WhatsApp, voice and chat.",
+      "An AI agent that answers common questions, collects information, qualifies callers, books appointments and escalates to a human when it should : across WhatsApp, voice and chat.",
     version: "v1.0",
     status: "active",
     icon: "Headset",
@@ -219,7 +219,7 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
         { provider: "Calendar (Google/Outlook)", purpose: "Availability + booking", required: false, billing_type: "client_pays_directly", usage_based: false, est_recurring_cost_note: "Provider subscription if applicable", status: "not_configured" },
       ],
       notes: [
-        "Voice AI infrastructure (e.g. Vapi) is billed separately by the provider — it is not an ELION fee.",
+        "Voice AI infrastructure (e.g. Vapi) is billed separately by the provider : it is not an ELION fee.",
         "If voice is enabled, the client needs an active provider account or ELION bills it back at cost.",
       ],
     },

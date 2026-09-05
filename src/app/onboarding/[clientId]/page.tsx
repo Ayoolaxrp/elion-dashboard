@@ -195,12 +195,12 @@ export default function OnboardingPage() {
           <div className="space-y-4">
             <div className="rounded-xl border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/8 p-4 flex gap-3">
               <Headset className="w-5 h-5 text-[var(--color-accent)] shrink-0 mt-0.5" />
-              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">Your AI receptionist answers incoming messages in your voice, captures leads, and hands over to your team when it should. Tell it what it needs to know — and what it must never do.</p>
+              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">Your AI receptionist answers incoming messages in your voice, captures leads, and hands over to your team when it should. Tell it what it needs to know , and what it must never do.</p>
             </div>
             <SectionCard icon={Building2} title="Business knowledge" sub="What your receptionist knows about your business">
               <F l="Describe your business" r hint="2–3 sentences a customer would understand"><textarea value={f.agent_receptionist.business_description} onChange={e => ur("business_description", e.target.value)} className={IC} rows={2} placeholder="e.g. Premier Realty helps people buy, sell and rent homes in Lagos." /></F>
               <F l="Services / products"><textarea value={f.agent_receptionist.services} onChange={e => ur("services", e.target.value)} className={IC} rows={2} placeholder="One per line, e.g.: Sales listings, Rentals, Property management" /></F>
-              <F l="Pricing guidance" hint="Only include figures if the receptionist may share them. Otherwise leave blank — it will say it needs to confirm with your team."><textarea value={f.agent_receptionist.pricing_guidance} onChange={e => ur("pricing_guidance", e.target.value)} className={IC} rows={2} placeholder="e.g. Rentals from ₦1.5m/year. Management fee 8%." /></F>
+              <F l="Pricing guidance" hint="Only include figures if the receptionist may share them. Otherwise leave blank : it will say it needs to confirm with your team."><textarea value={f.agent_receptionist.pricing_guidance} onChange={e => ur("pricing_guidance", e.target.value)} className={IC} rows={2} placeholder="e.g. Rentals from ₦1.5m/year. Management fee 8%." /></F>
               <F l="Common questions & answers (FAQs)"><textarea value={f.agent_receptionist.faqs} onChange={e => ur("faqs", e.target.value)} className={IC} rows={3} placeholder="Q: What areas do you cover? A: Lekki, Ikoyi and Victoria Island." /></F>
               <F l="Policies / rules to follow"><textarea value={f.agent_receptionist.policies} onChange={e => ur("policies", e.target.value)} className={IC} rows={2} placeholder="e.g. Viewings require ID verification before confirmation." /></F>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -235,7 +235,7 @@ export default function OnboardingPage() {
               <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">Your AI sales agent qualifies new enquiries, recommends the right service, follows up, and only promises what you approve. Fill in the rules it must sell by.</p>
             </div>
             <SectionCard icon={Target} title="Who to sell to" sub="Qualification">
-              <F l="Services / products you sell and who each is for"><textarea value={f.agent_sales.services} onChange={e => us("services", e.target.value)} className={IC} rows={3} placeholder="e.g. 2-bedroom apartments — young professionals. Luxury villas — families, 5–10yr horizon." /></F>
+              <F l="Services / products you sell and who each is for"><textarea value={f.agent_sales.services} onChange={e => us("services", e.target.value)} className={IC} rows={3} placeholder="e.g. 2-bedroom apartments : young professionals. Luxury villas : families, 5–10yr horizon." /></F>
               <F l="Your ideal customer"><textarea value={f.agent_sales.ideal_customer} onChange={e => us("ideal_customer", e.target.value)} className={IC} rows={2} placeholder="e.g. First-time buyers in Lagos with ₦50m+ budget, ready to move within 6 months." /></F>
               <F l="Questions it should ask to qualify"><textarea value={f.agent_sales.qualifying_questions} onChange={e => us("qualifying_questions", e.target.value)} className={IC} rows={2} placeholder="e.g. What are you looking for? When do you need it? What is your budget?" /></F>
               <F l="When a lead is NOT a fit (disqualify)"><textarea value={f.agent_sales.disqualifying_criteria} onChange={e => us("disqualifying_criteria", e.target.value)} className={IC} rows={2} placeholder="e.g. Looking to rent under ₦500k/year; outside Lagos" /></F>

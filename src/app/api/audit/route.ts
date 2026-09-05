@@ -42,7 +42,7 @@ function isInternalHostname(hostname: string): boolean {
 }
 
 // SSRF protection: validate URLs before fetching.
-// String-level checks only — DNS resolution happens in isSafeUrlResolved().
+// String-level checks only : DNS resolution happens in isSafeUrlResolved().
 function isSafeUrl(urlStr: string): boolean {
   try {
     const url = new URL(urlStr);
@@ -243,7 +243,7 @@ interface BusinessVerification {
   places?: { name?: string; rating?: number; reviewCount?: number; address?: string; phone?: string } | null;
 }
 
-/** Public review/place lookup — only runs when GOOGLE_PLACES_API_KEY is configured. */
+/** Public review/place lookup : only runs when GOOGLE_PLACES_API_KEY is configured. */
 async function lookupPublicPlaceInfo(
   companyName: string,
   website: string
@@ -348,7 +348,7 @@ async function researchBusiness(companyName: string, website: string): Promise<W
         // Directly observable contact facts (only stored when actually found)
         const titleMatch = html.match(/<title[^>]*>([^<]{2,120})<\/title>/i);
         if (titleMatch) research.pageTitle = titleMatch[1].trim();
-        // Phone: +XXX, 0XXX, Nigerian 0XX / +234 formats (no invented values — regex only)
+        // Phone: +XXX, 0XXX, Nigerian 0XX / +234 formats (no invented values : regex only)
         const phoneSet = new Set<string>();
         for (const m of html.matchAll(/(?:\+?234|\+?\d{1,3}[\s.-]?)?0?\d{3}[\s.-]?\d{3}[\s.-]?\d{3,4}(?!\d)/g)) {
           const p = m[0].trim();
@@ -363,13 +363,13 @@ async function researchBusiness(companyName: string, website: string): Promise<W
         }
         research.foundEmails = [...emailSet].slice(0, 3);
 
-        // WhatsApp detection — a deep link (wa.me / api.whatsapp.com) is a real
+        // WhatsApp detection , a deep link (wa.me / api.whatsapp.com) is a real
         // conversion path; a bare mention of the word is not.
         const waDeepLink = lowerHtml.includes("wa.me") || lowerHtml.includes("api.whatsapp.com");
         research.hasWhatsApp = waDeepLink || lowerHtml.includes("whatsapp");
         research.hasWhatsAppDeepLink = waDeepLink;
 
-        // Social media detection — platform presence + the public profile URLs
+        // Social media detection : platform presence + the public profile URLs
         // actually linked from the page (directly observable, confidence: verified).
         const socialHref = (re: RegExp) => {
           for (const m of html.matchAll(/href\s*=\s*["'][^"']*["']/gi)) {
@@ -681,10 +681,10 @@ export async function POST(req: NextRequest) {
       const leadFrom = socialPlatforms[0] || "Social";
       leaks.push({
         id: String(leakId++), area: "Social → Lead Flow", severity: "high",
-        description: `${company_name} has an active-looking social footprint (${socialPlatforms.join(", ")}) but no clear automated conversion path from it — no WhatsApp deep link and no online booking on the website. A prospect who finds you on ${leadFrom} and visits the site can reach a contact form, then waits with no visible automated response.`,
+        description: `${company_name} has an active-looking social footprint (${socialPlatforms.join(", ")}) but no clear automated conversion path from it : no WhatsApp deep link and no online booking on the website. A prospect who finds you on ${leadFrom} and visits the site can reach a contact form, then waits with no visible automated response.`,
         impact: `Social traffic is one of the least expensive sources of interest, yet it ends in a dead end. ${socialPlatforms.length} platform${socialPlatforms.length === 1 ? "" : "s"} push visitors into a manual, unmeasured response flow.`,
         recommendation: "Connect social profiles to a single conversion path: WhatsApp deep link with instant auto-response, plus an online booking link. ELION installs the Lead Response → Follow-Up → Booking flow that turns social reach into scheduled viewings.",
-        estimatedSavings: `Varies with follower reach and response rate — typically the largest untracked source of lost enquiries for ${ind} businesses`,
+        estimatedSavings: `Varies with follower reach and response rate : typically the largest untracked source of lost enquiries for ${ind} businesses`,
         source: "Internal digital-footprint analysis",
         evidence: [`Social detected: ${socialPlatforms.join(", ")}`, "No wa.me / WhatsApp API deep link found on the website", "No online booking or scheduling link found", `${leadFrom} → Website → Contact form → no automated response`],
         evidenceLevel: "detected",
@@ -780,9 +780,9 @@ export async function POST(req: NextRequest) {
     // ──── Decorate every finding: evidence level, product mapping, estimate labelling ────
     // A finding's detection is either directly observable from the site (verified),
     // inferred from multiple signals (supported), or a model/benchmark view (estimated).
-    // Financial figures are ALWAYS illustrative estimates — never measured business results.
+    // Financial figures are ALWAYS illustrative estimates , never measured business results.
     const ESTIMATE_NOTE =
-      "Illustrative estimate — an approximation of the potential opportunity using the assumptions above, not a measured business result.";
+      "Illustrative estimate , an approximation of the potential opportunity using the assumptions above, not a measured business result.";
     const AREA_LEVEL: Record<string, EvidenceLevel> = {
       Website: "verified",
       "Website Quality": "supported",
@@ -814,10 +814,10 @@ export async function POST(req: NextRequest) {
       leak.checkedAt = research.checkedAt;
     }
 
-    // ──── Business verification — small facts proving ELION checked the right business ────
+    // ──── Business verification : small facts proving ELION checked the right business ────
     const verificationFacts: string[] = [];
     if (research.hasWebsite && website) {
-      verificationFacts.push(`We reached your website at ${website.replace(/^https?:\/\//, "").replace(/\/$/, "")}${research.pageTitle ? ` — it opens with “${research.pageTitle.slice(0, 70)}”` : ""}.`);
+      verificationFacts.push(`We reached your website at ${website.replace(/^https?:\/\//, "").replace(/\/$/, "")}${research.pageTitle ? ` : it opens with “${research.pageTitle.slice(0, 70)}”` : ""}.`);
     } else if (website) {
       verificationFacts.push(`We could not reach ${website} at the time of this check (it may be offline or blocking automated requests).`);
     }
@@ -917,7 +917,7 @@ export async function POST(req: NextRequest) {
       };
       const { error: insError } = await sb.from("audits").insert(auditRow);
       if (insError && /lead_id/i.test(insError.message || "")) {
-        // Migration 018 not applied — create a lead so the audit row is kept.
+        // Migration 018 not applied : create a lead so the audit row is kept.
         const fallbackEmail = emailNorm || `audit+${Date.now()}@elion.local`;
         const { data: fbLead } = await sb
           .from("leads")
@@ -938,7 +938,7 @@ export async function POST(req: NextRequest) {
         await sb.from("leads").update({ audit_status: "completed" }).eq("id", leadId);
       }
     } catch (persistError) {
-      // The audit result is still returned — persistence must never fail the request.
+      // The audit result is still returned : persistence must never fail the request.
       console.error("[AUDIT] Persist skipped (result returned):", persistError);
     }
 

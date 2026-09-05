@@ -44,7 +44,7 @@ export default function LogsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Execution Logs</h1>
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">Real provisioning and activity records — no sample data</p>
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">Real provisioning and activity records : no sample data</p>
           </div>
 
           {error && <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">{error}</div>}
@@ -56,7 +56,7 @@ export default function LogsPage() {
               <Activity className="w-10 h-10 text-[var(--color-text-muted)] mx-auto mb-3" />
               <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">No executions yet</p>
               <p className="text-sm text-[var(--color-text-muted)] max-w-md mx-auto">
-                When automations are provisioned, activated, tested or paused — and when leads are captured — the records appear here.
+                When automations are provisioned, activated, tested or paused , and when leads are captured , the records appear here.
               </p>
             </div>
           ) : (
@@ -73,15 +73,15 @@ export default function LogsPage() {
               {logs.map((log) => (
                 <div key={log.id} className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4 px-5 py-4 border-b border-[var(--color-border)]/50 text-sm items-start">
                   <span className="text-xs text-[var(--color-text-secondary)] truncate">{log.client}</span>
-                  <span className="text-xs text-[var(--color-text-primary)] font-medium truncate">{log.automation || (log.type === "activity" ? "—" : "—")}</span>
+                  <span className="text-xs text-[var(--color-text-primary)] font-medium truncate">{log.automation || (log.type === "activity" ? "-" : "-")}</span>
                   <span className="text-xs text-[var(--color-text-muted)] truncate">{log.action}</span>
                   <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded ${statusBadge(log.status)}`}>
                     {log.status === "failed" || log.status === "blocked" ? <AlertCircle className="w-3 h-3" /> : <CheckCircle className="w-3 h-3" />}
                     {log.status}
                   </span>
-                  <span className="text-xs text-[var(--color-text-muted)]">{log.duration_ms ? (log.duration_ms / 1000).toFixed(1) + "s" : "—"}</span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{log.duration_ms ? (log.duration_ms / 1000).toFixed(1) + "s" : "-"}</span>
                   <span className="text-xs text-[var(--color-text-muted)] truncate max-w-[220px]" title={log.details + (log.error_message ? ` :: ${log.error_message}` : "")}>
-                    {log.error_message || log.details || "—"}
+                    {log.error_message || log.details || "-"}
                   </span>
                   <span className="text-[10px] text-[var(--color-text-muted)]">{new Date(log.created_at).toLocaleString("en-NG", { timeZone: "Africa/Lagos", hour: "2-digit", minute: "2-digit", month: "short", day: "numeric" })}</span>
                 </div>

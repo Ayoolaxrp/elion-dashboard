@@ -158,7 +158,7 @@ export default function InvoicesPage() {
                 const sc = STATUS_CONFIG[inv.status] || STATUS_CONFIG.draft;
                 const Icon = sc.icon;
                 const isOpen = selected === inv.id;
-                const company = inv.company_name || inv.clients?.company_name || "—";
+                const company = inv.company_name || inv.clients?.company_name || "-";
                 const client = inv.client_name || inv.clients?.contact_name || null;
                 return (
                   <div key={inv.id} className="p-5 bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl hover:border-[var(--color-border)] transition-all cursor-pointer" onClick={() => setSelected(isOpen ? null : inv.id)}>

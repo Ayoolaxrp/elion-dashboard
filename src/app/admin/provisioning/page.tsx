@@ -1,174 +1,299 @@
 "use client";
-import { useEffect, useState } from "react";
-import { provisioningRecords } from "@/lib/mock-operations";
-import { Clock, CheckCircle, AlertCircle, Loader2, ArrowRight, RotateCcw, Database } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Clock, CheckCircle, AlertCircle, Loader2, RotateCcw, Zap,
+  Play, Pause, ShieldAlert, Cpu, RefreshCw,
+} from "lucide-react";
 
-const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string; description: string }> = {
-  not_started: { color: "text-gray-400 bg-gray-400/10", icon: Clock, label: "Not Started", description: "Waiting to begin provisioning" },
-  waiting_client: { color: "text-amber-400 bg-amber-400/10", icon: Clock, label: "Waiting for Client", description: "Client needs to provide information" },
-  waiting_credentials: { color: "text-amber-400 bg-amber-400/10", icon: AlertCircle, label: "Waiting for Credentials", description: "Integration credentials required" },
-  provisioning: { color: "text-blue-400 bg-blue-400/10", icon: Loader2, label: "Provisioning", description: "Building automation instance" },
-  testing: { color: "text-purple-400 bg-purple-400/10", icon: Loader2, label: "Testing", description: "Running validation tests" },
-  failed: { color: "text-red-400 bg-red-400/10", icon: AlertCircle, label: "Failed", description: "Provisioning failed" },
-  ready: { color: "text-emerald-400 bg-emerald-400/10", icon: CheckCircle, label: "Ready for Launch", description: "Passed all tests, awaiting activation" },
-  live: { color: "text-emerald-400 bg-emerald-400/10", icon: CheckCircle, label: "Live", description: "Automation is active and running" },
-  paused: { color: "text-yellow-400 bg-yellow-400/10", icon: Clock, label: "Paused", description: "Temporarily stopped by admin" },
-  archived: { color: "text-gray-500 bg-gray-500/10", icon: Clock, label: "Archived", description: "No longer active" },
-};
-
-// client_automations.status -> provisioning view status
-const REAL_STATUS_MAP: Record<string, string> = {
-  pending: "not_started",
-  configuring: "waiting_credentials",
-  testing: "testing",
-  pending_activation: "ready",
-  live: "live",
-  paused: "paused",
-  failed: "failed",
-  archived: "archived",
-};
-
-interface RealAutomation {
-  id: string;
+interface LastAttempt {
+  action: string;
   status: string;
-  custom_name: string | null;
+  at: string | null;
+  error: string | null;
+}
+interface ProvisionRow {
+  automation_id: string;
+  automation_name: string;
+  template_slug: string;
+  template_category: string | null;
+  client_id: string | null;
+  client_name: string | null;
+  plan: string | null;
+  entitled: boolean;
+  status: string;
+  derived_state: string;
+  missing_requirements: string[];
+  configuration: string;
+  credentials: string;
+  integrations: string;
+  provisioning: string;
+  tests: string;
+  created_at: string | null;
   deployed_at: string | null;
-  created_at: string;
-  clients: { id: string; contact_name: string | null; company_name: string | null } | null;
-  workflow_templates: { name: string; category: string | null; description: string | null } | null;
+  last_run_at: string | null;
+  total_runs: number;
+  last_attempt: LastAttempt | null;
 }
 
+const STATE_STYLE: Record<string, { color: string; icon: LucideIcon; label: string }> = {
+  live: { color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20", icon: CheckCircle, label: "Live" },
+  paused: { color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20", icon: Pause, label: "Paused" },
+  testing: { color: "text-purple-400 bg-purple-400/10 border-purple-400/20", icon: Loader2, label: "Testing" },
+  ready_to_activate: { color: "text-blue-400 bg-blue-400/10 border-blue-400/20", icon: Zap, label: "Ready to activate" },
+  needs_credentials: { color: "text-amber-400 bg-amber-400/10 border-amber-400/20", icon: ShieldAlert, label: "Needs credentials" },
+  needs_integration: { color: "text-amber-400 bg-amber-400/10 border-amber-400/20", icon: AlertCircle, label: "Needs integration" },
+  needs_configuration: { color: "text-gray-300 bg-gray-400/10 border-gray-400/20", icon: Clock, label: "Needs configuration" },
+  pending: { color: "text-gray-300 bg-gray-400/10 border-gray-400/20", icon: Clock, label: "Pending" },
+  pending_activation: { color: "text-blue-400 bg-blue-400/10 border-blue-400/20", icon: Zap, label: "Pending activation" },
+  failed: { color: "text-red-400 bg-red-400/10 border-red-400/20", icon: AlertCircle, label: "Failed" },
+  configuring: { color: "text-gray-300 bg-gray-400/10 border-gray-400/20", icon: Cpu, label: "Configuring" },
+};
+
+const requirementLabel = (req: string): { kind: string; label: string } => {
+  if (req.startsWith("config:")) return { kind: "config", label: req.slice(7).replace(/_/g, " ") };
+  if (req.startsWith("credential:")) return { kind: "credential", label: req.slice(11).replace(/_/g, " ") };
+  if (req.startsWith("integration:")) return { kind: "integration", label: req.slice(12).replace(/_/g, " ") };
+  return { kind: "other", label: req };
+};
+
 export default function ProvisioningPage() {
-  const [real, setReal] = useState<RealAutomation[] | null>(null);
+  const [rows, setRows] = useState<ProvisionRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  const fetchState = async (): Promise<ProvisionRow[]> => {
+    const res = await fetch("/api/admin/provision");
+    const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || "Failed to load");
+    return data.automations || [];
+  };
 
   useEffect(() => {
-    fetch("/api/admin/automations")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.error) setError(d.error);
-        else setReal(d.automations || []);
-      })
-      .catch(() => setError("Could not load automations"));
+    let cancelled = false;
+    fetchState()
+      .then((r) => { if (!cancelled) { setRows(r); setError(null); } })
+      .catch((e) => { if (!cancelled) setError(e instanceof Error ? e.message : "Could not load provisioning state"); });
+    return () => { cancelled = true; };
   }, []);
 
-  const pendingReal = (real || []).filter((a) => ["pending", "configuring", "testing", "failed", "paused"].includes(a.status));
-  const liveReal = (real || []).filter((a) => a.status === "live");
-  const demoPending = provisioningRecords.filter((p) => ["waiting_client", "waiting_credentials", "provisioning", "testing", "failed"].includes(p.status));
+  const load = useCallback(() => {
+    fetchState()
+      .then((r) => { setRows(r); setError(null); })
+      .catch((e) => setError(e instanceof Error ? e.message : "Could not load provisioning state"));
+  }, []);
 
-  const renderCard = (key: string, name: string, company: string, contact: string | null, version: string, statusKey: string, errorMsg?: string | null, createdAt?: string, startedAt?: string) => {
-    const sc = STATUS_CONFIG[statusKey] || STATUS_CONFIG.not_started;
-    const Icon = sc.icon;
-    return (
-      <div key={key} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl p-5">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">{name}</h3>
-            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{company}{contact ? ` · ${contact}` : ""}{version ? ` · ${version}` : ""}</p>
-          </div>
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${sc.color}`}>
-            <Icon className={`w-3 h-3 ${statusKey === "provisioning" || statusKey === "testing" ? "animate-spin" : ""}`} />
-            {sc.label}
-          </span>
-        </div>
-        <p className="text-xs text-[var(--color-text-muted)] mt-2">{sc.description}</p>
-        {errorMsg && (
-          <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/15">
-            <p className="text-xs font-semibold text-red-400 mb-1">Error</p>
-            <p className="text-xs text-[var(--color-text-secondary)]">{errorMsg}</p>
-            <button className="mt-2 flex items-center gap-1.5 text-xs text-[var(--color-accent)] hover:underline"><RotateCcw className="w-3 h-3" />Retry</button>
-          </div>
-        )}
-        {createdAt && (
-          <div className="flex items-center gap-4 mt-3 text-[10px] text-[var(--color-text-muted)]">
-            <span>Created: {new Date(createdAt).toLocaleDateString("en-NG")}</span>
-          </div>
-        )}
-      </div>
-    );
+  const run = async (label: string, body: Record<string, string>) => {
+    setBusyId(body.automation_id || body.client_id || "all");
+    setNotice(null);
+    try {
+      const res = await fetch("/api/admin/provision", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || "Action failed");
+      const detail =
+        data.automation_id || data.results?.length
+          ? data.results
+            ? `${data.results.length} automation(s) processed`
+            : "Done"
+          : "Done";
+      setNotice(`${label}: ${detail}`);
+    } catch (e) {
+      setNotice(`${label} failed: ${e instanceof Error ? e.message : "unknown error"}`);
+    } finally {
+      setBusyId(null);
+      load();
+    }
+  };
+
+  const attention = (rows || []).filter((r) => ["needs_credentials", "needs_integration", "needs_configuration", "failed", "pending"].includes(r.derived_state)).length;
+  const liveCount = (rows || []).filter((r) => r.derived_state === "live").length;
+
+  const kindColor: Record<string, string> = {
+    config: "bg-gray-400/10 text-gray-300 border-gray-400/20",
+    credential: "bg-amber-400/10 text-amber-400 border-amber-400/20",
+    integration: "bg-amber-400/10 text-amber-400 border-amber-400/20",
+    other: "bg-gray-400/10 text-gray-400 border-gray-400/20",
   };
 
   return (
-    <div className="max-w-5xl p-6">
-      <div className="mb-8">
-        <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Provisioning</h1>
-        <p className="text-sm text-[var(--color-text-muted)]">
-          {real === null ? "Loading automations…" : `${pendingReal.length} need attention · ${liveReal.length} live`}
-        </p>
-      </div>
-
-      {/* Lifecycle Visual */}
-      <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl p-6 mb-8">
-        <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Provisioning Lifecycle</h2>
-        <div className="flex items-center gap-2 overflow-x-auto pb-2">
-          {["Purchased", "Entitlement", "Configuration", "Credentials", "Provision", "Test", "Activate"].map((step, i) => (
-            <div key={step} className="flex items-center gap-2 shrink-0">
-              <div className="px-3 py-1.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)]">{step}</div>
-              {i < 6 && <ArrowRight className="w-3 h-3 text-[var(--color-text-muted)]" />}
-            </div>
-          ))}
+    <div className="max-w-6xl p-6">
+      <div className="flex items-start justify-between mb-6">
+        <div>
+          <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
+            Provisioning
+          </h1>
+          <p className="text-sm text-[var(--color-text-muted)] mt-1">
+            {rows === null ? "Loading live provisioning state..." : `${liveCount} live · ${attention} need attention`}
+          </p>
         </div>
+        <button
+          onClick={load}
+          disabled={rows === null}
+          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent)]/40 transition-colors disabled:opacity-50"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${rows === null ? "animate-spin" : ""}`} /> Refresh
+        </button>
       </div>
 
-      {/* Real automation instances from the database */}
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-[var(--color-text-primary)] flex items-center gap-2"><Database className="w-4 h-4 text-[var(--color-accent)]" /> Client automations</h2>
-        <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] border border-[var(--color-accent)]/20 uppercase tracking-wide">Live database</span>
-      </div>
-
-      {real === null && !error && (
-        <div className="flex items-center justify-center py-16 text-sm text-[var(--color-text-muted)]">
-          <Loader2 className="w-4 h-4 animate-spin mr-2" /> Loading automations…
+      {notice && (
+        <div className="mb-4 px-4 py-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)]">
+          {notice}
         </div>
       )}
       {error && (
-        <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/15 text-xs text-red-400 mb-4">
-          Could not load automations: {error}
-        </div>
-      )}
-      {real !== null && real.length === 0 && !error && (
-        <div className="p-8 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 text-center">
-          <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">No automations yet</p>
-          <p className="text-xs text-[var(--color-text-muted)]">Automation instances appear here after a client is deployed through the Deploy Systems flow.</p>
-        </div>
-      )}
-      {real !== null && real.length > 0 && (
-        <div className="space-y-3">
-          {real.map((a) =>
-            renderCard(
-              a.id,
-              a.custom_name || a.workflow_templates?.name || "Automation",
-              a.clients?.company_name || a.clients?.id || "Unknown client",
-              a.clients?.contact_name || null,
-              "v1.0",
-              REAL_STATUS_MAP[a.status] || a.status,
-              null,
-              a.created_at
-            )
-          )}
+        <div className="mb-4 p-4 rounded-xl bg-red-500/5 border border-red-500/15 text-xs text-red-400">
+          {error}
         </div>
       )}
 
-      {/* Demo scenarios (fixed sample data, not real clients) */}
-      <div className="mt-10 mb-4 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Demo scenarios</h2>
-        <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20 uppercase tracking-wide">Sample data</span>
-      </div>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">Illustrative records used to preview every provisioning state. They are not real client automations.</p>
-      <div className="space-y-3">
-        {provisioningRecords.map((p) =>
-          renderCard(
-            p.id,
-            p.automation_name,
-            p.company_name,
-            p.client_name,
-            p.template_version,
-            p.status,
-            p.error,
-            p.created_at
-          )
-        )}
-      </div>
+      {rows === null && !error && (
+        <div className="flex items-center justify-center py-20 text-sm text-[var(--color-text-muted)]">
+          <Loader2 className="w-4 h-4 animate-spin mr-2" /> Loading provisioning state...
+        </div>
+      )}
+
+      {rows !== null && rows.length === 0 && !error && (
+        <div className="p-10 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 text-center">
+          <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">No automation instances yet</p>
+          <p className="text-xs text-[var(--color-text-muted)]">
+            Create a client with a plan (Starter/Growth/Scale) or deploy systems to generate instances here.
+          </p>
+        </div>
+      )}
+
+      {rows !== null && rows.length > 0 && (
+        <div className="rounded-xl border border-[var(--color-border)]/60 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm min-w-[880px]">
+              <thead>
+                <tr className="border-b border-[var(--color-border)]/60 text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
+                  <th className="px-4 py-3 font-semibold">Client</th>
+                  <th className="px-4 py-3 font-semibold">Automation</th>
+                  <th className="px-4 py-3 font-semibold">Status</th>
+                  <th className="px-4 py-3 font-semibold">Missing requirement</th>
+                  <th className="px-4 py-3 font-semibold">Last attempt</th>
+                  <th className="px-4 py-3 font-semibold text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => {
+                  const st = STATE_STYLE[r.derived_state] || STATE_STYLE.pending;
+                  const Icon = st.icon;
+                  const busy = busyId === r.automation_id;
+                  const needsProvision =
+                    ["needs_credentials", "needs_integration", "needs_configuration", "pending", "failed", "ready_to_activate", "pending_activation", "configuring"].includes(r.derived_state);
+                  const canPause = ["live", "ready_to_activate", "pending_activation", "testing"].includes(r.derived_state);
+                  const canActivate = r.derived_state === "paused";
+                  const isBusyAll = busyId === "all";
+                  return (
+                    <tr key={r.automation_id} className="border-b border-[var(--color-border)]/40 last:border-0 align-top hover:bg-[var(--color-surface)]/40 transition-colors">
+                      <td className="px-4 py-3.5">
+                        <p className="text-xs font-semibold text-[var(--color-text-primary)]">{r.client_name || r.client_id || "Unknown"}</p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide mt-0.5">
+                          {r.plan || "No plan"}{r.entitled ? "" : " · outside plan"}
+                        </p>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <p className="text-xs font-medium text-[var(--color-text-primary)]">{r.automation_name}</p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
+                          {r.template_slug}{r.template_category ? ` · ${r.template_category}` : ""}
+                        </p>
+                        <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
+                          {r.total_runs || 0} run(s){r.last_run_at ? ` · last ${new Date(r.last_run_at).toLocaleString("en-NG")}` : ""}
+                        </p>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-semibold border ${st.color}`}>
+                          <Icon className={`w-3 h-3 ${r.derived_state === "testing" ? "animate-spin" : ""}`} />
+                          {st.label}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        {r.missing_requirements.length === 0 ? (
+                          <span className="text-[11px] text-emerald-400">None</span>
+                        ) : (
+                          <div className="flex flex-wrap gap-1.5 max-w-[220px]">
+                            {r.missing_requirements.map((req) => {
+                              const parsed = requirementLabel(req);
+                              return (
+                                <span key={req} className={`px-2 py-0.5 rounded border text-[10px] font-medium ${kindColor[parsed.kind]}`}>
+                                  {parsed.kind}: {parsed.label}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        {r.last_attempt ? (
+                          <div className="text-[11px]">
+                            <p className="text-[var(--color-text-secondary)] capitalize">{r.last_attempt.action}</p>
+                            <p className={`text-[10px] mt-0.5 ${r.last_attempt.status === "failed" || r.last_attempt.status === "blocked" ? "text-red-400" : "text-[var(--color-text-muted)]"}`}>
+                              {r.last_attempt.status}
+                              {r.last_attempt.at ? ` · ${new Date(r.last_attempt.at).toLocaleString("en-NG")}` : ""}
+                            </p>
+                            {r.last_attempt.error && (
+                              <p className="text-[10px] text-red-400/80 mt-0.5 max-w-[200px] truncate" title={r.last_attempt.error}>
+                                {r.last_attempt.error}
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-[11px] text-[var(--color-text-muted)]">Never</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="flex items-center justify-end gap-2">
+                          {needsProvision && r.entitled && (
+                            <button
+                              onClick={() => run("Provision", { client_id: r.client_id || "", template_slug: r.template_slug })}
+                              disabled={busy || isBusyAll || !r.client_id}
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--color-accent)] text-white hover:opacity-90 transition-opacity disabled:opacity-40"
+                            >
+                              {busy ? <Loader2 className="w-3 h-3 animate-spin" /> : <RotateCcw className="w-3 h-3" />}
+                              {r.derived_state === "failed" || r.derived_state === "ready_to_activate" ? "Retry" : "Provision"}
+                            </button>
+                          )}
+                          {!r.entitled && (
+                            <span className="text-[10px] text-[var(--color-text-muted)]">No entitlement</span>
+                          )}
+                          {canPause && (
+                            <button
+                              onClick={() => run("Pause", { automation_id: r.automation_id, action: "pause" })}
+                              disabled={busy || isBusyAll}
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 hover:bg-yellow-400/20 transition-colors disabled:opacity-40"
+                            >
+                              <Pause className="w-3 h-3" /> Pause
+                            </button>
+                          )}
+                          {canActivate && (
+                            <button
+                              onClick={() => run("Activate", { automation_id: r.automation_id, action: "activate" })}
+                              disabled={busy || isBusyAll}
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 hover:bg-emerald-400/20 transition-colors disabled:opacity-40"
+                            >
+                              <Play className="w-3 h-3" /> Activate
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      <p className="mt-4 text-[10px] text-[var(--color-text-muted)]">
+        Statuses come from the real provisioning engine. Nothing is marked live unless configuration, credentials and (when required) the n8n workflow all pass. Provisioning is idempotent: retrying never creates duplicates.
+      </p>
     </div>
   );
 }

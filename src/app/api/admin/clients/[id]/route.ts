@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 // Data client: plain service-role client so queries bypass RLS. Do NOT use
-// createServerClient for data here — with real session cookies present it
+// createServerClient for data here : with real session cookies present it
 // attaches the logged-in user's token to queries, which RLS (clients is
 // service-role-only) then denies, returning zero rows.
 const data = () =>

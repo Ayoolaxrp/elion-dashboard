@@ -114,7 +114,7 @@ export default function BookPage() {
                 <ArrowRight className="w-4 h-4 text-[var(--color-text-muted)]" />
               </a>
             ) : (
-              <p className="flex items-center gap-2 text-xs text-[var(--color-warning)]"><AlertTriangle className="w-4 h-4" /> Meet link unavailable — contact ELION for the meeting link.</p>
+              <p className="flex items-center gap-2 text-xs text-[var(--color-warning)]"><AlertTriangle className="w-4 h-4" /> Meet link unavailable : contact ELION for the meeting link.</p>
             )}
             <a href={gcal} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-sm font-semibold text-[var(--color-accent)] hover:bg-[var(--color-accent)]/20 transition-colors">
               <Calendar className="w-4 h-4" /> Add to Google Calendar
@@ -147,7 +147,7 @@ export default function BookPage() {
           <CalendarDays className="w-7 h-7 text-[var(--color-text-muted)]" />
         </div>
         <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Book a strategy call</h1>
-        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-6">Live scheduling is being switched on — our team is preparing the calendar. In the meantime, run a free business audit or reach out on the support page and we will arrange your call directly.</p>
+        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-6">Live scheduling is being switched on : our team is preparing the calendar. In the meantime, run a free business audit or reach out on the support page and we will arrange your call directly.</p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link href="/audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">Run Your Free Business Audit</Link>
           <Link href="/landing/support" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Contact ELION</Link>
@@ -166,7 +166,7 @@ export default function BookPage() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)] mb-2">ELION · Strategy call</p>
         <h1 className="text-3xl font-bold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Book a call with ELION</h1>
         <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-xl leading-relaxed">
-          Choose a time that works for you. Availability is read live from our calendar — a Google Meet link is created the moment you confirm.
+          Choose a time that works for you. Availability is read live from our calendar , a Google Meet link is created the moment you confirm.
         </p>
       </div>
 

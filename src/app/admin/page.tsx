@@ -109,7 +109,7 @@ export default function AdminDashboard() {
             <div>
               <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Operations</h1>
               <p className="text-sm text-[var(--color-text-muted)] mt-1">
-                {new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })} — what needs you today.
+                {new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}  · what needs you today.
               </p>
             </div>
             <Link href="/admin/notifications" className="relative inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border)] transition-all">
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
               <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Latest notifications</h2>
-                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{unread > 0 ? `${unread} unread — click an item to mark it read` : "All caught up"}</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{unread > 0 ? `${unread} unread : click an item to mark it read` : "All caught up"}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   {unread > 0 && (

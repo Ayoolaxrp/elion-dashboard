@@ -23,35 +23,35 @@ export const clientGuide: DocCategory = {
         <>
           <DocLead>
             Onboarding turns what you purchased into a working system. You only configure what you actually
-            bought — never a generic list of every ELION feature.
+            bought , never a generic list of every ELION feature.
           </DocLead>
 
           <DocH2 id="the-journey">The journey</DocH2>
           <DocOL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">Business details</strong> — core
+                <strong className="text-[var(--color-text-primary)]">Business details</strong> : core
                 information such as business name, industry, timezone and currency.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Automation selection</strong> — the
+                <strong className="text-[var(--color-text-primary)]">Automation selection</strong> , the
                 products in your scope (for example WhatsApp Lead Response, AI Receptionist, Booking
                 Automation).
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Configuration</strong> — ELION shows only
+                <strong className="text-[var(--color-text-primary)]">Configuration</strong> : ELION shows only
                 the configuration required by the systems you selected.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Integrations</strong> — required
+                <strong className="text-[var(--color-text-primary)]">Integrations</strong> : required
                 connections such as WhatsApp or Google Calendar are identified and connected.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Testing</strong> — a provisioned system
+                <strong className="text-[var(--color-text-primary)]">Testing</strong> , a provisioned system
                 is tested before it can go live.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Activation</strong> — the system becomes
+                <strong className="text-[var(--color-text-primary)]">Activation</strong> , the system becomes
                 live and visible in your dashboard.
               </>,
             ]}
@@ -62,23 +62,23 @@ export const clientGuide: DocCategory = {
           <DocUL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">WhatsApp Lead Response</strong> — your
+                <strong className="text-[var(--color-text-primary)]">WhatsApp Lead Response</strong> : your
                 WhatsApp business number, business hours, response rules, lead-qualification fields and
                 escalation contacts.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">AI Receptionist</strong> — business
+                <strong className="text-[var(--color-text-primary)]">AI Receptionist</strong> : business
                 knowledge, personality, capabilities and guardrails.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Booking</strong> — calendar connection,
+                <strong className="text-[var(--color-text-primary)]">Booking</strong> : calendar connection,
                 working hours, meeting duration and buffers.
               </>,
             ]}
           />
           <DocP>
             The same configuration is available on your onboarding page and is merged into the automation that
-            ELION provisions — what you enter is what the live system runs on.
+            ELION provisions : what you enter is what the live system runs on.
           </DocP>
 
           <DocH2 id="readiness">Readiness and activation</DocH2>
@@ -89,10 +89,10 @@ export const clientGuide: DocCategory = {
           </DocP>
           <DocUL
             items={[
-              <><InlineCode>Pending</InlineCode> — not yet configured or provisioned,</>,
-              <><InlineCode>Waiting for credentials</InlineCode> — a required provider key is missing,</>,
-              <><InlineCode>Testing</InlineCode> — provisioned and being validated,</>,
-              <><InlineCode>Live</InlineCode> — only after every gate has passed.</>,
+              <><InlineCode>Pending</InlineCode> , not yet configured or provisioned,</>,
+              <><InlineCode>Waiting for credentials</InlineCode> , a required provider key is missing,</>,
+              <><InlineCode>Testing</InlineCode> : provisioned and being validated,</>,
+              <><InlineCode>Live</InlineCode> : only after every gate has passed.</>,
             ]}
           />
           <Callout variant="info" title="Truthful status">
@@ -127,7 +127,7 @@ export const clientGuide: DocCategory = {
         <>
           <DocLead>
             When a Booking Automation is part of your scope, ELION reads real availability from a connected
-            Google Calendar and creates real events — with a Google Meet conference when configured.
+            Google Calendar and creates real events : with a Google Meet conference when configured.
           </DocLead>
 
           <DocH2 id="how-it-works">How it works</DocH2>
@@ -182,7 +182,7 @@ export const clientGuide: DocCategory = {
 
           <DocH2 id="what-you-see">What happens after a booking</DocH2>
           <DocP>
-            The booking appears in the ELION admin console and, where relevant, in the client dashboard —
+            The booking appears in the ELION admin console and, where relevant, in the client dashboard -
             with date, time, timezone, customer, status and the Google Meet link. Cancellations and
             reschedules update both the calendar event and the ELION record.
           </DocP>
@@ -193,7 +193,7 @@ export const clientGuide: DocCategory = {
       slug: "ai-receptionist",
       title: "AI Receptionist",
       description:
-        "A virtual receptionist that answers questions, collects information and escalates — configured with your business knowledge and guardrails.",
+        "A virtual receptionist that answers questions, collects information and escalates : configured with your business knowledge and guardrails.",
       keywords: ["ai receptionist", "receptionist", "virtual assistant", "guardrails", "faq", "escalation", "business knowledge"],
       updated: "September 2026",
       toc: [
@@ -206,7 +206,7 @@ export const clientGuide: DocCategory = {
       body: (
         <>
           <DocLead>
-            The AI Receptionist handles inbound communication — answering common questions, collecting
+            The AI Receptionist handles inbound communication : answering common questions, collecting
             customer details and escalating to a human when it should.
           </DocLead>
 
@@ -214,7 +214,7 @@ export const clientGuide: DocCategory = {
           <DocP>
             The receptionist can be enabled to answer questions about your services and opening hours, explain
             what you offer, qualify an enquiry, collect customer information, route to booking, and hand over
-            to a human. It only performs the capabilities your business actually enables — it never invents
+            to a human. It only performs the capabilities your business actually enables : it never invents
             capabilities.
           </DocP>
           <Callout variant="warn" title="Guardrails matter">
@@ -224,8 +224,8 @@ export const clientGuide: DocCategory = {
 
           <DocH2 id="who-its-for">Who it's for</DocH2>
           <DocP>
-            Businesses that receive a steady flow of repeat questions — enquiries about hours, location,
-            services, pricing or availability — and want every enquiry handled consistently, including outside
+            Businesses that receive a steady flow of repeat questions : enquiries about hours, location,
+            services, pricing or availability , and want every enquiry handled consistently, including outside
             working hours.
           </DocP>
 
@@ -233,7 +233,7 @@ export const clientGuide: DocCategory = {
           <DocUL
             items={[
               <>an AI model provider configured for the client,</>,
-              <>a channel — WhatsApp or another enabled conversation channel — with valid credentials,</>,
+              <>a channel : WhatsApp or another enabled conversation channel : with valid credentials,</>,
               <>a calendar connection if booking is enabled, and</>,
               <>your completed business knowledge and guardrails.</>,
             ]}
@@ -247,24 +247,24 @@ export const clientGuide: DocCategory = {
           <DocUL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">Business knowledge</strong> — business
+                <strong className="text-[var(--color-text-primary)]">Business knowledge</strong> : business
                 description, services, pricing, FAQs, policies, location and opening hours.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Personality</strong> — professional,
+                <strong className="text-[var(--color-text-primary)]">Personality</strong> : professional,
                 friendly, concise or your own instruction for how it communicates.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Capabilities</strong> — answer FAQs,
+                <strong className="text-[var(--color-text-primary)]">Capabilities</strong> : answer FAQs,
                 explain services, provide pricing, qualify leads, collect information, book appointments,
                 escalate.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Guardrails</strong> — topics it must not
+                <strong className="text-[var(--color-text-primary)]">Guardrails</strong> : topics it must not
                 answer, claims it must not make, and when to escalate.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Human handoff</strong> — the contact
+                <strong className="text-[var(--color-text-primary)]">Human handoff</strong> , the contact
                 details and conditions for transferring to a person.
               </>,
             ]}
@@ -273,7 +273,7 @@ export const clientGuide: DocCategory = {
           <DocH2 id="after-activation">After activation</DocH2>
           <DocP>
             Conversations and escalations are recorded as real activity. The dashboard shows what the
-            receptionist handled, what it escalated and any failed interactions — never fabricated numbers.
+            receptionist handled, what it escalated and any failed interactions , never fabricated numbers.
             You can adjust its knowledge and guardrails as your business changes.
           </DocP>
         </>
@@ -310,7 +310,7 @@ export const clientGuide: DocCategory = {
 
           <DocH2 id="who-its-for">Who it's for</DocH2>
           <DocP>
-            Businesses that receive enquiries needing qualification before a sale — where consistency in the
+            Businesses that receive enquiries needing qualification before a sale : where consistency in the
             first conversation materially affects conversion. It is a complement to your sales team, not a
             replacement: escalations hand off to your people.
           </DocP>
@@ -319,24 +319,24 @@ export const clientGuide: DocCategory = {
           <DocUL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">Qualification</strong> — the questions it
+                <strong className="text-[var(--color-text-primary)]">Qualification</strong> , the questions it
                 asks, the lead information it must capture, ideal-customer criteria and disqualifying
                 criteria.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Offer knowledge</strong> — services or
+                <strong className="text-[var(--color-text-primary)]">Offer knowledge</strong> : services or
                 products, who each is for, and approved pricing.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Objection handling</strong> — approved
+                <strong className="text-[var(--color-text-primary)]">Objection handling</strong> : approved
                 responses to common objections such as price, timing, competition and trust.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Actions</strong> — qualify, recommend,
+                <strong className="text-[var(--color-text-primary)]">Actions</strong> : qualify, recommend,
                 follow up, book a meeting, send a message, escalate.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Escalation</strong> — human contact
+                <strong className="text-[var(--color-text-primary)]">Escalation</strong> : human contact
                 details and the conditions that trigger handoff.
               </>,
             ]}
@@ -348,7 +348,7 @@ export const clientGuide: DocCategory = {
             items={[
               <>maximum discount or special offers the agent may reference,</>,
               <>claims it is prohibited from making,</>,
-              <>approved pricing and approved promises only — no invented policies or discounts,</>,
+              <>approved pricing and approved promises only : no invented policies or discounts,</>,
               <>automatic escalation for complaints or anything outside its approved boundaries.</>,
             ]}
           />

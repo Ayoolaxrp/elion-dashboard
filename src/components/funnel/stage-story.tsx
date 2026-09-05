@@ -6,7 +6,7 @@ import { useSafeReduced } from "@/components/home/use-safe-reduced";
 import { cn } from "@/lib/utils";
 
 /**
- * Funnel method section — a sticky, scroll-driven story that transforms one
+ * Funnel method section , a sticky, scroll-driven story that transforms one
  * object through five states: Discover → Diagnose → Design → Build → Operate.
  *
  * Desktop: a tall scroll track holds the story in view; the stage index is
@@ -33,13 +33,13 @@ const STAGES: StageDef[] = [
     n: "02",
     title: "Diagnose",
     kicker: "Operational noise becomes identifiable leaks.",
-    copy: "Signals that matter are separated from noise. Response delays, missing follow-up, manual booking — each becomes a specific, evidence-based opportunity.",
+    copy: "Signals that matter are separated from noise. Response delays, missing follow-up, manual booking : each becomes a specific, evidence-based opportunity.",
   },
   {
     n: "03",
     title: "Design",
     kicker: "The leak becomes a system blueprint.",
-    copy: "A workflow is architected around how your business actually operates — not a template bolted on. Configuration panels take shape for your real tools.",
+    copy: "A workflow is architected around how your business actually operates , not a template bolted on. Configuration panels take shape for your real tools.",
   },
   {
     n: "04",
@@ -51,7 +51,7 @@ const STAGES: StageDef[] = [
     n: "05",
     title: "Operate",
     kicker: "Construction becomes continuous operation.",
-    copy: "The system runs quietly: leads responded to, follow-ups scheduled, bookings created, activity recorded. Your business keeps moving — ELION keeps the workflow moving with it.",
+    copy: "The system runs quietly: leads responded to, follow-ups scheduled, bookings created, activity recorded. Your business keeps moving : ELION keeps the workflow moving with it.",
   },
 ];
 
@@ -106,8 +106,18 @@ function SceneDiscover() {
         <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
         <span className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]/50" />
       </div>
-      <div className="w-40 h-24 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.06] flex items-center justify-center">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent-bright)] font-bold">Business signal map</span>
+      <div className="w-48 h-24 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/[0.06] flex items-center justify-center px-4">
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-1">
+            {[0, 1, 2, 3].map((i) => (
+              <span key={i} className="w-1 h-1 rounded-full bg-[var(--color-accent)]/50" />
+            ))}
+            <span className="h-px w-5 bg-gradient-to-r from-[var(--color-accent)]/50 to-[var(--color-accent)]" />
+            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />
+          </div>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent-bright)] font-bold">Business signal map</span>
+          <span className="text-[9px] text-[var(--color-text-muted)] -mt-0.5">every channel, one view</span>
+        </div>
       </div>
     </div>
   );
@@ -121,7 +131,7 @@ function SceneDiagnose() {
         <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-[0.16em]">no instant response</span>
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-error)] animate-pulse" />
-          <span className="text-xs font-semibold text-[var(--color-error)]">Response delay — leak</span>
+          <span className="text-xs font-semibold text-[var(--color-error)]">Response delay : leak</span>
         </div>
         <Node label="Opportunity cools" tone="danger" />
       </div>
@@ -130,7 +140,7 @@ function SceneDiagnose() {
         <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-[0.16em]">no follow-up sequence</span>
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-error)] animate-pulse" />
-          <span className="text-xs font-semibold text-[var(--color-error)]">Silence — leak</span>
+          <span className="text-xs font-semibold text-[var(--color-error)]">Silence : leak</span>
         </div>
         <Node label="Prospect disappears" tone="danger" />
       </div>
@@ -181,7 +191,7 @@ function SceneBuild() {
           </span>
         ))}
       </div>
-      <p className="text-center text-[10px] text-[var(--color-text-muted)] mt-5">Illustrative deployment states — nothing is marked live until real provider connections pass.</p>
+      <p className="text-center text-[10px] text-[var(--color-text-muted)] mt-5">Illustrative deployment states : nothing is marked live until real provider connections pass.</p>
     </div>
   );
 }
@@ -238,11 +248,11 @@ function StickyStory() {
     <div ref={trackRef} className="relative" style={{ height: `${STAGES.length * 110}vh` }}>
       <div className="sticky top-0 flex items-center min-h-screen overflow-hidden">
         <div className="w-full grid lg:grid-cols-[1fr_1.05fr] gap-10 lg:gap-16 items-center py-24 px-4 sm:px-6">
-          {/* Left — stage copy + progress */}
+          {/* Left : stage copy + progress */}
           <div>
             <div className="flex items-center gap-3 mb-8 text-xs text-[var(--color-text-muted)]">
               <span className="font-mono text-[var(--color-accent-bright)]">{stage.n}</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold">/ {STAGES.length} — {stage.title}</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold">/ {STAGES.length}  · {stage.title}</span>
               <span className="flex-1 h-px bg-[var(--color-border)]/60" />
             </div>
             <motion.h3 key={stage.n} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] tracking-tight mb-3" style={{ letterSpacing: "-0.02em" }}>
@@ -269,7 +279,7 @@ function StickyStory() {
             </div>
           </div>
 
-          {/* Right — changing scene */}
+          {/* Right : changing scene */}
           <div className="relative">
             <div className="absolute -inset-6 rounded-3xl bg-[var(--color-accent)]/[0.04] blur-2xl" aria-hidden="true" />
             <div className="relative rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)]/80 overflow-hidden backdrop-blur-sm">

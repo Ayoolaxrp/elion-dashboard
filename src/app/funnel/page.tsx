@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle, FileSearch, Timer, MessagesSquare } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle, Calculator, FileSearch, Timer, MessagesSquare } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SiteFooter } from "@/components/site-footer";
 import StageStory from "@/components/funnel/stage-story";
@@ -71,10 +71,11 @@ export default function FunnelPage() {
   const [kbOpen, setKbOpen] = useState(false);
   const [auditResult, setAuditResult] = useState<{ score: number; scores?: Record<string, number>; leaks: Array<{ id?: string; area: string; title?: string; severity: string; recommendation?: string }>; critical: number; high: number; company: string; recommendations: unknown } | null>(null);
 
-  // Leak-cost calculator — instant, slider-driven, transparent assumptions.
+  // Leak-cost calculator : instant, slider-driven, transparent assumptions.
   const [calcLeads, setCalcLeads] = useState(60);
   const [calcResponseMin, setCalcResponseMin] = useState(60);
   const [calcValue, setCalcValue] = useState(250000);
+  const [calcOpen, setCalcOpen] = useState(false); // calculator is a discreet dialogue below the audit, collapsed by default
   // Contact probability decays with response time (industry lead-response data):
   // ~85% of leads are reachable on an instant reply, falling fast in the first hour.
   const calcCaptureRate = (minutes: number) => {
@@ -123,8 +124,8 @@ export default function FunnelPage() {
     try {
       // Fire the lead record so the enquiry enters the pipeline.
       await fetch("/api/request", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ name: name.trim(), email: email.trim(), phone, website: answers[4]||"", businessType: answers[0]||"", primaryProblem: answers[1]||"", enquiryChannels: sheet, teamSize: answers[3]||"", source: "funnel" }) }).catch(()=>{});
-      // Run the real audit now — results return in seconds, not hours.
-      const auditRes = await fetch("/api/audit", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ company_name: (answers[2]||"business") + (answers[0]?" — "+answers[0]:""), industry: answers[0]||"General", website: answers[4]||"", name: name.trim(), email: email.trim() }) });
+      // Run the real audit now : results return in seconds, not hours.
+      const auditRes = await fetch("/api/audit", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ company_name: (answers[2]||"business") + (answers[0]?` (${answers[0]})`:""), industry: answers[0]||"General", website: answers[4]||"", name: name.trim(), email: email.trim() }) });
       if (auditRes.ok) {
         const ar = await auditRes.json();
         setAuditResult({ score: ar.overallScore ?? 0, scores: ar.scores || {}, leaks: ar.leaks || [], critical: ar.criticalLeaks ?? 0, high: ar.highLeaks ?? 0, recommendations: ar.automationRecommendations || null, company: ar.company || "" });
@@ -141,7 +142,7 @@ export default function FunnelPage() {
     <div className="min-h-screen bg-[var(--color-surface)]">
       <a href="#audit" className="skip-to-content">Skip to audit</a>
 
-      {/* Glass nav — anchor-based, self-contained */}
+      {/* Glass nav : anchor-based, self-contained */}
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="ELION home">
@@ -172,51 +173,13 @@ export default function FunnelPage() {
           <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-6">AI Operations for Growing Businesses</p>
           <h1 className="text-4xl sm:text-6xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.08] mb-6" style={{letterSpacing:"-0.025em"}}>Find the leaks in your business.<br className="hidden sm:block" /> Then automate them.</h1>
           <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed mb-3">Answer six quick questions. We analyze your business and show you exactly where leads, time, and revenue are leaking.</p>
-          <p className="text-xs sm:text-sm text-[var(--color-text-muted)] max-w-xl mx-auto">Built for businesses where operational leakage is already expensive — not a generic automation marketplace.</p>
+          <p className="text-xs sm:text-sm text-[var(--color-text-muted)] max-w-xl mx-auto">Built for businesses where operational leakage is already expensive, not a generic automation marketplace.</p>
         </div>
       </section>
 
       {/* 2. AUDIT - immediately after hero */}
       <section id="audit" className="pb-16 sm:pb-20 px-4 sm:px-6 scroll-mt-16">
         <div className="max-w-lg mx-auto">
-
-          {/* Leak-cost calculator — before the audit form, instant and slider-driven */}
-          <div className="mb-6 rounded-2xl bg-[var(--color-surface-raised)] border border-[var(--color-accent)]/25 p-5 sm:p-6">
-            <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-1">Leak cost calculator</p>
-            <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-primary)] mb-1" style={{letterSpacing:"-0.02em"}}>How much is slow response really costing you?</h2>
-            <p className="text-xs text-[var(--color-text-muted)] mb-5">Move the sliders — the estimate updates instantly.</p>
-
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="calc-leads" className="text-xs font-medium text-[var(--color-text-secondary)]">Leads per month</label>
-                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{calcLeads}</span>
-                </div>
-                <input id="calc-leads" type="range" min={5} max={500} step={5} value={calcLeads} onChange={(e) => setCalcLeads(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${calcLeads} leads per month`} />
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="calc-response" className="text-xs font-medium text-[var(--color-text-secondary)]">Average response time</label>
-                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{fmtResponse(calcResponseMin)}</span>
-                </div>
-                <input id="calc-response" type="range" min={5} max={2880} step={5} value={calcResponseMin} onChange={(e) => setCalcResponseMin(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${fmtResponse(calcResponseMin)} average response time`} />
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="calc-value" className="text-xs font-medium text-[var(--color-text-secondary)]">Average customer value</label>
-                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">{fmtNgn(calcValue)}</span>
-                </div>
-                <input id="calc-value" type="range" min={50000} max={5000000} step={10000} value={calcValue} onChange={(e) => setCalcValue(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${fmtNgn(calcValue)} average customer value`} />
-              </div>
-            </div>
-
-            <div className="mt-5 p-4 rounded-xl bg-[var(--color-accent)]/[0.08] border border-[var(--color-accent)]/20 text-center">
-              <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider mb-1">Estimated monthly leakage</p>
-              <p className="text-2xl sm:text-3xl font-bold text-[var(--color-accent-bright)]" data-calc-result>≈ {fmtNgn(calcMonthlyLeak)}<span className="text-sm font-medium text-[var(--color-text-muted)]">/month</span></p>
-              <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5">~{calcLeadsLost} leads lost to slow response per month</p>
-            </div>
-            <p className="text-[10px] text-[var(--color-text-muted)] mt-3 leading-relaxed">Estimate based on your inputs and typical lead-response research. Assumes roughly 1 in 10 contacted leads becomes a customer — adjust the sliders to match your business.</p>
-          </div>
 
           <div
             className="rounded-2xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 p-6 sm:p-8 overflow-hidden shadow-2xl shadow-black/30"
@@ -245,7 +208,7 @@ export default function FunnelPage() {
                       </div>
                     </div>
 
-                    {/* Digital operations sub-scores — real, measured per channel */}
+                    {/* Digital operations sub-scores : real, measured per channel */}
                     {auditResult.scores && Object.keys(auditResult.scores).length > 0 && (
                       <div className="mb-6 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50">
                         <p className="text-[10px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Where the score is lost</p>
@@ -291,7 +254,7 @@ export default function FunnelPage() {
                         </div>
                       ))}
                     </div>
-                    <p className="text-[10px] text-[var(--color-text-muted)] mb-4">Labeled with evidence levels — verified facts, supported signals, and clearly marked estimates. We will also reach out to schedule a discovery call.</p>
+                    <p className="text-[10px] text-[var(--color-text-muted)] mb-4">Labeled with evidence levels: verified facts, supported signals, and clearly marked estimates. We will also reach out to schedule a discovery call.</p>
                     <a href="#pricing" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all">Fix these leaks <ArrowRight className="w-3.5 h-3.5" /></a>
                   </>
                 ) : (
@@ -354,11 +317,57 @@ export default function FunnelPage() {
                 </AnimatePresence>
 
                 {fieldErrors.submit && <p className="text-xs text-red-400 text-center mb-2">{fieldErrors.submit}</p>}
-                <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. Results in minutes — every finding is labeled with its evidence level. <a href="/privacy" className="text-[var(--color-accent)] underline underline-offset-2 hover:text-[var(--color-accent-bright)]">Privacy policy</a></p>
+                <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">Free analysis. No credit card required. Results in minutes : every finding is labeled with its evidence level. <a href="/privacy" className="text-[var(--color-accent)] underline underline-offset-2 hover:text-[var(--color-accent-bright)]">Privacy policy</a></p>
               </>
             )}
           </div>
 
+          {/* Discreet leak-cost estimate. A collapsed dialogue below the audit, opened only if the visitor wants it. */}
+          <div className="mt-5 rounded-2xl border border-[var(--color-border)]/40 bg-[var(--color-surface-raised)] overflow-hidden">
+            <button type="button" onClick={() => setCalcOpen(!calcOpen)} aria-expanded={calcOpen} aria-controls="calc-dialogue" className="w-full flex items-center justify-between gap-3 px-5 py-3.5 text-left cursor-pointer min-h-[52px] group">
+              <span className="flex items-center gap-2.5">
+                <Calculator className="w-4 h-4 text-[var(--color-accent)] shrink-0" />
+                <span className="text-sm font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors">Estimate what slow response is costing you</span>
+              </span>
+              <span className="flex items-center gap-2 shrink-0">
+                <ChevronDown className={"w-4 h-4 text-[var(--color-text-muted)] transition-transform duration-200 " + (calcOpen ? "rotate-180" : "")} />
+              </span>
+            </button>
+            {calcOpen && (
+              <div id="calc-dialogue" className="px-5 pb-5 pt-4 border-t border-[var(--color-border)]/40">
+                <p className="text-xs text-[var(--color-text-muted)] mb-4">Move the sliders, the estimate updates instantly. Transparent assumptions, no data collected.</p>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label htmlFor="calc-leads" className="text-xs font-medium text-[var(--color-text-secondary)]">Leads per month</label>
+                      <span className="text-sm font-semibold text-[var(--color-text-primary)]">{calcLeads}</span>
+                    </div>
+                    <input id="calc-leads" type="range" min={5} max={500} step={5} value={calcLeads} onChange={(e) => setCalcLeads(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${calcLeads} leads per month`} />
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label htmlFor="calc-response" className="text-xs font-medium text-[var(--color-text-secondary)]">Average response time</label>
+                      <span className="text-sm font-semibold text-[var(--color-text-primary)]">{fmtResponse(calcResponseMin)}</span>
+                    </div>
+                    <input id="calc-response" type="range" min={5} max={2880} step={5} value={calcResponseMin} onChange={(e) => setCalcResponseMin(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${fmtResponse(calcResponseMin)} average response time`} />
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label htmlFor="calc-value" className="text-xs font-medium text-[var(--color-text-secondary)]">Average customer value</label>
+                      <span className="text-sm font-semibold text-[var(--color-text-primary)]">{fmtNgn(calcValue)}</span>
+                    </div>
+                    <input id="calc-value" type="range" min={50000} max={5000000} step={10000} value={calcValue} onChange={(e) => setCalcValue(Number(e.target.value))} className="w-full h-12 accent-[var(--color-accent)] cursor-pointer touch-pan-y" aria-valuetext={`${fmtNgn(calcValue)} average customer value`} />
+                  </div>
+                </div>
+                <div className="mt-4 p-4 rounded-xl bg-[var(--color-accent)]/[0.08] border border-[var(--color-accent)]/20 text-center">
+                  <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider mb-1">Estimated monthly leakage</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-[var(--color-accent-bright)]" data-calc-result>≈ {fmtNgn(calcMonthlyLeak)}<span className="text-sm font-medium text-[var(--color-text-muted)]">/month</span></p>
+                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5">~{calcLeadsLost} leads lost to slow response per month</p>
+                </div>
+                <p className="text-[10px] text-[var(--color-text-muted)] mt-3 leading-relaxed">Estimate based on your inputs and typical lead-response research. Assumes roughly 1 in 10 contacted leads becomes a customer: adjust the sliders to match your business.</p>
+              </div>
+            )}
+          </div>
           {/* Short trust strip */}
           <div className="mt-6 grid grid-cols-3 gap-3 text-center">
             <div className="p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/40">
@@ -391,7 +400,7 @@ export default function FunnelPage() {
               <div key={i} className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 hover:border-[var(--color-border)] transition-all flex flex-col">
                 <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{p.title}</h3>
                 <p className="text-sm text-[var(--color-text-muted)] leading-relaxed flex-1">{p.desc}</p>
-                <p className="mt-4 pt-3 border-t border-[var(--color-border)]/50 text-xs"><span className="text-[var(--color-text-muted)]">What ELION installs — </span><span className="text-[var(--color-accent-bright)] font-semibold">{p.fix}</span></p>
+                <p className="mt-4 pt-3 border-t border-[var(--color-border)]/50 text-xs"><span className="text-[var(--color-text-muted)]">What ELION installs : </span><span className="text-[var(--color-accent-bright)] font-semibold">{p.fix}</span></p>
               </div>
             ))}
           </div>
@@ -461,7 +470,7 @@ export default function FunnelPage() {
         <div className="max-w-5xl mx-auto">
           <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4 text-center">See the system working</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] text-center mb-3" style={{letterSpacing:"-0.02em"}}>Every enquiry handled. Every step visible.</h2>
-          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Watch how a lead moves through the full workflow — capture, qualification, response, booking, follow-up — right here.</p>
+          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto">Watch how a lead moves through the full workflow : capture, qualification, response, booking, follow-up : right here.</p>
           <DemoExperience ctaHref="#audit" />
         </div>
       </section>
@@ -490,8 +499,8 @@ export default function FunnelPage() {
             viewport={reduced ? undefined : { once: true, amount: 0.5 }}
             transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
             className="text-sm text-[var(--color-text-secondary)] text-center mb-10 max-w-xl mx-auto"
-          >One-time implementation fee — no subscription required to keep what we build. Optional ongoing support and third-party charges are always shown separately.</motion.p>
-          <TierCards ctaHref="#audit" ctaLabel="audit" showPayment callout="Most businesses start with Growth — lead response, follow-up and booking in one pipeline. Not sure? The free audit shows you the gap first." />
+          >One-time implementation fee : no subscription required to keep what we build. Optional ongoing support and third-party charges are always shown separately.</motion.p>
+          <TierCards ctaHref="#audit" ctaLabel="audit" showPayment callout="Most businesses start with Growth : lead response, follow-up and booking in one pipeline. Not sure? The free audit shows you the gap first." />
         </div>
       </section>
 
@@ -565,7 +574,7 @@ export default function FunnelPage() {
       <section className="py-12 sm:py-24 px-4 sm:px-6">
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-4" style={{letterSpacing:"-0.02em"}}>Your next operational leak is probably already costing you money.</h2>
-          <p className="text-sm text-[var(--color-text-secondary)] mb-8">Run the free audit. See what ELION finds — then decide.</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-8">Run the free audit. See what ELION finds , then decide.</p>
           <a href="#audit" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all text-base shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Your Free Business Audit <ArrowRight className="w-4 h-4" /></a>
           <p className="text-xs text-[var(--color-text-muted)] mt-4"><a href="#demo" className="text-[var(--color-accent)] hover:text-[var(--color-accent-bright)] transition-colors">See the demo first</a> or <a href="/audit" className="text-[var(--color-accent)] hover:text-[var(--color-accent-bright)] transition-colors">try the full audit</a>.</p>
         </div>
@@ -574,7 +583,7 @@ export default function FunnelPage() {
 
       <SiteFooter />
 
-      {/* Mobile sticky CTA — hidden while the keyboard is open so it never covers the form */}
+      {/* Mobile sticky CTA : hidden while the keyboard is open so it never covers the form */}
       <div className={`fixed bottom-0 left-0 right-0 z-40 sm:hidden glass-cta px-4 py-3 safe-area-bottom ${kbOpen ? "hidden" : ""}`}>
         <a href="#audit" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[var(--color-accent)] text-white font-semibold text-sm shadow-lg shadow-[var(--color-accent)]/25 active:scale-[0.97]">Run Free Audit <ArrowRight className="w-4 h-4" /></a>
       </div>

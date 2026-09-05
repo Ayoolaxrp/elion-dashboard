@@ -56,7 +56,7 @@ export default function AdminCatalogPage() {
 
         <div className="mt-8 p-4 rounded-xl bg-amber-400/5 border border-amber-400/15 text-xs text-[var(--color-text-secondary)] leading-relaxed">
           <p className="font-semibold text-amber-400 mb-1">About third-party infrastructure</p>
-          <p>Where a system requires a third-party provider (WhatsApp/Meta, voice AI, AI models, calendars, email), provider charges are separate from ELION fees and billed by the provider — directly to the client or via ELION at cost. Prices shown are configurable and never treated as provider quotes.</p>
+          <p>Where a system requires a third-party provider (WhatsApp/Meta, voice AI, AI models, calendars, email), provider charges are separate from ELION fees and billed by the provider : directly to the client or via ELION at cost. Prices shown are configurable and never treated as provider quotes.</p>
         </div>
       </main>
     </div>

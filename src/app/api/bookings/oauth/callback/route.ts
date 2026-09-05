@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   const origin = process.env.NEXT_PUBLIC_SITE_URL || url.origin;
 
   // Verify the signed state (HMAC + expiry). A tampered/expired state fails
-  // closed to the global bookings page — it can never steer token storage
+  // closed to the global bookings page : it can never steer token storage
   // toward a client scope chosen by an attacker.
   const verified = verifyOAuthState(url.searchParams.get("state"));
   const clientId = verified?.clientId || null;

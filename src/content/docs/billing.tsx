@@ -23,16 +23,16 @@ export const billing: DocCategory = {
       body: (
         <>
           <DocLead>
-            ELION pricing separates what ELION charges from what third-party providers charge — so you always
+            ELION pricing separates what ELION charges from what third-party providers charge , so you always
             know what you are paying for.
           </DocLead>
 
           <DocH2 id="three-kinds-of-cost">Three kinds of cost</DocH2>
           <DocUL
             items={[
-              <><strong className="text-[var(--color-text-primary)]">ELION setup fee</strong> — one-time implementation and configuration.</>,
-              <><strong className="text-[var(--color-text-primary)]">ELION management fee</strong> — recurring monthly management, monitoring, maintenance and optimisation.</>,
-              <><strong className="text-[var(--color-text-primary)]">Third-party infrastructure</strong> — separate charges from the providers your automation depends on.</>,
+              <><strong className="text-[var(--color-text-primary)]">ELION setup fee</strong> : one-time implementation and configuration.</>,
+              <><strong className="text-[var(--color-text-primary)]">ELION management fee</strong> : recurring monthly management, monitoring, maintenance and optimisation.</>,
+              <><strong className="text-[var(--color-text-primary)]">Third-party infrastructure</strong> : separate charges from the providers your automation depends on.</>,
             ]}
           />
 
@@ -40,7 +40,7 @@ export const billing: DocCategory = {
           <DocP>
             The setup fee covers building and configuring your automation. The management fee covers keeping
             it running: monitoring health, maintaining templates, managing integrations and optimising
-            performance. The management fee is ongoing — it is not another setup fee.
+            performance. The management fee is ongoing : it is not another setup fee.
           </DocP>
 
           <DocH2 id="third-party-infrastructure">Third-party infrastructure</DocH2>
@@ -57,10 +57,10 @@ export const billing: DocCategory = {
           <DocH2 id="provider-examples">Provider examples</DocH2>
           <DocUL
             items={[
-              <><strong className="text-[var(--color-text-primary)]">WhatsApp / Meta</strong> — WhatsApp Business messaging and provider charges may apply.</>,
-              <><strong className="text-[var(--color-text-primary)]">Voice AI</strong> — voice infrastructure and usage charges are billed separately where applicable.</>,
-              <><strong className="text-[var(--color-text-primary)]">AI models</strong> — AI model usage may incur third-party charges depending on configuration and volume.</>,
-              <><strong className="text-[var(--color-text-primary)]">Email / SMS / calendar / CRM</strong> — provider plans or per-message charges may apply.</>,
+              <><strong className="text-[var(--color-text-primary)]">WhatsApp / Meta</strong> : WhatsApp Business messaging and provider charges may apply.</>,
+              <><strong className="text-[var(--color-text-primary)]">Voice AI</strong> : voice infrastructure and usage charges are billed separately where applicable.</>,
+              <><strong className="text-[var(--color-text-primary)]">AI models</strong> : AI model usage may incur third-party charges depending on configuration and volume.</>,
+              <><strong className="text-[var(--color-text-primary)]">Email / SMS / calendar / CRM</strong> : provider plans or per-message charges may apply.</>,
             ]}
           />
           <DocP>

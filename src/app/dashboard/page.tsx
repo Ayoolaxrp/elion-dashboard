@@ -7,9 +7,9 @@ import {
 } from "lucide-react";
 
 // ------------------------------------------------------------------
-// Client dashboard — built around outcomes, not vanity numbers.
+// Client dashboard : built around outcomes, not vanity numbers.
 // Every figure comes from /api/client/overview, which derives real rows
-// only. When there is no real data the page says "No activity yet" —
+// only. When there is no real data the page says "No activity yet" -
 // ELION never fabricates metrics or health.
 // ------------------------------------------------------------------
 
@@ -199,7 +199,7 @@ export default function DashboardPage() {
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">No activity yet</h3>
               <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto leading-relaxed">
-                Once your systems start processing real leads, their results will appear here. ELION only reports real activity — never estimates.
+                Once your systems start processing real leads, their results will appear here. ELION only reports real activity , never estimates.
               </p>
             </div>
           </section>
@@ -284,7 +284,7 @@ export default function DashboardPage() {
           </section>
         ) : null}
 
-        {/* Empty state — no systems at all */}
+        {/* Empty state : no systems at all */}
         {automations.length === 0 && (
           <div className="p-10 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 text-center">
             <div className="w-12 h-12 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center mx-auto mb-4">

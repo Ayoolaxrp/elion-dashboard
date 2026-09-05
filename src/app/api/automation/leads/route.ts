@@ -1,5 +1,5 @@
 /**
- * Lead Response System v1 — API Endpoint
+ * Lead Response System v1 : API Endpoint
  *
  * POST /api/automation/leads
  * Ingests a new lead, identifies the client, qualifies the lead,

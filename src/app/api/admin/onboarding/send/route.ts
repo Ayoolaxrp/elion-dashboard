@@ -107,11 +107,11 @@ export async function POST(request: Request) {
     }
   }
 
-  // Log it — unread admin notification so it shows up in the dashboard feed.
+  // Log it : unread admin notification so it shows up in the dashboard feed.
   if (sent) {
     await sb.from("notifications").insert({
       type: "onboarding_email_sent",
-      title: `${kind === "welcome" ? "Welcome email" : "Completion email"} sent — ${c.company_name || c.contact_name}`,
+      title: `${kind === "welcome" ? "Welcome email" : "Completion email"} sent : ${c.company_name || c.contact_name}`,
       message: `Onboarding ${kind === "welcome" ? "welcome" : "completion"} email sent to ${c.email}`,
       client_id: c.id,
       metadata: { kind, pipeline_id: pipelineId },

@@ -21,7 +21,7 @@ const data = () =>
 
 // Admin-only. Without ?client_id this connects ELION's own calendar
 // (strategy calls). With ?client_id=<id> it connects the calendar for that
-// client's Booking Automation — the reusable `booking` template gets its own
+// client's Booking Automation , the reusable `booking` template gets its own
 // per-client Google Calendar (per-client credentials). The client is carried
 // in the OAuth state, never in the redirect URL, and must own a booking
 // automation to be eligible.

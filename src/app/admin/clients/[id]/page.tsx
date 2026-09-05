@@ -66,7 +66,7 @@ function RealClientView({ c }: { c: RealClient }) {
         <Link href="/admin/clients" className="p-2 rounded-lg hover:bg-[var(--color-surface-raised)]"><ArrowLeft className="w-5 h-5 text-[var(--color-text-muted)]" /></Link>
         <div className="flex-1 min-w-0">
           <h1 className="text-xl font-bold text-[var(--color-text-primary)] truncate" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{c.company_name || c.contact_name || "Client"}</h1>
-          <p className="text-sm text-[var(--color-text-muted)] truncate">{c.contact_name || "—"} · {c.email || "—"}</p>
+          <p className="text-sm text-[var(--color-text-muted)] truncate">{c.contact_name || "-"} · {c.email || "-"}</p>
         </div>
         <span className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${LIFECYCLE_COLORS[c.status || c.onboarding_status || ""] || "text-gray-400 bg-gray-400/10"}`}>{statusLabel}</span>
       </div>
@@ -165,7 +165,7 @@ export default function ClientDetailPage() {
 
     return shell(
       <div className="max-w-5xl mx-auto">
-        <DemoDataBanner text="Illustrative demo data — this client is part of the onboarding journey demo, not a live production record." />
+        <DemoDataBanner text="Illustrative demo data : this client is part of the onboarding journey demo, not a live production record." />
         <div className="flex items-center gap-3 mb-6">
           <Link href="/admin/clients" className="p-2 rounded-lg hover:bg-[var(--color-surface-raised)]"><ArrowLeft className="w-5 h-5 text-[var(--color-text-muted)]" /></Link>
           <div className="flex-1">
@@ -187,8 +187,8 @@ export default function ClientDetailPage() {
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Business</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Industry</span><span className="text-[var(--color-text-secondary)]">{mockClient.organization.industry}</span></div>
-                <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Website</span><span className="text-[var(--color-text-secondary)]">{mockClient.organization.website || "—"}</span></div>
-                <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Phone</span><span className="text-[var(--color-text-secondary)]">{mockClient.phone || "—"}</span></div>
+                <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Website</span><span className="text-[var(--color-text-secondary)]">{mockClient.organization.website || "-"}</span></div>
+                <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Phone</span><span className="text-[var(--color-text-secondary)]">{mockClient.phone || "-"}</span></div>
                 <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Since</span><span className="text-[var(--color-text-secondary)]">{new Date(mockClient.created_at).toLocaleDateString("en-NG")}</span></div>
               </div>
             </div>

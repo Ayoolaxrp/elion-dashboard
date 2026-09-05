@@ -81,7 +81,7 @@ export default function ProposalDetailPage() {
             <Link href="/admin/proposals" className="p-2 rounded-lg hover:bg-[var(--color-surface-raised)]"><ArrowLeft className="w-5 h-5 text-[var(--color-text-muted)]" /></Link>
             <div>
               <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{proposal.title}</h1>
-              <p className="text-sm text-[var(--color-text-muted)]">{proposal.company_name || "—"}{proposal.client_name ? ` · ${proposal.client_name}` : ""}</p>
+              <p className="text-sm text-[var(--color-text-muted)]">{proposal.company_name || "-"}{proposal.client_name ? ` · ${proposal.client_name}` : ""}</p>
             </div>
           </div>
 

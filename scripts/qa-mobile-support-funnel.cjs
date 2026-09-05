@@ -120,15 +120,39 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
 
       check(`${label} funnel: no horizontal overflow`, await page.evaluate(noHOverflow));
 
-      // Calculator present before the audit form
-      const calcVisible = await page.evaluate(() => {
+      // Leak-cost calculator is a discreet dialogue BELOW the audit form:
+      // collapsed by default, opens on tap. The result must not be visible
+      // until the visitor chooses to open it.
+      const calcCollapsed = await page.evaluate(() => {
+        const c = document.querySelector("[data-calc-result]");
+        if (!c) return true; // not rendered while collapsed = honest default
+        const r = c.getBoundingClientRect();
+        return r.width === 0 || r.height === 0;
+      });
+      check(`${label} funnel: leak-cost calculator is collapsed by default`, calcCollapsed);
+
+      const toggleText = await page.evaluate(() => {
+        const btns = [...document.querySelectorAll("button")];
+        const b = btns.find((x) => x.textContent.includes("slow response is costing you"));
+        return b ? b.textContent.replace(/\s+/g, " ").trim() : "";
+      });
+      check(`${label} funnel: calculator has a discreet toggle below the audit`, toggleText.includes("costing you"), toggleText);
+
+      // Open the dialogue
+      await page.evaluate(() => {
+        const btns = [...document.querySelectorAll("button")];
+        const b = btns.find((x) => x.textContent.includes("slow response is costing you"));
+        if (b) b.click();
+      });
+      await sleep(500);
+
+      const calcOpen = await page.evaluate(() => {
         const c = document.querySelector("[data-calc-result]");
         if (!c) return false;
         const r = c.getBoundingClientRect();
-        const form = [...document.querySelectorAll("h2")].find((h) => h.textContent.includes("audit")) || null;
-        return r.width > 0;
+        return r.width > 0 && r.height > 0;
       });
-      check(`${label} funnel: leak-cost calculator visible before audit form`, calcVisible);
+      check(`${label} funnel: calculator opens in its dialogue below the audit`, calcOpen);
 
       const calcDefault = await page.evaluate(() => document.querySelector("[data-calc-result]")?.textContent?.replace(/\s+/g, " ").trim() || "");
       check(`${label} funnel: calculator shows a live NGN figure`, /₦[\d,]+/.test(calcDefault), calcDefault);

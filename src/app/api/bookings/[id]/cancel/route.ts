@@ -25,7 +25,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   try {
     body = await request.json();
   } catch {
-    // no body — admin cancel allowed
+    // no body : admin cancel allowed
   }
 
   const cookieStore = await cookies();
@@ -58,7 +58,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     try {
       await deleteEvent(booking.calendar_id, booking.calendar_event_id, booking.client_id);
     } catch {
-      // Event deletion failed — still record the cancellation; calendar cleanup is
+      // Event deletion failed : still record the cancellation; calendar cleanup is
       // retried manually, but we never leave a fake "cancelled" state with a live event
       // without surfacing this. Mark status and note it for admin review.
     }

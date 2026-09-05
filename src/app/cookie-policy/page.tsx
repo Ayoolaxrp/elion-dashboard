@@ -37,15 +37,15 @@ export default function CookiePolicyPage() {
                 items={[
                   <>
                     <strong className="text-[var(--color-text-primary)]">Essential / strictly necessary</strong>{" "}
-                    — required for the platform to function, including authentication and session cookies that
+                    : required for the platform to function, including authentication and session cookies that
                     keep you signed in to the client or admin dashboard.
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Functionality</strong> — to remember
+                    <strong className="text-[var(--color-text-primary)]">Functionality</strong> : to remember
                     preferences you have made (where available).
                   </>,
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Analytics</strong> — we do not use
+                    <strong className="text-[var(--color-text-primary)]">Analytics</strong> : we do not use
                     tracking cookies without your consent.
                   </>,
                 ]}
@@ -62,7 +62,7 @@ export default function CookiePolicyPage() {
               <LUL
                 items={[
                   <>
-                    <strong className="text-[var(--color-text-primary)]">Session / auth cookies</strong> —
+                    <strong className="text-[var(--color-text-primary)]">Session / auth cookies</strong> -
                     set when you sign in to the client or admin dashboard, so you stay authenticated.
                   </>,
                 ]}

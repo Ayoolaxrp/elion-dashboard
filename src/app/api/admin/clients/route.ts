@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
+import { resolvePlan } from "@/lib/plan-entitlements";
 
 // Data client: service role bypasses RLS (clients table only allows service_role).
 const data = () =>
@@ -41,7 +42,18 @@ export async function POST(request: Request) {
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json();
-  const { lead_id, company_name, contact_name, email, phone, industry, website, plan_name, features, onboarding_notes } = body;
+  const { lead_id, company_name, contact_name, email, phone, industry, website, plan_name, features, onboarding_notes } = body as {
+    lead_id?: string | null;
+    company_name: string;
+    contact_name?: string;
+    email?: string;
+    phone?: string;
+    industry?: string;
+    website?: string;
+    plan_name?: string;
+    features?: string[];
+    onboarding_notes?: string;
+  };
 
   if (!company_name) return NextResponse.json({ error: "Company name is required" }, { status: 400 });
 
@@ -68,21 +80,54 @@ export async function POST(request: Request) {
 
   if (clientErr) return NextResponse.json({ error: clientErr.message }, { status: 500 });
 
-  // Assign entitlements if features provided
-  if (features && features.length > 0 && client) {
-    const { data: allFeatures } = await supabase.from("features").select("id, key");
-    if (allFeatures) {
-      const entitlements = allFeatures
-        .filter((f) => features.includes(f.key))
-        .map((f) => ({ client_id: client.id, feature_id: f.id, status: "active" as const, source: "plan" }));
-      if (entitlements.length > 0) {
-        await supabase.from("client_entitlements").insert(entitlements);
+  // Assign entitlements + create pending automation instances from the
+  // client's plan (Starter/Growth/Scale). An explicit features list in the
+  // request wins over the plan default. Instances are created as
+  // "pending", never "live" : the provisioning engine gates activation.
+  if (client) {
+    const plan = resolvePlan(plan_name as string | undefined);
+    const featureKeys =
+      features && features.length > 0 ? features : plan ? plan.feature_keys : [];
+
+    if (featureKeys.length > 0) {
+      const { data: allFeatures } = await supabase.from("features").select("id, key");
+      if (allFeatures) {
+        const entitlements = allFeatures
+          .filter((f) => featureKeys.includes(f.key))
+          .map((f) => ({ client_id: client.id, feature_id: f.id, status: "active" as const, source: "plan" }));
+        if (entitlements.length > 0) {
+          await supabase.from("client_entitlements").insert(entitlements);
+        }
       }
     }
-  }
 
-  // Create default integrations
-  if (client) {
+    if (plan) {
+      const { data: templates } = await supabase.from("workflow_templates").select("id, slug");
+      const slugToId = new Map((templates || []).map((t) => [t.slug, t.id]));
+      for (const slug of plan.template_slugs) {
+        const templateId = slugToId.get(slug);
+        if (!templateId) continue;
+        const { data: existing } = await supabase
+          .from("client_automations")
+          .select("id")
+          .eq("client_id", client.id)
+          .eq("template_id", templateId)
+          .maybeSingle();
+        if (existing) continue;
+        await supabase.from("client_automations").insert({
+          client_id: client.id,
+          template_id: templateId,
+          custom_name: slug
+            .split("_")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" "),
+          custom_config: {},
+          status: "pending",
+        });
+      }
+    }
+
+    // Create default integrations
     const integrations = ["whatsapp", "email", "crm", "calendar"].map((type) => ({
       client_id: client.id,
       integration_type: type,

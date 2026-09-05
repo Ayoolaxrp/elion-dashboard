@@ -43,7 +43,7 @@ function computeStatus() {
   const close = 18 * 60;
   const online = isWeekday && minutes >= open && minutes < close;
   const beforeOpen = isWeekday && minutes < open;
-  const label = online ? "We\u2019re online now" : `Outside business hours \u2014 we\u2019ll respond by ${nextBusinessDayLabel(weekday, beforeOpen)}`;
+  const label = online ? "We\u2019re online now" : `Outside business hours. We\u2019ll respond by ${nextBusinessDayLabel(weekday, beforeOpen)}`;
   return { online, label };
 }
 
@@ -114,7 +114,7 @@ export default function SupportPage() {
       {/* Contact Methods */}
       <section className="border-b border-[var(--color-border)]">
         <div className="max-w-5xl mx-auto px-6 py-16">
-          {/* Live status — computed from the current WAT time, never hardcoded */}
+          {/* Live status : computed from the current WAT time, never hardcoded */}
           <div
             className={`inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border text-xs sm:text-sm font-medium mb-8 min-h-[44px] ${
               status.online
@@ -168,7 +168,7 @@ export default function SupportPage() {
             </a>
           </div>
 
-          {/* Single expectations block — hours + urgent guidance only (channel times live in the cards above) */}
+          {/* Single expectations block : hours + urgent guidance only (channel times live in the cards above) */}
           <div className="mt-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
             <p className="text-xs text-[var(--color-text-muted)]">
               <strong>Response expectations:</strong> All channels are monitored Monday to Friday, 9am to 6pm WAT.

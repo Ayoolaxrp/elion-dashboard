@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       .insert({
         proposal_id: proposal.id,
         client_id: proposal.client_id || body.client_id || null,
-        title: body.title || `${proposal.title} — Contract`,
+        title: body.title || `${proposal.title}  · Contract`,
         company_name: proposal.company_name || body.company_name || null,
         client_name: proposal.client_name || body.client_name || null,
         scope_summary: scopeSummary,

@@ -100,7 +100,7 @@ export async function POST(req: Request) {
       .insert({
         title: typeof body.title === "string" && body.title.trim()
           ? body.title.trim()
-          : `Operational Automation Proposal — ${audit.company_name}`,
+          : `Operational Automation Proposal : ${audit.company_name}`,
         company_name: lead?.company_name || (typeof body.company_name === "string" ? body.company_name : null) || audit.company_name,
         client_name: lead?.contact_name || (typeof body.client_name === "string" ? body.client_name : null) || null,
         client_email: lead?.email || (typeof body.client_email === "string" ? body.client_email : null) || null,

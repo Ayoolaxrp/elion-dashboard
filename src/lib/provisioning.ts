@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { TEMPLATE_FEATURE_KEYS, resolvePlan } from "@/lib/plan-entitlements";
 
 let _supabase: SupabaseClient | null = null;
 function getSupabase(): SupabaseClient {
@@ -143,14 +144,20 @@ export async function provisionAutomation(clientId: string, templateId: string):
     return { success: false, steps, error: "Template not found" };
   }
 
-  const hasEntitlement = entitlements.some((e: Record<string, unknown>) => {
+  // Entitlement maps template slug -> granting feature keys (feature
+  // categories use leads/follow_up/... while templates use their own
+  // category like lead_response/revenue_recovery, so a direct category
+  // match can never pass). The client must hold an active entitlement
+  // whose feature key grants this template.
+  const grantingKeys = TEMPLATE_FEATURE_KEYS[template.data!.slug as string] || [];
+  const hasEntitlement = grantingKeys.length > 0 && entitlements.some((e: Record<string, unknown>) => {
     const feature = e.features as Record<string, unknown>;
-    return feature?.category === template.data!.category;
+    return grantingKeys.includes(feature?.key as string);
   });
   if (!hasEntitlement) {
-    steps.push({ step: "entitlement_check", status: "blocked", detail: "No active entitlement for " + template.data.category });
-    await logProvisioning(clientId, null, templateId, "", "provision", "blocked", steps, "No entitlement");
-    return { success: false, steps, error: "No active entitlement" };
+    steps.push({ step: "entitlement_check", status: "blocked", detail: "No active entitlement for " + template.data!.slug });
+    await logProvisioning(clientId, null, templateId, "", "provision", "blocked", steps, "No entitlement for " + template.data!.slug);
+    return { success: false, steps, error: "No active entitlement for " + template.data!.slug };
   }
   steps.push({ step: "entitlement_check", status: "passed" });
 
@@ -225,15 +232,17 @@ export async function provisionAutomation(clientId: string, templateId: string):
 }
 
 export async function provisionAllClientAutomations(clientId: string): Promise<ProvisioningResult[]> {
-  const entitlements = await getClientEntitlements(clientId);
+  // Which automations a client gets is defined by their plan
+  // (plan -> template_slugs), not by matching feature categories to
+  // template categories. Unrecognised plans provision nothing.
+  const { data: client } = await getSupabase().from("clients").select("plan_name").eq("id", clientId).single();
+  const plan = resolvePlan(client?.plan_name as string | undefined);
   const results: ProvisioningResult[] = [];
-  const templateMap = new Map<string, string>();
-  const { data: templates } = await getSupabase().from("workflow_templates").select("id, category").eq("is_active", true);
-  if (templates) for (const t of templates) templateMap.set(t.category, t.id);
-  for (const ent of entitlements) {
-    const feature = ent.features as Record<string, unknown>;
-    const category = feature?.category as string;
-    const templateId = templateMap.get(category);
+  if (!plan) return results;
+  const { data: templates } = await getSupabase().from("workflow_templates").select("id, slug");
+  const slugToId = new Map((templates || []).map((t) => [t.slug, t.id]));
+  for (const slug of plan.template_slugs) {
+    const templateId = slugToId.get(slug);
     if (templateId) results.push(await provisionAutomation(clientId, templateId));
   }
   return results;

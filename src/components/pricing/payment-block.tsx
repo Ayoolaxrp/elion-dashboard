@@ -12,7 +12,7 @@ export function PaymentBlock() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1600);
     } catch {
-      // clipboard unavailable in some contexts — ignore
+      // clipboard unavailable in some contexts : ignore
     }
   };
 
@@ -25,7 +25,7 @@ export function PaymentBlock() {
 
       <ol className="space-y-2 text-sm text-[var(--color-text-secondary)] mb-6">
         <li className="flex gap-3"><span className="font-semibold text-[var(--color-accent)] shrink-0">1.</span> Choose the package that fits your business above.</li>
-        <li className="flex gap-3"><span className="font-semibold text-[var(--color-accent)] shrink-0">2.</span> Review the implementation summary — a one-time implementation fee; no surprise renewals.</li>
+        <li className="flex gap-3"><span className="font-semibold text-[var(--color-accent)] shrink-0">2.</span> Review the implementation summary , a one-time implementation fee; no surprise renewals.</li>
         <li className="flex gap-3"><span className="font-semibold text-[var(--color-accent)] shrink-0">3.</span> Make payment via bank transfer using the details below.</li>
         <li className="flex gap-3"><span className="font-semibold text-[var(--color-accent)] shrink-0">4.</span> Send your payment reference to us and onboarding begins.</li>
       </ol>
@@ -66,7 +66,7 @@ export function PaymentBlock() {
         href="/landing/support"
         className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all"
       >
-        I&apos;ve paid — confirm my order <ExternalLink className="w-3.5 h-3.5" />
+        I&apos;ve paid : confirm my order <ExternalLink className="w-3.5 h-3.5" />
       </a>
     </div>
   );

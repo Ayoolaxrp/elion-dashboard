@@ -4,7 +4,7 @@ import { LegalDoc, LP, LUL, LegalReview } from "@/components/legal-doc";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How ELION collects, uses, protects and manages information — including what we collect, why, and your rights.",
+    "How ELION collects, uses, protects and manages information , including what we collect, why, and your rights.",
   alternates: { canonical: "/privacy" },
 };
 

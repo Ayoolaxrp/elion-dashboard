@@ -253,7 +253,7 @@ export default function LeadsPage() {
 
       {!archiveSupported && (
         <div className="mb-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs">
-          Archive is not available yet — apply <code className="text-amber-300">supabase/migrations/017_lead_archive.sql</code> to enable Archive / Restore.
+          Archive is not available yet : apply <code className="text-amber-300">supabase/migrations/017_lead_archive.sql</code> to enable Archive / Restore.
         </div>
       )}
 

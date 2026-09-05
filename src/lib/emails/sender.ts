@@ -48,7 +48,7 @@ function formatLocal(iso: string, tz: string): string {
   }
 }
 
-/** Builds the confirmation email body (no side effects — used by the sender and tests). */
+/** Builds the confirmation email body (no side effects : used by the sender and tests). */
 export function buildBookingConfirmationEmail(d: BookingConfirmationDetails): { subject: string; html: string; text: string } {
   const when = formatLocal(d.start_at, d.timezone);
   const subject = `Booking confirmed: ${d.summary}`;
@@ -69,7 +69,7 @@ export function buildBookingConfirmationEmail(d: BookingConfirmationDetails): { 
       </div>
       ${d.meet_url ? `<p style="text-align:center;margin:20px 0"><a href="${esc(d.meet_url)}" style="display:inline-block;background:#3B66E8;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600">Join Google Meet</a></p>` : ""}
       <p style="color:#666;font-size:13px">Need to reschedule or cancel? Reply to this email and we'll help.</p>
-      <p style="color:#999;font-size:12px;margin-top:24px">ELION — Find the leaks in your business. Then automate them.</p>
+      <p style="color:#999;font-size:12px;margin-top:24px">ELION : Find the leaks in your business. Then automate them.</p>
     </div>`;
   const text = [
     `Your call is booked ✓`,
@@ -86,7 +86,7 @@ export function buildBookingConfirmationEmail(d: BookingConfirmationDetails): { 
   return { subject, html, text };
 }
 
-/** Sends the booking confirmation to the customer. Never throws — booking outcome
+/** Sends the booking confirmation to the customer. Never throws : booking outcome
  *  is decided by the real calendar event, not by email deliverability. */
 export async function sendBookingConfirmationEmail(to: string, d: BookingConfirmationDetails): Promise<boolean> {
   const { subject, html, text } = buildBookingConfirmationEmail(d);

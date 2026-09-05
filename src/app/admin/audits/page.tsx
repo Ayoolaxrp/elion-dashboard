@@ -118,7 +118,7 @@ export default function AdminAuditsPage() {
                         <div className="min-w-0">
                           <h3 className="text-sm font-semibold text-[var(--color-text-primary)] truncate">{a.company_name}</h3>
                           <p className="text-xs text-[var(--color-text-muted)] truncate">
-                            {a.industry || "—"} · {new Date(a.created_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos", year: "numeric", month: "short", day: "numeric" })}
+                            {a.industry || "-"} · {new Date(a.created_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos", year: "numeric", month: "short", day: "numeric" })}
                             {a.leads?.email ? ` · ${a.leads.email}` : " · no contact email"}
                           </p>
                         </div>

@@ -34,7 +34,7 @@ const receives = [
   "Deployment and testing",
   "Dashboard access to monitor performance",
   "Documentation and handover",
-  "You own everything — no platform lock-in",
+  "You own everything: no platform lock-in",
   "Optional ongoing support and optimization",
 ];
 
@@ -100,12 +100,12 @@ export default function PricingPage() {
             <SectionHeading
               kicker="One-time implementation"
               title="Choose the level of automation your operation needs"
-              sub="Pay once to design, build, configure, and deploy. The automation is yours to keep — no hidden renewals."
+              sub="Pay once to design, build, configure, and deploy. The automation is yours to keep : no hidden renewals."
               center
             />
           </Reveal>
           <div className="mt-12">
-            <TierCards ctaHref="/audit" ctaLabel="audit" showPayment callout="Most businesses start with Growth — lead response, follow-up and booking in one pipeline." />
+            <TierCards ctaHref="/audit" ctaLabel="audit" showPayment callout="Most businesses start with Growth : lead response, follow-up and booking in one pipeline." />
           </div>
         </div>
       </section>
@@ -164,7 +164,7 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-6 py-16 md:py-24">
           <Reveal>
             <div className="text-center mb-10">
-              <SectionHeading kicker="Ownership" title="What you receive" sub="Every implementation is delivered as a system you own — built around how your business actually operates." center />
+              <SectionHeading kicker="Ownership" title="What you receive" sub="Every implementation is delivered as a system you own : built around how your business actually operates." center />
             </div>
             <div className="grid sm:grid-cols-2 gap-x-10 gap-y-4 max-w-2xl mx-auto">
               {receives.map((item) => (
@@ -217,7 +217,7 @@ export default function PricingPage() {
               Not sure which tier fits?
             </h2>
             <p className="text-base text-[var(--color-text-muted)] mb-8 leading-relaxed max-w-lg mx-auto">
-              Run a free audit. We will find the leaks and recommend the exact system your business needs — no guesswork.
+              Run a free audit. We will find the leaks and recommend the exact system your business needs : no guesswork.
             </p>
             <Link
               href="/audit"

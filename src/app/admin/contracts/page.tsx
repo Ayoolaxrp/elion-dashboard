@@ -176,7 +176,7 @@ export default function ContractsPage() {
               {contracts.map((c) => {
                 const sc = STATUS_CONFIG[c.status] || STATUS_CONFIG.draft;
                 const Icon = sc.icon;
-                const company = c.company_name || c.clients?.company_name || "—";
+                const company = c.company_name || c.clients?.company_name || "-";
                 const client = c.client_name || c.clients?.contact_name || null;
                 return (
                   <div key={c.id} className="p-5 bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl">

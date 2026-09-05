@@ -79,7 +79,7 @@ export default function AutomationsPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4 mt-3 text-xs text-[var(--color-text-muted)]">
-                  <span>Category: <span className="text-[var(--color-text-secondary)]">{a.workflow_templates?.category || "—"}</span></span>
+                  <span>Category: <span className="text-[var(--color-text-secondary)]">{a.workflow_templates?.category || "-"}</span></span>
                   <span>Created: <span className="text-[var(--color-text-secondary)]">{new Date(a.created_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos" })}</span></span>
                 </div>
               </div>

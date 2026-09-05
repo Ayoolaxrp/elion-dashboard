@@ -23,13 +23,13 @@ export const gettingStarted: DocCategory = {
         <>
           <DocLead>
             ELION is an AI operations platform that helps growing businesses find where leads, follow-ups,
-            bookings and internal workflows are breaking down — then deploys automation systems to fix them.
+            bookings and internal workflows are breaking down , then deploys automation systems to fix them.
           </DocLead>
 
           <DocH2 id="the-problem">The problem</DocH2>
           <DocP>
             Most revenue leaks are not dramatic. A lead waits hours for a reply. A follow-up is forgotten.
-            A booking requires another message. A handoff between team members is missed. Each one is small —
+            A booking requires another message. A handoff between team members is missed. Each one is small -
             but together they are the difference between a business that grows predictably and one that
             depends on luck and memory.
           </DocP>
@@ -44,8 +44,8 @@ export const gettingStarted: DocCategory = {
               </>,
               <>
                 <strong className="text-[var(--color-text-primary)]">Delivery.</strong> ELION provisions
-                reusable automation systems — such as Lead Response, Follow-Up, Booking, AI Receptionist and
-                AI Sales Agent — configured for your business.
+                reusable automation systems , such as Lead Response, Follow-Up, Booking, AI Receptionist and
+                AI Sales Agent : configured for your business.
               </>,
               <>
                 <strong className="text-[var(--color-text-primary)]">Operations.</strong> Your client
@@ -60,27 +60,27 @@ export const gettingStarted: DocCategory = {
           <DocOL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">Audit</strong> — understand where the
+                <strong className="text-[var(--color-text-primary)]">Audit</strong> : understand where the
                 business leaks.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Diagnose</strong> — prioritise the gaps
+                <strong className="text-[var(--color-text-primary)]">Diagnose</strong> : prioritise the gaps
                 with the largest operational impact.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Configure</strong> — define the systems,
+                <strong className="text-[var(--color-text-primary)]">Configure</strong> : define the systems,
                 rules and integrations for your business.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Provision</strong> — ELION deploys the
+                <strong className="text-[var(--color-text-primary)]">Provision</strong> : ELION deploys the
                 automation using its reusable template architecture.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Automate</strong> — the system runs on
+                <strong className="text-[var(--color-text-primary)]">Automate</strong> , the system runs on
                 your channels, such as WhatsApp or Google Calendar.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Measure</strong> — activity and health
+                <strong className="text-[var(--color-text-primary)]">Measure</strong> : activity and health
                 are recorded and visible in your dashboard.
               </>,
             ]}
@@ -98,7 +98,7 @@ export const gettingStarted: DocCategory = {
           </DocP>
           <Callout variant="info" title="Start here">
             Run a <a className="underline underline-offset-2" href="/audit">free business audit</a> to see
-            what ELION would look for in your business — no credit card required.
+            what ELION would look for in your business : no credit card required.
           </Callout>
         </>
       ),
@@ -119,7 +119,7 @@ export const gettingStarted: DocCategory = {
       body: (
         <>
           <DocLead>
-            ELION sits between your business and the systems it already uses — one place to configure,
+            ELION sits between your business and the systems it already uses : one place to configure,
             deploy and monitor automation.
           </DocLead>
 
@@ -140,12 +140,12 @@ export const gettingStarted: DocCategory = {
                 qualify, follow up, book and recover according to the rules your business configured.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Channels and integrations</strong> — such
-                as WhatsApp providers, Google Calendar, email and AI models — carry the work into the real
+                <strong className="text-[var(--color-text-primary)]">Channels and integrations</strong> , such
+                as WhatsApp providers, Google Calendar, email and AI models : carry the work into the real
                 world.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Business outcome</strong> — every action
+                <strong className="text-[var(--color-text-primary)]">Business outcome</strong> : every action
                 is recorded so you can see what happened, not just what was supposed to happen.
               </>,
             ]}
@@ -155,23 +155,23 @@ export const gettingStarted: DocCategory = {
           <DocUL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">ELION platform</strong> — client
+                <strong className="text-[var(--color-text-primary)]">ELION platform</strong> : client
                 dashboard, admin control plane, configuration, provisioning, billing and monitoring.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">System of record</strong> — data is
+                <strong className="text-[var(--color-text-primary)]">System of record</strong> : data is
                 stored in a managed database with per-organization isolation.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Execution engine</strong> — automated
+                <strong className="text-[var(--color-text-primary)]">Execution engine</strong> : automated
                 workflows run on n8n, the execution layer ELION provisions per client.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Intelligence</strong> — AI models provide
+                <strong className="text-[var(--color-text-primary)]">Intelligence</strong> : AI models provide
                 language and decision capability where a system is configured to use them.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Channels</strong> — WhatsApp, Google
+                <strong className="text-[var(--color-text-primary)]">Channels</strong> : WhatsApp, Google
                 Calendar, email and other providers are the external infrastructure the automation talks to.
               </>,
             ]}
@@ -203,7 +203,7 @@ export const gettingStarted: DocCategory = {
             Depending on the systems you select, ELION may use external infrastructure such as WhatsApp/Meta
             providers, Google Calendar, AI model providers, email infrastructure, voice providers and
             automation infrastructure. A system is only ever reported as active when the infrastructure it
-            depends on is actually connected and healthy — otherwise its status truthfully shows what is still
+            depends on is actually connected and healthy : otherwise its status truthfully shows what is still
             required.
           </DocP>
         </>
@@ -213,7 +213,7 @@ export const gettingStarted: DocCategory = {
       slug: "running-your-free-audit",
       title: "Running Your Free Audit",
       description:
-        "How the audit works, what ELION checks, and how to read evidence levels — Verified, Supported and Estimated.",
+        "How the audit works, what ELION checks, and how to read evidence levels : Verified, Supported and Estimated.",
       keywords: ["audit", "free audit", "evidence", "verified", "supported", "estimated", "how to run an audit", "leaks"],
       updated: "September 2026",
       toc: [
@@ -226,7 +226,7 @@ export const gettingStarted: DocCategory = {
         <>
           <DocLead>
             The free business audit analyses publicly available information about your business and reports
-            potential operational leaks — with the evidence for each finding.
+            potential operational leaks : with the evidence for each finding.
           </DocLead>
 
           <DocH2 id="what-happens">What happens</DocH2>
@@ -234,12 +234,12 @@ export const gettingStarted: DocCategory = {
             items={[
               <>Enter your business information (name, industry, website where available).</>,
               <>
-                ELION researches publicly available information — for example whether your website is
+                ELION researches publicly available information : for example whether your website is
                 reachable, how visitors can contact you, and which channels you publish.
               </>,
               <>ELION identifies potential operational gaps, such as lead response, follow-up or booking friction.</>,
               <>
-                Every finding is classified by <em>evidence level</em> — Verified, Supported or Estimated.
+                Every finding is classified by <em>evidence level</em> : Verified, Supported or Estimated.
               </>,
               <>ELION recommends the automation products most relevant to the gaps it found.</>,
               <>You can book a call if you want help implementing any of them.</>,
@@ -254,15 +254,15 @@ export const gettingStarted: DocCategory = {
           <DocUL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">Verified</strong> — directly observable
+                <strong className="text-[var(--color-text-primary)]">Verified</strong> : directly observable
                 from the business website or a reliable public source.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Supported</strong> — strongly indicated
+                <strong className="text-[var(--color-text-primary)]">Supported</strong> : strongly indicated
                 by multiple public signals, though not directly confirmed.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Estimated</strong> — a reasonable
+                <strong className="text-[var(--color-text-primary)]">Estimated</strong> , a reasonable
                 benchmark estimate, clearly labelled as such and never presented as a fact about the business.
               </>,
             ]}
@@ -278,19 +278,19 @@ export const gettingStarted: DocCategory = {
           <DocUL
             items={[
               <>
-                <strong className="text-[var(--color-text-primary)]">Lead Response Gap</strong> — no visible
+                <strong className="text-[var(--color-text-primary)]">Lead Response Gap</strong> : no visible
                 immediate-response system for new enquiries.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Follow-Up Gap</strong> — no obvious
+                <strong className="text-[var(--color-text-primary)]">Follow-Up Gap</strong> : no obvious
                 mechanism for pursuing leads after first contact.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Booking Friction</strong> — the journey
+                <strong className="text-[var(--color-text-primary)]">Booking Friction</strong> , the journey
                 from enquiry to appointment requires manual steps.
               </>,
               <>
-                <strong className="text-[var(--color-text-primary)]">Contact Friction</strong> — it is hard
+                <strong className="text-[var(--color-text-primary)]">Contact Friction</strong> : it is hard
                 for prospects to reach the business.
               </>,
             ]}
@@ -303,7 +303,7 @@ export const gettingStarted: DocCategory = {
           <DocH2 id="after-the-audit">After the audit</DocH2>
           <DocP>
             You can review the full findings, see which products ELION would deploy, and book a strategy call
-            to discuss implementation. There is no obligation — the audit is free and is not a sales wall.
+            to discuss implementation. There is no obligation , the audit is free and is not a sales wall.
           </DocP>
         </>
       ),

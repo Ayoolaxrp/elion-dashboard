@@ -70,7 +70,7 @@ export default function NotificationsPage() {
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Notifications</h1>
             <p className="text-sm text-[var(--color-text-muted)] mt-1">
-              {unread > 0 ? `${unread} unread — clicking an item marks it read` : "All caught up"}
+              {unread > 0 ? `${unread} unread : clicking an item marks it read` : "All caught up"}
             </p>
           </div>
 

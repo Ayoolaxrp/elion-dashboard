@@ -208,7 +208,7 @@ export default function ProposalsPage() {
             <div className="mb-6 p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Create a proposal</h3>
 
-              {/* Create from a completed audit — the first-client sales flow */}
+              {/* Create from a completed audit , the first-client sales flow */}
               <div className="mb-5 p-4 rounded-lg bg-[var(--color-surface)] border border-[var(--color-accent)]/20">
                 <p className="text-xs font-semibold text-[var(--color-accent)] mb-2 uppercase tracking-wider">From a completed audit</p>
                 {auditLoadError ? (
@@ -221,7 +221,7 @@ export default function ProposalsPage() {
                       <option value="">Select a completed audit…</option>
                       {audits.map((a) => (
                         <option key={a.id} value={a.id}>
-                          {a.company_name} — score {a.overall_score ?? "n/a"} ({a.critical_leaks ?? 0} critical / {a.high_leaks ?? 0} high)
+                          {a.company_name}  · score {a.overall_score ?? "n/a"} ({a.critical_leaks ?? 0} critical / {a.high_leaks ?? 0} high)
                         </option>
                       ))}
                     </select>
@@ -276,7 +276,7 @@ export default function ProposalsPage() {
                 const sc = STATUS_CONFIG[p.status] || STATUS_CONFIG.draft;
                 const Icon = sc.icon;
                 const isOpen = expanded === p.id;
-                const company = p.company_name || p.clients?.company_name || "—";
+                const company = p.company_name || p.clients?.company_name || "-";
                 const client = p.client_name || p.clients?.contact_name || null;
                 return (
                   <div key={p.id} className="p-5 bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl hover:border-[var(--color-border)] transition-all">
