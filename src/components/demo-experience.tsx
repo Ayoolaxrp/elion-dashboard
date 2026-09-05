@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Mail, MessageSquare, Calendar, Play, Loader2, CheckCircle, Clock, ArrowRight, Zap, RotateCcw } from "lucide-react";
+import { Calendar, Play, Loader2, CheckCircle, Clock, ArrowRight, Zap, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface EmailMsg { id: string; to: string; subject: string; body: string; timestamp: string; }
@@ -263,7 +263,7 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
               {emails.length === 0 ? (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 text-center">
                   <p className="text-sm text-[var(--color-text-muted)]">Inbox is quiet.</p>
-                  <p className="text-xs text-[var(--color-text-muted)] mt-1">Once a lead is captured, ELION sends a personalised welcome email within seconds.</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">In a configured ELION setup, a captured lead can trigger a personalised welcome email automatically.</p>
                 </motion.div>
               ) : (
                 <motion.div key="emails" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="divide-y divide-[var(--color-border)]/50">
@@ -293,7 +293,7 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
               {whatsapps.length === 0 ? (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 text-center">
                   <p className="text-sm text-[var(--color-text-muted)]">No messages sent yet.</p>
-                  <p className="text-xs text-[var(--color-text-muted)] mt-1">ELION sends a qualification message on WhatsApp the moment a lead is classified.</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">In a configured setup, ELION can send a qualification message on WhatsApp once a lead is classified.</p>
                 </motion.div>
               ) : (
                 <motion.div key="whatsapps" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="divide-y divide-[var(--color-border)]/50">
@@ -327,7 +327,7 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
               {bookings.length === 0 ? (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-8 text-center">
                   <p className="text-sm text-[var(--color-text-muted)]">No appointments yet.</p>
-                  <p className="text-xs text-[var(--color-text-muted)] mt-1">After qualification, ELION offers available slots and confirms the booking automatically.</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">In a configured setup, ELION can offer available slots and confirm the booking automatically.</p>
                 </motion.div>
               ) : (
                 <motion.div key="bookings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="divide-y divide-[var(--color-border)]/50">
