@@ -6,30 +6,47 @@
  *   onboarding form state, documents, reports, access requests.
  *   Client identity is resolved from the auth session only - the client_id
  *   filter is never accepted from the browser. No cross-client access.
+ *
+ * Auth resolution mirrors the proven /api/auth/me pattern: the SSR client
+ * authenticates the browser session with the anon key, then a service-role
+ * client reads the client row. This avoids passing the service-role key into
+ * the SSR client, which can break browser JWT verification.
  */
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET() {
   const cookieStore = await cookies();
-  const sb = createServerClient(
+
+  // Authenticate the browser session (mirrors /api/auth/me).
+  const authClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
   );
 
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { data: { user }, error: authError } = await authClient.auth.getUser();
+  if (authError || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { data: client } = await sb
+  // Read the client row with the service role key (no browser JWT here).
+  const sb = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const { data: client, error: clientError } = await sb
     .from("clients")
     .select("id, contact_name, email, company_name, onboarding_status, plan_name")
     .or("auth_user_id.eq." + user.id + ",email.eq." + user.email)
     .single();
 
-  if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
+  if (clientError || !client) {
+    console.error("/api/client/portal client lookup failed:", clientError?.message, "user:", user.id);
+    return NextResponse.json({ error: "Client not found" }, { status: 404 });
+  }
 
   // Everything below is scoped to THIS client id only.
   const [projectRes, formRes, docsRes, reportsRes, accessRes] = await Promise.all([
