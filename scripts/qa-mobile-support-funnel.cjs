@@ -31,9 +31,9 @@ function expectedStatus() {
   const online = isWeekday && mins >= 540 && mins < 1080;
   let label;
   if (online) label = "We’re online now";
-  else if (isWeekday && mins < 540) label = "Outside business hours — we’ll respond by today";
-  else if (["Fri", "Sat", "Sun"].includes(wd)) label = "Outside business hours — we’ll respond by Monday";
-  else label = "Outside business hours — we’ll respond by tomorrow";
+  else if (isWeekday && mins < 540) label = "Outside business hours. We’ll respond by today";
+  else if (["Fri", "Sat", "Sun"].includes(wd)) label = "Outside business hours. We’ll respond by Monday";
+  else label = "Outside business hours. We’ll respond by tomorrow";
   return { online, label };
 }
 
@@ -217,7 +217,7 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
           const card = document.querySelector("#audit");
           if (!card) return false;
           const btns = [...card.querySelectorAll("button")];
-          const option = btns.find((b) => b.textContent.trim().length > 2 && !/back|continue|analyze|submitting/i.test(b.textContent) && b.getBoundingClientRect().height >= 40);
+          const option = btns.find((b) => !b.hasAttribute("aria-expanded") && b.textContent.trim().length > 2 && !/back|continue|analyze|submitting/i.test(b.textContent) && b.getBoundingClientRect().height >= 40);
           const cont = btns.find((b) => /continue/i.test(b.textContent));
           if (option) option.click();
           else if (cont) cont.click();

@@ -170,38 +170,67 @@ export async function provisionAutomation(clientId: string, templateId: string):
   steps.push({ step: "template_version", status: "passed", detail: "v" + tv.version });
 
   const existing = await checkExistingAutomation(clientId, templateId);
+  let automationRow: { id: string; status: string } | null = null;
   if (existing) {
-    steps.push({ step: "idempotency_check", status: "skipped", detail: "Automation " + existing + " already exists" });
-    await logProvisioning(clientId, existing, templateId, tv.version, "provision", "skipped", steps, "Already provisioned");
-    return { success: true, steps, automation_id: existing };
+    const { data: ex } = await getSupabase().from("client_automations").select("id, status").eq("id", existing).single();
+    automationRow = ex || null;
   }
-  steps.push({ step: "idempotency_check", status: "passed" });
+  // Idempotency: an instance that reached an active/terminal state is never
+  // re-provisioned. Pending/configuring rows are RESUMED in place so retries
+  // advance them instead of silently skipping (or duplicating).
+  if (automationRow && ["live", "testing", "paused"].includes(automationRow.status)) {
+    steps.push({ step: "idempotency_check", status: "skipped", detail: "Automation " + existing + " already " + automationRow.status });
+    await logProvisioning(clientId, existing, templateId, tv.version, "provision", "skipped", steps, "Already " + automationRow.status);
+    return { success: true, steps, automation_id: existing || undefined };
+  }
+  steps.push({ step: "idempotency_check", status: "passed", ...(existing ? { detail: "Resuming automation " + existing } : {}) });
 
   const config = await getClientConfig(clientId);
   const configValidation = validateConfig(config, tv.validation_rules as Record<string, unknown>);
   if (!configValidation.valid) {
     steps.push({ step: "config_validation", status: "blocked", detail: "Configuration incomplete", missing: configValidation.missing });
-    const { data: automation } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
-    await logProvisioning(clientId, automation?.id || null, templateId, tv.version, "provision", "blocked", steps, "Missing: " + configValidation.missing.join(", "));
-    return { success: false, steps, automation_id: automation?.id, error: "Configuration incomplete: " + configValidation.missing.join(", ") };
+    // Keep a pending row so the dashboard can surface the gap, but never
+    // create a duplicate when one already exists.
+    let rowId = existing;
+    if (!rowId) {
+      const { data: ins } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
+      rowId = ins?.id || null;
+    }
+    await logProvisioning(clientId, rowId, templateId, tv.version, "provision", "blocked", steps, "Missing: " + configValidation.missing.join(", "));
+    return { success: false, steps, automation_id: rowId || undefined, error: "Configuration incomplete: " + configValidation.missing.join(", ") };
   }
   steps.push({ step: "config_validation", status: "passed" });
 
   const credValidation = await validateCredentials(clientId, tv.required_credentials);
   if (!credValidation.valid) {
     steps.push({ step: "credential_check", status: "blocked", detail: "Credentials missing", missing: credValidation.missing });
-    const { data: automation } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
-    await logProvisioning(clientId, automation?.id || null, templateId, tv.version, "provision", "blocked", steps, "Missing credentials: " + credValidation.missing.join(", "));
-    return { success: false, steps, automation_id: automation?.id, error: "Credentials missing: " + credValidation.missing.join(", ") };
+    let rowId = existing;
+    if (!rowId) {
+      const { data: ins } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: config || {}, status: "pending" }).select("id").single();
+      rowId = ins?.id || null;
+    }
+    await logProvisioning(clientId, rowId, templateId, tv.version, "provision", "blocked", steps, "Missing credentials: " + credValidation.missing.join(", "));
+    return { success: false, steps, automation_id: rowId || undefined, error: "Credentials missing: " + credValidation.missing.join(", ") };
   }
   steps.push({ step: "credential_check", status: "passed" });
 
   const mergedConfig = { ...tv.default_config, ...(config?.response_rules || {}), business_name: config?.business_name, timezone: config?.timezone, whatsapp_number: config?.whatsapp_number, email_address: config?.email_address };
-  const { data: automation, error: autoErr } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: mergedConfig, status: "configuring" }).select("id").single();
-  if (autoErr || !automation) {
-    steps.push({ step: "create_automation", status: "failed", detail: autoErr?.message || "Failed" });
-    await logProvisioning(clientId, null, templateId, tv.version, "provision", "failed", steps, autoErr?.message);
-    return { success: false, steps, error: autoErr?.message || "Failed" };
+  let automation: { id: string } | null = automationRow;
+  if (automationRow) {
+    await getSupabase().from("client_automations").update({ custom_config: mergedConfig, status: "configuring" }).eq("id", automationRow.id);
+  } else {
+    const { data: ins, error: insErr } = await getSupabase().from("client_automations").insert({ client_id: clientId, template_id: templateId, custom_name: template.data!.name, custom_config: mergedConfig, status: "configuring" }).select("id").single();
+    if (insErr || !ins) {
+      steps.push({ step: "create_automation", status: "failed", detail: insErr?.message || "Failed" });
+      await logProvisioning(clientId, null, templateId, tv.version, "provision", "failed", steps, insErr?.message);
+      return { success: false, steps, error: insErr?.message || "Failed" };
+    }
+    automation = ins;
+  }
+  if (!automation) {
+    steps.push({ step: "create_automation", status: "failed", detail: "Failed to create automation" });
+    await logProvisioning(clientId, null, templateId, tv.version, "provision", "failed", steps, "Failed to create automation");
+    return { success: false, steps, error: "Failed to create automation" };
   }
   steps.push({ step: "create_automation", status: "passed", detail: automation.id });
 

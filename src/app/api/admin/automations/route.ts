@@ -9,12 +9,29 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+// Auth check: read the browser's real session cookies so getUser() sees the login.
+async function requireAdmin() {
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) return null;
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase());
+  if (!adminEmails.includes((user.email || "").toLowerCase())) return null;
+  return user;
+}
 
 /**
  * Activation gate: can this automation go LIVE?
@@ -34,6 +51,8 @@ function canActivate(
 }
 
 export async function GET(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -66,6 +85,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await request.json();
     const { client_id, template_id, custom_config } = body;
@@ -123,6 +144,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await request.json();
     const { automation_id, action, custom_config } = body;
@@ -142,7 +165,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "Automation not found" }, { status: 404 });
     }
 
-    let updateData: Record<string, unknown> = {};
+    const updateData: Record<string, unknown> = {};
 
     switch (action) {
       case "configure": {

@@ -163,12 +163,14 @@ export async function GET(request: NextRequest) {
  let derived = a.status;
  let missing: string[] = [];
  if (a.status === "pending" || a.status === "configuring") {
- derived = missingCreds.length
+ // Same gate order as the provisioning engine: configuration first,
+ // then credentials, then integrations.
+ derived = missingConfig.length
+ ? "needs_configuration"
+ : missingCreds.length
  ? "needs_credentials"
  : missingIntegs.length
  ? "needs_integration"
- : missingConfig.length
- ? "needs_configuration"
  : a.status === "configuring"
  ? "ready_to_activate"
  : "needs_configuration";

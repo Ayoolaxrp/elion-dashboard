@@ -53,6 +53,7 @@ const createdClientIds = [];
 
     const anon = await browser.createBrowserContext();
     const anonPage = await anon.newPage();
+    await anonPage.goto(BASE + "/", { waitUntil: "domcontentloaded", timeout: 60000 });
     for (const ep of ["/api/admin/provision", "/api/admin/automations", "/api/admin/clients"]) {
       const st = await anonPage.evaluate(async (u) => (await fetch(u)).status, ep);
       check(`anonymous ${ep} -> 401`, st === 401, `status=${st}`);
