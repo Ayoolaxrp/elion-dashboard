@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell, Database, Rocket, SearchCheck } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell, Database, Rocket, SearchCheck, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const NAV = [
@@ -24,6 +24,7 @@ const NAV = [
   { href: "/admin/logs", label: "Logs", icon: Activity },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/status", label: "Status", icon: CheckCircle },
+  { href: "/admin/support-chat", label: "Support Chat", icon: MessageCircle },
   { href: "/admin/settings", label: "Settings", icon: Settings },
   { href: "/admin/migrations", label: "Migrations", icon: Database },
 ];
