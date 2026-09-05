@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
  if (clientId) {
  const { data } = await supabase
  .from("client_automations")
- .select("id, custom_name, status, created_at, deployed_at, last_run_at, total_runs, custom_config, template_id, workflow_templates!inner(id, name, slug, category, required_integrations)")
+ .select("id, client_id, custom_name, status, created_at, deployed_at, last_run_at, total_runs, custom_config, template_id, workflow_templates!inner(id, name, slug, category, required_integrations)")
  .eq("client_id", clientId)
  .order("created_at", { ascending: true });
  automations = data || [];
