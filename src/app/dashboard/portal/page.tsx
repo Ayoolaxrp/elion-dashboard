@@ -119,7 +119,7 @@ export default function ClientPortal() {
               <ul className="space-y-1.5 text-sm">
                 <li><Link href="/dashboard/documents" className="underline" style={{ color: T.textSecondary }}>Documents</Link></li>
                 <li><a href="#reports" className="underline" style={{ color: T.textSecondary }}>Reports</a></li>
-                <li><Link href="/landing/support" className="underline" style={{ color: T.textSecondary }}>Support</Link></li>
+                <li><Link href="/support" className="underline" style={{ color: T.textSecondary }}>Support</Link></li>
               </ul>
             </div>
 

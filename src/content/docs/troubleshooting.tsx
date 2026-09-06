@@ -43,7 +43,7 @@ export const troubleshooting: DocCategory = {
           <DocH2 id="how-to-fix">How to fix it</DocH2>
           <DocOLItems />
           <Callout variant="info" title="Need help?">
-            Contact <a className="underline underline-offset-2" href="/landing/support">ELION support</a> and
+            Contact <a className="underline underline-offset-2" href="/support">ELION support</a> and
             the team will connect or repair the calendar connection.
           </Callout>
         </>

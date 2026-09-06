@@ -150,7 +150,7 @@ export default function BookPage() {
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-6">Live scheduling is being switched on : our team is preparing the calendar. In the meantime, run a free business audit or reach out on the support page and we will arrange your call directly.</p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link href="/audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">Run Your Free Business Audit</Link>
-          <Link href="/landing/support" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Contact ELION</Link>
+          <Link href="/support" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Contact ELION</Link>
         </div>
       </div>
     );

@@ -14,16 +14,16 @@ const FOOTER_COLUMNS: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "Automation Systems", href: "/docs/automations" },
       { label: "Free Business Audit", href: "/audit" },
-      { label: "Booking", href: "/landing/book" },
+      { label: "Booking", href: "/book" },
       { label: "Client Dashboard", href: "/login" },
-      { label: "Pricing", href: "/landing/pricing" },
+      { label: "Pricing", href: "/pricing" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "/landing/about" },
-      { label: "Support", href: "/landing/support" },
+      { label: "About", href: "/about" },
+      { label: "Support", href: "/support" },
       { label: "Documentation", href: "/docs" },
       { label: "Status", href: "/status" },
     ],

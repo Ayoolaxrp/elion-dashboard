@@ -3,14 +3,17 @@ import { createServerClient } from "@supabase/ssr";
 
 const ADMIN_ONLY = ["/admin"];
 const CLIENT_ROUTES = ["/dashboard", "/leads", "/booking", "/followup", "/operations", "/recovery", "/onboarding"];
-const PUBLIC_PATHS = ["/", "/home", "/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/privacy", "/terms", "/api/request", "/api/audit", "/api/demo", "/api/auth"];
+const PUBLIC_PATHS = ["/", "/home", "/landing", "/funnel", "/audit", "/demo", "/status", "/login", "/privacy", "/terms", "/pricing", "/about", "/support", "/book", "/api/request", "/api/audit", "/api/demo", "/api/auth"];
 
 // Canonical redirect map: alias/legacy URL -> canonical production page
+// /pricing /about /support /book are the canonical public routes; the
+// /landing/* implementation paths permanently redirect to them.
 const REDIRECTS: Record<string, string> = {
   "/home": "/",
-  "/pricing": "/landing/pricing",
-  "/about": "/landing/about",
-  "/support": "/landing/support",
+  "/landing/pricing": "/pricing",
+  "/landing/about": "/about",
+  "/landing/support": "/support",
+  "/landing/book": "/book",
   "/landing/privacy": "/privacy",
   "/landing/terms": "/terms",
 };
@@ -32,8 +35,6 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Permanent (308) canonical redirects for aliases/legacy routes.
-  // /home is the canonical public homepage alias; /landing was the old
-  // homepage and must not dump visitors into the ad-only funnel.
   const canonical = REDIRECTS[pathname];
   if (canonical) {
     const url = request.nextUrl.clone();
@@ -107,5 +108,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|brand|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|brand|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

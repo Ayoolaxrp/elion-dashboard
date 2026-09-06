@@ -55,10 +55,51 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
     check("home: How It Works -> #how", navDest.how === "#how", navDest.how);
     check("home: Audit -> /audit", navDest.audit === "/audit", navDest.audit);
     check("home: Demo -> /demo", navDest.demo === "/demo", navDest.demo);
-    check("home: Pricing -> /landing/pricing", navDest.pricing === "/landing/pricing", navDest.pricing);
-    check("home: About -> /landing/about", navDest.about === "/landing/about", navDest.about);
+    check("home: Pricing -> canonical /pricing", navDest.pricing === "/pricing", navDest.pricing);
+    check("home: About -> canonical /about", navDest.about === "/about", navDest.about);
     check("home: Sign In -> /login", navDest.signIn === "/login", navDest.signIn);
     check("home: CTA -> /audit", navDest.cta === "/audit", navDest.cta);
+    // HOMEPAGE NAVIGATION ARCHITECTURE: anchors vs routes are distinct assertions.
+    // Anchor links must be pure in-page anchors; route links must not be anchors.
+    const isAnchor = (h) => typeof h === "string" && h.startsWith("#") && !h.includes("/");
+    const isRoute = (h) => typeof h === "string" && h.startsWith("/") && !h.startsWith("/#");
+    check("home: Solutions is pure in-page anchor", isAnchor(navDest.solutions), navDest.solutions);
+    check("home: How It Works is pure in-page anchor", isAnchor(navDest.how), navDest.how);
+    check("home: Audits is a route, not anchor", isRoute(navDest.audit), navDest.audit);
+    check("home: Demo is a route, not anchor", isRoute(navDest.demo), navDest.demo);
+    check("home: Pricing is a route, not anchor", isRoute(navDest.pricing), navDest.pricing);
+    check("home: About is a route, not anchor", isRoute(navDest.about), navDest.about);
+    // No duplicate nav ENTRIES: same label must not appear twice. (An "Audit"
+    // nav item plus the "Run Free Audit" CTA may share the /audit href by design.)
+    const navLabels = await page.evaluate(() => [...document.querySelectorAll("header a")].map((a) => a.textContent.trim()));
+    const labelDupes = navLabels.filter((l, i) => navLabels.indexOf(l) !== i);
+    check("home: no duplicate nav entries (labels)", labelDupes.length === 0, labelDupes.join(","));
+    const navHrefs = await page.evaluate(() => [...document.querySelectorAll("header a")].map((a) => a.getAttribute("href")));
+    const routeDupes = navHrefs.filter((h, i) => navHrefs.indexOf(h) !== i && h !== "/audit");
+    check("home: no duplicate route hrefs (CTA /audit exempt)", routeDupes.length === 0, routeDupes.join(","));
+    check("home: no /landing/* in nav", !navHrefs.some((h) => (h || "").startsWith("/landing/")), navHrefs.filter((h) => (h || "").startsWith("/landing/")).join(","));
+    // Active-state sanity: no unrelated page marked active on the homepage.
+    // Home nav links have no active class; on /pricing the LandingNav marks Pricing.
+    const activeOnHome = await page.evaluate(() => {
+      const links = [...document.querySelectorAll("header a")];
+      const marked = links.filter((a) => {
+        const cls = a.className || "";
+        return /text-\[var\(--color-text-primary\)\]/.test(cls) && (a.getAttribute("href") || "") !== "/";
+      });
+      return marked.map((a) => a.getAttribute("href"));
+    });
+    check("home: no unrelated page marked active", activeOnHome.length === 0, activeOnHome.join(","));
+    // Anchor click scrolls (verify target in viewport after click)
+    const scrollYBefore = await page.evaluate(() => window.scrollY);
+    await page.evaluate(() => {
+      const links = [...document.querySelectorAll("header a")].filter((a) => a.getAttribute("href") === "#systems" && a.offsetHeight > 0);
+      if (links[0]) links[0].click();
+    });
+    await sleep(1200);
+    const scrollYAfter = await page.evaluate(() => window.scrollY);
+    check("home: Solutions anchor click scrolls page", scrollYAfter > scrollYBefore + 100, `before=${scrollYBefore} after=${scrollYAfter}`);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await sleep(400);
     // anchor targets exist on page
     const anchors = await page.evaluate(() => ["systems", "how", "faq"].map((id) => [id, !!document.getElementById(id)]));
     anchors.forEach(([id, ok]) => check(`home: section #${id} exists`, ok));
@@ -118,8 +159,11 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
     }
     check("demo: run progresses (lead->response->booking text)", demoProg);
 
-    // ---- Pricing ----
+    // ---- Pricing (canonical route + legacy redirect) ----
+    await page.goto(BASE + "/pricing", { waitUntil: "networkidle2", timeout: 90000 });
+    check("nav: /pricing serves 200 with canonical metadata", await page.evaluate(() => document.title.includes("Pricing")));
     await page.goto(BASE + "/landing/pricing", { waitUntil: "networkidle2", timeout: 90000 });
+    check("nav: /landing/pricing redirects to /pricing", page.url().replace(/\/$/, "").endsWith("/pricing"), page.url());
     await sleep(800);
     const price = await page.evaluate(() => document.body.innerText);
     check("pricing: Starter ₦100,000", /100,000/.test(price));
@@ -174,11 +218,68 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
         viewport: { width, height, isMobile: true, hasTouch: true, deviceScaleFactor: 3 },
         userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
       });
-      for (const r of ["/", "/funnel", "/audit", "/demo", "/landing/support"]) {
+      for (const r of ["/", "/funnel", "/audit", "/demo", "/support"]) {
         await mpage.goto(BASE + r, { waitUntil: "networkidle2", timeout: 90000 });
         await sleep(700);
         check(`${label} ${r}: no horizontal overflow`, await mpage.evaluate(noHOverflow));
         check(`${label} ${r}: primary CTA visible`, await mpage.evaluate(() => /(run (your )?free (business )?audit|free audit)/i.test(document.body.innerText)));
+      }
+      // Mobile anchor behavior on homepage: menu open -> anchor click -> menu closes + scrolls
+      await mpage.goto(BASE + "/", { waitUntil: "networkidle2", timeout: 90000 });
+      await sleep(700);
+      const mAnchor = await mpage.evaluate(() => {
+        const btn = [...document.querySelectorAll("button")].find((x) => (x.getAttribute("aria-label") || "").toLowerCase().includes("navigation menu"));
+        if (!btn) return { ok: false };
+        btn.click();
+        return { ok: true };
+      });
+      if (mAnchor.ok) {
+        await sleep(500);
+        const before = await mpage.evaluate(() => window.scrollY);
+        const clicked = await mpage.evaluate(() => {
+          // Click the VISIBLE anchor link (mobile menu item), not the hidden desktop one
+          const l = [...document.querySelectorAll("a")].find((a) => a.getAttribute("href") === "#systems" && a.offsetHeight > 0);
+          if (!l) return false;
+          l.click();
+          return true;
+        });
+        await sleep(1200);
+        const after = await mpage.evaluate(() => window.scrollY);
+        const menuStillOpen = await mpage.evaluate(() => {
+          const btn = [...document.querySelectorAll("button")].find((x) => (x.getAttribute("aria-label") || "").toLowerCase().includes("navigation menu"));
+          return btn ? btn.getAttribute("aria-expanded") === "true" : false;
+        });
+        check(`${label} home: anchor link present in mobile menu`, clicked);
+        check(`${label} home: anchor click scrolls`, after > before + 100, `before=${before} after=${after}`);
+        check(`${label} home: menu closes after anchor click`, !menuStillOpen);
+      } else {
+        check(`${label} home: mobile menu button exists`, false);
+      }
+      // Mobile route-link behavior: menu closes after clicking a page link
+      await mpage.evaluate(() => window.scrollTo(0, 0));
+      await sleep(400);
+      const opened2 = await mpage.evaluate(() => {
+        const btn = [...document.querySelectorAll("button")].find((x) => (x.getAttribute("aria-label") || "").toLowerCase().includes("navigation menu"));
+        if (!btn) return false;
+        btn.click();
+        return true;
+      });
+      if (opened2) {
+        await sleep(500);
+        const routeClicked = await mpage.evaluate(() => {
+          // Click the VISIBLE route link (mobile menu item)
+          const l = [...document.querySelectorAll("a")].find((a) => a.getAttribute("href") === "/demo" && a.offsetHeight > 0 && getComputedStyle(a).display !== "none");
+          if (!l) return false;
+          l.click();
+          return true;
+        });
+        await sleep(1500);
+        check(`${label} home: route link navigates to /demo`, routeClicked && mpage.url().includes("/demo"), mpage.url());
+        const menuOpenAfterNav = await mpage.evaluate(() => {
+          const btn = [...document.querySelectorAll("button")].find((x) => (x.getAttribute("aria-label") || "").toLowerCase().includes("navigation menu"));
+          return btn ? btn.getAttribute("aria-expanded") === "true" : false;
+        });
+        check(`${label} home: menu closes after route navigation`, !menuOpenAfterNav);
       }
       // homepage mobile menu open/close
       await mpage.goto(BASE + "/", { waitUntil: "networkidle2", timeout: 90000 });

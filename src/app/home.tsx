@@ -26,8 +26,8 @@ const NAV_LINKS = [
   { label: "How It Works", href: "#how" },
   { label: "Audit", href: "/audit" },
   { label: "Demo", href: "/demo" },
-  { label: "Pricing", href: "/landing/pricing" },
-  { label: "About", href: "/landing/about" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
 ];
 
 /* ------------------------------- Nav --------------------------------- */

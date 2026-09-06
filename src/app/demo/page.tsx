@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 const nav = [
   { label: "Home", href: "/" },
   { label: "Audit", href: "/audit" },
-  { label: "Pricing", href: "/landing/pricing" },
-  { label: "About", href: "/landing/about" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
 ];
 
 export default function DemoPage() {

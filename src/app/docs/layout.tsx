@@ -28,7 +28,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </Link>
           <div className="ml-auto hidden md:flex items-center gap-6">
             <Link
-              href="/landing/support"
+              href="/support"
               className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
             >
               Support

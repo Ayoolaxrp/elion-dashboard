@@ -63,7 +63,7 @@ export function PaymentBlock() {
       </div>
 
       <a
-        href="/landing/support"
+        href="/support"
         className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all"
       >
         I&apos;ve paid : confirm my order <ExternalLink className="w-3.5 h-3.5" />

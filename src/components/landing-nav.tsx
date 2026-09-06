@@ -8,10 +8,11 @@ import { Menu, X } from "lucide-react";
 
 const landingNav = [
   { label: "Home", href: "/" },
-  { label: "Pricing", href: "/landing/pricing" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Demo", href: "/demo" },
   { label: "Docs", href: "/docs" },
-  { label: "About", href: "/landing/about" },
-  { label: "Support", href: "/landing/support" },
+  { label: "About", href: "/about" },
+  { label: "Support", href: "/support" },
 ];
 
 export function LandingNav() {

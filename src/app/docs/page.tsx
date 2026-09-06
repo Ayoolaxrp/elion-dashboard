@@ -109,7 +109,7 @@ export default function DocsHome() {
           </div>
         </div>
         <Link
-          href="/landing/support"
+          href="/support"
           className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors"
         >
           Contact support

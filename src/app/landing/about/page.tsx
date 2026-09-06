@@ -192,7 +192,7 @@ export default function AboutPage() {
             See ELION In Action
           </Link>
           <Link
-            href="/landing/pricing"
+            href="/pricing"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-muted)] rounded font-semibold text-sm hover:bg-zinc-700 transition-colors"
           >
             View Pricing

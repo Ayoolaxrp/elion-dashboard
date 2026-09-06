@@ -402,8 +402,8 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           <div className="hidden md:flex items-center gap-7 text-sm">
             <Link href="/audit" className="text-[var(--color-accent-bright)] font-medium">Audit</Link>
             <Link href="/demo" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Demo</Link>
-            <Link href="/landing/pricing" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Pricing</Link>
-            <Link href="/landing/about" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">About</Link>
+            <Link href="/pricing" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Pricing</Link>
+            <Link href="/about" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">About</Link>
           </div>
           <a
             href="#audit"
@@ -957,7 +957,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                         <ClipboardList className="w-4 h-4" /> Request Implementation
                       </button>
                       <a
-                        href="/landing/support"
+                        href="/support"
                         className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97]"
                       >
                         <Mail className="w-4 h-4" /> Email Us

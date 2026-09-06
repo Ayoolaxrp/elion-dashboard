@@ -1,12 +1,5 @@
-import { LandingNav } from "@/components/landing-nav";
-import { SiteFooter } from "@/components/site-footer";
-
+// Legacy /landing/* routes render their own chrome (canonical pages wrap
+// LandingShell themselves), so this layout only provides the background.
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-[var(--color-surface-raised)]">
-      <LandingNav />
-      <main>{children}</main>
-      <SiteFooter />
-    </div>
-  );
+  return <div className="min-h-screen bg-[var(--color-surface-raised)]">{children}</div>;
 }

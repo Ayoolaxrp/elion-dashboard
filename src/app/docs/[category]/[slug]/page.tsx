@@ -161,7 +161,7 @@ export default async function DocsArticlePage({
           </div>
         </div>
         <Link
-          href="/landing/support"
+          href="/support"
           className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-surface-elevated)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border-light)] transition-colors"
         >
           Contact support

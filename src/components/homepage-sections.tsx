@@ -1198,7 +1198,7 @@ export function PricingSection() {
               <p className="mt-2 text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{p.price}</p>
               <p className="mt-3 text-xs text-[var(--color-text-muted)] leading-relaxed">{p.note}</p>
               <Link
-                href="/landing/pricing"
+                href="/pricing"
                 className={`mt-5 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${
                   p.featured ? "text-[var(--color-accent)] hover:underline" : "text-[var(--color-text-secondary)] hover:text-white"
                 }`}
