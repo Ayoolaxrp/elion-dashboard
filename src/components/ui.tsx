@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, useId } from "react";
 import { ArrowUpRight, ArrowDownRight, Minus, Search, X } from "lucide-react";
 
 /* StatCard */
@@ -151,14 +151,17 @@ interface InputProps {
 }
 
 export function Input({ label, placeholder, value, onChange, type = "text", className, multiline = false, rows = 3 }: InputProps) {
+  const autoId = useId();
+  const fieldId = label ? `field-${autoId}` : undefined;
   const base = cn(
     "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors",
   );
   return (
     <div className="space-y-1">
-      {label && <label className="text-xs font-semibold text-[var(--color-text-secondary)]">{label}</label>}
+      {label && <label htmlFor={fieldId} className="text-xs font-semibold text-[var(--color-text-secondary)]">{label}</label>}
       {multiline ? (
         <textarea
+          id={fieldId}
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
@@ -167,6 +170,7 @@ export function Input({ label, placeholder, value, onChange, type = "text", clas
         />
       ) : (
         <input
+          id={fieldId}
           type={type}
           placeholder={placeholder}
           value={value}
@@ -188,10 +192,13 @@ interface SelectProps {
 }
 
 export function Select({ label, value, onChange, options, className }: SelectProps) {
+  const autoId = useId();
+  const fieldId = label ? `field-${autoId}` : undefined;
   return (
     <div className="space-y-1">
-      {label && <label className="text-xs font-semibold text-[var(--color-text-secondary)]">{label}</label>}
+      {label && <label htmlFor={fieldId} className="text-xs font-semibold text-[var(--color-text-secondary)]">{label}</label>}
       <select
+        id={fieldId}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         className={cn(

@@ -6,6 +6,8 @@ import {
   Zap, Printer, ChevronDown, ChevronUp, X, Loader2, Activity,
   Radio, ArrowDown, Settings,
 } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 import { Modal, Input, Select } from "@/components/ui";
 import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
@@ -393,15 +395,15 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
       {/* ──── Navigation ──── */}
       <header className="fixed top-0 left-0 right-0 z-50 glass-nav">
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2" aria-label="ELION home">
-            <img src="/brand/elion-e-icon.svg" alt="" width={26} height={26} />
+          <Link href="/" className="flex items-center gap-2" aria-label="ELION home">
+            <Image src="/brand/elion-e-icon.svg" alt="" width={26} height={26} />
             <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm" style={{ fontFamily: "Space Grotesk, sans-serif" }}>ELION</span>
-          </a>
+          </Link>
           <div className="hidden md:flex items-center gap-7 text-sm">
-            <a href="/audit" className="text-[var(--color-accent-bright)] font-medium">Audit</a>
-            <a href="/demo" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Demo</a>
-            <a href="/landing/pricing" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Pricing</a>
-            <a href="/landing/about" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">About</a>
+            <Link href="/audit" className="text-[var(--color-accent-bright)] font-medium">Audit</Link>
+            <Link href="/demo" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Demo</Link>
+            <Link href="/landing/pricing" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Pricing</Link>
+            <Link href="/landing/about" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">About</Link>
           </div>
           <a
             href="#audit"
@@ -726,7 +728,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                   <div>
                     <h3 className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase tracking-[0.16em] mb-4">Research Findings</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {findings.filter((f) => f.category !== "Assessment" && f.category !== "Industry").map((f) => (
+                      {findings.filter((f) => f.category !== "Assessment" && f.category !== "Industry" && f.category !== "Search" && f.category !== "Automation").map((f) => (
                         <div key={f.id} className="flex items-center gap-3 py-2.5 px-3.5 rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface)]">
                           <span className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
                             f.status === "found" ? "bg-[var(--color-success)]/15" : f.status === "missing" ? "bg-[#f87171]/15" : "bg-[var(--color-warning)]/15"
@@ -839,7 +841,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                                           "border-[var(--color-warning)]/25 bg-[var(--color-warning)]/10 text-[var(--color-warning)]"
                                         }`}>
                                           {leak.evidenceLevel === "verified" ? <CheckCircle className="w-3 h-3" /> : leak.evidenceLevel === "supported" ? <AlertTriangle className="w-3 h-3" /> : <AlertTriangle className="w-3 h-3" />}
-                                          {leak.evidenceLevel === "verified" ? "Verified" : leak.evidenceLevel === "supported" ? "Supported" : "Estimated"}
+                                          {leak.evidenceLevel === "verified" ? "Observed" : leak.evidenceLevel === "supported" ? "Inferred" : "Estimated"}
                                         </span>
                                       )}
                                       {leak.recommendedProduct && (

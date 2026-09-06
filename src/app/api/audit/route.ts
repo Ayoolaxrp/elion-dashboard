@@ -389,7 +389,7 @@ async function researchBusiness(companyName: string, website: string): Promise<W
           }
         };
         trySocial("Instagram", /(?:https?:\/\/)?(?:www\.)?instagram\.com\/[A-Za-z0-9_.]+/i, "instagram.com");
-        trySocial("Facebook", /(?:https?:\/\/)?(?:www\.)?(?:facebook|fb)\.com\/[A-Za-z0-9.]+/i, "facebook.com");
+        trySocial("Facebook", /(?:https?:\/\/)?(?:www\.)?(?:facebook|fb)\.com\/[A-Za-z0-9._?&=/%-]+/i, "facebook.com");
         trySocial("Twitter/X", /(?:https?:\/\/)?(?:www\.)?(?:twitter|x)\.com\/[A-Za-z0-9_]+/i, "x.com");
         if (lowerHtml.includes("twitter.com") && !research.socialPlatforms.includes("Twitter/X")) research.socialPlatforms.push("Twitter/X");
         trySocial("LinkedIn", /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/(?:company|in)\/[A-Za-z0-9-]+/i, "linkedin.com");
@@ -608,12 +608,12 @@ export async function POST(req: NextRequest) {
     if (!hasWebsite) {
       leaks.push({
         id: String(leakId++), area: "Website", severity: "critical",
-        description: `${company_name} does not have a detectable website at ${website || "(no URL provided)"}. 81% of consumers research a business online before engaging (Google Consumer Barometer 2025). Without a website, you are invisible to the majority of potential customers searching for ${ind.toLowerCase()} services.`,
-        impact: `Every potential customer who searches for your service online and does not find you goes to a competitor. At ${benchmark.avgLeadCost} avg cost per lead, this adds up quickly.`,
+        description: `${company_name} has no website we could reach at ${website || "(no URL provided)"}. Most consumers research a business online before engaging, and without a public web presence it is harder for new customers to find and verify the business (Google Consumer Barometer 2025). This is an opportunity to establish a searchable presence, not a claim about current customer behaviour.`,
+        impact: `A web presence is the common starting point for digital enquiries. ${benchmark.avgLeadCost} is used here as an illustrative average lead cost for ${ind.toLowerCase()} only to size the opportunity, not as a measured figure.`,
         recommendation: "Build a conversion-optimized landing page with contact forms, service information, and WhatsApp integration",
-        estimatedSavings: `NGN ${Math.round(parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 200 * 12).toLocaleString()}/year (based on 200 missed leads/month at ${benchmark.avgLeadCost}/lead)`,
+        estimatedSavings: `NGN ${Math.round(parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 200 * 12).toLocaleString()}/year (illustrative: 200 missed web leads/month at ${benchmark.avgLeadCost}/lead)`,
         source: "Google Consumer Barometer 2025",
-        evidence: ["No website URL provided or URL unreachable", "Business cannot be found via organic search"],
+        evidence: ["No reachable website found for the business during this check"],
       });
     } else if (websiteScore < 40) {
       const missing: string[] = [];
@@ -622,8 +622,8 @@ export async function POST(req: NextRequest) {
       if (techStack.length === 0) missing.push("No modern framework detected");
       leaks.push({
         id: String(leakId++), area: "Website Quality", severity: "high",
-        description: `${company_name}'s website scored ${websiteScore}/100. ${missing.join(". ")}. A low-scoring website loses visitors to competitors with better user experience and faster load times.`,
-        impact: `Sites scoring below 40 convert ${Math.round((100 - websiteScore) * 0.25)}% fewer visitors into enquiries. With ${benchmark.avgLeadCost} avg lead cost, every lost conversion is money left on the table.`,
+        description: `${company_name}'s website scored ${websiteScore}/100 on the technical signals this audit checks (${missing.join("; ")}). A low-scoring website typically loses more visitors before they become enquiries.`,
+        impact: `Sites scoring in this range commonly convert fewer visitors into enquiries (roughly ${Math.round((100 - websiteScore) * 0.25)}% less, an estimate based on the score gap). ${benchmark.avgLeadCost} is an illustrative average lead cost for sizing, not a measured figure.`,
         recommendation: "Optimize website for SEO, mobile responsiveness, page speed, and conversion rate. Add clear CTAs and contact methods.",
         estimatedSavings: `NGN ${Math.round((100 - websiteScore) * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 50).toLocaleString()}/year in missed conversions`,
         source: "HubSpot State of Marketing 2025",
@@ -635,14 +635,19 @@ export async function POST(req: NextRequest) {
     if (!hasWhatsApp) {
       const adoptionPct = benchmark.whatsappAdoption;
       const monthlyLeads = Math.round(adoptionPct * 12);
+      const waEvidence = research.hasWebsite
+        ? `No WhatsApp Business link (wa.me or WhatsApp widget) was found in the page content fetched for ${company_name}.`
+        : `${company_name} has no website we could reach, so its WhatsApp presence could not be verified.`;
       leaks.push({
         id: String(leakId++), area: "WhatsApp Integration", severity: "critical",
-        description: `No WhatsApp Business integration detected on ${company_name}'s website. In ${ind}, ${adoptionPct}% of customers prefer WhatsApp for business communication (Statista 2025). ${Math.round(adoptionPct / 2)}% of potential customers cannot reach you on their preferred channel.`,
-        impact: `${adoptionPct}% of leads prefer WhatsApp but cannot reach you that way. Each missed lead costs approximately ${benchmark.avgLeadCost} to acquire through other channels.`,
+        description: `${waEvidence} WhatsApp is a common enquiry channel in ${ind} (${adoptionPct}% benchmark, Statista 2025), so whether an automated WhatsApp response would help is a likely opportunity to confirm with the business owner, not a measured loss.`,
+        impact: `Enquiries that do arrive currently have no automated instant-response step to rely on. The ${adoptionPct}% preference figure and ${benchmark.avgLeadCost} average lead cost are industry benchmarks used only to size the opportunity.`,
         recommendation: "Add WhatsApp Business API with instant auto-response. Customers who get a reply within 5 minutes are 21x more likely to convert (InsideSales.com).",
-        estimatedSavings: `NGN ${Math.round(monthlyLeads * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (based on ${monthlyLeads} WhatsApp-preferring leads/month)`,
+        estimatedSavings: `NGN ${Math.round(monthlyLeads * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (illustrative: ${monthlyLeads} WhatsApp-preferring leads/month)`,
         source: "Statista WhatsApp Business Report 2025",
-        evidence: ["No wa.me links found on website", "No WhatsApp widget or API integration detected", `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp`],
+        evidence: research.hasWebsite
+          ? ["No wa.me links found on website", "No WhatsApp widget or API integration detected", `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp (benchmark)`]
+          : [`No website was reachable to inspect`, `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp (benchmark)`],
       });
     }
 
@@ -651,14 +656,19 @@ export async function POST(req: NextRequest) {
       const noShowRate = benchmark.noShowRate;
       const monthlyAppointments = 50;
       const lostAppointments = Math.round(monthlyAppointments * noShowRate / 100);
+      const bookingEvidence = research.hasWebsite
+        ? `No online booking or scheduling flow was found in the page content fetched for ${company_name}. If appointments are arranged by phone, message or email today, scheduling is manual and unmeasured.`
+        : `${company_name} has no website we could reach, so its online booking capability could not be verified. If appointments are arranged by phone, message or email today, scheduling is likely manual and unmeasured.`;
       leaks.push({
         id: String(leakId++), area: "Appointment Management", severity: noShowRate > 20 ? "critical" : "high",
-        description: `No online booking system detected on ${company_name}'s website. Customers must call or message to schedule. ${ind} businesses without online booking experience ${noShowRate}% no-show rates, compared to under 5% with automated reminders (Calendly 2025).`,
-        impact: `${noShowRate}% no-show rate means roughly 1 in ${Math.round(100 / noShowRate)} appointments is wasted. Staff spend ${Math.round(benchmark.dataEntryHours * 0.3)}+ hours/week coordinating schedules manually.`,
+        description: `${bookingEvidence} ${ind} businesses commonly report no-show rates near ${noShowRate}% without automated reminders (Calendly 2025), which is a benchmark to measure in this business's own pipeline rather than an observed figure.`,
+        impact: `Industry benchmarks put ${ind} no-show rates near ${noShowRate}%, and manual scheduling typically costs staff time (about ${Math.round(benchmark.dataEntryHours * 0.3)} hours/week in similar businesses). Both are estimates: the real figures depend on how this business handles appointments today.`,
         recommendation: "Implement an online booking engine with automated WhatsApp and email reminders. Reduces no-shows by up to 40% and frees staff time.",
-        estimatedSavings: `NGN ${Math.round(lostAppointments * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (based on ${lostAppointments} missed appointments/month)`,
+        estimatedSavings: `NGN ${Math.round(lostAppointments * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (illustrative: ${lostAppointments} missed appointments/month)`,
         source: "Calendly Industry Report 2025",
-        evidence: ["No Calendly, scheduling tool, or booking form found", `Industry no-show rate: ${noShowRate}%`, `Manual scheduling costs ~${Math.round(benchmark.dataEntryHours * 0.3)} hours/week`],
+        evidence: research.hasWebsite
+          ? ["No Calendly, scheduling tool, or booking form found", `Industry no-show benchmark: ${noShowRate}%`, `Manual scheduling ~${Math.round(benchmark.dataEntryHours * 0.3)} hours/week in similar businesses`]
+          : [`No website was reachable to inspect`, `Industry no-show benchmark: ${noShowRate}%`],
       });
     }
 
@@ -697,7 +707,7 @@ export async function POST(req: NextRequest) {
       leaks.push({
         id: String(leakId++), area: "Customer Management", severity: "high",
         description: `${company_name} has a website but no CRM integration detected (HubSpot, Salesforce, Pipedrive, Zoho). Without a CRM, leads from website forms are likely managed manually in spreadsheets or inboxes, leading to lost follow-ups and duplicate outreach.`,
-        impact: `${followUpLoss}% of leads do not receive consistent follow-up. Manual lead management in ${ind} costs an average of ${benchmark.dataEntryHours} hours/week in data entry alone.`,
+        impact: `Industry research suggests leads in businesses without a CRM often miss consistent follow-up (up to ${followUpLoss}% by benchmark, not a measured figure for ${company_name}). Manual lead handling can also add roughly ${benchmark.dataEntryHours} hours/week of data entry.`,
         recommendation: "Implement a CRM to capture, track, and automate lead management. Even a basic CRM reduces follow-up gaps by 50%+.",
         estimatedSavings: `NGN ${Math.round(followUpLoss * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 100).toLocaleString()}/year (based on ${followUpLoss}% of leads lost to poor follow-up)`,
         source: "Salesforce State of Sales 2025",
@@ -757,7 +767,7 @@ export async function POST(req: NextRequest) {
       leaks.push({
         id: String(leakId++), area: "Optimization Opportunity", severity: "low",
         description: `${company_name} has a strong digital presence: ${techStack.join(", ")} technology, ${socialPlatforms.join(", ")} social media, ${hasWhatsApp ? "WhatsApp" : "no WhatsApp"}${hasBooking ? ", online booking" : ""}${hasCRM ? ", CRM" : ""}${hasEmail ? ", email marketing" : ""}. The main opportunity is optimizing conversion rates and automating any remaining manual processes.`,
-        impact: "Current setup is solid. Optimization can still unlock 15-30% efficiency gains.",
+        impact: "The current setup looks solid. Optimization work for businesses like this is commonly in the 15-30% range, but the gain here depends on internal processes this audit cannot see.",
         recommendation: "Audit internal processes for manual tasks. Focus on conversion rate optimization and marketing automation.",
         estimatedSavings: "Depends on current manual workload and conversion rates",
         source: "Internal analysis",
@@ -812,6 +822,18 @@ export async function POST(req: NextRequest) {
       leak.recommendedProduct = AREA_PRODUCT[leak.area] || null;
       if (leak.estimatedSavings.includes("NGN")) leak.estimateNote = ESTIMATE_NOTE;
       leak.checkedAt = research.checkedAt;
+    }
+
+    // Reachability honesty: when no public website could be inspected, findings
+    // about "what is missing on the website" are benchmark inferences, not
+    // observations. Downgrade their label accordingly (the copy already says
+    // presence could not be verified).
+    if (!research.hasWebsite) {
+      for (const leak of leaks) {
+        if (leak.area === "WhatsApp Integration" || leak.area === "Appointment Management") {
+          leak.evidenceLevel = "estimated";
+        }
+      }
     }
 
     // ──── Business verification : small facts proving ELION checked the right business ────
