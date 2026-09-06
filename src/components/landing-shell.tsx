@@ -1,6 +1,6 @@
 "use client";
 
-import { LandingNav } from "@/components/landing-nav";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 /**
@@ -11,7 +11,7 @@ import { SiteFooter } from "@/components/site-footer";
 export function LandingShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[var(--color-surface-raised)]">
-      <LandingNav />
+      <SiteHeader />
       <main>{children}</main>
     </div>
   );

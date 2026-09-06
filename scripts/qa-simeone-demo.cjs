@@ -32,11 +32,84 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
     return errors;
   };
 
+  // ---- GLOBAL HEADER ARCHITECTURE ASSERTIONS ----
+  // The homepage header must be identical on every public page: same labels,
+  // same order, same CTA, same logo; only active state may differ.
+  const GLOBAL_LABELS = ["Solutions", "How It Works", "Audits", "Demo", "Pricing", "About", "Sign In", "Run Free Audit"];
+  const assertGlobalHeader = async (page, route, isMobile = false) => {
+    const hdr = await page.evaluate((labels) => {
+      const scope = document.querySelector("header.glass-nav") || document.querySelector("header");
+      if (!scope) return null;
+      const links = [...scope.querySelectorAll("a")];
+      const hrefs = links.map((a) => a.getAttribute("href"));
+      const texts = links.map((a) => a.textContent.trim());
+      const nav = [...scope.querySelectorAll("nav a")].map((a) => a.textContent.trim());
+      const order = labels.map((l) => {
+        const idx = nav.findIndex((t) => t === l);
+        return idx;
+      }).filter((i) => i >= 0);
+      const orderLabels = order.map((i) => nav[i]);
+      const logo = !!scope.querySelector('a[aria-label="ELION home"]');
+      const cta = texts.some((t) => /run free audit/i.test(t));
+      const landing = hrefs.some((h) => (h || "").startsWith("/landing/"));
+      const dupNavEntries = nav.filter((t, i) => nav.indexOf(t) !== i);
+      // active state: the link for this route should be highlighted if any
+      return { logo, cta, landing, orderLabels, nav, dupNavEntries, hrefs };
+    }, GLOBAL_LABELS);
+    if (!hdr) { check(`hdr ${route}: header exists`, false); return; }
+    check(`hdr ${route}: ELION logo present`, hdr.logo);
+    check(`hdr ${route}: Run Free Audit CTA present`, hdr.cta);
+    check(`hdr ${route}: no /landing/* in nav`, !hdr.landing);
+    const expectedOrder = GLOBAL_LABELS.filter((l) => hdr.nav.includes(l));
+    const sameOrder = JSON.stringify(hdr.orderLabels) === JSON.stringify(expectedOrder);
+    check(`hdr ${route}: nav labels+order match global header`, sameOrder, `got=${JSON.stringify(hdr.orderLabels)} want=${JSON.stringify(expectedOrder)}`);
+    check(`hdr ${route}: no duplicate nav entries`, hdr.dupNavEntries.length === 0, hdr.dupNavEntries.join(","));
+  };
+
+
   try {
     // ================= DESKTOP =================
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 1000 });
     const errors = collectErrors(page);
+
+  // Verify every public page renders the identical global header (desktop)
+  for (const r of ["/", "/audit", "/demo", "/pricing", "/about", "/support", "/book", "/funnel"]) {
+    await page.goto(BASE + r, { waitUntil: "networkidle2", timeout: 90000 });
+    await sleep(600);
+    await assertGlobalHeader(page, r);
+    // Active state: current page's nav link is highlighted (except homepage, which has no active link)
+    const activeOk = await page.evaluate(({ route, labels }) => {
+      const scope = document.querySelector("header.glass-nav") || document.querySelector("header");
+      if (!scope) return false;
+      const nav = [...scope.querySelectorAll("nav a")];
+      const routeMap = { "/": null, "/audit": "Audits", "/demo": "Demo", "/pricing": "Pricing", "/about": "About", "/support": null, "/book": null, "/funnel": null };
+      const wantLabel = routeMap[route];
+      const active = nav.filter((a) => {
+        const c = a.className || "";
+        return /text-white/.test(c) && !/hover:text-white/.test(c.split("hover").join(""));
+      }).map((a) => a.textContent.trim());
+      if (!wantLabel) return active.filter((t) => labels.includes(t)).length === 0 || active.includes("Run Free Audit");
+      return active.includes(wantLabel);
+    }, { route: r, labels: GLOBAL_LABELS });
+    check(`hdr ${r}: active state correct`, activeOk);
+  }
+
+  // Cross-page anchor routing: from /pricing, Solutions must href to /#systems
+  await page.goto(BASE + "/pricing", { waitUntil: "networkidle2", timeout: 90000 });
+  await sleep(600);
+  const crossAnchor = await page.evaluate(() => {
+    const scope = document.querySelector("header.glass-nav") || document.querySelector("header");
+    const a = [...scope.querySelectorAll("a")].find((x) => x.textContent.trim() === "Solutions");
+    return a ? a.getAttribute("href") : null;
+  });
+  check("hdr cross-page: Solutions -> /#systems from /pricing", crossAnchor === "/#systems", crossAnchor);
+  const crossAnchor2 = await page.evaluate(() => {
+    const scope = document.querySelector("header.glass-nav") || document.querySelector("header");
+    const a = [...scope.querySelectorAll("a")].find((x) => x.textContent.trim() === "How It Works");
+    return a ? a.getAttribute("href") : null;
+  });
+  check("hdr cross-page: How It Works -> /#how from /pricing", crossAnchor2 === "/#how", crossAnchor2);
 
     // ---- Homepage ----
     await page.goto(BASE + "/", { waitUntil: "networkidle2", timeout: 90000 });
@@ -218,9 +291,10 @@ const noHOverflow = () => document.documentElement.scrollWidth <= window.innerWi
         viewport: { width, height, isMobile: true, hasTouch: true, deviceScaleFactor: 3 },
         userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
       });
-      for (const r of ["/", "/funnel", "/audit", "/demo", "/support"]) {
+      for (const r of ["/", "/funnel", "/audit", "/demo", "/support", "/pricing", "/about", "/book"]) {
         await mpage.goto(BASE + r, { waitUntil: "networkidle2", timeout: 90000 });
         await sleep(700);
+        await assertGlobalHeader(mpage, `${label}${r}`, true);
         check(`${label} ${r}: no horizontal overflow`, await mpage.evaluate(noHOverflow));
         check(`${label} ${r}: primary CTA visible`, await mpage.evaluate(() => /(run (your )?free (business )?audit|free audit)/i.test(document.body.innerText)));
       }

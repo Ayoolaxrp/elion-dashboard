@@ -1,11 +1,10 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, PlayCircle, Calculator, FileSearch, Timer, MessagesSquare } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, ChevronDown, Calculator, FileSearch, Timer, MessagesSquare } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import StageStory from "@/components/funnel/stage-story";
 import DemoExperience from "@/components/demo-experience";
 import TierCards from "@/components/pricing/tier-cards";
@@ -142,29 +141,16 @@ export default function FunnelPage() {
     <div className="min-h-screen bg-[var(--color-surface)]">
       <a href="#audit" className="skip-to-content">Skip to audit</a>
 
-      {/* Glass nav : anchor-based, self-contained */}
-      <header className="sticky top-0 z-50 glass-nav">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="ELION home">
-            <Image src="/brand/elion-e-icon.svg" alt="" width={32} height={32} priority />
-            <span className="font-bold text-[var(--color-text-primary)] tracking-tight" style={{fontFamily:"Space Grotesk,sans-serif"}}>ELION</span>
-          </Link>
-          <nav className="hidden lg:flex items-center gap-6 text-sm" aria-label="Funnel sections">
-            {NAV_ANCHORS.map((item) => (
-              <a key={item.href} href={item.href} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">
-                {item.label}
-              </a>
-            ))}
-          </nav>
-          <div className="hidden sm:flex items-center gap-3">
-            <a href="#demo" className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm hover:bg-[var(--color-surface-elevated)] transition-all">
-              <PlayCircle className="w-4 h-4" /> Demo
-            </a>
-            <a href="#audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97]">Run Free Audit</a>
-          </div>
-          <a href="#audit" className="sm:hidden inline-flex items-center px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold">Audit</a>
-        </div>
-      </header>
+      {/* Global ELION header */}
+      <SiteHeader />
+      {/* Funnel section shortcuts (in-page anchors only) */}
+      <div className="sticky top-16 z-40 hidden lg:flex justify-center gap-6 text-sm bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-border)]/40 py-2.5" aria-label="Funnel sections">
+        {NAV_ANCHORS.map((item) => (
+          <a key={item.href} href={item.href} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">
+            {item.label}
+          </a>
+        ))}
+      </div>
 
       <main id="main">
       {/* 1. HERO - compact, leads straight into the audit */}

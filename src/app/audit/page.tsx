@@ -10,6 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Modal, Input, Select } from "@/components/ui";
 import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import { Reveal } from "@/components/reveal";
 
 /* ──────────── Types ──────────── */
@@ -386,39 +387,21 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
   const idle = !auditResult && !isScanning;
 
+  // Global-header CTA: same behavior the old audit header had (reset or scroll to the form)
+  const handleNavAuditCta = () => {
+    if (!idle) { resetAudit(); } else {
+      document.getElementById("audit")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    }
+  };
+
   /* ──── Render ──── */
 
   return (
     <div className="min-h-screen bg-[var(--color-surface)]">
       <a href="#audit" className="skip-to-content">Skip to audit</a>
 
-      {/* ──── Navigation ──── */}
-      <header className="fixed top-0 left-0 right-0 z-50 glass-nav">
-        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2" aria-label="ELION home">
-            <Image src="/brand/elion-e-icon.svg" alt="" width={26} height={26} />
-            <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm" style={{ fontFamily: "Space Grotesk, sans-serif" }}>ELION</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-7 text-sm">
-            <Link href="/audit" className="text-[var(--color-accent-bright)] font-medium">Audit</Link>
-            <Link href="/demo" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Demo</Link>
-            <Link href="/pricing" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Pricing</Link>
-            <Link href="/about" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">About</Link>
-          </div>
-          <a
-            href="#audit"
-            onClick={(e) => {
-              e.preventDefault();
-              if (!idle) { resetAudit(); } else {
-                document.getElementById("audit")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-              }
-            }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all active:scale-[0.97]"
-          >
-            Run Free Audit
-          </a>
-        </nav>
-      </header>
+      {/* ──── Navigation (global ELION header) ──── */}
+      <SiteHeader ctaAction={handleNavAuditCta} />
 
       <main id="main">
         {/* ──── 01 · CINEMATIC HERO ──── */}
