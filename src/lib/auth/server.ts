@@ -25,6 +25,46 @@ function getServiceClient() {
   return _supabase;
 }
 
+// Cache the admin email set for 60s so we don't hit the DB per request,
+// while changes made in Admin > Settings take effect almost immediately.
+let _adminEmailCache: { emails: Set<string>; fetchedAt: number } | null = null;
+
+export async function getAdminEmails(): Promise<Set<string>> {
+  if (_adminEmailCache && Date.now() - _adminEmailCache.fetchedAt < 60_000) {
+    return _adminEmailCache.emails;
+  }
+  const emails = new Set<string>();
+  // Bootstrap fallback from env (owner account) - works even if migration 026
+  // has not been applied yet.
+  (process.env.ADMIN_EMAILS || "awodeyiayoola@gmail.com")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+    .forEach((e) => emails.add(e));
+  try {
+    const supabase = getServiceClient();
+    const { data } = await supabase.from("admin_directory").select("email");
+    ((data || []) as Array<{ email: string | null }>).forEach((row) => {
+      if (row.email) emails.add(String(row.email).trim().toLowerCase());
+    });
+  } catch {
+    // Table missing or transient failure: env fallback is already loaded.
+  }
+  _adminEmailCache = { emails, fetchedAt: Date.now() };
+  return emails;
+}
+
+export function invalidateAdminEmailCache(): void {
+  _adminEmailCache = null;
+}
+
+/** Check an email against env + dynamic admin directory. */
+export async function isAdminEmail(email: string | null | undefined): Promise<boolean> {
+  if (!email) return false;
+  const admins = await getAdminEmails();
+  return admins.has(email.trim().toLowerCase());
+}
+
 export async function resolveUserContext(userId: string): Promise<UserContext> {
   const supabase = getServiceClient();
   const { data: { user } } = await supabase.auth.admin.getUserById(userId);
@@ -53,13 +93,8 @@ export async function resolveUserContext(userId: string): Promise<UserContext> {
   }
 
   if (!primaryRole) {
-    const isAdminEmail =
-      user?.email &&
-      (process.env.ADMIN_EMAILS || "")
-        .split(",")
-        .map((e) => e.trim().toLowerCase())
-        .includes(user.email.toLowerCase());
-    if (isAdminEmail) {
+    const adminEmailMatch = user?.email ? await isAdminEmail(user.email) : false;
+    if (adminEmailMatch) {
       primaryRole = "super_admin";
       orgId = "org_elion_platform";
       orgName = "ELION";
