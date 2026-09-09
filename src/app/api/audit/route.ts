@@ -3,6 +3,7 @@ import { URL } from "url";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { runAuditPipeline, type VerifiedSignals } from "@/lib/audit/pipeline";
+import { evaluateOpportunities } from "@/lib/commercial/applicability";
 
 // Real industry benchmarks sourced from McKinsey 2025, KPMG Africa SME Report, Google Africa Business Report, HubSpot State of Marketing 2025
 const INDUSTRY_BENCHMARKS: Record<string, {
@@ -775,6 +776,20 @@ export async function POST(req: NextRequest) {
       console.error("[AUDIT] Persist skipped (result returned):", persistError);
     }
 
+    // Commercial applicability: evidence + business context -> opportunities.
+    // Never claims a gap the pipeline could not verify; "no strong opportunity"
+    // is a valid outcome. Modeled/reported layers arrive with the Deep Audit.
+    let commercial: unknown = null;
+    try {
+      commercial = evaluateOpportunities(
+        (research.verified || {}) as Record<string, never>,
+        ind,
+        Boolean(research.reachable)
+      );
+    } catch (commercialError) {
+      console.error("[AUDIT] Applicability skipped:", commercialError);
+    }
+
     const response = NextResponse.json({
       company: company_name, industry: ind, website: website || "",
       overallScore, scores: subScores, leaks,
@@ -801,6 +816,7 @@ export async function POST(req: NextRequest) {
         priorityActions: research.quickWins.slice(0, 5),
       },
       businessVerification,
+      commercial,
     });
     response.headers.set("X-RateLimit-Limit", "5");
     response.headers.set("X-RateLimit-Remaining", String(5 - rateLimit.remaining));

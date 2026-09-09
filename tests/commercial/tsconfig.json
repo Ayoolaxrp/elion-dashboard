@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "./compiled",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": "../..",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "files": [
+    "../../src/lib/commercial/applicability.ts",
+    "../../src/lib/commercial/solutions.ts",
+    "../../src/lib/commercial/pricing-model.ts",
+    "../../src/lib/audit/detect.ts",
+    "../../src/lib/audit/registry.ts"
+  ]
+}
