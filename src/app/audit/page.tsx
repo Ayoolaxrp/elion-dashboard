@@ -73,6 +73,18 @@ interface AuditResult {
     hasEcommerce?: boolean;
     digitalPresenceScore: number;
     quickWins: string[];
+    reachable?: boolean;
+    verified?: Record<string, { status: string; provider?: string | null; confidence?: string; reason?: string; evidence?: Array<{ finding: string; source: string; page: string; match: string; reliability: string; provider?: string | null }> }>;
+    inspected?: {
+      static_home: boolean;
+      internal_pages: number;
+      internal_attempted: number;
+      structured_data: boolean;
+      rendered_dom: boolean;
+      runtime_network: boolean;
+      failedSources: Record<string, string>;
+      deepAnalysis: { attempted: boolean; succeeded: boolean; reason: string; errorCategory?: string };
+    };
   };
   automationRecommendations?: {
     needs: string[];
@@ -81,6 +93,28 @@ interface AuditResult {
   };
   businessVerification?: { facts: string[]; checkedAt: string; places?: Record<string, unknown> | null };
 }
+
+/* ──────────── Helper: honest verification wording ──────────── */
+
+// States: found → "Found (+ provider)"; could_not_verify → unverifiable;
+// not_found → negative only about successfully inspected pages.
+function categoryStateLabel(cat: { status: string; provider?: string | null; reason?: string }): { text: string; tone: "found" | "missing" | "unverified" } {
+  if (cat.status === "found") return { text: cat.provider ? `Found: ${cat.provider}` : "Found", tone: "found" };
+  if (cat.status === "could_not_verify") return { text: "Could not be verified", tone: "unverified" };
+  return { text: "Not found in inspected pages", tone: "missing" };
+}
+
+const VERIFIED_PANEL_ORDER: Array<{ key: string; label: string }> = [
+  { key: "whatsapp", label: "WhatsApp" },
+  { key: "email", label: "Email" },
+  { key: "phone", label: "Phone" },
+  { key: "social", label: "Social profiles" },
+  { key: "booking", label: "Online booking" },
+  { key: "live_chat", label: "Live chat" },
+  { key: "crm", label: "CRM" },
+  { key: "email_marketing", label: "Email marketing" },
+  { key: "ecommerce", label: "E-commerce" },
+];
 
 /* ──────────── Helper: severity config ──────────── */
 
@@ -923,6 +957,50 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {/* What we checked: honest inspection summary with per-category verification states */}
+                  {auditResult.webResearch?.verified && (
+                    <div className="mt-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/50 p-4">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <p className="text-xs font-semibold text-[var(--color-text)] uppercase tracking-wider">What this audit checked</p>
+                        {auditResult.webResearch.inspected && (
+                          <p className="text-[11px] text-[var(--color-text-muted)]">
+                            {1 + (auditResult.webResearch.inspected.internal_pages || 0)} page{(1 + (auditResult.webResearch.inspected.internal_pages || 0)) === 1 ? "" : "s"} inspected
+                            {auditResult.webResearch.inspected.rendered_dom ? " · rendered content checked" : ""}
+                            {auditResult.webResearch.inspected.structured_data ? " · structured data read" : ""}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {VERIFIED_PANEL_ORDER.map(({ key, label }) => {
+                          const cat = auditResult.webResearch?.verified?.[key];
+                          if (!cat) return null;
+                          const state = categoryStateLabel(cat);
+                          const toneCls =
+                            state.tone === "found"
+                              ? "text-emerald-400 border-emerald-400/30 bg-emerald-400/5"
+                              : state.tone === "unverified"
+                                ? "text-amber-400 border-amber-400/30 bg-amber-400/5"
+                                : "text-[var(--color-text-muted)] border-[var(--color-border)] bg-transparent";
+                          const dotCls =
+                            state.tone === "found" ? "bg-emerald-400" : state.tone === "unverified" ? "bg-amber-400" : "bg-zinc-500";
+                          return (
+                            <div key={key} className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs ${toneCls}`}>
+                              <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${dotCls}`} />
+                              <span className="font-medium">{label}</span>
+                              <span className="ml-auto text-right">{state.text}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {auditResult.webResearch.inspected && Object.keys(auditResult.webResearch.inspected.failedSources).length > 0 && (
+                        <p className="mt-3 text-[11px] text-amber-400/90">
+                          Some checks did not complete ({Object.entries(auditResult.webResearch.inspected.failedSources).map(([k, v]) => `${k}: ${v}`).slice(0, 2).join("; ")}). Items marked &quot;could not be verified&quot; are not counted as gaps.
+                        </p>
+                      )}
+                      <p className="mt-3 text-[11px] text-[var(--color-text-muted)]">Findings reflect public evidence on the pages successfully inspected, not absolute facts about the business.</p>
                     </div>
                   )}
 

@@ -29,6 +29,7 @@ def empty_result(url):
         "has_ecommerce": False, "page_speed_indicators": {}, "headings": [],
         "images_count": 0, "links_count": 0, "forms_count": 0, "cta_texts": [],
         "phone_numbers": [], "emails_found": [], "json_ld_types": [],
+        "script_srcs": [], "iframe_srcs": [], "network_hosts": [],
         "markdown_preview": "", "error": None,
     }
 
@@ -44,21 +45,52 @@ def _looks_blocked(html):
 
 
 def _fetch_page(url):
-    """Return (page, fetcher_name) — Scrapling http-first with stealth fallback."""
+    """Return (page, fetcher_name, network_hosts).
+
+    Scrapling http-first with stealth fallback. Runtime network evidence is
+    captured on the stealth path via a request listener registered before
+    navigation (page_setup). Rendering readiness uses load_dom (default) with
+    a bounded post-load wait — network_idle is deliberately NOT used, so sites
+    with websockets/analytics polling cannot hang the audit.
+    """
     from scrapling.fetchers import Fetcher, StealthyFetcher
     last_error = None
     try:
         page = Fetcher.get(url, timeout=25)
         if page.status and page.status < 400 and not _looks_blocked(page.html_content or ""):
-            return page, "http"
+            return page, "http", []
         last_error = f"http status {getattr(page, 'status', '?')} or block-page detected"
     except Exception as e:
         last_error = str(e)[:300]
+
+    network_hosts = []
+
+    def _setup(page):
+        # Runs before navigation: register the runtime-request listener.
+        try:
+            def _on_request(req):
+                try:
+                    host = (req.url or "").split("/")[2].lower() if (req.url or "").count("/") >= 2 else ""
+                    if host and host not in network_hosts and len(network_hosts) < 80:
+                        network_hosts.append(host)
+                except Exception:
+                    pass
+            page.on("request", _on_request)
+        except Exception:
+            pass
+
     try:
-        page = StealthyFetcher.fetch(url, headless=True)
-        return page, "stealth"
+        page = StealthyFetcher.fetch(
+            url,
+            headless=True,
+            page_setup=_setup,
+            network_idle=False,   # never wait for idle: polling sites would hang
+            wait=2500,            # bounded stabilization after load
+            timeout=30000,        # hard navigation timeout
+        )
+        return page, "stealth", network_hosts
     except Exception as e:
-        return None, f"stealth failed too: {last_error} / {str(e)[:300]}"
+        return None, f"stealth failed too: {last_error} / {str(e)[:300]}", network_hosts
 
 
 def _el_text(el):
@@ -70,7 +102,8 @@ def _el_text(el):
 def analyze(url):
     result = empty_result(url)
     try:
-        page, fetcher = _fetch_page(url)
+        page, fetcher, network_hosts = _fetch_page(url)
+        result["network_hosts"] = sorted(set(network_hosts))[:60]
         if page is None:
             result["status"] = "error"
             result["error"] = fetcher
@@ -207,6 +240,19 @@ def analyze(url):
             for m in re.finditer(r'"@type"\s*:\s*"([A-Za-z]+)"', raw):
                 if m.group(1) not in result["json_ld_types"]:
                     result["json_ld_types"].append(m.group(1))
+
+        # Rendered script/iframe sources (runtime evidence beyond static HTML).
+        script_srcs, iframe_srcs = [], []
+        for el in page.css("script[src]")[:80]:
+            src = (el.attrib or {}).get("src", "")
+            if src:
+                script_srcs.append(src[:300])
+        for el in page.css("iframe[src]")[:40]:
+            src = (el.attrib or {}).get("src", "")
+            if src:
+                iframe_srcs.append(src[:300])
+        result["script_srcs"] = script_srcs
+        result["iframe_srcs"] = iframe_srcs
 
         # Rendered markdown preview (grounds outreach in the site's own words).
         md = ""

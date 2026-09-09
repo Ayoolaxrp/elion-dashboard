@@ -1,119 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { execSync } from "child_process";
-import path from "path";
 import { URL } from "url";
-import dns from "dns";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
-
-const REDIRECT_MAX_HOPS = 5;
-
-function isPrivateIpAddress(ip: string): boolean {
-  // IPv4 private/reserved ranges + IPv6 loopback/ULA/link-local + metadata
-  const parts = ip.split(".");
-  if (parts.length === 4) {
-    const a = parseInt(parts[0], 10);
-    const b = parseInt(parts[1], 10);
-    if (a === 0) return true;                                  // 0.0.0.0/8
-    if (a === 10) return true;                                 // 10/8
-    if (a === 127) return true;                                // loopback
-    if (a === 169 && b === 254) return true;                   // link-local incl. metadata
-    if (a === 172 && b >= 16 && b <= 31) return true;          // 172.16/12
-    if (a === 192 && b === 168) return true;                   // 192.168/16
-    if (a === 100 && b >= 64 && b <= 127) return true;         // CGNAT 100.64/10
-    if (a === 198 && (b === 18 || b === 19)) return true;      // benchmarking
-    if (a >= 224) return true;                                 // multicast + reserved
-    return false;
-  }
-  const low = ip.toLowerCase();
-  if (low === "::1" || low === "::") return true;              // loopback / unspecified
-  if (low.startsWith("fc") || low.startsWith("fd")) return true; // ULA fc00::/7
-  if (low.startsWith("fe8") || low.startsWith("fe9") || low.startsWith("fea") || low.startsWith("feb")) return true; // link-local fe80::/10
-  if (low.startsWith("ff")) return true;                       // multicast
-  return false;
-}
-
-function isInternalHostname(hostname: string): boolean {
-  const host = hostname.toLowerCase().replace(/^\[|\]$/g, "").replace(/\.$/, "");
-  if (host === "localhost" || host === "metadata.google.internal" || host.endsWith(".internal") || host.endsWith(".local") || host.endsWith(".lan")) {
-    return true;
-  }
-  return false;
-}
-
-// SSRF protection: validate URLs before fetching.
-// String-level checks only : DNS resolution happens in isSafeUrlResolved().
-function isSafeUrl(urlStr: string): boolean {
-  try {
-    const url = new URL(urlStr);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return false;
-    if (url.username || url.password) return false;
-    const hostname = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
-    if (isInternalHostname(hostname)) return false;
-    // Literal IP literals
-    if (hostname.includes(":")) {
-      if (isPrivateIpAddress(hostname)) return false;
-    } else if (/^\d+\.\d+\.\d+\.\d+$/.test(hostname)) {
-      if (isPrivateIpAddress(hostname)) return false;
-    }
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-// Full check: string rules + DNS resolution, rejecting any hostname that
-// resolves (even partially) to a private/reserved address. Guards against
-// DNS-rebinding where a hostname alternates between public and internal IPs.
-async function isSafeUrlResolved(urlStr: string): Promise<boolean> {
-  if (!isSafeUrl(urlStr)) return false;
-  let hostname: string;
-  try {
-    const url = new URL(urlStr);
-    hostname = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  } catch {
-    return false;
-  }
-  if (isPrivateIpAddress(hostname)) return false; // literal private IP already handled, but be safe
-  try {
-    const { address } = await dns.promises.lookup(hostname, { verbatim: true });
-    if (isPrivateIpAddress(address)) return false;
-  } catch {
-    return false; // unresolvable or DNS failure -> do not fetch
-  }
-  return true;
-}
-
-// Fetch with bounded redirects where EVERY hop is SSRF-validated before it is
-// followed (a safe first hop must not be allowed to redirect to an internal
-// address). Returns the final Response or null when a hop is unsafe.
-async function fetchSafe(urlStr: string, headers: Record<string, string>, timeoutMs: number): Promise<Response | null> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-  let current = urlStr;
-  try {
-    for (let hop = 0; hop <= REDIRECT_MAX_HOPS; hop++) {
-      if (!(await isSafeUrlResolved(current))) return null;
-      const response = await fetch(current, {
-        signal: controller.signal,
-        redirect: "manual",
-        headers,
-      });
-      if (response.status >= 300 && response.status < 400) {
-        const location = response.headers.get("location");
-        if (!location) return null;
-        current = new URL(location, current).toString();
-        continue;
-      }
-      return response;
-    }
-    return null; // too many redirects
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timeout);
-  }
-}
+import { runAuditPipeline, type VerifiedSignals } from "@/lib/audit/pipeline";
 
 // Real industry benchmarks sourced from McKinsey 2025, KPMG Africa SME Report, Google Africa Business Report, HubSpot State of Marketing 2025
 const INDUSTRY_BENCHMARKS: Record<string, {
@@ -218,7 +107,7 @@ interface WebResearch {
   hasWhatsApp: boolean;
   hasSocialMedia: boolean;
   socialPlatforms: string[];
-  // Public social profile URLs directly observed on the page (never invented)
+  // Public social profile URLs directly observed on the site (never invented)
   socialLinks: Array<{ platform: string; url: string }>;
   // True only when an actual wa.me / api.whatsapp.com deep link exists
   hasWhatsAppDeepLink: boolean;
@@ -235,6 +124,11 @@ interface WebResearch {
   foundPhones: string[];
   foundEmails: string[];
   checkedAt: string;
+  // Verification states + inspection metadata from the audit pipeline
+  // (backward-compatible additions; never invented)
+  reachable?: boolean;
+  verified?: VerifiedSignals["categories"];
+  inspected?: VerifiedSignals["inspected"];
 }
 
 interface BusinessVerification {
@@ -285,23 +179,11 @@ async function lookupPublicPlaceInfo(
   }
 }
 
-// Scrapling deep analysis, calls Python scraper for enhanced detection
-async function scraplingDeepAnalysis(website: string): Promise<Record<string, unknown> | null> {
-  try {
-    const scriptPath = path.join(process.cwd(), "scripts", "scrape.py");
-    const result = execSync(`python "${scriptPath}" "${website}"`, {
-      timeout: 15000,
-      encoding: "utf-8",
-      stdio: ["pipe", "pipe", "pipe"],
-    });
-    // Filter out log lines and parse JSON
-    const lines = result.split("\n").filter((l) => l.trim().startsWith("{") || l.trim().startsWith("\"") || l.trim().startsWith("}") || l.trim().startsWith("[") || l.trim().startsWith("]"));
-    return JSON.parse(lines.join("\n"));
-  } catch {
-    return null;
-  }
-}
-
+// Multi-stage research via the audit pipeline:
+// Stage A reachability -> Stage B static homepage -> Stage C bounded internal
+// crawl -> Stage D conditional rendered inspection (Scrapling). Categories
+// carry found / not_found / could_not_verify states with evidence; weak text
+// signals never become confirmed findings.
 async function researchBusiness(companyName: string, website: string): Promise<WebResearch> {
   const research: WebResearch = {
     hasWebsite: false, websiteScore: 0, websiteTech: [], hasWhatsApp: false,
@@ -311,181 +193,56 @@ async function researchBusiness(companyName: string, website: string): Promise<W
     responseTimeIndicator: "unknown", digitalPresenceScore: 0, quickWins: [],
     foundPhones: [], foundEmails: [], checkedAt: new Date().toISOString(),
   };
+  if (!website) return research;
 
-  if (website) {
-    try {
-      const url = website.startsWith("http") ? website : `https://${website}`;
-      // SSRF protection: validate URL (string + DNS resolution) before fetching.
-      if (!(await isSafeUrlResolved(url))) {
-        research.hasWebsite = false;
-        return research;
-      }
-      // Fetch with bounded, per-hop SSRF-validated redirects.
-      const response = await fetchSafe(url, { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" }, 8000);
-      if (!response) {
-        research.hasWebsite = false;
-        return research;
-      }
-      // Enforce response size limit
-      const contentLength = response.headers.get("content-length");
-      if (contentLength && parseInt(contentLength, 10) > MAX_AUDIT_RESPONSE_BYTES) {
-        research.hasWebsite = true;
-        research.websiteScore = 30;
-        return research;
-      }
-      research.hasWebsite = response.ok;
+  const signals = await runAuditPipeline({ companyWebsite: website });
+  research.checkedAt = signals.checkedAt;
+  research.reachable = signals.reachable;
+  research.hasWebsite = signals.hasWebsite;
+  research.verified = signals.categories;
+  research.inspected = signals.inspected;
+  if (signals.title) research.pageTitle = signals.title;
 
-      if (response.ok) {
-        const html = await response.text().catch(() => "");
-        // Enforce size limit on downloaded content
-        if (html.length > MAX_AUDIT_RESPONSE_BYTES) {
-          research.hasWebsite = true;
-          research.websiteScore = 30;
-          return research;
-        }
-        const lowerHtml = html.toLowerCase();
+  if (!signals.hasWebsite) return research;
 
-        // Directly observable contact facts (only stored when actually found)
-        const titleMatch = html.match(/<title[^>]*>([^<]{2,120})<\/title>/i);
-        if (titleMatch) research.pageTitle = titleMatch[1].trim();
-        // Phone: +XXX, 0XXX, Nigerian 0XX / +234 formats (no invented values : regex only)
-        const phoneSet = new Set<string>();
-        for (const m of html.matchAll(/(?:\+?234|\+?\d{1,3}[\s.-]?)?0?\d{3}[\s.-]?\d{3}[\s.-]?\d{3,4}(?!\d)/g)) {
-          const p = m[0].trim();
-          if (p.length >= 10 && p.length <= 17 && /\d{8,}/.test(p.replace(/\D/g, ""))) phoneSet.add(p);
-        }
-        research.foundPhones = [...phoneSet].slice(0, 3);
-        // Email: standard pattern, excludes image filenames
-        const emailSet = new Set<string>();
-        for (const m of html.matchAll(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/gi)) {
-          const e = m[0].toLowerCase();
-          if (!/\.(png|jpe?g|gif|webp|svg|ico)$/.test(e) && !e.includes("sentry") && !e.includes("example.com")) emailSet.add(e);
-        }
-        research.foundEmails = [...emailSet].slice(0, 3);
+  const cats = signals.categories;
+  // A WhatsApp deep link (wa.me / api.whatsapp.com) is the actionable contact
+  // path. A bare mention of the word is weak evidence and never credits the
+  // category; it is retained as low-reliability evidence for honest wording.
+  const strongWa = cats.whatsapp.evidence.some((e) => e.reliability === "strong");
+  research.hasWhatsAppDeepLink = cats.whatsapp.status === "found" && strongWa;
+  research.hasWhatsApp = research.hasWhatsAppDeepLink;
+  research.hasOnlineBooking = cats.booking.status === "found";
+  research.hasCRM = cats.crm.status === "found";
+  research.hasEmailMarketing = cats.email_marketing.status === "found";
+  research.hasLiveChat = cats.live_chat.status === "found";
+  research.hasEcommerce = cats.ecommerce.status === "found";
 
-        // WhatsApp detection , a deep link (wa.me / api.whatsapp.com) is a real
-        // conversion path; a bare mention of the word is not.
-        const waDeepLink = lowerHtml.includes("wa.me") || lowerHtml.includes("api.whatsapp.com");
-        research.hasWhatsApp = waDeepLink || lowerHtml.includes("whatsapp");
-        research.hasWhatsAppDeepLink = waDeepLink;
-
-        // Social media detection : platform presence + the public profile URLs
-        // actually linked from the page (directly observable, confidence: verified).
-        const socialHref = (re: RegExp) => {
-          for (const m of html.matchAll(/href\s*=\s*["'][^"']*["']/gi)) {
-            const href = m[0].replace(/^href\s*=\s*["']|["']$/gi, "");
-            const match = href.match(re);
-            if (match) return match[0];
-          }
-          return "";
-        };
-        const trySocial = (platform: string, re: RegExp, marker: string) => {
-          if (lowerHtml.includes(marker)) {
-            if (!research.socialPlatforms.includes(platform)) research.socialPlatforms.push(platform);
-            const url = socialHref(re);
-            if (url && !research.socialLinks.some((l) => l.platform === platform)) {
-              research.socialLinks.push({ platform, url: url.startsWith("http") ? url : `https://${url}` });
-            }
-          }
-        };
-        trySocial("Instagram", /(?:https?:\/\/)?(?:www\.)?instagram\.com\/[A-Za-z0-9_.]+/i, "instagram.com");
-        trySocial("Facebook", /(?:https?:\/\/)?(?:www\.)?(?:facebook|fb)\.com\/[A-Za-z0-9._?&=/%-]+/i, "facebook.com");
-        trySocial("Twitter/X", /(?:https?:\/\/)?(?:www\.)?(?:twitter|x)\.com\/[A-Za-z0-9_]+/i, "x.com");
-        if (lowerHtml.includes("twitter.com") && !research.socialPlatforms.includes("Twitter/X")) research.socialPlatforms.push("Twitter/X");
-        trySocial("LinkedIn", /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/(?:company|in)\/[A-Za-z0-9-]+/i, "linkedin.com");
-        trySocial("TikTok", /(?:https?:\/\/)?(?:www\.)?tiktok\.com\/@[A-Za-z0-9_.]+/i, "tiktok.com");
-        research.hasSocialMedia = research.socialPlatforms.length > 0;
-
-        // Booking detection
-        research.hasOnlineBooking = lowerHtml.includes("booking") || lowerHtml.includes("calendly") || lowerHtml.includes("schedule") || lowerHtml.includes("appointment") || lowerHtml.includes("book a call");
-
-        // CRM detection
-        research.hasCRM = lowerHtml.includes("hubspot") || lowerHtml.includes("salesforce") || lowerHtml.includes("pipedrive") || lowerHtml.includes("zoho");
-
-        // Email marketing detection
-        research.hasEmailMarketing = lowerHtml.includes("mailchimp") || lowerHtml.includes("sendgrid") || lowerHtml.includes("newsletter") || lowerHtml.includes("subscribe");
-
-        // Live chat detection
-        research.hasLiveChat = lowerHtml.includes("intercom") || lowerHtml.includes("drift") || lowerHtml.includes("crisp") || lowerHtml.includes("tawk") || lowerHtml.includes("livechat");
-
-        // E-commerce detection
-        research.hasEcommerce = lowerHtml.includes("shop") || lowerHtml.includes("cart") || lowerHtml.includes("checkout") || lowerHtml.includes("woocommerce") || lowerHtml.includes("shopify");
-
-        // Tech stack detection
-        if (lowerHtml.includes("nextjs") || lowerHtml.includes("_next")) research.websiteTech.push("Next.js");
-        if (lowerHtml.includes("react")) research.websiteTech.push("React");
-        if (lowerHtml.includes("wordpress")) research.websiteTech.push("WordPress");
-        if (lowerHtml.includes("shopify")) research.websiteTech.push("Shopify");
-        if (lowerHtml.includes("wix")) research.websiteTech.push("Wix");
-
-        // Website quality scoring
-        const hasTitle = html.includes("<title>");
-        const hasMeta = lowerHtml.includes("meta name=\"description\"");
-        const hasViewport = lowerHtml.includes("viewport");
-        const hasSchema = lowerHtml.includes("application/ld+json");
-        const hasOG = lowerHtml.includes("og:");
-        const hasSSL = url.startsWith("https");
-        const hasAnalytics = lowerHtml.includes("google-analytics") || lowerHtml.includes("gtag") || lowerHtml.includes("gtm.js");
-
-        research.websiteScore = Math.min(100,
-          (hasTitle ? 15 : 0) + (hasMeta ? 15 : 0) + (hasViewport ? 10 : 0) +
-          (hasSchema ? 10 : 0) + (hasOG ? 10 : 0) + (hasSSL ? 10 : 0) +
-          (hasAnalytics ? 10 : 0) + (research.hasWhatsApp ? 5 : 0) +
-          (research.hasOnlineBooking ? 10 : 0) + (research.socialPlatforms.length * 3)
-        );
-      }
-    } catch {
-      research.hasWebsite = false;
+  // Social: platforms + profile URLs straight from evidence (homepage +
+  // crawled pages + structured sameAs). Share/intent links never count.
+  for (const ev of cats.social.evidence) {
+    if (ev.provider && !research.socialPlatforms.includes(ev.provider)) {
+      research.socialPlatforms.push(ev.provider);
+    }
+    if (ev.provider && ev.match.startsWith("http") && !research.socialLinks.some((l) => l.platform === ev.provider)) {
+      research.socialLinks.push({ platform: ev.provider, url: ev.match });
     }
   }
+  research.hasSocialMedia = research.socialPlatforms.length > 0;
 
-  // Enhance with Scrapling deep analysis if available (SSRF-guarded: the
-  // scraper receives only URLs that passed string + DNS resolution checks).
-  if (website && (await isSafeUrlResolved(website.startsWith("http") ? website : `https://${website}`))) {
-    const deepData = await scraplingDeepAnalysis(website);
-    if (deepData && deepData.status === "success") {
-      // Merge Scrapling findings
-      const deep = deepData as Record<string, unknown>;
-      if (deep.title && !research.websiteTech.includes(String(deep.title))) {
-        // Use Scrapling's title for better scoring
-        research.hasWebsite = true;
-      }
-      if (Array.isArray(deep.tech_stack)) {
-        for (const tech of deep.tech_stack) {
-          if (!research.websiteTech.includes(String(tech))) {
-            research.websiteTech.push(String(tech));
-          }
-        }
-      }
-      if (Array.isArray(deep.social_links)) {
-        for (const platform of deep.social_links) {
-          if (!research.socialPlatforms.includes(String(platform))) {
-            research.socialPlatforms.push(String(platform));
-            research.hasSocialMedia = true;
-          }
-        }
-      }
-      if (deep.has_whatsapp) research.hasWhatsApp = true;
-      if (deep.has_booking) research.hasOnlineBooking = true;
-      if (deep.has_live_chat) research.hasLiveChat = true;
-      if (deep.has_crm) research.hasCRM = true;
-      if (deep.has_email_marketing) research.hasEmailMarketing = true;
-      if (deep.has_ecommerce) research.hasEcommerce = true;
-      if (deep.has_analytics) {
-        // Boost website score for analytics
-        research.websiteScore = Math.min(100, research.websiteScore + 10);
-      }
-    }
-  }
+  research.foundPhones = cats.phone.evidence.map((e) => e.match).slice(0, 3);
+  research.foundEmails = cats.email.evidence.map((e) => e.match).slice(0, 3);
+  research.websiteTech = signals.techStack;
 
-  // Generate quick wins based on findings
-  if (!research.hasWhatsApp) research.quickWins.push("Add WhatsApp Business API for instant lead response");
-  if (!research.hasOnlineBooking) research.quickWins.push("Implement online booking to eliminate scheduling back-and-forth");
-  if (!research.hasEmailMarketing) research.quickWins.push("Set up email automation for lead nurturing sequences");
-  if (research.socialPlatforms.length > 0 && !research.hasWhatsApp) research.quickWins.push("Connect social media DMs to automated response system");
-  if (!research.hasCRM) research.quickWins.push("Implement CRM to track all customer interactions");
-  if (research.hasWebsite && research.websiteScore < 50) research.quickWins.push("Improve website SEO and conversion optimization");
-  if (!research.hasLiveChat) research.quickWins.push("Add live chat for instant website visitor support");
+  // Website quality score: same criteria as before, now from structured
+  // extraction of the pages actually inspected.
+  const sc = signals.websiteScoreSignals;
+  research.websiteScore = Math.min(100,
+    (sc.hasTitle ? 15 : 0) + (sc.hasMetaDescription ? 15 : 0) + (sc.hasViewport ? 10 : 0) +
+    (sc.hasSchema ? 10 : 0) + (sc.hasOG ? 10 : 0) + (sc.hasSSL ? 10 : 0) +
+    (sc.hasAnalytics ? 10 : 0) + (research.hasWhatsApp ? 5 : 0) +
+    (research.hasOnlineBooking ? 10 : 0) + (research.socialPlatforms.length * 3)
+  );
 
   research.digitalPresenceScore = Math.round(
     (research.websiteScore * 0.3) + (research.hasWhatsApp ? 20 : 0) +
@@ -493,7 +250,66 @@ async function researchBusiness(companyName: string, website: string): Promise<W
     (research.hasEmailMarketing ? 10 : 0) + (research.hasCRM ? 10 : 0)
   );
 
+  // Quick wins: recommend closing gaps ONLY where inspection actually
+  // succeeded (not_found). A could-not-verify gap is not an observed gap.
+  const nf = (c: { status: string }) => c.status === "not_found";
+  if (nf(cats.whatsapp)) research.quickWins.push("Add WhatsApp Business API for instant lead response");
+  if (nf(cats.booking)) research.quickWins.push("Implement online booking to eliminate scheduling back-and-forth");
+  if (nf(cats.email_marketing)) research.quickWins.push("Set up email automation for lead nurturing sequences");
+  if (research.socialPlatforms.length > 0 && nf(cats.whatsapp)) research.quickWins.push("Connect social media DMs to automated response system");
+  if (nf(cats.crm)) research.quickWins.push("Implement CRM to track all customer interactions");
+  if (research.hasWebsite && research.websiteScore < 50) research.quickWins.push("Improve website SEO and conversion optimization");
+  if (nf(cats.live_chat)) research.quickWins.push("Add live chat for instant website visitor support");
+
   return research;
+}
+
+// Honest inspection wording helpers: negatives only claim what was
+// successfully inspected; incomplete inspection yields could-not-verify.
+
+function pagesInspected(research: WebResearch): string {
+  const n = 1 + (research.inspected?.internal_pages || 0);
+  const rendered = research.inspected?.rendered_dom ? " (plus rendered inspection)" : "";
+  return `${n} page${n === 1 ? "" : "s"}${rendered}`;
+}
+
+function whatsappFindingLine(research: WebResearch, company_name: string): string {
+  if (!research.hasWebsite) {
+    return `${company_name} has no website we could reach, so its WhatsApp presence could not be verified.`;
+  }
+  const wa = research.verified?.whatsapp;
+  if (wa?.status === "could_not_verify") {
+    return `We could not fully inspect ${company_name}'s site content (rendered inspection incomplete), so WhatsApp availability could not be verified.`;
+  }
+  const mentionOnly = wa?.evidence.some((e) => e.source === "text");
+  if (mentionOnly) {
+    return `${company_name}'s site mentions WhatsApp, but no actionable WhatsApp link (wa.me / api.whatsapp.com) was found in the pages we successfully inspected.`;
+  }
+  return `No WhatsApp Business link (wa.me or api.whatsapp.com) was found in the ${pagesInspected(research)} successfully inspected for ${company_name}.`;
+}
+
+function whatsappEvidenceBullet(research: WebResearch): string {
+  const wa = research.verified?.whatsapp;
+  if (wa?.status === "could_not_verify") return "Rendered inspection incomplete: WhatsApp availability could not be verified";
+  if (wa?.evidence.some((e) => e.source === "text")) return "WhatsApp mentioned on site but no wa.me / api.whatsapp.com link found";
+  return `No wa.me / api.whatsapp.com link found in ${pagesInspected(research)}`;
+}
+
+function bookingFindingLine(research: WebResearch, company_name: string): string {
+  if (!research.hasWebsite) {
+    return `${company_name} has no website we could reach, so its online booking capability could not be verified. If appointments are arranged by phone, message or email today, scheduling is likely manual and unmeasured.`;
+  }
+  const bk = research.verified?.booking;
+  if (bk?.status === "could_not_verify") {
+    return `We could not fully inspect ${company_name}'s rendered content, so online booking availability could not be verified.`;
+  }
+  return `No online booking or scheduling flow was found in the ${pagesInspected(research)} successfully inspected for ${company_name}. If appointments are arranged by phone, message or email today, scheduling is manual and unmeasured.`;
+}
+
+function bookingEvidenceBullet(research: WebResearch): string {
+  const bk = research.verified?.booking;
+  if (bk?.status === "could_not_verify") return "Rendered inspection incomplete: booking availability could not be verified";
+  return `No booking provider or scheduling form found in ${pagesInspected(research)}`;
 }
 
 function calculateScore(benchmark: typeof INDUSTRY_BENCHMARKS.General, research: WebResearch): number {
@@ -540,9 +356,6 @@ function calculateScore(benchmark: typeof INDUSTRY_BENCHMARKS.General, research:
 
   return Math.max(18, Math.min(82, Math.round(score)));
 }
-
-// Max response size for fetched pages: 2MB
-const MAX_AUDIT_RESPONSE_BYTES = 2 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
   try {
@@ -635,9 +448,7 @@ export async function POST(req: NextRequest) {
     if (!hasWhatsApp) {
       const adoptionPct = benchmark.whatsappAdoption;
       const monthlyLeads = Math.round(adoptionPct * 12);
-      const waEvidence = research.hasWebsite
-        ? `No WhatsApp Business link (wa.me or WhatsApp widget) was found in the page content fetched for ${company_name}.`
-        : `${company_name} has no website we could reach, so its WhatsApp presence could not be verified.`;
+      const waEvidence = whatsappFindingLine(research, company_name);
       leaks.push({
         id: String(leakId++), area: "WhatsApp Integration", severity: "critical",
         description: `${waEvidence} WhatsApp is a common enquiry channel in ${ind} (${adoptionPct}% benchmark, Statista 2025), so whether an automated WhatsApp response would help is a likely opportunity to confirm with the business owner, not a measured loss.`,
@@ -646,7 +457,7 @@ export async function POST(req: NextRequest) {
         estimatedSavings: `NGN ${Math.round(monthlyLeads * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (illustrative: ${monthlyLeads} WhatsApp-preferring leads/month)`,
         source: "Statista WhatsApp Business Report 2025",
         evidence: research.hasWebsite
-          ? ["No wa.me links found on website", "No WhatsApp widget or API integration detected", `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp (benchmark)`]
+          ? [whatsappEvidenceBullet(research), `No WhatsApp widget or API integration detected in ${pagesInspected(research)}`, `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp (benchmark)`]
           : [`No website was reachable to inspect`, `${adoptionPct}% of ${ind.toLowerCase()} customers prefer WhatsApp (benchmark)`],
       });
     }
@@ -656,9 +467,7 @@ export async function POST(req: NextRequest) {
       const noShowRate = benchmark.noShowRate;
       const monthlyAppointments = 50;
       const lostAppointments = Math.round(monthlyAppointments * noShowRate / 100);
-      const bookingEvidence = research.hasWebsite
-        ? `No online booking or scheduling flow was found in the page content fetched for ${company_name}. If appointments are arranged by phone, message or email today, scheduling is manual and unmeasured.`
-        : `${company_name} has no website we could reach, so its online booking capability could not be verified. If appointments are arranged by phone, message or email today, scheduling is likely manual and unmeasured.`;
+      const bookingEvidence = bookingFindingLine(research, company_name);
       leaks.push({
         id: String(leakId++), area: "Appointment Management", severity: noShowRate > 20 ? "critical" : "high",
         description: `${bookingEvidence} ${ind} businesses commonly report no-show rates near ${noShowRate}% without automated reminders (Calendly 2025), which is a benchmark to measure in this business's own pipeline rather than an observed figure.`,
@@ -667,7 +476,7 @@ export async function POST(req: NextRequest) {
         estimatedSavings: `NGN ${Math.round(lostAppointments * parseInt(benchmark.avgLeadCost.replace(/[^0-9]/g, "")) * 12).toLocaleString()}/year (illustrative: ${lostAppointments} missed appointments/month)`,
         source: "Calendly Industry Report 2025",
         evidence: research.hasWebsite
-          ? ["No Calendly, scheduling tool, or booking form found", `Industry no-show benchmark: ${noShowRate}%`, `Manual scheduling ~${Math.round(benchmark.dataEntryHours * 0.3)} hours/week in similar businesses`]
+          ? [bookingEvidenceBullet(research), `Industry no-show benchmark: ${noShowRate}%`, `Manual scheduling ~${Math.round(benchmark.dataEntryHours * 0.3)} hours/week in similar businesses`]
           : [`No website was reachable to inspect`, `Industry no-show benchmark: ${noShowRate}%`],
       });
     }
@@ -843,7 +652,9 @@ export async function POST(req: NextRequest) {
     } else if (website) {
       verificationFacts.push(`We could not reach ${website} at the time of this check (it may be offline or blocking automated requests).`);
     }
-    if (research.hasWhatsApp) verificationFacts.push("Your website exposes a WhatsApp contact path.");
+    if (research.hasWhatsApp) verificationFacts.push("Your website exposes a WhatsApp contact path (wa.me / api.whatsapp.com link found).");
+    const waCat = research.verified?.whatsapp;
+    if (waCat?.status === "could_not_verify") verificationFacts.push("WhatsApp availability could not be verified because rendered inspection of your site did not complete.");
     if (research.socialPlatforms.length > 0) verificationFacts.push(`We found links to ${research.socialPlatforms.length} social profile${research.socialPlatforms.length > 1 ? "s" : ""} (${research.socialPlatforms.slice(0, 3).join(", ")}).`);
     if (research.foundPhones.length > 0) verificationFacts.push(`A phone number (${research.foundPhones[0]}) appears on your site.`);
     if (research.foundEmails.length > 0) verificationFacts.push(`A contact email (${research.foundEmails[0]}) appears on your site.`);
@@ -973,6 +784,9 @@ export async function POST(req: NextRequest) {
       analyzedAt: new Date().toISOString(), analyst: name || "", analystEmail: email || "",
       webResearch: {
         hasWebsite: research.hasWebsite, websiteScore: research.websiteScore,
+        reachable: research.reachable,
+        verified: research.verified,
+        inspected: research.inspected,
         websiteTech: research.websiteTech, hasWhatsApp: research.hasWhatsApp,
         hasSocialMedia: research.hasSocialMedia, socialPlatforms: research.socialPlatforms,
         socialLinks: research.socialLinks,
