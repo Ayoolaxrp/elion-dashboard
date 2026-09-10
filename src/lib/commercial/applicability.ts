@@ -110,9 +110,32 @@ export function evaluateOpportunities(
 
   const cats = categories as Record<EvidenceCategory, CategoryResult>;
 
+  const lowIndustry = (industry || "").toLowerCase();
+
   for (const solution of SOLUTION_CATALOG) {
     // Custom systems are sold via discovery, not audit evidence.
     if (solution.slug === "custom_business_system") continue;
+
+    // Solution-level applicability: an industry context can rule a solution
+    // out ENTIRELY (e.g. no booking system for a checkout-led ecommerce site).
+    // Distinct from category exclusions above.
+    const notApplicable = solution.notApplicableWhen.find((x) =>
+      x.industries.some((i) => lowIndustry.includes(i))
+    );
+    if (notApplicable) {
+      opportunities.push({
+        solution: solution.slug,
+        solutionName: solution.name,
+        state: "not_applicable",
+        confidence: "low",
+        evidence: [],
+        potentialConsequence: notApplicable.condition,
+        mustConfirm: [],
+        nextBestAction: "Do not pitch this solution; it does not fit this business model.",
+        pricingTier: solution.pricingTier,
+      });
+      continue;
+    }
 
     const weakCats = solution.relevantWhenWeak.filter((c) => !excludedCats.has(c));
     if (weakCats.length === 0) continue; // all relevant categories excluded by industry
@@ -163,13 +186,25 @@ export function evaluateOpportunities(
     }
 
     // There IS verifiable weakness. Determine state and confidence.
+    //
+    // Anti-inflation gate (Mozilla-style failure fix): a strong opportunity
+    // requires POSITIVE evidence that the business motion/channel exists
+    // (e.g. a WhatsApp link was actually found), not merely the absence of
+    // technology. Solutions whose business case is entirely internal/invisible
+    // (strongRequiresPositive: []) can never be strong from public evidence
+    // alone and are capped at "investigate" until confirmed with the business.
+    //
     // A disqualifying-strong category (e.g. an automated chat surface already
-    // present) caps the state at "investigate": the gap may be real, but a
+    // present) also caps the state at "investigate": the gap may be real, but a
     // replacement pitch must wait until the existing tool's role is understood.
     const cappedByDisqualifier = disqualifiedBy.length > 0;
+    const positivePresent =
+      solution.strongRequiresPositive.length > 0
+        ? solution.strongRequiresPositive.some((c) => isStrong(cats[c]))
+        : false;
     const state: ApplicabilityState = cappedByDisqualifier
       ? "investigate"
-      : verifiablyWeak.length >= solution.minVerifiedWeakCount && unverifiable.length === 0
+      : positivePresent && verifiablyWeak.length >= solution.minVerifiedWeakCount && unverifiable.length === 0
         ? "strong_opportunity"
         : "investigate";
     const confidence: Opportunity["confidence"] =
@@ -193,7 +228,9 @@ export function evaluateOpportunities(
       })),
       potentialConsequence: cappedByDisqualifier
         ? `${disqualifiedBy[0]} The missing categories above may still matter; confirm how the existing tooling is used before proposing.`
-        : solution.businessProblem,
+        : state === "strong_opportunity"
+          ? solution.businessProblem
+          : `Public evidence alone does not establish this gap; it depends on internal process that must be confirmed with the business first (${solution.discoveryQuestions[0] ?? "ask how this is handled today"}).`,
       mustConfirm: solution.discoveryQuestions,
       nextBestAction: cappedByDisqualifier
         ? `Do not pitch a replacement. Ask how the existing ${weakCats.filter((c) => isStrong(cats[c])).join("/") || "tool"} is used, then assess whether the missing categories still need a system.`

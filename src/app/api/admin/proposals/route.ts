@@ -2,10 +2,55 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
+import { checkQuoteMargin, type QuoteCostInput } from "@/lib/commercial/pricing-model";
+import { enforceProposalAcceptance, type MarginEnforcementInput } from "@/lib/commercial/margin-enforcement";
 
 // Data client: plain service-role client so queries bypass RLS.
 const data = () =>
   createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+
+// ── Quote economics ──
+// Cost inputs come from the proposal body (the quote UI sends them). When
+// present, a margin snapshot is computed and stored so acceptance can be
+// gated reproducibly — another endpoint can never bypass the check by
+// simply omitting them.
+function marginFieldsFrom(body: Record<string, unknown>) {
+  const tier = typeof body.tier === "string" ? body.tier : "";
+  const hours = Number(body.estimated_delivery_hours);
+  const labour = Number(body.labour_rate_per_hour);
+  const costInputsPresent =
+    Boolean(tier) && Number.isFinite(hours) && hours > 0 && Number.isFinite(labour) && labour > 0;
+
+  let marginCheck: ReturnType<typeof checkQuoteMargin> | null = null;
+  if (costInputsPresent) {
+    const input: QuoteCostInput = {
+      tier: tier as QuoteCostInput["tier"],
+      quotedImplementation: Number(body.total_setup) || 0,
+      quotedCareMonthly: Number(body.total_monthly) || 0,
+      estimatedDeliveryHours: hours,
+      labourRatePerHour: labour,
+      contractorCost: Number(body.contractor_cost) || 0,
+      clientInfrastructureMonthly: Number(body.client_infrastructure_monthly) || 0,
+      apiSetupCost: Number(body.api_setup_cost) || 0,
+      onboardingCost: Number(body.onboarding_cost) || 0,
+      contingencyPercent: Number(body.contingency_percent) || 0,
+    };
+    marginCheck = checkQuoteMargin(input);
+  }
+
+  return {
+    tier: tier || null,
+    estimated_delivery_hours: costInputsPresent ? hours : null,
+    labour_rate_per_hour: costInputsPresent ? labour : null,
+    contractor_cost: costInputsPresent ? Number(body.contractor_cost) || 0 : null,
+    client_infrastructure_monthly: costInputsPresent ? Number(body.client_infrastructure_monthly) || 0 : null,
+    api_setup_cost: costInputsPresent ? Number(body.api_setup_cost) || 0 : null,
+    onboarding_cost: costInputsPresent ? Number(body.onboarding_cost) || 0 : null,
+    contingency_percent: costInputsPresent ? Number(body.contingency_percent) || 0 : null,
+    margin_check: marginCheck ? (marginCheck as unknown as Record<string, unknown>) : null,
+    margin_status: marginCheck ? (marginCheck.passes ? "within_guardrails" : "below_guardrails") : "not_checked",
+  };
+}
 
 async function requireAdmin() {
   const cookieStore = await cookies();
@@ -115,6 +160,7 @@ export async function POST(req: Request) {
         valid_until: typeof body.valid_until === "string" ? body.valid_until : null,
         status: "draft",
         source_audit_id: audit.id,
+        ...marginFieldsFrom(body),
       })
       .select()
       .single();
@@ -147,6 +193,7 @@ export async function POST(req: Request) {
       support_plan: body.support_plan || null,
       valid_until: body.valid_until || null,
       status: "draft",
+      ...marginFieldsFrom(body),
     })
     .select()
     .single();
@@ -180,7 +227,7 @@ export async function PATCH(req: Request) {
   // 404 for unknown records.
   const { data: existing, error: gErr } = await supabase
     .from("proposals")
-    .select("id, status")
+    .select("id, status, tier, estimated_delivery_hours, labour_rate_per_hour, contractor_cost, client_infrastructure_monthly, api_setup_cost, onboarding_cost, contingency_percent, total_setup, total_monthly, margin_check, margin_status")
     .eq("id", id)
     .maybeSingle();
   if (gErr) return NextResponse.json({ error: gErr.message }, { status: 500 });
@@ -204,8 +251,50 @@ export async function PATCH(req: Request) {
 
   const patch: Record<string, unknown> = { status };
   const now = new Date().toISOString();
-  if (status === "sent") patch.sent_at = now;
-  else if (status === "accepted") patch.accepted_at = now;
+
+  // ── Margin gate on ACCEPTANCE (P0): a below-guardrail or economically
+  // blind quote cannot be accepted without a logged founder override.
+  if (status === "accepted") {
+    const costInputsPresent =
+      Boolean(existing.tier) && Number(existing.estimated_delivery_hours) > 0 && Number(existing.labour_rate_per_hour) > 0;
+    let marginCheck = existing.margin_check as { passes?: boolean; warnings?: string[]; recommendation?: string } | null;
+    if (!marginCheck && costInputsPresent) {
+      try {
+        marginCheck = checkQuoteMargin({
+          tier: existing.tier as QuoteCostInput["tier"],
+          quotedImplementation: Number(existing.total_setup) || 0,
+          quotedCareMonthly: Number(existing.total_monthly) || 0,
+          estimatedDeliveryHours: Number(existing.estimated_delivery_hours) || 0,
+          labourRatePerHour: Number(existing.labour_rate_per_hour) || 0,
+          contractorCost: Number(existing.contractor_cost) || 0,
+          clientInfrastructureMonthly: Number(existing.client_infrastructure_monthly) || 0,
+          apiSetupCost: Number(existing.api_setup_cost) || 0,
+          onboardingCost: Number(existing.onboarding_cost) || 0,
+          contingencyPercent: Number(existing.contingency_percent) || 0,
+        }) as unknown as { passes?: boolean; warnings?: string[]; recommendation?: string };
+      } catch {
+        marginCheck = null;
+      }
+    }
+    const enforcement = enforceProposalAcceptance({
+      marginCheck: marginCheck as MarginEnforcementInput["marginCheck"],
+      costInputsPresent,
+      overrideReason: typeof body.founder_override_reason === "string" ? body.founder_override_reason : undefined,
+    });
+    if (!enforcement.allowed) {
+      return NextResponse.json({ error: enforcement.error }, { status: 422 });
+    }
+    patch.margin_status = enforcement.marginStatus;
+    patch.accepted_at = now;
+    if (enforcement.marginStatus === "founder_override") {
+      patch.margin_override = {
+        by: admin.email || "unknown admin",
+        at: now,
+        reason: typeof body.founder_override_reason === "string" ? body.founder_override_reason.trim() : "",
+        margin_check: marginCheck,
+      };
+    }
+  } else if (status === "sent") patch.sent_at = now;
   else if (status === "rejected") patch.declined_at = now;
   else if (status === "draft") {
     patch.sent_at = null;

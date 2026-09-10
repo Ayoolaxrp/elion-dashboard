@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./compiled-margin",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": "../..",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "files": [
+    "../../src/lib/commercial/margin-enforcement.ts",
+    "../../src/lib/commercial/pricing-model.ts"
+  ]
+}

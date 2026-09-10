@@ -174,6 +174,24 @@ export async function POST(req: NextRequest) {
   const modeled = deriveModeled(reported);
 
   const sb = getDataClient();
+
+  // Queryable projections of reported (migration 033). Categories are
+  // conservative and deterministic; the JSONB snapshots stay the truth.
+  const responseCategory =
+    typeof reported.avg_response_time === "string" && reported.avg_response_time.trim()
+      ? reported.avg_response_time.trim().toLowerCase()
+      : null;
+  const followupCategory =
+    typeof reported.followup_process === "string" && reported.followup_process.trim()
+      ? reported.followup_process.trim().toLowerCase()
+      : null;
+  const repeatSignal =
+    reported.has_repeat_customers === true
+      ? "repeat_customers"
+      : reported.has_repeat_customers === false
+        ? "no_repeat_customers"
+        : null;
+
   const row = {
     lead_id: body.leadId || null,
     audit_id: body.auditId || null,
@@ -182,6 +200,17 @@ export async function POST(req: NextRequest) {
     status: "completed" as const,
     reported,
     modeled,
+    monthly_enquiries: reported.monthly_enquiries ?? null,
+    monthly_customers: reported.monthly_customers ?? null,
+    avg_transaction_ngn: reported.avg_transaction_ngn ?? null,
+    unconverted_leads_monthly: reported.unconverted_leads_monthly ?? null,
+    response_time_category: responseCategory,
+    acquisition_channels: reported.acquisition_channels || [],
+    sales_channel: reported.sales_channel ?? null,
+    lead_owner: reported.lead_owner ?? null,
+    followup_category: followupCategory,
+    repeat_purchase_signal: repeatSignal,
+    desired_outcome: reported.desired_outcome ?? null,
   };
   const { data, error } = await sb.from("deep_audits").insert(row).select("id, created_at").single();
   if (error) {

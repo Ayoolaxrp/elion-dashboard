@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./compiled-kora",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": "../.."
+  },
+  "files": [
+    "../../src/lib/payments/kora.ts",
+    "../../src/lib/payments/unlock.ts"
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, TrendingUp, Bell, Database, Rocket, SearchCheck, MessageCircle } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, Bell, Database, Rocket, SearchCheck, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const NAV = [
@@ -9,6 +9,7 @@ const NAV = [
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/deploy/catalog", label: "System Catalog", icon: Layers },
   { href: "/admin/deploy", label: "Deploy Systems", icon: Rocket },
+  { href: "/admin/deployments", label: "Deployments & Costs", icon: CreditCard },
   { href: "/admin/leads", label: "Leads", icon: UserPlus },
   { href: "/admin/audits", label: "Audits", icon: SearchCheck },
   { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
@@ -31,6 +32,7 @@ const NAV = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [unread, setUnread] = useState(0);
@@ -38,7 +40,7 @@ export function AdminSidebar() {
   useEffect(() => {
     fetch("/api/admin/notifications").then(r => r.json()).then(d => setUnread(d.unread || 0)).catch(() => {});
   }, []);
-  const handleSignOut = async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; };
+  const handleSignOut = async () => { await fetch("/api/auth/logout", { method: "POST" }); router.push("/login"); };
 
   return (
     <>

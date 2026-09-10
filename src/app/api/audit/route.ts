@@ -746,6 +746,9 @@ export async function POST(req: NextRequest) {
           estimateNote: l.estimateNote || null,
         })),
         recommendations,
+        // Persist the verified category structure (migration 029) so the
+        // commercial applicability engine can re-run without re-auditing.
+        verified: (research.verified || {}) as never,
         status: "completed",
         completed_at: new Date().toISOString(),
       };

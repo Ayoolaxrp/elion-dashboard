@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./compiled-deployments",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": "../.."
+  },
+  "files": [
+    "../../src/lib/commercial/deployments.ts",
+    "../../src/lib/commercial/vendor-costs.ts"
+  ]
+}

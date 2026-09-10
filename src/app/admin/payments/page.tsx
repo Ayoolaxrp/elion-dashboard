@@ -1,7 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CheckCircle, Clock, AlertCircle, Loader2, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import type { ComponentType } from "react";
+import { CheckCircle, Clock, AlertCircle, Loader2, Plus, CreditCard } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/sidebar";
+
+type IconType = ComponentType<{ className?: string }>;
+type InvoiceOption = { id: string; invoice_number: string | null; title: string | null; amount: number; status: string; company_name: string | null };
 
 interface Payment {
   id: string;
@@ -19,7 +23,7 @@ interface Payment {
   clients?: { company_name: string | null; contact_name: string | null } | null;
 }
 
-const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string }> = {
+const STATUS_CONFIG: Record<string, { color: string; icon: IconType; label: string }> = {
   pending: { color: "text-amber-400 bg-amber-400/10", icon: Clock, label: "Pending" },
   success: { color: "text-emerald-400 bg-emerald-400/10", icon: CheckCircle, label: "Paid" },
   paid: { color: "text-emerald-400 bg-emerald-400/10", icon: CheckCircle, label: "Paid" },
@@ -37,6 +41,13 @@ export default function PaymentsPage() {
   const [showRecord, setShowRecord] = useState(false);
   const [form, setForm] = useState({ company_name: "", client_name: "", amount: "", method: "bank_transfer", reference: "", status: "success", notes: "" });
 
+  // Kora online payment flow.
+  const [showKora, setShowKora] = useState(false);
+  const [koraBusy, setKoraBusy] = useState(false);
+  const [koraMsg, setKoraMsg] = useState<string | null>(null);
+  const [koraForm, setKoraForm] = useState({ invoice_id: "", amount: "", company_name: "", customer_email: "" });
+  const [invoices, setInvoices] = useState<InvoiceOption[]>([]);
+
   const load = () => {
     fetch("/api/admin/payments")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("Request failed"))))
@@ -46,6 +57,70 @@ export default function PaymentsPage() {
   };
 
   useEffect(load, []);
+
+  // Invoice picker for the Kora flow.
+  useEffect(() => {
+    fetch("/api/admin/invoices")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => setInvoices((d.invoices || []).filter((i: InvoiceOption) => ["draft", "sent", "overdue"].includes(i.status))))
+      .catch(() => {});
+  }, []);
+
+  // Server-side Kora verification when the customer returns from checkout
+  // (?payment=ID). The redirect itself never marks anything paid.
+  useEffect(() => {
+    const paymentId = new URLSearchParams(window.location.search).get("payment");
+    if (!paymentId) return;
+    (async () => {
+      setKoraMsg("Verifying payment with Kora…");
+      try {
+        const r = await fetch(`/api/payments/kora/verify?payment=${encodeURIComponent(paymentId)}`);
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(d.error || "Verification failed");
+        setKoraMsg(
+          d.verified
+            ? `Payment confirmed as ${d.status}. ${d.invoiceUpdated ? "Invoice marked paid. " : ""}${d.leadUpdated ? "Lead promoted to paid." : ""}`
+            : `Payment is ${d.status || "unverified"} — not yet paid.`
+        );
+        load();
+      } catch (e) {
+        setKoraMsg("Verification error: " + (e instanceof Error ? e.message : "unknown"));
+      } finally {
+        // Remove the query param so re-renders don't re-verify.
+        const url = new URL(window.location.href);
+        url.searchParams.delete("payment");
+        window.history.replaceState({}, "", url.toString());
+      }
+    })();
+  }, []);
+
+  const requestKoraPayment = async () => {
+    const invoice = invoices.find((i) => i.id === koraForm.invoice_id);
+    if (!invoice && !(Number(koraForm.amount) > 0)) { alert("Choose an invoice or enter an amount"); return; }
+    setKoraBusy(true);
+    setKoraMsg(null);
+    try {
+      const r = await fetch("/api/payments/kora/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          invoice_id: koraForm.invoice_id || null,
+          amount: invoice ? undefined : Number(koraForm.amount),
+          company_name: (koraForm.company_name.trim() || invoice?.company_name || null),
+          customer_email: koraForm.customer_email.trim() || null,
+        }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || "Request failed");
+      setKoraMsg("Checkout opened — payment is confirmed only after Kora verifies it.");
+      window.open(d.checkoutUrl, "_blank", "noopener");
+      setShowKora(false);
+    } catch (e) {
+      setKoraMsg("Kora error: " + (e instanceof Error ? e.message : "unknown"));
+    } finally {
+      setKoraBusy(false);
+    }
+  };
 
   const record = async () => {
     if (!(Number(form.amount) > 0)) { alert("Payment amount must be greater than zero"); return; }
@@ -69,8 +144,8 @@ export default function PaymentsPage() {
       setShowRecord(false);
       setForm({ company_name: "", client_name: "", amount: "", method: "bank_transfer", reference: "", status: "success", notes: "" });
       load();
-    } catch (e: any) {
-      alert("Failed: " + (e.message || "unknown error"));
+    } catch (e) {
+      alert("Failed: " + (e instanceof Error ? e.message : "unknown error"));
     } finally {
       setBusy(false);
     }
@@ -88,15 +163,62 @@ export default function PaymentsPage() {
               <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Payments</h1>
               <p className="text-sm text-[var(--color-text-muted)] mt-1">{loading ? "Loading…" : `${payments.length} payments`}</p>
             </div>
-            <button
-              onClick={() => setShowRecord(!showRecord)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-            >
-              <Plus className="w-4 h-4" /> Record Payment
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowKora(!showKora)}
+                disabled={koraBusy}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-semibold hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors disabled:opacity-50"
+              >
+                <CreditCard className="w-4 h-4" /> Online Payment (Kora)
+              </button>
+              <button
+                onClick={() => setShowRecord(!showRecord)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+              >
+                <Plus className="w-4 h-4" /> Record Payment
+              </button>
+            </div>
           </div>
 
           {error && <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">{error}</div>}
+
+          {koraMsg && (
+            <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-300 text-sm">
+              {koraMsg}
+            </div>
+          )}
+
+          {showKora && (
+            <div className="mb-6 p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
+              <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">Request online payment (Kora)</h3>
+              <p className="text-xs text-[var(--color-text-muted)] mb-4">
+                Payment is confirmed only after Kora verifies it server-side — returning from checkout alone never marks an invoice paid.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <select
+                  className={inputCls}
+                  value={koraForm.invoice_id}
+                  onChange={(e) => setKoraForm({ ...koraForm, invoice_id: e.target.value })}
+                >
+                  <option value="">— Unpaid invoice (optional) —</option>
+                  {invoices.map((inv) => (
+                    <option key={inv.id} value={inv.id}>
+                      {inv.invoice_number || inv.title || inv.id} · ₦{(inv.amount || 0).toLocaleString()} · {inv.company_name || ""}
+                    </option>
+                  ))}
+                </select>
+                <input className={inputCls} placeholder="Amount (₦) — used only without an invoice" type="number" value={koraForm.amount} onChange={(e) => setKoraForm({ ...koraForm, amount: e.target.value })} />
+                <input className={inputCls} placeholder="Company name (optional)" value={koraForm.company_name} onChange={(e) => setKoraForm({ ...koraForm, company_name: e.target.value })} />
+                <input className={inputCls} placeholder="Customer email (optional)" type="email" value={koraForm.customer_email} onChange={(e) => setKoraForm({ ...koraForm, customer_email: e.target.value })} />
+              </div>
+              <div className="flex gap-2 mt-4">
+                <button onClick={requestKoraPayment} disabled={koraBusy} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold disabled:opacity-50">
+                  {koraBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Open checkout
+                </button>
+                <button onClick={() => setShowKora(false)} className="px-4 py-2 rounded-lg border border-[var(--color-border)] text-sm text-[var(--color-text-muted)]">Cancel</button>
+              </div>
+            </div>
+          )}
 
           {showRecord && (
             <div className="mb-6 p-5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
@@ -133,7 +255,7 @@ export default function PaymentsPage() {
           ) : payments.length === 0 ? (
             <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)]">
               <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">No payments yet</p>
-              <p className="text-sm text-[var(--color-text-muted)] mb-4">Record the first payment to confirm a client's order and begin onboarding.</p>
+              <p className="text-sm text-[var(--color-text-muted)] mb-4">Record the first payment to confirm a client&apos;s order and begin onboarding.</p>
               <button onClick={() => setShowRecord(true)} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold">
                 <Plus className="w-4 h-4" /> Record your first payment
               </button>

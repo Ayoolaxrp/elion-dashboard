@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { AdminSidebar } from "@/components/admin/sidebar";
+import { LeadIntelligencePanel } from "@/components/admin/lead-intelligence-panel";
 import {
   Plus,
   Loader2,
@@ -104,7 +105,10 @@ export default function LeadsPage() {
       setLoading(false);
     }
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void load(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const sources = useMemo(
     () => Array.from(new Set(leads.map((l) => l.source || "direct").filter(Boolean))).sort(),
@@ -396,6 +400,7 @@ export default function LeadsPage() {
                   </div>
                 </div>
                 {expanded === lead.id && (
+                  <>
                   <div className="mt-3 pt-3 border-t border-[#1F2937] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
                     <div><span className="text-[#7C8494] block mb-0.5">Contact</span><span className="text-white">{lead.contact_name}</span></div>
                     <div><span className="text-[#7C8494] block mb-0.5">Email</span><span className="text-white break-all">{field(lead.email)}</span></div>
@@ -415,6 +420,8 @@ export default function LeadsPage() {
                     {lead.archived_at && <div><span className="text-[#7C8494] block mb-0.5">Archived</span><span className="text-white">{new Date(lead.archived_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos", year: "numeric", month: "short", day: "numeric" })}</span></div>}
                     <div><span className="text-[#7C8494] block mb-0.5">Lead ID</span><span className="text-[#4B5563] break-all">{lead.id}</span></div>
                   </div>
+                  <LeadIntelligencePanel leadId={lead.id} />
+                  </>
                 )}
               </div>
             );

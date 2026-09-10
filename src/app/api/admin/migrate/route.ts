@@ -5,14 +5,32 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
+import { isAdminEmail } from "@/lib/auth/server";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+async function requireAdmin() {
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user || !(await isAdminEmail(user.email))) return null;
+  return user;
+}
+
 export async function POST(request: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const { sql } = await request.json();
 
@@ -30,8 +48,9 @@ export async function POST(request: NextRequest) {
 
     for (const stmt of statements) {
       try {
-        // Use exec_sql RPC if it exists, otherwise try direct query
-        const { data, error } = await supabase.rpc("exec_sql", { query: stmt });
+        // exec_sql is restricted to the service role by migration 027;
+        // this route additionally requires a real admin session.
+        const { error } = await supabase.rpc("exec_sql", { query: stmt });
 
         if (error) {
           // If exec_sql doesn't exist, try running through the REST API

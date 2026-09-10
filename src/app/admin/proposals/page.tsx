@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { ComponentType } from "react";
-import { FileText, Clock, CheckCircle, XCircle, Eye, Loader2, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { FileText, Clock, CheckCircle, XCircle, Eye, Loader2, Plus, ChevronDown, ChevronUp, ShieldCheck } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/sidebar";
 
 type IconType = ComponentType<{ className?: string }>;
@@ -72,7 +72,10 @@ export default function ProposalsPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [form, setForm] = useState({ title: "", company_name: "", client_name: "", client_email: "", total_setup: "", total_monthly: "", valid_until: "" });
+  const [form, setForm] = useState({
+    title: "", company_name: "", client_name: "", client_email: "", total_setup: "", total_monthly: "", valid_until: "",
+    tier: "growth_system", estimated_delivery_hours: "", labour_rate_per_hour: "5000", contractor_cost: "", client_infrastructure_monthly: "", api_setup_cost: "", onboarding_cost: "", contingency_percent: "10",
+  });
   const [audits, setAudits] = useState<AuditOption[]>([]);
   const [auditLoadError, setAuditLoadError] = useState<string | null>(null);
   const [selectedAudit, setSelectedAudit] = useState("");
@@ -89,15 +92,44 @@ export default function ProposalsPage() {
 
   useEffect(load, []);
 
-  const patch = async (id: string, status: string) => {
+  const patch = async (id: string, status: string, overrideReason?: string) => {
     setBusy(true);
     try {
       const r = await fetch("/api/admin/proposals", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status }),
+        body: JSON.stringify({ id, status, founder_override_reason: overrideReason }),
       });
       const d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Request failed");
+      load();
+    } catch (e) {
+      alert("Failed: " + errMsg(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // Acceptance is gated by quote economics: below-guardrail or economically
+  // blind quotes need a logged founder override with a substantive reason.
+  const acceptProposal = async (id: string) => {
+    setBusy(true);
+    try {
+      const r = await fetch("/api/admin/proposals", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: "accepted" }),
+      });
+      const d = await r.json();
+      if (r.status === 422 && d.error) {
+        const reason = window.prompt("Margin guardrail blocked acceptance.\n\n" + d.error + "\n\nTo override as founder, enter the reason:");
+        if (reason && reason.trim().length >= 5) {
+          await patch(id, "accepted", reason.trim());
+        } else if (reason) {
+          alert("Override requires a substantive reason (5+ characters).");
+        }
+        return;
+      }
       if (!r.ok) throw new Error(d.error || "Request failed");
       load();
     } catch (e) {
@@ -122,12 +154,20 @@ export default function ProposalsPage() {
           total_setup: Number(form.total_setup) || 0,
           total_monthly: Number(form.total_monthly) || 0,
           valid_until: form.valid_until || null,
+          tier: form.tier,
+          estimated_delivery_hours: Number(form.estimated_delivery_hours) || 0,
+          labour_rate_per_hour: Number(form.labour_rate_per_hour) || 0,
+          contractor_cost: Number(form.contractor_cost) || 0,
+          client_infrastructure_monthly: Number(form.client_infrastructure_monthly) || 0,
+          api_setup_cost: Number(form.api_setup_cost) || 0,
+          onboarding_cost: Number(form.onboarding_cost) || 0,
+          contingency_percent: Number(form.contingency_percent) || 0,
         }),
       });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || "Request failed");
       setShowCreate(false);
-      setForm({ title: "", company_name: "", client_name: "", client_email: "", total_setup: "", total_monthly: "", valid_until: "" });
+      setForm({ title: "", company_name: "", client_name: "", client_email: "", total_setup: "", total_monthly: "", valid_until: "", tier: "growth_system", estimated_delivery_hours: "", labour_rate_per_hour: "5000", contractor_cost: "", client_infrastructure_monthly: "", api_setup_cost: "", onboarding_cost: "", contingency_percent: "10" });
       load();
     } catch (e) {
       alert("Failed: " + errMsg(e));
@@ -162,6 +202,14 @@ export default function ProposalsPage() {
           total_setup: Number(fromAuditPrice) || 0,
           total_monthly: Number(fromAuditMonthly) || 0,
           valid_until: new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10),
+          tier: form.tier,
+          estimated_delivery_hours: Number(form.estimated_delivery_hours) || 0,
+          labour_rate_per_hour: Number(form.labour_rate_per_hour) || 0,
+          contractor_cost: Number(form.contractor_cost) || 0,
+          client_infrastructure_monthly: Number(form.client_infrastructure_monthly) || 0,
+          api_setup_cost: Number(form.api_setup_cost) || 0,
+          onboarding_cost: Number(form.onboarding_cost) || 0,
+          contingency_percent: Number(form.contingency_percent) || 0,
         }),
       });
       const d = await r.json();
@@ -251,6 +299,22 @@ export default function ProposalsPage() {
                 <input className={inputCls} placeholder="Monthly management (₦)" type="number" value={form.total_monthly} onChange={(e) => setForm({ ...form, total_monthly: e.target.value })} />
                 <input className={inputCls} placeholder="Valid until (date)" type="date" value={form.valid_until} onChange={(e) => setForm({ ...form, valid_until: e.target.value })} />
               </div>
+              <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+                <p className="text-xs font-semibold text-[var(--color-text-secondary)] mb-2 flex items-center gap-2"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Quote economics (required before acceptance)</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <select className={inputCls} value={form.tier} onChange={(e) => setForm({ ...form, tier: e.target.value })}>
+                    <option value="recovery_sprint">Recovery Sprint</option><option value="growth_system">Growth System</option><option value="scale_system">Scale System</option><option value="custom">Custom</option>
+                  </select>
+                  <input className={inputCls} placeholder="Delivery hours *" type="number" value={form.estimated_delivery_hours} onChange={(e) => setForm({ ...form, estimated_delivery_hours: e.target.value })} />
+                  <input className={inputCls} placeholder="Labour rate ₦/hr" type="number" value={form.labour_rate_per_hour} onChange={(e) => setForm({ ...form, labour_rate_per_hour: e.target.value })} />
+                  <input className={inputCls} placeholder="Contractor cost ₦" type="number" value={form.contractor_cost} onChange={(e) => setForm({ ...form, contractor_cost: e.target.value })} />
+                  <input className={inputCls} placeholder="ELION infra ₦/mo" type="number" value={form.client_infrastructure_monthly} onChange={(e) => setForm({ ...form, client_infrastructure_monthly: e.target.value })} />
+                  <input className={inputCls} placeholder="API/setup cost ₦" type="number" value={form.api_setup_cost} onChange={(e) => setForm({ ...form, api_setup_cost: e.target.value })} />
+                  <input className={inputCls} placeholder="Onboarding cost ₦" type="number" value={form.onboarding_cost} onChange={(e) => setForm({ ...form, onboarding_cost: e.target.value })} />
+                  <input className={inputCls} placeholder="Contingency %" type="number" value={form.contingency_percent} onChange={(e) => setForm({ ...form, contingency_percent: e.target.value })} />
+                </div>
+                <p className="text-[10px] text-[var(--color-text-muted)] mt-2">If this quote fails the 60% implementation / 70% recurring target, acceptance requires a founder override with a recorded reason.</p>
+              </div>
               <div className="flex gap-2 mt-4">
                 <button onClick={create} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold disabled:opacity-50">
                   {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Save proposal
@@ -319,7 +383,7 @@ export default function ProposalsPage() {
                           )}
                           {["sent", "viewed"].includes(p.status) && (
                             <>
-                              <button onClick={() => patch(p.id, "accepted")} disabled={busy} className="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/25">Accept</button>
+                              <button onClick={() => acceptProposal(p.id)} disabled={busy} className="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/25">Accept</button>
                               <button onClick={() => patch(p.id, "rejected")} disabled={busy} className="px-3 py-1.5 rounded-lg bg-red-500/15 text-red-400 text-xs font-semibold hover:bg-red-500/25">Reject</button>
                             </>
                           )}

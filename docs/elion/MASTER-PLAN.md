@@ -38,10 +38,13 @@ Every system built must serve a link in this chain. Anything else waits.
 | Honest verification states (found / not_found / could_not_verify) | LIVE | pipeline + audit UI |
 | Solution catalogue + applicability engine | LIVE (this pass) | `src/lib/commercial/` |
 | Commercial opportunities in audit API response (`commercial` field) | LIVE (this pass) | `/api/audit` |
-| Deep Audit API (Observed/Reported/Modeled separation) | CODE LIVE, migration 025 must be applied | `/api/admin/deep-audit` |
-| Lead intelligence API with Next Best Action + consent gating | CODE LIVE, migration 025 must be applied | `/api/admin/lead-intelligence` |
-| Pricing + unit-economics guardrails as configuration | LIVE (this pass) | `src/lib/commercial/pricing-model.ts` |
-| 30-business validation harness | TOOLING (this pass) | `scripts/validation-30.cjs` |
+| Deep Audit API (Observed/Reported/Modeled separation) | LIVE, migrations 025/033 applied | `/api/admin/deep-audit` |
+| Lead intelligence API + salesperson workspace + Next Best Action | LIVE, migrations 028/029 applied | `/api/admin/lead-intelligence`, `/admin/leads` |
+| Pricing + unit-economics guardrails + proposal acceptance gate | LIVE, migration 032 applied | `src/lib/commercial/`, `/admin/proposals` |
+| Kora provider-neutral payment lifecycle | CODE LIVE, migration 030 applied; credentials/sandbox verification pending | `/api/payments/kora/*`, `/api/webhooks/kora` |
+| Client-owned n8n deployment + vendor-cost register | LIVE, migration 031 applied | `/admin/deployments`, `N8N-DEPLOYMENT-RUNBOOK.md` |
+| Channel-specific consent + exact-channel NBA | LIVE, migration 028 applied | `src/lib/commercial/consent.ts` |
+| 30-business validation harness | TOOLING; machine run pending real target set, human fields empty by design | `scripts/validation-30.cjs` |
 | Audit methodology page | LIVE (this pass) | `/methodology` |
 | Remote rendering service | NOT BUILT (deliberately, see DECISION-LOG) | - |
 
@@ -78,10 +81,10 @@ Payment defaults: 70% before implementation / 30% before go-live (Scale:
 
 ## 6. Next Steps (priority order)
 
-1. **Apply migration 025** and verify deep-audit + consent columns (owner action or agent with Supabase access).
-2. **Wire lead-intelligence into the admin lead view UI** (the API exists; the salesperson dashboard panel is the next UI slice).
-3. **Run the 30-business validation harness** (`scripts/validation-30.cjs run`) and human-review the outputs.
-4. Prospect outreach (20 Lagos businesses) using audit artifacts as the wedge.
+1. Configure Kora credentials and complete a sandbox/live payment test, including duplicate webhook and amount-mismatch cases.
+2. Run the 30-business machine validation against a hand-verified target set and keep human-owner fields empty until real conversations occur.
+3. Use the salesperson workspace for prospect feedback; review strong/investigate/zero-opportunity distribution.
+4. Prospect outreach (20 Lagos businesses) using audit artifacts as the wedge, respecting exact-channel permission.
 5. Productization review after 10-30 paying customers: pick the repeated, highest-margin, lowest-support intervention and make it THE product.
 
 ## 7. Deliberately NOT Built (this sprint)

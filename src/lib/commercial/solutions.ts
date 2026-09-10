@@ -64,6 +64,17 @@ export interface SolutionDefinition {
    * (vs merely unverifiable) for a "strong opportunity".
    */
   minVerifiedWeakCount: number;
+  /**
+   * Categories that must be POSITIVELY detected (status found with medium/high
+   * confidence) before this solution may be a "strong opportunity".
+   *
+   * This is the anti-inflation gate: a strong opportunity requires proof the
+   * business motion/channel exists, not merely the absence of technology.
+   * A solution with an empty list can never be strong from public evidence
+   * alone (its entire business case is internal/invisible), so it is capped
+   * at "investigate" until confirmed with the business.
+   */
+  strongRequiresPositive: EvidenceCategory[];
 }
 
 export const SOLUTION_CATALOG: SolutionDefinition[] = [
@@ -96,6 +107,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Channel monitoring, template tuning, monthly response-time review.",
     possibleIntegrations: ["WhatsApp Business API", "Email (SMTP/Resend)", "Google Sheets", "HubSpot", "Zoho", "n8n"],
     minVerifiedWeakCount: 1,
+    strongRequiresPositive: ["whatsapp", "live_chat", "email"],
   },
   {
     slug: "lead_recovery_followup",
@@ -121,6 +133,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Sequence performance review, message tuning, stop-condition adjustments.",
     possibleIntegrations: ["WhatsApp Business API", "Email (SMTP/Resend)", "HubSpot", "Zoho", "Google Sheets", "n8n"],
     minVerifiedWeakCount: 1,
+    strongRequiresPositive: ["whatsapp", "email"],
   },
   {
     slug: "customer_reactivation",
@@ -149,6 +162,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Campaign review, list hygiene, consent management.",
     possibleIntegrations: ["WhatsApp Business API", "Email (Resend/Brevo)", "Google Sheets", "n8n"],
     minVerifiedWeakCount: 1,
+    strongRequiresPositive: ["email_marketing"],
   },
   {
     slug: "booking_no_show",
@@ -179,6 +193,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Calendar sync monitoring, reminder template tuning.",
     possibleIntegrations: ["Google Calendar", "Calendly", "WhatsApp Business API", "Email", "n8n"],
     minVerifiedWeakCount: 1,
+    strongRequiresPositive: [],
   },
   {
     slug: "client_onboarding",
@@ -207,6 +222,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Per-client onboarding monitoring, document template updates.",
     possibleIntegrations: ["Google Workspace", "DocuSign/signature tools", "Email", "WhatsApp", "n8n"],
     minVerifiedWeakCount: 1,
+    strongRequiresPositive: [],
   },
   {
     slug: "operations_automation",
@@ -230,6 +246,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Workflow monitoring, failure alerts, periodic scope review.",
     possibleIntegrations: ["n8n", "Google Workspace", "Zoho", "HubSpot", "Custom APIs"],
     minVerifiedWeakCount: 1,
+    strongRequiresPositive: [],
   },
   {
     slug: "custom_business_system",
@@ -252,6 +269,7 @@ export const SOLUTION_CATALOG: SolutionDefinition[] = [
     supportRequirements: "Per-project support agreement.",
     possibleIntegrations: ["As required by scope"],
     minVerifiedWeakCount: 0,
+    strongRequiresPositive: [],
   },
 ];
 

@@ -100,19 +100,52 @@ const { evaluateOpportunities } = applicability;
   }
 }
 
-// ── Test 3: verifiable weakness + clean categories => strong opportunity ──
+// ── Test 3a (Mozilla regression): ALL-ABSENCE must NOT create strong opportunities ──
+// A large org with no detectable WhatsApp/booking/chat/CRM/email-marketing and
+// no positively-detected enquiry channel must get ZERO strong opportunities.
+// Absence of technology is not evidence of a leak.
 {
-  const cats = JSON.parse(JSON.stringify(baseCategories));
-  cats.booking = cat("not_found");
-  cats.live_chat = cat("not_found");
-  cats.whatsapp = cat("not_found");
-  cats.crm = cat("not_found");        // verified negative, not unverifiable
-  cats.email_marketing = cat("not_found");
-  const result = evaluateOpportunities(cats, "Recruitment", true);
+  const cats = {
+    whatsapp: cat("not_found"),
+    email: cat("not_found"),
+    phone: cat("not_found"),
+    social: cat("not_found"),
+    booking: cat("not_found"),
+    live_chat: cat("not_found"),
+    crm: cat("not_found"),
+    email_marketing: cat("not_found"),
+    ecommerce: cat("not_found"),
+  };
+  const result = evaluateOpportunities(cats, "", true);
   const strong = result.opportunities.filter((o) => o.state === "strong_opportunity");
-  check("verified gaps produce strong opportunities", strong.length >= 2, "count=" + strong.length);
-  check("summaryLine reports the count", /identif/.test(result.summaryLine), result.summaryLine);
-  for (const o of strong) {
+  check("mozilla-style all-absence yields ZERO strong opportunities", strong.length === 0, "count=" + strong.length);
+  check("mozilla-style result is noStrongOpportunity", result.noStrongOpportunity === true);
+  check("mozilla-style summary is honest", /No sufficiently strong/.test(result.summaryLine), result.summaryLine);
+  check("mozilla-style solutions capped at investigate (not dropped)", result.opportunities.every((o) => o.state === "investigate"), JSON.stringify(result.opportunities.map((o) => o.solution + "=" + o.state)));
+}
+
+// ── Test 3b: positively-found channel + verifiable gap => strong opportunity ──
+// A small business WITH a public WhatsApp link and no chat/booking/CRM structure
+// is a defensible strong pitch: the channel demonstrably exists.
+{
+  const cats = {
+    whatsapp: cat("found", "high", "WhatsApp"),
+    email: cat("not_found"),
+    phone: cat("not_found"),
+    social: cat("not_found"),
+    booking: cat("not_found"),
+    live_chat: cat("not_found"),
+    crm: cat("not_found"),
+    email_marketing: cat("not_found"),
+    ecommerce: cat("not_found"),
+  };
+  const result = evaluateOpportunities(cats, "Professional Services", true);
+  const bySol = Object.fromEntries(result.opportunities.map((o) => [o.solution, o.state]));
+  check("WhatsApp present => lead_response_capture is strong", bySol.lead_response_capture === "strong_opportunity", JSON.stringify(bySol));
+  check("WhatsApp present => lead_recovery_followup is strong", bySol.lead_recovery_followup === "strong_opportunity", JSON.stringify(bySol));
+  check("no email_marketing => customer_reactivation NOT strong", bySol.customer_reactivation !== "strong_opportunity", JSON.stringify(bySol));
+  check("no booking path found => booking_no_show NOT strong", bySol.booking_no_show !== "strong_opportunity", JSON.stringify(bySol));
+  for (const o of result.opportunities.filter((x) => x.state === "strong_opportunity")) {
     check(
       "strong opportunity carries mustConfirm questions",
       Array.isArray(o.mustConfirm) && o.mustConfirm.length >= 3,
@@ -124,6 +157,40 @@ const { evaluateOpportunities } = applicability;
       o.solution
     );
   }
+}
+
+// ── Test 3c: email-marketing positively found => reactivation may be strong ──
+{
+  const cats = {
+    whatsapp: cat("not_found"),
+    email: cat("not_found"),
+    phone: cat("not_found"),
+    social: cat("not_found"),
+    booking: cat("not_found"),
+    live_chat: cat("not_found"),
+    crm: cat("not_found"),
+    email_marketing: cat("found", "high", "Mailchimp"),
+    ecommerce: cat("not_found"),
+  };
+  const result = evaluateOpportunities(cats, "Recruitment", true);
+  const opp = result.opportunities.find((o) => o.solution === "customer_reactivation");
+  check(
+    "email marketing present + no CRM => reactivation is strong",
+    opp && opp.state === "strong_opportunity",
+    opp ? "state=" + opp.state : "not present"
+  );
+}
+
+// ── Test 3d: industry can rule a solution out entirely (notApplicableWhen) ──
+{
+  const cats = JSON.parse(JSON.stringify(baseCategories));
+  const result = evaluateOpportunities(cats, "E-Commerce", true);
+  const lrc = result.opportunities.find((o) => o.solution === "lead_response_capture");
+  check(
+    "checkout-led ecommerce: lead_response_capture is not_applicable, never strong",
+    !lrc || lrc.state !== "strong_opportunity",
+    lrc ? "state=" + lrc.state : "not present"
+  );
 }
 
 // ── Test 4: unreachable website => no opportunities, honest summary ──

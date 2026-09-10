@@ -25,6 +25,12 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const admin = createClient(get("NEXT_PUBLIC_SUPABASE_URL"), get("SUPABASE_SERVICE_ROLE_KEY"));
 
   // create auth users
+  // Pre-clean: earlier crashed runs can leave orphaned organizations rows
+  // (created by the create_client_org trigger) whose slugs collide on re-run.
+  for (const cid of ["client_qa_portal_A", "client_qa_portal_B"]) {
+    await admin.from("organizations").delete().eq("client_id", cid);
+  }
+  await admin.from("organizations").delete().in("slug", ["qa-portal-test-a", "qa-portal-test-b"]);
   const users = {};
   for (const [key, email] of [["A", EMAIL_A], ["B", EMAIL_B]]) {
     const { data, error } = await admin.auth.admin.createUser({ email, password: PASSWORD, email_confirm: true });
@@ -33,16 +39,29 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const u = list.users.find((x) => x.email === email);
     users[key] = u;
     // client rows
-    await admin.from("clients").upsert({
+    const { error: cErr } = await admin.from("clients").upsert({
       id: "client_qa_portal_" + key,
       contact_name: key === "A" ? "QA Client A" : "QA Client B",
       email, company_name: key === "A" ? "QA Portal Test A" : "QA Portal Test B",
       plan_name: key === "A" ? "Growth" : "Starter",
-      onboarding_status: "in_progress",
+      onboarding_status: "in_review",
     }, { onConflict: "id" });
+    if (cErr) { console.log("client upsert fail:", cErr.message); process.exit(1); }
     // link auth -> client
-    await admin.from("clients").update({ auth_user_id: u.id }).eq("id", "client_qa_portal_" + key);
+    const { error: lErr } = await admin.from("clients").update({ auth_user_id: u.id }).eq("id", "client_qa_portal_" + key);
+    if (lErr) { console.log("auth link fail:", lErr.message); process.exit(1); }
   }
+
+  // verify the client row + auth link actually persisted before browser flows
+  await (async () => {
+    const { data: dbg, error: dbgErr } = await admin.from("clients").select("id, email, auth_user_id, company_name").in("id", ["client_qa_portal_A", "client_qa_portal_B"]);
+    console.log("probe clients:", JSON.stringify(dbg), dbgErr ? "ERR: " + dbgErr.message : "");
+    const { data: dbgu } = await admin.auth.admin.listUsers();
+    for (const email of [EMAIL_A, EMAIL_B]) {
+      const u = dbgu.users.find((x) => x.email === email);
+      console.log("probe auth:", email, u ? u.id : "MISSING");
+    }
+  })();
 
   // portal project + tasks + report for A only
   await admin.from("portal_projects").upsert({ id: "pproj_qa_a", client_id: "client_qa_portal_A", name: "QA Lead System A", phase: "build" }, { onConflict: "id" });
@@ -62,6 +81,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const page = await browser.newPage();
     await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
     await page.goto(BASE + "/login", { waitUntil: "networkidle2", timeout: 90000 });
+    await page.waitForSelector('input[type="email"]', { timeout: 30000 });
+    await sleep(500);
     await page.type('input[type="email"]', email);
     await page.type('input[type="password"]', PASSWORD);
     await Promise.all([
@@ -135,6 +156,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     await admin.from("portal_onboarding_form").delete().eq("client_id", cid);
     await admin.from("portal_access_requests").delete().eq("client_id", cid);
     await admin.from("clients").delete().eq("id", cid);
+    // remove the org auto-created by the create_client_org trigger
+    await admin.from("organizations").delete().eq("client_id", cid);
   }
   for (const email of [EMAIL_A, EMAIL_B]) {
     const { data: list } = await admin.auth.admin.listUsers();

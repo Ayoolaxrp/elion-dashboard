@@ -19,6 +19,8 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { evaluateOpportunities } from "@/lib/commercial/applicability";
+import { computeNextBestAction } from "@/lib/commercial/next-best-action";
+import { normalizePermissions } from "@/lib/commercial/consent";
 
 const getDataClient = () =>
   createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
@@ -38,99 +40,7 @@ async function requireAdmin() {
 }
 
 // ── Deterministic Next Best Action ──
-
-export interface NextBestAction {
-  action: string;
-  reason: string;
-  /** Contact channels permitted under the lead's consent state. */
-  allowedChannels: string[];
-  blockedChannels: string[];
-}
-
-const DAYS = 86_400_000;
-
-export function computeNextBestAction(lead: {
-  lead_status: string;
-  contact_permission: string;
-  updated_at: string;
-  industry: string | null;
-  hasOpportunities: boolean;
-  hasVerifiedEvidence: boolean;
-  proposalSentAt?: string | null;
-  unpaidInvoices?: number;
-}, now = Date.now()): NextBestAction {
-  const allowed: string[] = [];
-  const blocked: string[] = [];
-  const perm = lead.contact_permission;
-
-  // Consent gating FIRST: opt-out/do-not-contact overrides everything.
-  if (perm === "opted_out" || perm === "do_not_contact") {
-    return {
-      action: "No outreach. Contact is opted out or marked do-not-contact.",
-      reason: `contact_permission is "${perm}". Respect it on every channel.`,
-      allowedChannels: [],
-      blockedChannels: ["email", "whatsapp", "phone"],
-    };
-  }
-  if (perm === "unknown") {
-    blocked.push("whatsapp");
-  } else if (perm === "public_business_contact" || perm === "opted_in_email") {
-    blocked.push("whatsapp");
-    allowed.push("email");
-  } else if (perm === "opted_in_whatsapp") {
-    allowed.push("whatsapp", "email");
-  }
-
-  // Proposal sent: follow up on the proposal, not on discovery.
-  if (lead.proposalSentAt && now - new Date(lead.proposalSentAt).getTime() > 3 * DAYS) {
-    return {
-      action: "Follow up on the proposal sent " + Math.floor((now - new Date(lead.proposalSentAt).getTime()) / DAYS) + " day(s) ago.",
-      reason: "Proposal awaiting response past the 3-day follow-up window.",
-      allowedChannels: allowed.includes("whatsapp") ? ["whatsapp", "email"] : allowed,
-      blockedChannels: blocked,
-    };
-  }
-
-  // No verified evidence: request Deep Audit before pitching.
-  if (!lead.hasVerifiedEvidence) {
-    return {
-      action: "Run or request a Deep Audit. Public evidence is insufficient to diagnose anything.",
-      reason: "No successfully inspected audit categories for this lead.",
-      allowedChannels: allowed,
-      blockedChannels: blocked,
-    };
-  }
-
-  // Evidence exists but nothing strong: discovery call, not a pitch.
-  if (!lead.hasOpportunities) {
-    return {
-      action: "Call the business for discovery. No strong evidence-backed opportunity yet; do not pitch.",
-      reason: "Audit completed but the applicability engine found no strong opportunity from public evidence.",
-      allowedChannels: allowed,
-      blockedChannels: blocked,
-    };
-  }
-
-  // Opportunities exist: discovery on the specific evidence.
-  const statusActions: Record<string, string> = {
-    new: "Call the business. Lead with the observed evidence and ask the solution's discovery questions.",
-    audited: "Call the business. Lead with the observed evidence and ask the solution's discovery questions.",
-    contacted: "Continue the conversation; confirm the internal process behind the observed evidence.",
-    qualified: "Prepare a scoped proposal from the confirmed problems; keep modeled figures labeled as scenarios.",
-    proposal: "Follow up on the proposal within 3 days of sending.",
-    payment_pending: "Send payment reminder; do not provision infrastructure before kickoff payment clears.",
-    paid: "Start onboarding and provisioning immediately.",
-    implementation: "Deliver against the implementation plan; log progress for the client.",
-    completed: "Review outcomes and request a case study / referral conversation.",
-    lost: "Archive. Log the loss reason honestly for the productization review.",
-  };
-  return {
-    action: statusActions[lead.lead_status] || "Review the lead manually.",
-    reason: "Rule-based action for lead_status=" + lead.lead_status + ".",
-    allowedChannels: allowed,
-    blockedChannels: blocked,
-  };
-}
+// (implemented in src/lib/commercial/next-best-action.ts)
 
 // ── Route handler ──
 
@@ -147,7 +57,7 @@ export async function GET(req: NextRequest) {
   if (leadErr || !lead) return NextResponse.json({ error: "Lead not found" }, { status: 404 });
 
   const { data: audits } = await sb.from("audits")
-    .select("id, created_at, overall_score, leak_count, critical_leaks, high_leaks, leaks")
+    .select("id, created_at, overall_score, leak_count, critical_leaks, high_leaks, leaks, verified")
     .eq("lead_id", leadId)
     .order("created_at", { ascending: false })
     .limit(5);
@@ -161,6 +71,10 @@ export async function GET(req: NextRequest) {
     .limit(3)
     .then((r) => (r.error && /deep_audits|relation/.test(r.error.message || "")) ? { data: [] } : r);
 
+  const { data: permissions } = await sb.from("lead_contact_permissions")
+    .select("channel, status, consent_source, updated_at, metadata")
+    .eq("lead_id", leadId);
+
   const { data: proposals } = await sb.from("proposals")
     .select("id, sent_at, status, total_setup, total_monthly")
     .eq("lead_id", leadId)
@@ -173,24 +87,23 @@ export async function GET(req: NextRequest) {
     .in("status", ["overdue", "issued", "partially_paid"]);
   const unpaidInvoices = invoices ? invoices.length : 0;
 
-  // Re-run the applicability engine on the latest audit's verified categories.
+  // Re-run the applicability engine on the latest audit's verified categories
+  // (persisted since migration 029). Older audits have no payload and get
+  // discovery-only guidance instead of fabricated gaps.
   let opportunities: ReturnType<typeof evaluateOpportunities> | null = null;
-  const verified = (latestAudit && typeof latestAudit === "object" ? (latestAudit as Record<string, unknown>) : null);
-  if (verified && typeof verified.leaks === "object") {
-    // The stored `audits.leaks` JSON does not carry the full verified-category
-    // structure; if the audit row stored `verified` (newer audits do via the
-    // pipeline), use it. Older audits get discovery-only guidance.
-    const storedVerified = (verified as { verified?: unknown }).verified;
-    if (storedVerified && typeof storedVerified === "object") {
-      try {
-        opportunities = evaluateOpportunities(
-          storedVerified as Record<string, never>,
-          lead.industry || "General",
-          true
-        );
-      } catch {
-        opportunities = null;
-      }
+  const storedVerified =
+    latestAudit && typeof latestAudit === "object"
+      ? (latestAudit as { verified?: unknown }).verified
+      : null;
+  if (storedVerified && typeof storedVerified === "object" && !Array.isArray(storedVerified)) {
+    try {
+      opportunities = evaluateOpportunities(
+        storedVerified as Record<string, never>,
+        lead.industry || "General",
+        true
+      );
+    } catch {
+      opportunities = null;
     }
   }
 
@@ -198,9 +111,12 @@ export async function GET(req: NextRequest) {
   const hasOpportunities = Boolean(opportunities && opportunities.opportunities.some((o) => o.state === "strong_opportunity"));
   const sentProposal = proposals && proposals.length > 0 ? proposals.find((p) => p.sent_at) || null : null;
 
+  const channelPerms = normalizePermissions(permissions as never, lead.contact_permission || "unknown");
+
   const nba = computeNextBestAction({
     lead_status: lead.lead_status,
     contact_permission: lead.contact_permission || "unknown",
+    channels: channelPerms,
     updated_at: lead.updated_at,
     industry: lead.industry,
     hasOpportunities,
@@ -221,6 +137,7 @@ export async function GET(req: NextRequest) {
       lead_status: lead.lead_status,
       contact_permission: lead.contact_permission || "unknown",
       consent_source: lead.consent_source || null,
+      contact_permissions: permissions || [],
       created_at: lead.created_at,
       updated_at: lead.updated_at,
     },

@@ -113,3 +113,30 @@ Never silently change commercial assumptions. Newest entries at the bottom.
   to everyone undermines the ladder.
 - **Reason:** Price integrity for the first 5 real reference customers.
 - **Revisit trigger:** Owner decision, or pilot phase ends.
+
+## D-008: Strong opportunity requires positive public evidence
+
+- **Decision:** A strong commercial opportunity must require at least one positively detected, sufficiently confident business channel/evidence, plus a verifiable gap. Absence alone can produce `investigate`, never a strong opportunity.
+- **Context:** The Mozilla review exposed six strong recommendations generated from technology absence without proof that the relevant business motion existed. This was a false-positive risk.
+- **Alternatives considered:** Keep absence-based strong recommendations (rejected: not evidence-led); remove all absence findings (rejected: verified absence remains useful for discovery); add a Mozilla exception (rejected: does not generalize).
+- **Reason:** ELION must be comfortable returning zero strong opportunities and must not claim internal process failures from public pages.
+- **Consequence:** Solution definitions declare `strongRequiresPositive`; solutions with no positive public prerequisite are capped at `investigate` pending business confirmation. Industry-level `notApplicableWhen` rules now execute.
+- **Revisit trigger:** Real owner-confirmed validation data shows a category can support a stronger recommendation under a documented context rule.
+
+## D-009: Client owns production n8n and vendor accounts by default
+
+- **Decision:** Client-owned n8n account/instance, client billing and client production credentials are the default. ELION records access/ownership and provides implementation, testing, monitoring and Care without storing plaintext secrets in deployment records.
+- **Context:** Centralizing many client production credentials would create avoidable security, cost and offboarding risk at ELION's current stage.
+- **Alternatives considered:** One ELION-owned shared n8n instance (rejected: isolation/licensing/cost risk); client-owned deployment with guided checklist (chosen).
+- **Reason:** Protects client ownership and ELION margin while keeping delivery repeatable.
+- **Consequence:** Deployment readiness requires ownership, access, version and acceptance test. Vendor-cost register separates client-paid and ELION-paid technology costs.
+- **Revisit trigger:** Sufficient client volume and a reviewed licensing/isolation model justify shared infrastructure.
+
+## D-010: Kora webhook authenticity follows provider HMAC contract
+
+- **Decision:** Validate `x-korapay-signature` as HMAC-SHA256 of only the Kora webhook `data` object, then re-verify the transaction server-side before marking payment successful.
+- **Context:** A bearer-secret comparison is not equivalent to the provider's documented webhook signature contract.
+- **Alternatives considered:** Trust event payload (rejected); bearer header comparison (rejected); signature plus API re-verification (chosen).
+- **Reason:** Authenticity, tamper resistance and conservative payment settlement.
+- **Consequence:** Under/overpayments remain pending for reconciliation; duplicate webhook processing is idempotent.
+- **Revisit trigger:** Kora publishes a changed signed-webhook contract or provider abstraction adds another processor.
