@@ -14,6 +14,7 @@ import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
 import { sendLeadToN8n } from "@/lib/n8n-client";
+import { getClientSession } from "@/lib/auth/client";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -52,6 +53,7 @@ interface LeadIngestionRequest {
   message?: string;
   source?: string;
   client_id?: string;
+  event_id?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -145,6 +147,45 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "client_id is required" }, { status: 400 });
     }
 
+    const eventId = body.event_id?.trim() || request.headers.get("x-event-id")?.trim() || null;
+    if (eventId && eventId.length > 200) {
+      return NextResponse.json({ error: "event_id is too long" }, { status: 400 });
+    }
+    if (!eventId) {
+      return NextResponse.json({ error: "event_id is required for idempotent ingestion" }, { status: 400 });
+    }
+
+    // Resolve the tenant before loading configuration or writing a lead. The
+    // webhook secret authenticates the caller; the client row still has to
+    // exist, so an arbitrary client id cannot create a cross-tenant record.
+    const { data: client } = await supabase
+      .from("clients")
+      .select("id, company_name, industry, email")
+      .eq("id", body.client_id)
+      .single();
+    if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
+
+    // Provider retries must be safe. If migration 035 is present, the unique
+    // (client_id, inbound_event_id) index is the database backstop; this early
+    // read also returns the original result without sending a second message.
+    if (eventId) {
+      const { data: existingLead } = await supabase
+        .from("leads")
+        .select("id, contact_name, lead_status, client_id, inbound_event_id")
+        .eq("client_id", body.client_id)
+        .eq("inbound_event_id", eventId)
+        .maybeSingle();
+      if (existingLead) {
+        return NextResponse.json({
+          success: true,
+          duplicate: true,
+          lead: { id: existingLead.id, name: existingLead.contact_name },
+          qualification: { status: existingLead.lead_status },
+          response: { status: "already_processed", reason: "Inbound event was already accepted." },
+        });
+      }
+    }
+
     const startTime = Date.now();
 
     // STEP 1: Get the client's active lead_response automation
@@ -186,22 +227,21 @@ export async function POST(request: NextRequest) {
       clientConfig.working_hours_end || "18:00"
     );
 
-    // STEP 3: Get client info
-    const { data: client } = await supabase
-      .from("clients")
-      .select("id, company_name, industry, email")
-      .eq("id", body.client_id)
-      .single();
+    // STEP 3: Client was resolved before configuration lookup. Keep this
+    // step as a documented boundary for the workflow contract.
+    const resolvedClient = client;
 
     // STEP 4: Store the lead
     const { data: storedLead, error: leadError } = await supabase
       .from("leads")
       .insert({
+        client_id: body.client_id,
+        inbound_event_id: eventId,
         contact_name: body.name.trim(),
         email: body.email || "unknown@example.com",
         phone: body.phone || null,
         whatsapp: body.whatsapp || null,
-        company_name: client?.company_name || clientConfig.business_name,
+        company_name: resolvedClient?.company_name || clientConfig.business_name,
         industry: clientConfig.industry,
         source: body.source || "api",
         lead_status: "new",
@@ -217,6 +257,19 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (leadError) {
+      // A concurrent provider retry may race the early idempotency read. Treat
+      // the unique event conflict as a duplicate, not as a second lead.
+      if (eventId && /duplicate|unique/i.test(leadError.message || "")) {
+        const { data: existingLead } = await supabase
+          .from("leads")
+          .select("id, contact_name, lead_status")
+          .eq("client_id", body.client_id)
+          .eq("inbound_event_id", eventId)
+          .maybeSingle();
+        if (existingLead) {
+          return NextResponse.json({ success: true, duplicate: true, lead: { id: existingLead.id, name: existingLead.contact_name }, qualification: { status: existingLead.lead_status }, response: { status: "already_processed" } });
+        }
+      }
       console.error("Failed to store lead:", leadError);
       return NextResponse.json({ error: "Failed to store lead" }, { status: 500 });
     }
@@ -247,28 +300,10 @@ export async function POST(request: NextRequest) {
     // STEP 8: Generate response
     const responseText = generateResponse(clientConfig, body.name.trim());
 
-    // STEP 9: Determine send status
+    // STEP 10: Send to n8n if channel is ready. Delivery is marked sent
+    // only after the trusted downstream call succeeds.
     let responseSendStatus = "blocked";
     let responseDurationMs = 0;
-
-    if (channelStatus === "ready_to_send" && channel) {
-      responseSendStatus = "sent";
-      responseDurationMs = Date.now() - startTime + Math.floor(Math.random() * 5000) + 3000;
-    }
-
-    // STEP 10: Update lead status
-    await supabase
-      .from("leads")
-      .update({
-        lead_status: qualification.qualified ? "qualified" : "new",
-        n8n_status: responseSendStatus === "sent" ? "sent" : "not_sent",
-        email_status: channel?.channel === "email" ? (responseSendStatus === "sent" ? "sent" : "failed") : "not_sent",
-        whatsapp_status: channel?.channel === "whatsapp" ? (responseSendStatus === "sent" ? "sent" : "failed") : "not_sent",
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", storedLead.id);
-
-    // STEP 10.5: Send to n8n if channel is ready
     let n8nResult = null;
     if (channelStatus === "ready_to_send" && channel) {
       n8nResult = await sendLeadToN8n({
@@ -294,11 +329,23 @@ export async function POST(request: NextRequest) {
         qualification,
       });
 
-      // If n8n succeeded, update send status
       if (n8nResult.success) {
         responseSendStatus = "sent";
+        responseDurationMs = Date.now() - startTime;
       }
     }
+
+    // Persist delivery state only after the downstream result is known.
+    await supabase
+      .from("leads")
+      .update({
+        lead_status: qualification.qualified ? "qualified" : "new",
+        n8n_status: responseSendStatus === "sent" ? "sent" : "not_sent",
+        email_status: channel?.channel === "email" ? (responseSendStatus === "sent" ? "sent" : "failed") : "not_sent",
+        whatsapp_status: channel?.channel === "whatsapp" ? (responseSendStatus === "sent" ? "sent" : "failed") : "not_sent",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", storedLead.id);
 
     // STEP 11: Log execution in automation_executions
     await supabase.from("automation_executions").insert({
@@ -309,7 +356,7 @@ export async function POST(request: NextRequest) {
         lead_id: storedLead.id,
         lead_name: body.name.trim(),
         source: body.source || "api",
-        client_name: client?.company_name,
+        client_name: resolvedClient?.company_name,
       },
       status: responseSendStatus === "sent" ? "completed" : "failed",
       started_at: new Date(startTime).toISOString(),
@@ -389,15 +436,18 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
+    const session = await getClientSession();
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const clientId = session.clientId;
     const { searchParams } = new URL(request.url);
-    const clientId = searchParams.get("client_id");
-    const limit = parseInt(searchParams.get("limit") || "20");
-
-    if (!clientId) {
-      return NextResponse.json({ error: "client_id is required" }, { status: 400 });
+    const requestedClientId = searchParams.get("client_id");
+    if (requestedClientId && requestedClientId !== clientId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "20", 10) || 20, 1), 100);
 
-    // Get automations for this client
+    // Client portal reads are scoped from the authenticated membership, never
+    // from a browser-supplied tenant id.
     const { data: automations } = await supabase
       .from("client_automations")
       .select("id, custom_name, status, total_runs, last_run_at, template_id")

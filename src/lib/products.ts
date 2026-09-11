@@ -572,6 +572,147 @@ export const PRODUCT_CATALOG: ProductDefinition[] = [
 ];
 
 // ------------------------------------------------------------------
+// COMMERCIAL CONTRACT
+// ------------------------------------------------------------------
+// Product configuration and commercial metadata are intentionally separate:
+// the deployment wizard needs the former, while quoting/provisioning needs the
+// latter. Every catalog item must have a complete entry here before it can be
+// treated as commercially deployable.
+export interface ProductCommercialMetadata {
+  customer_problem: string;
+  ideal_customer: string;
+  implementation_scope: string[];
+  setup_price_ngn: number;
+  monthly_care_price_ngn: number;
+  third_party_cost_estimate: string;
+  usage_pricing: string;
+  margin_basis: string;
+  provisioning_checklist: string[];
+  client_requirements: string[];
+  entitlement_rule: string;
+  activation_status: "active" | "coming_soon" | "draft";
+}
+
+export const PRODUCT_COMMERCIAL_METADATA: Record<string, ProductCommercialMetadata> = {
+  prod_wa_lead_response: {
+    customer_problem: "New enquiries wait for a person to notice and respond.",
+    ideal_customer: "Nigerian service businesses receiving enquiries through WhatsApp or website forms.",
+    implementation_scope: ["Capture inbound enquiry", "Send approved first response", "Qualify and route lead", "Log execution and escalation"],
+    setup_price_ngn: 50_000,
+    monthly_care_price_ngn: 25_000,
+    third_party_cost_estimate: "Meta conversation charges plus optional AI usage; provider bills are variable and separate.",
+    usage_pricing: "Provider usage is client-direct or passed through at cost + 20% handling; no unlimited allowance.",
+    margin_basis: "ELION setup and Care fees are checked against direct delivery, provider and support costs before acceptance.",
+    provisioning_checklist: ["Client WhatsApp provider account", "Approved message rules", "Human escalation owner", "Test enquiry", "Acceptance test"],
+    client_requirements: ["Business details", "WhatsApp Business access", "Response rules", "Escalation contact"],
+    entitlement_rule: "One Lead Response entitlement per client and approved scope; live only after configuration, provider connection and test.",
+    activation_status: "active",
+  },
+  prod_ai_receptionist: {
+    customer_problem: "Inbound questions and booking requests consume staff time and arrive outside working hours.",
+    ideal_customer: "Appointment-led businesses with repeatable FAQs and a named human escalation owner.",
+    implementation_scope: ["Approved knowledge base", "Guardrails and personality", "FAQ handling", "Calendar booking where scoped", "Human escalation"],
+    setup_price_ngn: 75_000,
+    monthly_care_price_ngn: 35_000,
+    third_party_cost_estimate: "AI, voice, messaging and calendar provider subscriptions/usage vary by channel and volume.",
+    usage_pricing: "AI tokens, voice minutes and channel usage are metered separately under the agreed allowance/overage model.",
+    margin_basis: "Quote must include configuration, testing, monitoring and variable provider cost assumptions.",
+    provisioning_checklist: ["Approved facts and policies", "Disallowed claims", "Escalation owner", "Calendar connection if enabled", "Scenario test set"],
+    client_requirements: ["Business knowledge", "Opening hours", "Human escalation details", "Provider access if voice or WhatsApp is enabled"],
+    entitlement_rule: "Receptionist access is limited to the purchased channels and approved capabilities; uncertain or high-risk requests escalate.",
+    activation_status: "active",
+  },
+  prod_email_assistant: {
+    customer_problem: "Email enquiries are acknowledged and routed inconsistently.",
+    ideal_customer: "Businesses with a monitored shared inbox and a lawful, reviewed email operating process.",
+    implementation_scope: ["Mailbox connection", "Intent routing", "Approved acknowledgement", "CRM handoff", "Bounce and opt-out handling"],
+    setup_price_ngn: 25_000,
+    monthly_care_price_ngn: 15_000,
+    third_party_cost_estimate: "Email provider charges depend on send volume and provider plan.",
+    usage_pricing: "Send volume and provider charges are metered; automatic marketing sends remain disabled until approved.",
+    margin_basis: "Setup and Care contribution margin must remain within ELION quote guardrails after provider cost.",
+    provisioning_checklist: ["Sender-domain authentication", "Reply-to address", "Approved templates", "Suppression list", "Test mailbox"],
+    client_requirements: ["Mailbox access", "Approved facts and templates", "Sender-domain permissions", "Permission policy"],
+    entitlement_rule: "Email Assistant may process only the connected mailbox and approved message classes; outbound marketing requires human approval.",
+    activation_status: "coming_soon",
+  },
+  prod_ai_sales_agent: {
+    customer_problem: "Inbound sales conversations are not consistently qualified or handed to a salesperson.",
+    ideal_customer: "Businesses with a defined offer, qualification rules and a human sales owner.",
+    implementation_scope: ["Offer and qualification configuration", "Approved objection handling", "Lead capture", "Meeting handoff", "Escalation rules"],
+    setup_price_ngn: 100_000,
+    monthly_care_price_ngn: 45_000,
+    third_party_cost_estimate: "AI, WhatsApp and optional CRM provider costs vary by volume and account.",
+    usage_pricing: "Conversation and AI usage is metered separately; external messages require approval and permission gates.",
+    margin_basis: "High-risk sales behavior, support burden and provider usage must be included in the quote economics.",
+    provisioning_checklist: ["Approved offer", "Allowed/disallowed claims", "Qualification rubric", "Human sales owner", "Conversation test set"],
+    client_requirements: ["Offer details", "Target customer definition", "Escalation contact", "Connected channel account"],
+    entitlement_rule: "Agent can act only within approved claims, channels and qualification rules; high-value or uncertain leads escalate.",
+    activation_status: "active",
+  },
+  prod_follow_up: {
+    customer_problem: "Interested prospects go quiet without a consistent, stoppable follow-up process.",
+    ideal_customer: "Businesses with permissioned lead records and a clear response/stop policy.",
+    implementation_scope: ["Sequence timing", "Approved messages", "Reply stop condition", "Channel delivery", "Outcome logging"],
+    setup_price_ngn: 35_000,
+    monthly_care_price_ngn: 20_000,
+    third_party_cost_estimate: "WhatsApp or email provider charges depend on message volume and provider terms.",
+    usage_pricing: "Per-message/channel usage is charged by the provider or passed through under the usage allowance model.",
+    margin_basis: "Quote includes sequence tuning, list hygiene and expected delivery/support costs.",
+    provisioning_checklist: ["Permissioned audience", "Approved sequence", "Reply/opt-out stop test", "Bounce handling", "Owner for escalations"],
+    client_requirements: ["Contact list or CRM", "Channel permissions", "Approved copy", "Stop and escalation rules"],
+    entitlement_rule: "Follow-up runs only on approved records and stops on reply, opt-out, hard bounce or manual stop.",
+    activation_status: "active",
+  },
+  prod_booking: {
+    customer_problem: "Back-and-forth scheduling and missed appointments consume staff time.",
+    ideal_customer: "Appointment-led businesses with reliable availability and a calendar owner.",
+    implementation_scope: ["Calendar connection", "Availability rules", "Booking confirmation", "Reminder flow", "Rescheduling path"],
+    setup_price_ngn: 50_000,
+    monthly_care_price_ngn: 25_000,
+    third_party_cost_estimate: "Google Calendar is generally available without a separate ELION provider fee; premium tools may charge separately.",
+    usage_pricing: "Calendar usage is included in scope; messaging reminders use the selected channel provider's metered pricing.",
+    margin_basis: "Quote includes calendar configuration, test bookings and support for the agreed reminder channels.",
+    provisioning_checklist: ["Calendar authorization", "Working hours", "Appointment duration", "Buffer rules", "Test booking and cancellation"],
+    client_requirements: ["Calendar access", "Availability rules", "Meeting location/link", "Reminder copy"],
+    entitlement_rule: "Booking entitlement covers only the configured calendar, appointment types and reminder channels.",
+    activation_status: "active",
+  },
+  prod_revenue_recovery: {
+    customer_problem: "Dormant leads and customers are not systematically re-engaged.",
+    ideal_customer: "Businesses with a permissioned historical contact list and a repeatable offer.",
+    implementation_scope: ["Dormancy rules", "Audience segmentation", "Approved recovery copy", "Response tracking", "Stop conditions"],
+    setup_price_ngn: 45_000,
+    monthly_care_price_ngn: 25_000,
+    third_party_cost_estimate: "Provider cost depends on the selected channel and number of contacts messaged.",
+    usage_pricing: "Recovery messages are metered; no contact is messaged without a permitted channel state.",
+    margin_basis: "Quote includes list cleaning, consent review and expected message/support cost.",
+    provisioning_checklist: ["Permissioned historical list", "Dormancy definition", "Approved offer", "Suppression list", "Test segment"],
+    client_requirements: ["Contact history", "Permission evidence", "Offer and eligibility rules", "Response owner"],
+    entitlement_rule: "Recovery covers only the agreed audience, offer and channels; opted-out or do-not-contact records are excluded.",
+    activation_status: "active",
+  },
+  prod_operations: {
+    customer_problem: "Staff repeatedly move information between tools and compile routine updates manually.",
+    ideal_customer: "Teams with a stable, repeatable internal process and named system owners.",
+    implementation_scope: ["Map one or more agreed workflows", "Connect systems", "Add internal notifications/tasks", "Log runs", "Test failure handling"],
+    setup_price_ngn: 60_000,
+    monthly_care_price_ngn: 30_000,
+    third_party_cost_estimate: "Depends on connected tools, n8n hosting, API usage and storage; client-owned vendor costs remain attributable.",
+    usage_pricing: "Execution, API, storage and vendor usage are measured against the agreed allowance/overage model.",
+    margin_basis: "Quote includes integration complexity, monitoring, failure handling and direct infrastructure costs.",
+    provisioning_checklist: ["Process map", "System owners", "Credentials via secure provider flow", "Failure notification", "Rollback/test plan"],
+    client_requirements: ["Access to source systems", "Process owner", "Acceptance criteria", "Client vendor account ownership decision"],
+    entitlement_rule: "Operations entitlement covers only the named workflows, systems and execution allowance in the accepted proposal.",
+    activation_status: "active",
+  },
+};
+
+export function getProductCommercialMetadata(productId: string): ProductCommercialMetadata | undefined {
+  return PRODUCT_COMMERCIAL_METADATA[productId];
+}
+
+// ------------------------------------------------------------------
 // HELPERS
 
 export function getProduct(id: string): ProductDefinition | undefined {

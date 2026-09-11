@@ -46,12 +46,13 @@ export interface VerifiedTransaction {
   feeNaira?: number | null;
 }
 
-export type PaymentAmountStatus = "match" | "underpaid" | "overpaid";
+export type PaymentAmountState = "exact" | "underpaid" | "overpaid" | "currency_mismatch";
 
-export function comparePaymentAmount(expectedNaira: number, actualNaira: number): PaymentAmountStatus {
-  if (actualNaira < expectedNaira) return "underpaid";
-  if (actualNaira > expectedNaira) return "overpaid";
-  return "match";
+export function comparePaymentAmount(expectedNaira: number, expectedCurrency: string, transaction: VerifiedTransaction): PaymentAmountState {
+  if ((transaction.currency || "NGN").toUpperCase() !== expectedCurrency.toUpperCase()) return "currency_mismatch";
+  if (transaction.amountNaira < expectedNaira) return "underpaid";
+  if (transaction.amountNaira > expectedNaira) return "overpaid";
+  return "exact";
 }
 
 const KORA_BASE = "https://api.korapay.com/api/v1";

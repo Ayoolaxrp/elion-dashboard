@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
+import { getClientSession } from "@/lib/auth/client";
 
 // Auth (cookie session) and data are split: the cookie client only ever
 // resolves the signed-in user; all data reads run on a service-role client
@@ -62,50 +60,14 @@ function friendlyEvent(row: ActivityRow): { text: string; tone: "ok" | "warn" | 
   }
 }
 
-const dataClient = () =>
-  createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { persistSession: false } }
-  );
-
 export async function GET() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
-  );
+  const session = await getClientSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: { "x-elion-ov": "4" } });
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: { "x-elion-ov": "3" } });
-
-  // All reads below run as service role (bypasses RLS, real data only)
-  const db = dataClient();
-
-  // Find the signed-in user's client organization (same rule as /api/client/automations)
-  const { data: memberships } = await db
-    .from("organization_memberships")
-    .select("organization_id, role")
-    .eq("user_id", user.id)
-    .eq("status", "active");
-
-  let clientId: string | null = null;
-  if (memberships && memberships.length > 0) {
-    const { data: org } = await db
-      .from("organizations")
-      .select("id, client_id")
-      .in("id", memberships.map((m: { organization_id: string }) => m.organization_id))
-      .eq("org_type", "client")
-      .single();
-    if (org?.client_id) clientId = org.client_id as string;
-  }
-
-  if (!clientId) {
-    return NextResponse.json({ client: null, automations: [], integrations: [], activity: [], outcomes: null, needsAttention: [] });
-  }
-
-  // Client record
+  // All reads below run as a service-role client resolved from the active
+  // client organization membership. No request-supplied tenant identifier.
+  const db = session.db;
+  const clientId = session.clientId;
   const { data: client } = await db
     .from("clients")
     .select("company_name, contact_name, email, onboarding_status, created_at")
@@ -191,7 +153,15 @@ export async function GET() {
     }
   };
 
-  const automationsView = (automations || []).map((a: any) => {
+  const automationsView = (automations || []).map((a: {
+    id: string;
+    custom_name: string | null;
+    status: string;
+    total_runs: number | null;
+    last_run_at: string | null;
+    success_rate: number | null;
+    workflow_templates?: { name?: string; slug?: string; category?: string; required_integrations?: string[] | null } | { name?: string; slug?: string; category?: string; required_integrations?: string[] | null }[] | null;
+  }) => {
     const h = healthOf(a);
     const wt = Array.isArray(a.workflow_templates) ? a.workflow_templates[0] : a.workflow_templates;
     return {
@@ -256,7 +226,7 @@ export async function GET() {
   // Required integrations that are missing for a live/deployed system
   const requiredByTemplate = new Set<string>();
   for (const a of automationsView) {
-    const wt = (automations || []).find((x: any) => x.id === a.id)?.workflow_templates;
+    const wt = (automations || []).find((x: { id: string; workflow_templates?: unknown }) => x.id === a.id)?.workflow_templates;
     const tpl = Array.isArray(wt) ? wt[0] : wt;
     if (Array.isArray(tpl?.required_integrations)) {
       for (const t of tpl.required_integrations) requiredByTemplate.add(String(t));
@@ -326,7 +296,7 @@ export async function GET() {
   }
 
   // Activity with friendly copy
-  const activity = (activityRows || []).map((row) => {
+  const activity = (activityRows || []).map((row: ActivityRow) => {
     const f = friendlyEvent(row);
     return { id: row.id, at: row.created_at, text: f.text, tone: f.tone };
   });

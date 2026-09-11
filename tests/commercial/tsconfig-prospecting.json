@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./compiled-prospecting",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": "../.."
+  },
+  "files": [
+    "../../src/lib/products.ts",
+    "../../src/lib/audit/fetch-safe.ts",
+    "../../src/lib/prospect/qualification.ts",
+    "../../src/lib/prospect/discovery.ts"
+  ]
+}

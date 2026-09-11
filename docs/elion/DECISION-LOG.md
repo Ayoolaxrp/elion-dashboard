@@ -134,9 +134,35 @@ Never silently change commercial assumptions. Newest entries at the bottom.
 
 ## D-010: Kora webhook authenticity follows provider HMAC contract
 
-- **Decision:** Validate `x-korapay-signature` as HMAC-SHA256 of only the Kora webhook `data` object, then re-verify the transaction server-side before marking payment successful.
+- **Decision:** Validate `x-korapay-signature` as HMAC-SHA256 of only the Kora webhook `data` object using the Kora merchant secret, then re-verify the transaction server-side before marking payment successful. Settlement also requires exact NGN amount/currency equality; underpayments, overpayments and currency mismatches remain pending for reconciliation.
 - **Context:** A bearer-secret comparison is not equivalent to the provider's documented webhook signature contract.
 - **Alternatives considered:** Trust event payload (rejected); bearer header comparison (rejected); signature plus API re-verification (chosen).
 - **Reason:** Authenticity, tamper resistance and conservative payment settlement.
 - **Consequence:** Under/overpayments remain pending for reconciliation; duplicate webhook processing is idempotent.
 - **Revisit trigger:** Kora publishes a changed signed-webhook contract or provider abstraction adds another processor.
+
+## D-011: Bounded AI workflows and human approval at the edge
+
+- **Decision:** Keep ELION's internal AI workflows structured and risk-tiered. Research and summaries may run automatically; CRM/prioritization changes require auditability; external messages, publishing, payments, permissions and production changes require human approval initially.
+- **Context:** ELION needs leverage without giving an agent unrestricted production access. Structured validation is required before model output enters business logic.
+- **Alternatives considered:** unrestricted autonomous agents (rejected: unsafe and difficult to audit); no automation (rejected: loses the founder-leverage goal).
+- **Reason:** Preserve speed for low-risk work while keeping judgment, trust, compliance and irreversible actions human-controlled.
+- **Consequence:** `src/lib/ai/structured-output.ts`, `src/lib/ai/operating-model.ts`, migration 034 and the Content Studio API/page establish the boundary. Outreach is not auto-enabled.
+- **Revisit trigger:** Workflow-specific reliability evidence, rollback paths and legal/provider review justify reducing approval for one bounded workflow.
+
+## D-012: Active-site validation precedes commercial qualification
+
+- **Decision:** A discovered domain cannot enter ELION's sales review queue merely because a contact exists. It needs a normalized public URL, source/retrieval metadata, completed audit, useful evidence, confidence and a channel permission that does not block contact.
+- **Context:** The prior 30-site run completed only 9/30 because 21 inputs were DNS/network/HTTP-blocked. That result is a cohort/data reliability signal, not a renderer justification.
+- **Reason:** Separate discovery failures from audit findings and prevent dead domains or unsupported claims from reaching the founder.
+- **Consequence:** `src/lib/prospect/qualification.ts` supplies shared validation/deduplication/queue gates; human approval remains required before outreach.
+- **Revisit trigger:** A hand-verified active cohort produces repeated, commercially material JS-render failures above the documented threshold.
+
+## D-013: Zero-cost provider-neutral discovery before paid APIs
+
+- **Decision:** Use an authorized manual CSV/API import as the current discovery provider. Run normalized URL, SSRF-safe DNS/HTTP/HTML/identity preflight, domain deduplication and human review before audit or outreach. Keep the provider interface replaceable for a later compliant Google Places or SerpAPI adapter.
+- **Context:** The previous validation cohort had materially low completion because many supplied domains were DNS/network/HTTP failures. Buying discovery volume before proving active-site quality would add cost without proving a better sales funnel.
+- **Alternatives considered:** Add Google Places immediately (deferred: quota, retention and cost need evidence); scrape protected directories (rejected: terms/compliance risk); keep accepting arbitrary URLs (rejected: conflates source failure with audit failure).
+- **Reason:** Prove the zero-cost funnel first: 100 candidates → 30 valid audits → 10 conversations → first customer. This is an internal operating target, not a forecast or achieved metric.
+- **Consequence:** `/admin/prospecting` and `/api/admin/prospecting` provide import, preflight, persisted states and human review. Only `PASSED` candidates can advance toward audit/review, and `APPROVED_FOR_OUTREACH` requires `REVIEWED`. No automatic outbound is enabled.
+- **Revisit trigger:** Manual validation shows provider discovery, rather than preflight or sales review, is the limiting factor and expected qualified-pipeline value justifies API cost.

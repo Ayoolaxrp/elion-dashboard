@@ -94,10 +94,23 @@ setup, versus Growth System ₦350k + ₦1.2m/yr Care with local delivery).
 - CAC / payback: to be measured from the validation harness + CRM data.
   **Not estimated on paper. Measured or left blank.**
 
-## 6. Financial Operating Dashboard (specified, lean)
+## 6. Validation and financial operating dashboard (specified, lean)
 
-Track (in admin analytics as data accumulates; do not build decorative charts
-without data):
+Pre-PMF operating model: founder + one core operator/salesperson + bounded AI workflows + targeted contractors. Do not expand headcount or lower pricing because the system feels busy; first measure repeated paying clients, repeated problems sold, healthy margins, Care retention, delivery time, referrals and objection patterns.
+
+The current machine validation result is a reliability signal, not a sales
+claim: the latest 30-site run completed 9/30 because 21 inputs were
+DNS/network/HTTP-blocked. The cohort must be rebuilt with independently
+verified active Nigerian websites before completion-rate or opportunity-quality
+benchmarks are used commercially. Human fields remain blank until real
+conversations occur.
+
+Rejection reasons are standardized as: no budget, price too high, no urgency,
+already solved, wrong problem, wrong decision maker, no trust, recurring fee
+objection, n8n/vendor-cost objection, timing, not interested, other.
+
+Track in admin analytics as data accumulates; do not build decorative charts
+without data:
 
 - ACQUISITION: prospects, audits run, qualified leads, conversations, calls
 - SALES: proposals, win rate, avg implementation price, sales cycle
@@ -107,7 +120,33 @@ without data):
 - DELIVERY: implementation hours, time-to-live, support hours/client, incidents
 - RETENTION: active clients, churn, expansions, downgrades
 
-## 7. Tax / Accounting (requires professional confirmation)
+## 7. Product catalogue commercial contract
+
+The deploy catalogue in `src/lib/products.ts` now pairs each product configuration schema with a commercial contract: customer problem, ideal customer, implementation scope, setup/Care prices, provider-cost assumptions, usage model, margin basis, provisioning checklist, client requirements and entitlement rule. The catalog is not a promise that every product is currently live; `activation_status` remains explicit and required infrastructure is checked separately.
+
+Current commercial rule: provider and usage costs are not unlimited inside Care. Client-owned production vendor accounts remain client costs by default; ELION-paid infrastructure must be represented in the quote and vendor-cost register. Bespoke industry-specific software or dashboards are separately scoped as Custom Business System work.
+
+## 8. Provider-neutral prospecting economics
+
+Early discovery deliberately uses manual/CSV/API import at zero provider cost. `/admin/prospecting` performs source attribution, domain deduplication, DNS/SSRF-safe preflight, HTML and basic business-identity checks before candidates can be treated as audit-ready. The target operating funnel is an internal goal: 100 imported candidates → 30 valid audits → 10 founder-led conversations → first customer. It is not a forecast or an achieved result.
+
+Paid Google Places, SerpAPI and enterprise lead sources are deferred until the zero-cost process demonstrates that the added provider cost improves qualified pipeline quality. Record provider fees, quota/budget limits and retained fields before enabling one.
+
+## 9. Client portal and custom-system boundary
+
+The standard delivery includes one reusable client portal for implementation status, automations, health, measured activity, vendor/access requests, documents, invoices and Care/support. It does not expose ELION margins, internal CRM notes, other clients or raw credentials. An industry-specific operational application or bespoke dashboard is a separate **Custom Business System** opportunity and must be separately scoped and margin-checked; it is not included in Recovery Sprint, Growth System or Scale System by implication.
+
+Verified Kora payment is the gate for paid onboarding. Payment redirects alone never create access. Client organization/membership activation must remain idempotent on provider replay and tenant-scoped.
+
+## 10. Commercial reality gate
+
+The current catalogue and audit-to-sales foundations are sufficient for a controlled founder-led pilot; they are not evidence of market domination, customer outcomes or product-market fit. The next milestone is one Nigerian business acquired, paid, onboarded, deployed and measured.
+
+The first reference offer remains Lead Response, followed by Follow-Up and Booking only when a customer's confirmed workflow requires them. AI Receptionist, broad AI Sales Agent behavior, Customer Support AI and bespoke Business Automation Systems remain scoped products, not promises of autonomous capability. Every proposal still requires a direct-cost estimate and margin check before acceptance.
+
+The provider-neutral discovery path is intentionally zero-cost: an authorized operator imports a CSV/API batch, the system normalizes and deduplicates domains, performs SSRF-safe DNS/HTTP/HTML/identity preflight, and holds candidates in a human-review queue. The internal target is 100 candidates → 30 valid audits → 10 conversations → first customer; none of those numbers is an achieved result. Google Places, SerpAPI, automatic outbound and broad SEO landing-page expansion are deferred until this manual process demonstrates repeatable quality and commercial value.
+
+The standard client experience is the existing reusable multi-tenant portal. A bespoke industry dashboard or application is separately scoped as Custom Business System work and is not included by implication in a standard package. Client-owned production n8n and vendor accounts remain the default; ELION internal infrastructure costs must be recorded separately from client-direct costs.
 
 Accounting/reporting must distinguish: cash collected vs revenue; VAT where
 applicable; client pass-through funds; third-party costs; MRR; receivables;

@@ -72,6 +72,15 @@ After required payment, use the client-owned n8n runbook. Record client ownershi
 
 Included: monitoring, defect repair, routine tuning and agreed minor configuration. Separately quote new workflows, new integrations, major scope expansion and new features. Track support hours and classify each request before work begins.
 
+## First validation queue
+
+Do not confuse discovered domains with qualified prospects. A candidate must have an active public website, source/retrieval metadata, a completed audit, useful evidence, confidence and a permission state that does not block the proposed channel. Dead/DNS/timeout/HTTP-blocked inputs are validation failures to classify, not commercial findings.
+
+
+The first queue is founder-reviewed, not automated outreach. A prospect may enter only when its website is active, the audit completed, evidence is useful, and the proposed discovery question is relevant. For each queued prospect record the strongest observation, evidence URL, confidence, unknowns, first question, candidate solution, exact permitted channel, priority and reason. Leave contacted, replied, decision-maker reached, problem confirmed, call, proposal, sale, rejection reason and amount collected empty until the real interaction occurs.
+
+Standard rejection reasons: no budget, price too high, no urgency, already solved, wrong problem, wrong decision maker, no trust, recurring fee objection, n8n/vendor-cost objection, timing, not interested, other.
+
 ## Never claim
 
 Do not claim a business has no CRM because it was not detected. Do not claim a revenue leak without business data and a documented calculation. Do not present modeled figures as observed. Do not claim consent from a public contact. Do not fabricate outcomes, testimonials or case studies.

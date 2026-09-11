@@ -11,7 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
-import { getKoraProvider } from "@/lib/payments/kora";
+import { comparePaymentAmount, getKoraProvider } from "@/lib/payments/kora";
 import { unlockAfterPayment } from "@/lib/payments/unlock";
 
 const data = () =>
@@ -78,15 +78,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ verified: false, status: txn.status, paymentId });
   }
 
-  // A successful status with the wrong amount is not a successful ELION
-  // payment. Keep it pending for manual reconciliation; never unlock.
-  const expectedAmount = Number(payment.amount) || 0;
-  if (Math.abs(txn.amountNaira - expectedAmount) > 0.01) {
+  const amountState = comparePaymentAmount(Number(payment.amount), "NGN", txn);
+  if (amountState !== "exact") {
     await sb
       .from("payments")
-      .update({ provider_status: txn.amountNaira < expectedAmount ? "underpaid" : "overpaid", status: "pending" })
+      .update({ provider_status: amountState, status: "pending", verification_source: "kora_api_amount_mismatch" })
       .eq("id", paymentId);
-    return NextResponse.json({ verified: false, status: "amount_mismatch", paymentId });
+    return NextResponse.json({ verified: false, status: amountState, paymentId });
   }
 
   // Confirmed success: record verification, then unlock entitlements.

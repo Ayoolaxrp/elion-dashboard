@@ -6,6 +6,7 @@ import { AdminSidebar } from "@/components/admin/sidebar";
 import { Rocket, AlertTriangle, CircleDollarSign, ExternalLink } from "lucide-react";
 import {
   PRODUCT_CATALOG, PRODUCT_CATEGORY_LABELS,
+  getProductCommercialMetadata,
   fmtNgn, ProductCategory, ProductDefinition,
 } from "@/lib/products";
 
@@ -66,6 +67,7 @@ export default function AdminCatalogPage() {
 function ProductCard({ p }: { p: ProductDefinition }) {
   const [open, setOpen] = useState(false);
   const infraRequired = p.infrastructure.items.filter((i) => i.required);
+  const commercial = getProductCommercialMetadata(p.id);
   const configCount = p.config_groups.reduce((s, g) => s + g.fields.length, 0);
   const requiredConfig = p.config_groups.reduce((s, g) => s + g.fields.filter((f) => f.required).length, 0);
 
@@ -106,7 +108,13 @@ function ProductCard({ p }: { p: ProductDefinition }) {
 
       {open && (
         <div className="border-t border-[var(--color-border)]/40 px-5 py-4 space-y-4">
+          {commercial && <div className="grid gap-3 rounded-lg border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 p-3 sm:grid-cols-2">
+            <div><p className="text-[10px] uppercase tracking-wide text-[var(--color-text-muted)]">Problem / ideal customer</p><p className="mt-1 text-xs text-[var(--color-text-secondary)]">{commercial.customer_problem}</p><p className="mt-1 text-[10px] text-[var(--color-text-muted)]">{commercial.ideal_customer}</p></div>
+            <div><p className="text-[10px] uppercase tracking-wide text-[var(--color-text-muted)]">Commercial contract</p><p className="mt-1 text-xs text-[var(--color-text-secondary)]">Setup {fmtNgn(commercial.setup_price_ngn)} · Care {fmtNgn(commercial.monthly_care_price_ngn)}/mo</p><p className="mt-1 text-[10px] text-[var(--color-text-muted)]">{commercial.activation_status} · {commercial.entitlement_rule}</p></div>
+          </div>}
           <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{p.description}</p>
+
+          {commercial && <div><p className="text-[10px] uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-1.5">Provisioning checklist</p><p className="text-xs text-[var(--color-text-secondary)]">{commercial.provisioning_checklist.join(" · ")}</p><p className="mt-2 text-[10px] text-[var(--color-text-muted)]">Third-party estimate: {commercial.third_party_cost_estimate}</p></div>}
 
           {p.infrastructure.items.length > 0 && (
             <div>

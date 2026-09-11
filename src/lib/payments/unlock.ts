@@ -19,9 +19,10 @@ const PRE_PAID_LEAD_STAGES = ["new", "audited", "contacted", "qualified", "propo
 export async function unlockAfterPayment(
   sb: SupabaseClient,
   payment: ConfirmedPayment
-): Promise<{ invoiceUpdated: boolean; leadUpdated: boolean }> {
+): Promise<{ invoiceUpdated: boolean; leadUpdated: boolean; organizationActivated: boolean }> {
   let invoiceUpdated = false;
   let leadUpdated = false;
+  let organizationActivated = false;
 
   if (payment.invoice_id) {
     // Only flip invoices that are still unpaid; never downgrade an already-paid invoice.
@@ -46,5 +47,31 @@ export async function unlockAfterPayment(
     if (!error && data && data.length > 0) leadUpdated = true;
   }
 
-  return { invoiceUpdated, leadUpdated };
+  if (payment.client_id) {
+    // The client organization is the portal boundary. Upsert is safe on
+    // webhook/API retries because organizations.client_id is unique. This
+    // activates the portal scope but does not create an auth user or
+    // silently grant membership; invitation/account setup remains explicit.
+    const { error: orgError } = await sb.from("organizations").upsert(
+      {
+        name: "ELION client " + payment.client_id,
+        slug: "client-" + payment.client_id.replace(/[^a-zA-Z0-9-]/g, "-").slice(0, 80),
+        org_type: "client",
+        client_id: payment.client_id,
+        status: "active",
+      },
+      { onConflict: "client_id" }
+    );
+    if (!orgError) organizationActivated = true;
+
+    // Move only pre-onboarding clients forward. Never overwrite a live,
+    // completed, suspended or manually managed lifecycle state.
+    await sb
+      .from("clients")
+      .update({ onboarding_status: "building" })
+      .eq("id", payment.client_id)
+      .eq("onboarding_status", "pending");
+  }
+
+  return { invoiceUpdated, leadUpdated, organizationActivated };
 }

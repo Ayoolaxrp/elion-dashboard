@@ -1,26 +1,10 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { getClientSession } from "@/lib/auth/client";
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const sb = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
-  );
-
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  // Find client record
-  const { data: client } = await sb
-    .from("clients")
-    .select("id, contact_name, email, company_name")
-    .or(`auth_user_id.eq.${user.id},email.eq.${user.email}`)
-    .single();
-
-  if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
+  const session = await getClientSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { db: sb, client } = session;
 
   // Get all documents for this client
   const { data: documents, error } = await sb
@@ -34,7 +18,7 @@ export async function GET() {
   // Ensure all 6 doc types exist (create not_started placeholders if missing)
   const docTypes = ["proposal", "contract", "invoice", "welcome", "portal", "thankyou"];
   const fullDocuments = docTypes.map(type => {
-    const doc = documents?.find(d => d.doc_type === type);
+    const doc = documents?.find((d: { doc_type?: string }) => d.doc_type === type);
     return {
       type,
       status: doc?.status || "not_started",
@@ -57,28 +41,13 @@ export async function GET() {
 
 // PATCH - mark a document as viewed
 export async function PATCH(request: Request) {
-  const cookieStore = await cookies();
-  const sb = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
-  );
-
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const session = await getClientSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { db: sb, client } = session;
 
   const body = await request.json();
   const { doc_type } = body;
   if (!doc_type) return NextResponse.json({ error: "doc_type required" }, { status: 400 });
-
-  // Find client record
-  const { data: client } = await sb
-    .from("clients")
-    .select("id")
-    .or(`auth_user_id.eq.${user.id},email.eq.${user.email}`)
-    .single();
-
-  if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
 
   // Mark as viewed
   const { error } = await sb

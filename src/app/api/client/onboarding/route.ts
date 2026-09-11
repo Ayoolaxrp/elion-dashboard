@@ -1,26 +1,10 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { getClientSession } from "@/lib/auth/client";
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const sb = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} } }
-  );
-
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  // Find client record by auth_user_id or email
-  const { data: client } = await sb
-    .from("clients")
-    .select("id, contact_name, email, company_name, onboarding_status")
-    .or("auth_user_id.eq." + user.id + ",email.eq." + user.email)
-    .single();
-
-  if (!client) return NextResponse.json({ error: "Client not found" }, { status: 404 });
+  const session = await getClientSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { db: sb, client } = session;
 
   // Get pipeline
   const { data: pipeline } = await sb

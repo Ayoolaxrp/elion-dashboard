@@ -8,7 +8,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { getKoraProvider } from "@/lib/payments/kora";
+import { comparePaymentAmount, getKoraProvider } from "@/lib/payments/kora";
 import { unlockAfterPayment } from "@/lib/payments/unlock";
 
 const data = () =>
@@ -102,16 +102,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, status: txn.status });
   }
 
-  // A signed success with an under/overpaid amount remains pending for
-  // reconciliation; it must not unlock onboarding.
-  if (paymentId && existing) {
-    const expectedAmount = Number((existing as { amount?: number }).amount) || 0;
-    if (Math.abs(txn.amountNaira - expectedAmount) > 0.01) {
+  if (existing) {
+    const amountState = comparePaymentAmount(Number(existing.amount), "NGN", txn);
+    if (amountState !== "exact") {
       await sb
         .from("payments")
-        .update({ provider_status: txn.amountNaira < expectedAmount ? "underpaid" : "overpaid", status: "pending" })
-        .eq("id", paymentId);
-      return NextResponse.json({ ok: true, status: "amount_mismatch" });
+        .update({ provider_status: amountState, status: "pending", verification_source: "kora_webhook_amount_mismatch" })
+        .eq("id", existing.id);
+      return NextResponse.json({ ok: true, status: amountState });
     }
   }
 

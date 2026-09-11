@@ -116,9 +116,11 @@ function next2() {
   }
 
   // ── 3b. payment amount comparison ──
-  check("exact payment amount matches", kora.comparePaymentAmount(150000, 150000) === "match", "");
-  check("underpayment is distinct", kora.comparePaymentAmount(150000, 149999) === "underpaid", "");
-  check("overpayment is distinct", kora.comparePaymentAmount(150000, 150001) === "overpaid", "");
+  const exact = { status: "success", reference: "r", amountNaira: 150000, currency: "NGN" };
+  check("exact payment amount matches", kora.comparePaymentAmount(150000, "NGN", exact) === "exact", "");
+  check("underpayment is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, amountNaira: 149999 }) === "underpaid", "");
+  check("overpayment is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, amountNaira: 150001 }) === "overpaid", "");
+  check("currency mismatch is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, currency: "USD" }) === "currency_mismatch", "");
 
   // ── 4. entitlement unlock (fake Supabase client) ──
   {

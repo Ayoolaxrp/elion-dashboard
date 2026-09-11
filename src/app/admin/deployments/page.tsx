@@ -47,6 +47,10 @@ interface VendorCost {
 const inputCls = "px-3 py-2 rounded-lg bg-[#0A0D14] border border-[#1F2937] text-white text-sm placeholder:text-[#4B5563]";
 const LABEL = "text-[10px] font-semibold uppercase tracking-wider text-[#7C8494] block mb-1";
 
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 export default function DeploymentsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [clientId, setClientId] = useState("");
@@ -83,7 +87,7 @@ export default function DeploymentsPage() {
         setVendorCosts(d.vendorCosts || []);
         setRegister(d.register || null);
       })
-      .catch((e: any) => setError(e.message || "Failed to load"))
+      .catch((e: unknown) => setError(errorMessage(e) || "Failed to load"))
       .finally(() => setLoading(false));
   };
 
@@ -98,8 +102,8 @@ export default function DeploymentsPage() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || "Estimate failed");
       setEstResult(d);
-    } catch (e: any) {
-      setMsg("Estimate error: " + e.message);
+    } catch (e: unknown) {
+      setMsg("Estimate error: " + errorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -117,8 +121,8 @@ export default function DeploymentsPage() {
       if (!r.ok) throw new Error(d.error || "Update failed");
       setMsg("Deployment updated.");
       load(clientId);
-    } catch (e: any) {
-      setMsg("Update error: " + e.message);
+    } catch (e: unknown) {
+      setMsg("Update error: " + errorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -148,8 +152,8 @@ export default function DeploymentsPage() {
       if (!r.ok) throw new Error(d.error || "Save failed");
       setVf({ vendor: "", service: "", purpose: "", billing_owner: "client", currency: "NGN", fixed_fee: "", included_allowance: "", variable_basis: "" });
       load(clientId);
-    } catch (e: any) {
-      setMsg("Vendor error: " + e.message);
+    } catch (e: unknown) {
+      setMsg("Vendor error: " + errorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -165,8 +169,8 @@ export default function DeploymentsPage() {
       });
       if (!r.ok) throw new Error("Delete failed");
       load(clientId);
-    } catch (e: any) {
-      setMsg("Delete error: " + e.message);
+    } catch (e: unknown) {
+      setMsg("Delete error: " + errorMessage(e));
     } finally {
       setBusy(false);
     }
