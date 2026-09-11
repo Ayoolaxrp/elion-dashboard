@@ -9,6 +9,15 @@ interface WhatsAppMsg { id: string; message: string; status: string; timestamp: 
 interface DemoLead { id: string; name: string; email: string; source: string; score: number; timestamp: string; }
 interface DemoBooking { id: string; client: string; date: string; time: string; type: string; status: string; }
 
+const REFERENCE_BUSINESS = {
+  name: "Lekki Prime Realty",
+  location: "Lekki Phase 1, Lagos",
+  hours: "Mon–Sat, 9:00–18:00 WAT",
+  listings: ["3-bedroom apartment · ₦85m", "4-bedroom terrace · ₦120m", "Lekki Phase 1 land · ₦45m"],
+  faqs: ["Viewing fee: none", "Payment plans: confirmed during agent handoff", "Viewings: scheduled with a property consultant"],
+  qualification: ["Preferred area", "Property type", "Budget", "Move/purchase timeline"],
+};
+
 const SPRING = { type: "spring" as const, damping: 28, stiffness: 280, mass: 0.7 };
 
 export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: string }) {
@@ -31,11 +40,11 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
     setLoadingText("Simulating incoming lead...");
 
     const steps = [
-      { step: 1, action: "Lead Detected", detail: "New enquiry from Instagram Ad", status: "running" },
+      { step: 1, action: "Lead Detected", detail: "Sample website enquiry received", status: "running" },
       { step: 2, action: "Lead Qualified", detail: "Score: 87/100, high intent", status: "pending" },
       { step: 3, action: "Email Sent", detail: "Welcome email with property matches", status: "pending" },
       { step: 4, action: "WhatsApp Sent", detail: "Personalized greeting sent", status: "pending" },
-      { step: 5, action: "CRM Updated", detail: "Lead record created in pipeline", status: "pending" },
+      { step: 5, action: "CRM Record", detail: "Sample lead saved with qualification", status: "pending" },
       { step: 6, action: "Booking Created", detail: "Viewing scheduled for tomorrow", status: "pending" },
       { step: 7, action: "Follow-Up Scheduled", detail: "7-day follow-up sequence activated", status: "pending" },
     ];
@@ -45,7 +54,7 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
     setLoadingText("Classifying lead...");
     setDemoSteps([{ ...steps[0], status: "running" }]);
     await new Promise(r => setTimeout(r, 800));
-    setLeads([{ id: "lead_1", name: "Chioma Okafor", email: "chioma@premierrealty.com", source: "Instagram Ad", score: 0, timestamp: "Just now" }]);
+    setLeads([{ id: "lead_1", name: "Chioma Okafor", email: "chioma@example.test", source: "Website enquiry", score: 0, timestamp: "Just now" }]);
     setDemoSteps([{ ...steps[0], status: "completed" }]);
     setLoadingText("");
 
@@ -53,21 +62,21 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
     await new Promise(r => setTimeout(r, 500));
     setDemoSteps([{ ...steps[0], status: "completed" }, { ...steps[1], status: "running" }]);
     await new Promise(r => setTimeout(r, 800));
-    setLeads([{ id: "lead_1", name: "Chioma Okafor", email: "chioma@premierrealty.com", source: "Instagram Ad", score: 87, timestamp: "Just now" }]);
+    setLeads([{ id: "lead_1", name: "Chioma Okafor", email: "chioma@example.test", source: "Website enquiry", score: 87, timestamp: "Just now" }]);
     setDemoSteps([{ ...steps[0], status: "completed" }, { ...steps[1], status: "completed" }]);
 
     // Step 3
     await new Promise(r => setTimeout(r, 500));
     setDemoSteps([...steps.slice(0, 2).map(s => ({ ...s, status: "completed" })), { ...steps[2], status: "running" }]);
     await new Promise(r => setTimeout(r, 800));
-    setEmails([{ id: "email_1", to: "chioma@premierrealty.com", subject: "Welcome to Premier Realty", body: "Hi Chioma, thank you for your interest. Based on your enquiry about 3-bedroom flats in Lekki, I have selected options that match your criteria.", timestamp: "Just now" }]);
+    setEmails([{ id: "email_1", to: "chioma@example.test", subject: "Welcome to Lekki Prime Realty", body: "Hi Chioma, thank you for your interest. Based on your enquiry about a 3-bedroom flat in Lekki, I have selected sample options that match your criteria.", timestamp: "Just now" }]);
     setDemoSteps([...steps.slice(0, 3).map(s => ({ ...s, status: "completed" }))]);
 
     // Step 4
     await new Promise(r => setTimeout(r, 500));
     setDemoSteps([...steps.slice(0, 3).map(s => ({ ...s, status: "completed" })), { ...steps[3], status: "running" }]);
     await new Promise(r => setTimeout(r, 800));
-    setWhatsapps([{ id: "wa_1", message: "Hi Chioma! Thanks for reaching out. I see you are looking for a 3-bedroom in Lekki. I have 3 options that match your budget. Can we schedule a quick call?", status: "delivered", timestamp: "Just now" }]);
+    setWhatsapps([{ id: "wa_1", message: "Hi Chioma! Thanks for reaching out to Lekki Prime Realty. I see you are looking for a 3-bedroom in Lekki. I have sample options that match your budget. Can we schedule a quick call with a property consultant?", status: "simulated", timestamp: "Just now" }]);
     setDemoSteps([...steps.slice(0, 4).map(s => ({ ...s, status: "completed" }))]);
 
     // Step 5
@@ -116,6 +125,27 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
         <p className="text-xs text-[var(--color-warning)] mt-1">
           Simulated demonstration using sample data. No real messages are sent. No real leads are processed.
         </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-6">
+        <div className="lg:col-span-1 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Reference business · sample</p>
+          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mt-1">{REFERENCE_BUSINESS.name}</h3>
+          <p className="text-xs text-[var(--color-text-muted)] mt-1">{REFERENCE_BUSINESS.location} · {REFERENCE_BUSINESS.hours}</p>
+          <p className="text-xs font-semibold text-[var(--color-text-secondary)] mt-3 mb-1">Knowledge base / listings</p>
+          <ul className="space-y-1">{REFERENCE_BUSINESS.listings.map((item) => <li key={item} className="text-xs text-[var(--color-text-muted)]">{item}</li>)}</ul>
+        </div>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">FAQs</p>
+          <ul className="space-y-1.5 mt-2">{REFERENCE_BUSINESS.faqs.map((item) => <li key={item} className="text-xs text-[var(--color-text-muted)]">{item}</li>)}</ul>
+          <p className="text-xs font-semibold text-[var(--color-text-secondary)] mt-3 mb-1">Qualification flow</p>
+          <p className="text-xs text-[var(--color-text-muted)]">{REFERENCE_BUSINESS.qualification.join(" → ")}</p>
+        </div>
+        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">Demo handoff</p>
+          <p className="text-sm font-semibold text-[var(--color-text-primary)] mt-1">Enquiry → CRM → follow-up → viewing</p>
+          <p className="text-xs text-[var(--color-text-muted)] mt-2">A sample lead is qualified from the configured knowledge base, recorded for the sales team, and handed to a human for the property viewing.</p>
+        </div>
       </div>
 
       {/* Header */}

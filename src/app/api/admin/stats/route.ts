@@ -5,7 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET() {
   // Auth check: real session cookies so getUser() sees the login.
   const cookieStore = await cookies();
   const authClient = createServerClient(
@@ -37,6 +37,21 @@ export async function GET(request: Request) {
   const { count: totalLeadsCount } = await supabase
     .from("leads")
     .select("id", { count: "exact", head: true });
+
+  // Founder validation funnel. These are operational counts, not forecasts:
+  // reviewed businesses have an audit attempt, qualified opportunities are
+  // leads that reached a commercial stage, conversations are distinct leads
+  // with a recorded conversation event, and won customers are active/completed
+  // client records.
+  const [reviewedBusinessesRes, completedAuditsRes, qualifiedOpportunitiesRes, conversationEventsRes, proposalsSentRes, customersWonRes] = await Promise.all([
+    supabase.from("leads").select("id", { count: "exact", head: true }).in("audit_status", ["completed", "failed"]),
+    supabase.from("audits").select("id", { count: "exact", head: true }).eq("status", "completed"),
+    supabase.from("leads").select("id", { count: "exact", head: true }).in("lead_status", ["qualified", "opportunity", "proposal", "payment_pending", "paid", "implementation", "completed"]),
+    supabase.from("activity_log").select("lead_id, event_type").in("event_type", ["conversation_started", "sales_conversation", "call_booked", "meeting_booked"]),
+    supabase.from("proposals").select("id", { count: "exact", head: true }).in("status", ["sent", "viewed", "accepted"]),
+    supabase.from("clients").select("id", { count: "exact", head: true }).in("status", ["active", "completed"]),
+  ]);
+  const conversationLeadIds = new Set((conversationEventsRes.data || []).map((event) => event.lead_id).filter(Boolean));
 
   // Lead status breakdown
   const { data: statusBreakdown } = await supabase
@@ -103,5 +118,13 @@ export async function GET(request: Request) {
     totalRevenue,
     mrr,
     conversionRate: totalLeadsCount && clientsRes.count ? Math.round((clientsRes.count / totalLeadsCount) * 100) : 0,
+    validationMetrics: {
+      businessesReviewed: reviewedBusinessesRes.count || 0,
+      auditsCompleted: completedAuditsRes.count || 0,
+      qualifiedOpportunities: qualifiedOpportunitiesRes.count || 0,
+      conversationsStarted: conversationLeadIds.size,
+      proposalsSent: proposalsSentRes.count || 0,
+      customersWon: customersWonRes.count || 0,
+    },
   });
 }

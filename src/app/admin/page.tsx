@@ -13,6 +13,14 @@ interface StatsData {
   totalClients: number; activeClients: number; totalLeads: number; todayLeads: number;
   totalAutomations: number; activeAutomations: number; totalRevenue: number; mrr: number;
   conversionRate: number;
+  validationMetrics: {
+    businessesReviewed: number;
+    auditsCompleted: number;
+    qualifiedOpportunities: number;
+    conversationsStarted: number;
+    proposalsSent: number;
+    customersWon: number;
+  };
   recentLeads: Array<{ id: string; name: string; email: string; company: string; status: string; created_at: string }>;
 }
 interface Notif { id: string; type: string; title: string; message: string; is_read: boolean; created_at: string; clients?: { company_name?: string; contact_name?: string } | null }
@@ -142,6 +150,32 @@ export default function AdminDashboard() {
               </Link>
             ))}
           </div>
+
+          {/* Founder validation funnel */}
+          <section className="mb-8" aria-labelledby="validation-funnel-heading">
+            <div className="flex items-end justify-between mb-3">
+              <div>
+                <h2 id="validation-funnel-heading" className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Founder validation funnel</h2>
+                <p className="text-xs text-[var(--color-text-muted)] mt-1">Recorded operational activity only; no forecast or owner-confirmed result is inferred.</p>
+              </div>
+              <Link href="/admin/leads" className="text-xs text-[var(--color-accent)] hover:underline">Review pipeline</Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+              {[
+                { label: "Businesses reviewed", value: s?.validationMetrics?.businessesReviewed ?? 0, href: "/admin/audits" },
+                { label: "Audits completed", value: s?.validationMetrics?.auditsCompleted ?? 0, href: "/admin/audits" },
+                { label: "Qualified opportunities", value: s?.validationMetrics?.qualifiedOpportunities ?? 0, href: "/admin/leads" },
+                { label: "Conversations started", value: s?.validationMetrics?.conversationsStarted ?? 0, href: "/admin/leads" },
+                { label: "Proposals sent", value: s?.validationMetrics?.proposalsSent ?? 0, href: "/admin/proposals" },
+                { label: "Customers won", value: s?.validationMetrics?.customersWon ?? 0, href: "/admin/clients" },
+              ].map((metric) => (
+                <Link key={metric.label} href={metric.href} className="bg-[var(--color-surface-raised)] rounded-xl p-4 border border-[var(--color-border)] hover:border-[var(--color-accent)]/25 transition-all">
+                  <p className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{metric.value}</p>
+                  <p className="text-[11px] leading-snug text-[var(--color-text-muted)] mt-1">{metric.label}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
             {/* Notification feed */}

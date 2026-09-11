@@ -148,8 +148,17 @@ The provider-neutral discovery path is intentionally zero-cost: an authorized op
 
 The standard client experience is the existing reusable multi-tenant portal. A bespoke industry dashboard or application is separately scoped as Custom Business System work and is not included by implication in a standard package. Client-owned production n8n and vendor accounts remain the default; ELION internal infrastructure costs must be recorded separately from client-direct costs.
 
+## 11. First-customer validation surfaces
+
+The reusable `/demo` surface contains a clearly labelled simulated Lagos real-estate Lead Response scenario. It demonstrates a sample knowledge base/listings, FAQs, qualification flow, CRM capture, follow-up and handoff to a human property consultant. It is not a customer case study and sends no real messages.
+
+The founder dashboard's validation section reads six operational counters from existing records: businesses reviewed (leads with an audit attempt), audits completed, qualified opportunities (commercial lead stages), conversations started (distinct leads with conversation activity), proposals sent (sent/viewed/accepted) and customers won (active/completed clients). These definitions are intentionally conservative and do not infer owner confirmation or commercial success.
+
+## 12. Tax / Accounting (requires professional confirmation)
+
 Accounting/reporting must distinguish: cash collected vs revenue; VAT where
 applicable; client pass-through funds; third-party costs; MRR; receivables;
 refunds. **No tax conclusions are hard-coded into pricing.** Nigeria VAT and
-NDPA obligations to be confirmed with an accountant/adviser before invoicing
-changes. Documented as an open item, not resolved here.
+NDPA obligations are to be confirmed with an accountant/adviser before
+invoicing changes. This remains an open item, not a resolved legal or tax
+conclusion.

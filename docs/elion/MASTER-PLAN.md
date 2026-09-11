@@ -120,4 +120,8 @@ The next gate is operational: import and manually verify 100 active Nigerian pro
 
 The current engineering gate is closed after the provider-neutral prospecting boundary and product-economics contract. The next work is operational: import and manually verify 100 active Nigerian prospects, run 30 valid audits, review evidence, start 10 founder-led conversations and acquire the first paying customer. Do not add paid discovery, automatic outbound, remote rendering, AI receptionist execution or additional product surface until those steps produce evidence.
 
-The market-domination request is therefore treated as a positioning goal, not permission for speculative expansion. ELION will earn differentiation through evidence-led diagnosis, scoped implementation, transparent variable costs, client-owned production infrastructure and measured outcomes—not unverified market-leadership claims.
+## 11. First-customer validation surfaces (2026-09-11)
+
+The existing public `/demo` is now an explicitly labelled simulated Lagos real-estate Lead Response reference scenario: sample knowledge base/listings, FAQs, qualification, CRM capture, follow-up and human viewing handoff. It is demonstration data only and does not create production records or send messages.
+
+The founder dashboard exposes six recorded validation counters through `/api/admin/stats`: businesses reviewed, audits completed, qualified opportunities, conversations started, proposals sent and customers won. These counters are operational records, not owner-confirmed outcomes, revenue claims or forecasts. The next milestone remains one real Nigerian business acquired, paid, onboarded, deployed and measured.
