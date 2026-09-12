@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { AdminSidebar } from "@/components/admin/sidebar";
 import { Rocket, Send, Loader2, CheckCircle2, ChevronRight, UserPlus } from "lucide-react";
 interface Client { id: string; contact_name: string; email: string; company_name: string; plan_name: string; onboarding_status: string; status: string; created_at: string; client_automations: Array<{ id: string; status: string; workflow_templates: { name: string; category: string } }>; client_integrations: Array<{ integration_type: string; status: string }>; }
 const SC: Record<string, string> = { active: "text-green-400 bg-green-400/10", paused: "text-yellow-400 bg-yellow-400/10", churned: "text-red-400 bg-red-400/10", completed: "text-blue-400 bg-blue-400/10" };
@@ -40,9 +41,11 @@ export default function ClientsPage() {
   }, []);
 
   return (
-    <div className="workspace-shell min-h-screen p-5 md:p-8">
+    <div className="workspace-shell">
+      <AdminSidebar />
+      <main className="min-w-0 flex-1 p-5 md:p-8">
       <div className="mx-auto max-w-6xl">
-      <div className="flex items-center justify-between mb-8">
+      <header className="workspace-header mb-8 flex items-end justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Clients</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Manage client accounts, automations, and onboarding.</p>
@@ -51,7 +54,7 @@ export default function ClientsPage() {
           <Link href="/admin/deploy" className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity"><Rocket className="w-4 h-4" /> New Client + Deploy</Link>
           <span className="text-xs text-[var(--color-text-muted)] hidden sm:inline">{clients.length} clients</span>
         </div>
-      </div>
+      </header>
 
       {err && <div className="mb-6 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-sm text-red-400">{err}</div>}
 
@@ -112,6 +115,7 @@ export default function ClientsPage() {
         </div>
       )}
       </div>
+      </main>
     </div>
   );
 }

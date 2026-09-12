@@ -5,6 +5,7 @@ import {
   Clock, CheckCircle, AlertCircle, Loader2, RotateCcw, Zap,
   Play, Pause, ShieldAlert, Cpu, RefreshCw,
 } from "lucide-react";
+import { AdminSidebar } from "@/components/admin/sidebar";
 
 interface LastAttempt {
   action: string;
@@ -121,7 +122,9 @@ export default function ProvisioningPage() {
   };
 
   return (
-    <div className="max-w-6xl p-6">
+    <div className="workspace-shell">
+      <AdminSidebar />
+      <main className="min-w-0 flex-1 p-5 md:p-8"><div className="max-w-6xl">
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
@@ -294,6 +297,7 @@ export default function ProvisioningPage() {
       <p className="mt-4 text-[10px] text-[var(--color-text-muted)]">
         Statuses come from the real provisioning engine. Nothing is marked live unless configuration, credentials and (when required) the n8n workflow all pass. Provisioning is idempotent: retrying never creates duplicates.
       </p>
+      </div></main>
     </div>
   );
 }

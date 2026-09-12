@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { Zap, Loader2, CheckCircle, AlertCircle, Clock, Pause } from "lucide-react";
+import { AdminSidebar } from "@/components/admin/sidebar";
 
 interface Automation {
   id: string;
@@ -14,7 +14,7 @@ interface Automation {
   workflow_templates: { name: string; category: string; version: string } | null;
 }
 
-const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string }> = {
+const STATUS_CONFIG: Record<string, { color: string; icon: typeof CheckCircle; label: string }> = {
   active: { color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20", icon: CheckCircle, label: "Active" },
   provisioning: { color: "text-blue-400 bg-blue-400/10 border-blue-400/20", icon: Clock, label: "Provisioning" },
   testing: { color: "text-purple-400 bg-purple-400/10 border-purple-400/20", icon: Clock, label: "Testing" },
@@ -35,15 +35,20 @@ export default function AutomationsPage() {
   }, []);
 
   if (loading) return (
-    <div className="flex items-center justify-center py-20">
-      <Loader2 className="w-6 h-6 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" />
+    <div className="workspace-shell">
+      <AdminSidebar />
+      <main className="min-w-0 flex-1 p-5 md:p-8"><div className="flex items-center justify-center py-20">
+        <Loader2 className="w-6 h-6 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" />
+      </div></main>
     </div>
   );
 
   const activeCount = automations.filter(a => a.status === "active").length;
 
   return (
-    <div className="max-w-5xl p-6">
+    <div className="workspace-shell">
+      <AdminSidebar />
+      <main className="min-w-0 flex-1 p-5 md:p-8"><div className="max-w-5xl">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Automations</h1>
@@ -87,6 +92,7 @@ export default function AutomationsPage() {
           })}
         </div>
       )}
+      </div></main>
     </div>
   );
 }

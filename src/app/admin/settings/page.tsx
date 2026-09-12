@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { Settings, Save, Loader2, Check, ShieldCheck, KeyRound, Users } from "lucide-react";
+import { AdminSidebar } from "@/components/admin/sidebar";
 
 type Config = {
   company_name: string;
@@ -19,7 +20,9 @@ const labelCls = "block text-xs text-[var(--color-text-muted)] mb-1";
 export default function SettingsPage() {
   const [tab, setTab] = useState<"system" | "admins" | "account">("system");
   return (
-    <div className="max-w-3xl p-6">
+    <div className="workspace-shell">
+      <AdminSidebar />
+      <main className="min-w-0 flex-1 p-5 md:p-8"><div className="max-w-3xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Settings</h1>
@@ -42,6 +45,7 @@ export default function SettingsPage() {
       {tab === "system" && <SystemTab />}
       {tab === "admins" && <AdminsTab />}
       {tab === "account" && <AccountTab />}
+      </div></main>
     </div>
   );
 }

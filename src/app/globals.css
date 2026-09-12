@@ -130,7 +130,8 @@
   .proposal-preview { color: #111827 !important; }
   .proposal-preview .workspace-kicker { color: #374151 !important; }
   .proposal-preview p, .proposal-preview span { color: #374151 !important; }
-  .proposal-preview h2, .proposal-preview strong { color: #111827 !important; }
+  .proposal-preview h2, .proposal-preview h3, .proposal-preview strong { color: #111827 !important; }
+  .proposal-preview .border-\[var\(--color-border\)\] { border-color: #d1d5db !important; }
 }
 
 /* ---- Reduced Motion ---- */
@@ -177,7 +178,70 @@ html.lenis, html.lenis body {
 /* ---- Consolidated workspace language ---- */
 /* Public pages and private workspaces use the same tokens, but private
    surfaces are intentionally quieter: information first, chrome second. */
+.public-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.625rem;
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+  transition: background-color 160ms ease-out, transform 160ms ease-out;
+}
+.public-primary:hover { background: var(--color-accent-hover); }
+.public-primary:active { transform: translateY(1px); }
+.public-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: 0.625rem;
+  color: var(--color-text-secondary);
+  transition: border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out;
+}
+.public-secondary:hover { border-color: var(--color-accent-bright); color: var(--color-text-primary); }
+.public-secondary:active { transform: translateY(1px); }
+.workspace-page {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+.workspace-page main { min-width: 0; }
+.workspace-header { border-bottom: 1px solid color-mix(in srgb, var(--color-border) 72%, transparent); padding-bottom: 1.75rem; }
+.workspace-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out;
+}
+.workspace-action:active { transform: translateY(1px); }
+.workspace-action-primary { background: var(--color-accent); color: #fff; }
+.workspace-action-primary:hover { background: var(--color-accent-hover); }
+.workspace-action-secondary { border: 1px solid var(--color-border); color: var(--color-text-secondary); }
+.workspace-action-secondary:hover { border-color: var(--color-border-light); color: var(--color-text-primary); }
+.workspace-field {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 0.625rem;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  outline: none;
+}
+.workspace-field:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent); }
+@media (prefers-reduced-motion: reduce) {
+  .public-primary, .public-secondary, .workspace-action { transition: none; }
+}
 .workspace-shell {
+  display: flex;
   min-height: 100vh;
   background: var(--color-surface);
   color: var(--color-text-primary);
@@ -209,10 +273,20 @@ html.lenis, html.lenis body {
    without requiring a risky rewrite of each page's data-fetching component. */
 body:has(aside[data-admin-sidebar]) main {
   min-width: 0;
-  padding: clamp(1rem, 2.5vw, 2rem);
+  /* Admin routes own their page padding. The shell only guarantees a safe
+     content width so legacy pages do not receive compounded spacing. */
 }
 body:has(aside[data-admin-sidebar]) main > * {
   min-width: 0;
+}
+
+/* The mobile menu trigger occupies the top-left edge of the viewport. Give
+   every private route a shared top inset so page titles and first actions are
+   never hidden beneath it. Desktop keeps the page-owned spacing. */
+@media (max-width: 1023px) {
+  body:has(aside[data-admin-sidebar]) main {
+    padding-top: 5rem;
+  }
 }
 
 /* Client routes are composed by RootShell. Keep their private workspace

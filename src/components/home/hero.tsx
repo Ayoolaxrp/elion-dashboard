@@ -128,7 +128,6 @@ export function Hero() {
             <div className="animate-hero-in">
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20">
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-node-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)]" />
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[var(--color-accent)]" />
                 </span>
                 <span className="text-xs font-medium text-[var(--color-accent-bright)]">
@@ -140,7 +139,7 @@ export function Hero() {
             <h1 className="animate-hero-slide mt-8 text-[2.75rem] leading-[1.04] sm:text-6xl md:text-7xl font-bold text-[var(--color-text-primary)] tracking-[-0.03em]">
               Find where your business is leaking
               <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)] bg-clip-text text-transparent">
+              <span className="text-[var(--color-accent-bright)]">
                 time, leads, and revenue.
               </span>
             </h1>
@@ -155,14 +154,14 @@ export function Hero() {
             <div className="animate-hero-in mt-9 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4" style={{ animationDelay: "200ms" }}>
               <Link
                 href="/audit"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97] px-7 py-3.5 text-base"
+                className="public-primary group px-7 py-3.5 text-base"
               >
                 Run Your Free Business Audit
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/#how"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97] px-7 py-3.5 text-base"
+                className="public-secondary px-7 py-3.5 text-base"
               >
                 <PlayCircle className="w-4 h-4" />
                 See How It Works
@@ -215,11 +214,7 @@ export function Hero() {
           <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--color-text-muted)]/70">
             Scroll
           </span>
-          <motion.span
-            animate={reduced ? undefined : { y: [0, 6, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="w-px h-8 bg-gradient-to-b from-[var(--color-accent)]/70 to-transparent block"
-          />
+          <span className="w-px h-8 bg-[var(--color-accent)]/60 block" />
         </div>
       </div>
     </section>

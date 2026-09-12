@@ -37,7 +37,7 @@ function PrimaryCta({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97] px-8 py-4 text-base"
+      className="public-primary group px-8 py-4 text-base"
     >
       {children}
       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -49,7 +49,7 @@ function SecondaryCta({ href, children }: { href: string; children: React.ReactN
   return (
     <Link
       href={href}
-      className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97] px-8 py-4 text-base"
+      className="public-secondary px-8 py-4 text-base"
     >
       {children}
     </Link>
@@ -289,7 +289,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
               {!selecting ? (
                 <button
                   onClick={() => setSelecting(true)}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97]"
+                  className="public-primary w-full px-4 py-3 text-sm"
                 >
                   Request this system
                   <ArrowRight className="w-4 h-4" />
@@ -342,7 +342,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
                         }
                       }}
                       disabled={submitting || !name || !email}
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97] disabled:opacity-50"
+                      className="public-primary flex-1 px-4 py-3 text-sm disabled:opacity-50"
                     >
                       {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                       {submitted ? "Sent" : "Send request"}
@@ -379,17 +379,11 @@ export function ProductCatalog() {
       <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-20 px-6">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,124,255,0.08),transparent_55%)]" />
         <div className="relative max-w-4xl mx-auto px-6 text-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 mb-6">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-node-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)]" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[var(--color-accent)]" />
-            </span>
-            AI Employees & Automation Systems
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight">
+          <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-bright)]">AI employees & automation systems</p>
+          <h1 className="text-4xl font-semibold leading-[1.06] tracking-[-0.04em] text-[var(--color-text-primary)] md:text-6xl">
             Each leak gets its own system.
           </h1>
-          <p className="mt-5 text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
             ELION does not sell a generic AI chatbot. It packages proven automation into focused systems — each one built around a specific business problem, priced transparently, and deployed around how you actually operate.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs text-[var(--color-text-muted)]">

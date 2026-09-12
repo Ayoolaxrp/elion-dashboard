@@ -25,15 +25,6 @@ type ContentItem = {
   product_idea?: string | null;
 };
 
-const TEMPLATE_TYPES = [
-    { key: "linkedin", label: "LinkedIn post", fields: ["LinkedIn post", "linkedin"] },
-    { key: "x", label: "X thread", fields: ["X thread", "x_post"] },
-    { key: "blog", label: "Blog article", fields: ["Blog article", "blog"] },
-    { key: "email", label: "Email draft", fields: ["Email draft", "email"] },
-    { key: "script", label: "Video script", fields: ["Video script", "script"] },
-    { key: "product", label: "Product improvement", fields: ["Product improvement", "product_idea"] },
-  ] as const;
-
 export default function ContentStudioPage() {
   const [items, setItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,14 +53,14 @@ export default function ContentStudioPage() {
     void load();
   };
 
-  return <div className="flex min-h-screen bg-[var(--color-surface)]">
+  return <div className="workspace-page">
     <AdminSidebar />
     <main className="flex-1 p-5 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Content Studio</h1>
+        <header className="workspace-header mb-8">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">Content Studio</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Real ELION events → structured drafts → founder approval. Nothing publishes automatically.</p>
-        </div>
+        </header>
         {loading && <Loader2 className="w-6 h-6 animate-spin text-[var(--color-accent)]" />}
         {error && <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-300">{error}. Apply migration <code>034_content_studio.sql</code> before using this queue.</div>}
         {!loading && !error && items.length === 0 && <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-10 text-center"><FileText className="mx-auto mb-3 text-[var(--color-text-muted)]" /><p className="text-sm text-[var(--color-text-muted)]">No content drafts yet.</p></div>}

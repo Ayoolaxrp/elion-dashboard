@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AdminSidebar } from "@/components/admin/sidebar";
-import { ArrowLeft, Wifi, WifiOff, AlertTriangle, CheckCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, Wifi, WifiOff, AlertTriangle, RefreshCw } from "lucide-react";
 import Link from "next/link";
 
 interface Integration {
@@ -127,7 +127,7 @@ export default function IntegrationsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0A0D14]">
+    <div className="workspace-page">
       <AdminSidebar />
       <main className="flex-1 p-6">
         <div className="max-w-6xl mx-auto">
@@ -138,10 +138,12 @@ export default function IntegrationsPage() {
             <ArrowLeft className="w-4 h-4" /> Back to Admin
           </Link>
 
-          <h1 className="text-3xl font-bold mb-2">Integration Health</h1>
-          <p className="text-gray-400 mb-8">
+          <header className="workspace-header mb-8">
+            <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)] mb-2">Integration Health</h1>
+          <p className="text-[var(--color-text-secondary)]">
             Monitor the status of all client integrations.
           </p>
+          </header>
 
           {/* Summary */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
@@ -167,7 +169,7 @@ export default function IntegrationsPage() {
                 color: "text-red-400",
               },
             ].map((s) => (
-              <div key={s.label} className="bg-[#11161F] rounded-xl p-4 border border-gray-800">
+              <div key={s.label} className="bg-[var(--color-surface-raised)] rounded-xl p-4 border border-gray-800">
                 <p className="text-sm text-gray-400">{s.label}</p>
                 <p className={`text-2xl font-bold ${s.color}`}>{s.count}</p>
               </div>
@@ -182,8 +184,8 @@ export default function IntegrationsPage() {
                 onClick={() => setStatusFilter(f)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-all ${
                   statusFilter === f
-                    ? "bg-[#3B66E8] text-white"
-                    : "bg-[#11161F] text-gray-400 hover:text-white"
+                    ? "bg-[var(--color-accent)] text-white"
+                    : "bg-[var(--color-surface-raised)] text-gray-400 hover:text-white"
                 }`}
               >
                 {f.replace("_", " ")}
@@ -192,7 +194,7 @@ export default function IntegrationsPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-[#11161F] rounded-xl border border-gray-800 overflow-hidden overflow-x-auto">
+          <div className="bg-[var(--color-surface-raised)] rounded-xl border border-gray-800 overflow-hidden overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-800">
@@ -206,7 +208,7 @@ export default function IntegrationsPage() {
               </thead>
               <tbody>
                 {filtered.map((int) => (
-                  <tr key={int.id} className="border-b border-gray-800/50 hover:bg-[#161C27]">
+                  <tr key={int.id} className="border-b border-gray-800/50 hover:bg-[var(--color-surface-elevated)]">
                     <td className="p-4 text-sm text-white font-medium">{int.client}</td>
                     <td className="p-4 text-sm text-gray-300">{int.type}</td>
                     <td className="p-4">
@@ -220,7 +222,7 @@ export default function IntegrationsPage() {
                     <td className="p-4 text-sm text-gray-400">{int.lastVerified}</td>
                     <td className="p-4 text-sm text-red-400">{int.error || "-"}</td>
                     <td className="p-4">
-                      <button className="text-sm text-[#3B66E8] hover:text-[#3B66E8] flex items-center gap-1">
+                      <button className="text-sm text-[var(--color-accent)] hover:text-[var(--color-accent)] flex items-center gap-1">
                         <RefreshCw className="w-3 h-3" /> Verify
                       </button>
                     </td>

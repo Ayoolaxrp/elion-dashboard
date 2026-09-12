@@ -6,8 +6,6 @@ import {
   Zap, Printer, ChevronDown, ChevronUp, X, Loader2, Activity,
   Radio, ArrowDown, Settings,
 } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import { Modal, Input, Select } from "@/components/ui";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -149,7 +147,6 @@ const SCAN_PHASES = [
 ];
 
 export default function AuditPage() {
-  const [showForm, setShowForm] = useState(true);
   const [companyName, setCompanyName] = useState("");
   const [industry, setIndustry] = useState("");
   const [website, setWebsite] = useState("");
@@ -162,7 +159,6 @@ export default function AuditPage() {
   const [findings, setFindings] = useState<ScanFinding[]>([]);
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
   const [error, setError] = useState("");
-  const [selectedLeak, setSelectedLeak] = useState<Leak | null>(null);
   const [auditHistory, setAuditHistory] = useState<AuditResult[]>([]);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [requestAutomation, setRequestAutomation] = useState("");
@@ -319,9 +315,23 @@ export default function AuditPage() {
         automationRecommendations: data.automationRecommendations,
       };
 
+      if (result.webResearch) {
+        const wr = result.webResearch;
+        setFindings((prev) => prev.map((f) => {
+          if (f.label === "Website detection") return { ...f, detail: wr.hasWebsite ? `Scored ${wr.websiteScore}/100` : "No website detected", status: wr.hasWebsite ? "found" : "missing" };
+          if (f.label === "Tech stack analysis") return { ...f, detail: wr.websiteTech && wr.websiteTech.length > 0 ? wr.websiteTech.join(", ") : "No specific tech detected", status: wr.websiteTech && wr.websiteTech.length > 0 ? "found" : "warning" };
+          if (f.label === "Platform detection") return { ...f, detail: wr.socialPlatforms.length > 0 ? wr.socialPlatforms.join(", ") : "No social media detected", status: wr.socialPlatforms.length > 0 ? "found" : "missing" };
+          if (f.label === "Business API") return { ...f, detail: wr.hasWhatsApp ? "WhatsApp detected" : "No WhatsApp integration", status: wr.hasWhatsApp ? "found" : "missing" };
+          if (f.label === "Appointment system") return { ...f, detail: wr.hasOnlineBooking ? "Booking system detected" : "No online booking found", status: wr.hasOnlineBooking ? "found" : "missing" };
+          if (f.label === "Customer management") {
+            const tools = [wr.hasCRM ? "CRM" : null, wr.hasEmailMarketing ? "Email" : null, wr.hasLiveChat ? "Live Chat" : null].filter(Boolean);
+            return { ...f, detail: tools.length > 0 ? `Detected: ${tools.join(", ")}` : "No CRM, email, or chat tools found", status: tools.length > 0 ? "found" : "warning" };
+          }
+          return f;
+        }));
+      }
       setAuditResult(result);
       setAuditHistory((prev) => [result, ...prev]);
-      setShowForm(false);
       requestAnimationFrame(() => {
         document.getElementById("results")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
       });
@@ -332,38 +342,6 @@ export default function AuditPage() {
       setIsScanning(false);
     }
   }, [companyName, industry, website, contactName, contactEmail, addFinding]);
-
-  /* ──── Update findings when audit result arrives ──── */
-
-  useEffect(() => {
-    if (auditResult?.webResearch) {
-      const wr = auditResult.webResearch;
-      setFindings((prev) =>
-        prev.map((f) => {
-          if (f.label === "Website detection") {
-            return { ...f, detail: wr.hasWebsite ? `Scored ${wr.websiteScore}/100` : "No website detected", status: wr.hasWebsite ? "found" : "missing" };
-          }
-          if (f.label === "Tech stack analysis") {
-            return { ...f, detail: wr.websiteTech && wr.websiteTech.length > 0 ? wr.websiteTech.join(", ") : "No specific tech detected", status: wr.websiteTech && wr.websiteTech.length > 0 ? "found" : "warning" };
-          }
-          if (f.label === "Platform detection") {
-            return { ...f, detail: wr.socialPlatforms.length > 0 ? wr.socialPlatforms.join(", ") : "No social media detected", status: wr.socialPlatforms.length > 0 ? "found" : "missing" };
-          }
-          if (f.label === "Business API") {
-            return { ...f, detail: wr.hasWhatsApp ? "WhatsApp detected" : "No WhatsApp integration", status: wr.hasWhatsApp ? "found" : "missing" };
-          }
-          if (f.label === "Appointment system") {
-            return { ...f, detail: wr.hasOnlineBooking ? "Booking system detected" : "No online booking found", status: wr.hasOnlineBooking ? "found" : "missing" };
-          }
-          if (f.label === "Customer management") {
-            const tools = [wr.hasCRM ? "CRM" : null, wr.hasEmailMarketing ? "Email" : null, wr.hasLiveChat ? "Live Chat" : null].filter(Boolean);
-            return { ...f, detail: tools.length > 0 ? `Detected: ${tools.join(", ")}` : "No CRM, email, or chat tools found", status: tools.length > 0 ? "found" : "warning" };
-          }
-          return f;
-        }),
-      );
-    }
-  }, [auditResult]);
 
   /* ──── Helpers ──── */
 
@@ -380,7 +358,6 @@ export default function AuditPage() {
     setFindings([]);
     setScanPhase("");
     setScanProgress(0);
-    setShowForm(true);
     setError("");
     requestAnimationFrame(() => {
       document.getElementById("audit")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
@@ -465,7 +442,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
             <h1 className="animate-hero-slide mt-8 text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] leading-[1.04] tracking-[-0.03em]">
               Find what&apos;s leaking
               <br />
-              <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)] bg-clip-text text-transparent">from your business.</span>
+              <span className="text-[var(--color-accent-bright)]">from your business.</span>
             </h1>
 
             <p className="animate-hero-in mt-7 text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed" style={{ animationDelay: "120ms" }}>
@@ -479,7 +456,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                   e.preventDefault();
                   document.getElementById("audit")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
                 }}
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97] px-8 py-4 text-base"
+                className="public-primary group px-8 py-4 text-base"
               >
                 Run Free Audit
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -522,7 +499,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
           <div ref={consoleRef} className="max-w-3xl mx-auto">
             {/* Loading / live-diagnostic panel */}
             {isScanning && (
-              <div className="rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] shadow-2xl shadow-black/40 overflow-hidden">
+              <div className="rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-3.5 border-b border-[var(--color-border)]/50">
                   <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
                     <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--color-accent-bright)]" />
@@ -571,7 +548,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
             {/* Input console */}
             {idle && (
-              <div className="rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] shadow-2xl shadow-black/40 overflow-hidden">
+              <div className="rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-3.5 border-b border-[var(--color-border)]/50">
                   <div className="flex items-center gap-2.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-border-light)]" />
@@ -655,7 +632,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                     <button
                       onClick={runAudit}
                       disabled={isScanning || !companyName.trim()}
-                      className="w-full group inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[var(--color-accent)]/20"
+                      className="public-primary w-full px-6 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isScanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                       {isScanning ? "Scanning..." : "Run Free Audit"}
@@ -670,7 +647,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
 
             {/* ──── Results console ──── */}
             {auditResult && !isScanning && (
-              <div className="rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] shadow-2xl shadow-black/40 overflow-hidden" id="results">
+              <div className="rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] overflow-hidden" id="results">
                 {/* toolbar */}
                 <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-3.5 border-b border-[var(--color-border)]/50">
                   <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
@@ -1038,8 +1015,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                   {auditHistory.slice(1).map((h) => (
                     <button
                       key={h.date + h.companyName}
-                      className="w-full flex items-center justify-between py-3 px-4 rounded-xl border border-[var(--color-border)]/50 hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface)] transition-colors text-left"
-                      onClick={() => { setAuditResult(h); setFindings([]); setShowForm(false); }}
+                      className="w-full flex items-center justify-between py-3 px-4 rounded-xl border border-[var(--color-border)]/50 hover:border-[var(--color-border-light)] hover:bg-[var(--color-surface)] transition-colors text-left"                       onClick={() => { setAuditResult(h); setFindings([]); }}
                     >
                       <div>
                         <p className="text-sm font-medium text-[var(--color-text-primary)]">{h.companyName}</p>

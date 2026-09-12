@@ -44,8 +44,8 @@ interface VendorCost {
   notes: string | null;
 }
 
-const inputCls = "px-3 py-2 rounded-lg bg-[#0A0D14] border border-[#1F2937] text-white text-sm placeholder:text-[#4B5563]";
-const LABEL = "text-[10px] font-semibold uppercase tracking-wider text-[#7C8494] block mb-1";
+const inputCls = "px-3 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-white text-sm placeholder:text-[var(--color-text-muted)]";
+const LABEL = "text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1";
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -177,14 +177,14 @@ export default function DeploymentsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0A0D14]">
+    <div className="workspace-page">
       <AdminSidebar />
       <main className="flex-1 p-4 md:p-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-white">Deployments &amp; Vendor Costs</h1>
-              <p className="text-sm text-[#7C8494] mt-1">Client-owned n8n model · who owns, who pays · never finance infrastructure by accident</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">Deployments &amp; Vendor Costs</h1>
+              <p className="text-sm text-[var(--color-text-muted)] mt-1">Client-owned n8n model · who owns, who pays · never finance infrastructure by accident</p>
             </div>
             <select value={clientId} onChange={(e) => { setClientId(e.target.value); load(e.target.value); }} className={inputCls}>
               <option value="">Select client…</option>
@@ -198,17 +198,17 @@ export default function DeploymentsPage() {
           {msg && <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-300 text-sm">{msg}</div>}
 
           {!clientId ? (
-            <div className="text-center py-20 bg-[#11161F] rounded-xl border border-[#1F2937] text-sm text-[#7C8494]">
+            <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)] text-sm text-[var(--color-text-muted)]">
               Select a client to see deployment ownership and vendor costs.
             </div>
           ) : loading ? (
-            <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 text-[#3B66E8] animate-spin" /></div>
+            <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 text-[var(--color-accent)] animate-spin" /></div>
           ) : (
             <div className="space-y-6">
               {/* n8n execution estimate */}
-              <div className="rounded-xl bg-[#11161F] border border-[#1F2937] p-4">
-                <h3 className="text-sm font-semibold text-white mb-1 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-[#3B66E8]" /> n8n execution estimate</h3>
-                <p className="text-xs text-[#7C8494] mb-3">Estimate demand before choosing a plan — never pick a plan from workflow count.</p>
+              <div className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4">
+                <h3 className="text-sm font-semibold text-white mb-1 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-[var(--color-accent)]" /> n8n execution estimate</h3>
+                <p className="text-xs text-[var(--color-text-muted)] mb-3">Estimate demand before choosing a plan — never pick a plan from workflow count.</p>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                   <div><span className={LABEL}>Schedules/day</span><input type="number" className={inputCls} value={est.scheduledRunsPerDay} onChange={(e) => setEst({ ...est, scheduledRunsPerDay: e.target.value })} /></div>
                   <div><span className={LABEL}>Webhooks/mo</span><input type="number" className={inputCls} value={est.webhookRunsPerMonth} onChange={(e) => setEst({ ...est, webhookRunsPerMonth: e.target.value })} /></div>
@@ -216,13 +216,13 @@ export default function DeploymentsPage() {
                   <div><span className={LABEL}>Background/mo</span><input type="number" className={inputCls} value={est.backgroundRunsPerMonth} onChange={(e) => setEst({ ...est, backgroundRunsPerMonth: e.target.value })} /></div>
                   <div><span className={LABEL}>Retry ×</span><input type="number" step="0.1" className={inputCls} value={est.retryFactor} onChange={(e) => setEst({ ...est, retryFactor: e.target.value })} /></div>
                 </div>
-                <button onClick={runEstimate} disabled={busy} className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3B66E8] text-white text-sm font-semibold disabled:opacity-50">
+                <button onClick={runEstimate} disabled={busy} className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold disabled:opacity-50">
                   {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Estimate
                 </button>
                 {estResult && (
-                  <div className="mt-3 text-xs text-white bg-[#0A0D14] border border-[#1F2937] rounded-lg p-3">
-                    ≈ <span className="font-semibold text-[#3B66E8]">{estResult.estimatedMonthlyExecutions.toLocaleString()}</span> executions/month · plan band signal: <span className="font-semibold">{estResult.planBand}</span>
-                    <ul className="mt-1 text-[#7C8494] space-y-0.5">
+                  <div className="mt-3 text-xs text-white bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-3">
+                    ≈ <span className="font-semibold text-[var(--color-accent)]">{estResult.estimatedMonthlyExecutions.toLocaleString()}</span> executions/month · plan band signal: <span className="font-semibold">{estResult.planBand}</span>
+                    <ul className="mt-1 text-[var(--color-text-muted)] space-y-0.5">
                       {estResult.assumptions.map((a) => <li key={a}>• {a}</li>)}
                     </ul>
                   </div>
@@ -230,14 +230,14 @@ export default function DeploymentsPage() {
               </div>
 
               {/* Deployments */}
-              <div className="rounded-xl bg-[#11161F] border border-[#1F2937] p-4">
-                <h3 className="text-sm font-semibold text-white mb-3">Deployments <span className="text-[#7C8494] font-normal">({deployments.length})</span></h3>
+              <div className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4">
+                <h3 className="text-sm font-semibold text-white mb-3">Deployments <span className="text-[var(--color-text-muted)] font-normal">({deployments.length})</span></h3>
                 {deployments.length === 0 ? (
-                  <p className="text-xs text-[#4B5563]">No automations deployed for this client yet (use Deploy Systems).</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">No automations deployed for this client yet (use Deploy Systems).</p>
                 ) : (
                   <div className="space-y-3">
                     {deployments.map((d) => (
-                      <div key={d.id} className="rounded-lg bg-[#0A0D14] border border-[#1F2937] p-3">
+                      <div key={d.id} className="rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] p-3">
                         <div className="flex flex-wrap items-center gap-2 mb-2">
                           <span className="text-sm font-semibold text-white">{d.custom_name || "Automation"}</span>
                           <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase ${d.status === "live" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>{d.status}</span>
@@ -300,7 +300,7 @@ export default function DeploymentsPage() {
               </div>
 
               {/* Vendor costs */}
-              <div className="rounded-xl bg-[#11161F] border border-[#1F2937] p-4">
+              <div className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4">
                 <h3 className="text-sm font-semibold text-white mb-1">Vendor-cost register</h3>
                 {register && (
                   <div className="flex flex-wrap gap-2 my-2 text-xs">
@@ -314,13 +314,13 @@ export default function DeploymentsPage() {
                 <div className="mt-2 overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="text-left text-[#7C8494] uppercase tracking-wider text-[10px]">
+                      <tr className="text-left text-[var(--color-text-muted)] uppercase tracking-wider text-[10px]">
                         <th className="py-1 pr-2">Vendor</th><th className="py-1 pr-2">Service</th><th className="py-1 pr-2">Owner</th><th className="py-1 pr-2">Fee/mo</th><th className="py-1 pr-2">Allowance</th><th className="py-1 pr-2">Basis</th><th className="py-1 pr-2">Usage</th><th></th>
                       </tr>
                     </thead>
                     <tbody>
                       {vendorCosts.map((v) => (
-                        <tr key={v.id} className="border-t border-[#1F2937]/60 text-white">
+                        <tr key={v.id} className="border-t border-[var(--color-border)]/60 text-white">
                           <td className="py-1.5 pr-2">{v.vendor}</td>
                           <td className="py-1.5 pr-2">{v.service}</td>
                           <td className="py-1.5 pr-2 capitalize">{v.billing_owner}</td>
@@ -332,7 +332,7 @@ export default function DeploymentsPage() {
                         </tr>
                       ))}
                       {vendorCosts.length === 0 && (
-                        <tr><td colSpan={8} className="py-2 text-[#4B5563]">No vendors recorded.</td></tr>
+                        <tr><td colSpan={8} className="py-2 text-[var(--color-text-muted)]">No vendors recorded.</td></tr>
                       )}
                     </tbody>
                   </table>
@@ -347,7 +347,7 @@ export default function DeploymentsPage() {
                   <input type="number" className={inputCls} placeholder="Fixed fee ₦/mo" value={vf.fixed_fee} onChange={(e) => setVf({ ...vf, fixed_fee: e.target.value })} />
                   <input className={inputCls} placeholder="Included allowance" value={vf.included_allowance} onChange={(e) => setVf({ ...vf, included_allowance: e.target.value })} />
                   <input className={inputCls} placeholder="Variable basis" value={vf.variable_basis} onChange={(e) => setVf({ ...vf, variable_basis: e.target.value })} />
-                  <button onClick={addVendor} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#047857] text-white text-sm font-semibold disabled:opacity-50">
+                  <button onClick={addVendor} disabled={busy} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-success)] text-white text-sm font-semibold disabled:opacity-50">
                     {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Add vendor
                   </button>
                 </div>

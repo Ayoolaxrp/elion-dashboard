@@ -4,7 +4,7 @@ import { AdminSidebar } from "@/components/admin/sidebar";
 import Link from "next/link";
 import {
   FileText, Shield, CreditCard, Mail, Settings, Handshake,
-  Send, Eye, CheckCircle, Clock, ArrowLeft, Loader2, ExternalLink, Copy, ChevronDown, ChevronUp
+  Send, Eye, CheckCircle, ArrowLeft, Loader2, ExternalLink, Copy, ChevronDown, ChevronUp
 } from "lucide-react";
 
 const DOC_TYPES = [
@@ -30,7 +30,7 @@ interface ClientPipeline {
   }[];
 }
 
-const pipelines: ClientPipeline[] = [
+const samplePipelines: ClientPipeline[] = [
   {
     id: "client_001",
     company: "ABC Properties",
@@ -93,6 +93,8 @@ const pipelines: ClientPipeline[] = [
   },
 ];
 
+void samplePipelines;
+
 const STATUS_CONFIG: Record<string, { color: string; label: string; bg: string }> = {
   not_started: { color: "text-gray-500", label: "Not Started", bg: "bg-gray-500/10 border border-gray-500/20" },
   draft: { color: "text-amber-400", label: "Draft", bg: "bg-amber-400/10 border border-amber-500/20" },
@@ -104,8 +106,11 @@ const STATUS_CONFIG: Record<string, { color: string; label: string; bg: string }
   completed: { color: "text-emerald-400", label: "Completed", bg: "bg-emerald-400/10 border border-emerald-500/20" },
 };
 
+type PipelineDocument = ClientPipeline["documents"][number];
+type Pipeline = Omit<ClientPipeline, "documents"> & { documents: PipelineDocument[] };
+
 export default function AdminDocumentsPage() {
-  const [pipelines, setPipelines] = useState<any[]>([]);
+  const [pipelines, setPipelines] = useState<Pipeline[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedClient, setExpandedClient] = useState<string | null>(null);
   const [sending, setSending] = useState<string | null>(null);
@@ -135,7 +140,7 @@ export default function AdminDocumentsPage() {
   };
 
   if (loading) return (
-    <div className="flex min-h-screen bg-[var(--color-surface)]">
+    <div className="workspace-page">
       <AdminSidebar />
       <main className="flex-1 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-[var(--color-accent)] animate-spin" />
@@ -144,7 +149,7 @@ export default function AdminDocumentsPage() {
   );
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-surface)]">
+    <div className="workspace-page">
       <AdminSidebar />
       <main className="flex-1 p-6">
         <div className="max-w-6xl mx-auto">
@@ -172,7 +177,7 @@ export default function AdminDocumentsPage() {
               ))}
             </div>
             <p className="text-xs text-[var(--color-text-muted)] mt-3 italic">
-              "Nothing else changes between a $2k project and a $12k project."
+              &quot;Nothing else changes between a $2k project and a $12k project.&quot;
             </p>
           </div>
 
@@ -180,7 +185,7 @@ export default function AdminDocumentsPage() {
           <div className="space-y-4">
             {pipelines.map(client => {
               const isExpanded = expandedClient === client.id;
-              const completedCount = client.documents.filter((d: any) => ["accepted", "signed", "paid", "completed"].includes(d.status)).length;
+              const completedCount = client.documents.filter((d) => ["accepted", "signed", "paid", "completed"].includes(d.status)).length;
               const progress = (completedCount / 6) * 100;
 
               return (
@@ -218,7 +223,7 @@ export default function AdminDocumentsPage() {
                       {/* Pipeline Visual */}
                       <div className="flex items-center gap-1 mb-6 overflow-x-auto pb-2">
                         {DOC_TYPES.map((doc, i) => {
-                          const docData = client.documents.find((d: any) => d.type === doc.key);
+                          const docData = client.documents.find((d) => d.type === doc.key);
                           const isComplete = docData && ["accepted", "signed", "paid", "completed"].includes(docData.status);
                           const isActive = doc.key === client.current_stage;
                           return (
@@ -235,7 +240,7 @@ export default function AdminDocumentsPage() {
                       {/* Document Cards */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {DOC_TYPES.map(doc => {
-                          const docData = client.documents.find((d: any) => d.type === doc.key);
+                          const docData = client.documents.find((d) => d.type === doc.key);
                           const status = docData?.status || "not_started";
                           const sc = STATUS_CONFIG[status];
                           const Icon = doc.icon;

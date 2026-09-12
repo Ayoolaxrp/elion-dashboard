@@ -67,7 +67,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
           <Link
             href="/audit"
             onClick={ctaAction ? (e) => { e.preventDefault(); ctaAction(); setOpen(false); } : undefined}
-            className="px-5 py-2 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-all active:scale-[0.97]"
+            className="public-primary px-5 py-2 text-sm"
           >
             Run Free Audit
           </Link>
@@ -110,7 +110,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
             <Link
               href="/audit"
               onClick={ctaAction ? (e) => { e.preventDefault(); ctaAction(); setOpen(false); } : () => setOpen(false)}
-              className="mt-3 block w-full text-center px-5 py-3 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold"
+              className="public-primary mt-3 block w-full px-5 py-3 text-sm"
             >
               Run Free Audit
             </Link>

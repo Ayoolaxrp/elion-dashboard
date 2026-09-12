@@ -1,17 +1,33 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BarChart3, TrendingUp, Users, Eye, MousePointerClick, ArrowLeft, Loader2 } from "lucide-react";
+import { TrendingUp, ArrowLeft, Loader2 } from "lucide-react";
+import { AdminSidebar } from "@/components/admin/sidebar";
+type FunnelStep = { step: string; count: number };
+type AnalyticsEvent = { event_type?: string; metadata?: Record<string, unknown>; created_at: string };
+type AnalyticsData = {
+  totalEvents?: number;
+  todayEvents?: number;
+  uniqueSessions?: number;
+  eventCounts?: Record<string, number>;
+  funnel?: FunnelStep[];
+  sources?: Record<string, number>;
+  hourlyDist?: Record<string, number>;
+  events?: AnalyticsEvent[];
+};
+
 export default function AnalyticsPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => { fetch("/api/admin/analytics").then((r) => r.json()).then((d) => { setData(d); setLoading(false); }).catch(() => setLoading(false)); }, []);
-  if (loading) return <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" /></div>;
-  if (!data) return <div className="max-w-5xl mx-auto p-6"><p className="text-[var(--color-text-muted)]">Failed to load analytics.</p></div>;
-  const maxFunnel = Math.max(...(data.funnel || []).map((f: any) => f.count), 1);
+  if (loading) return <div className="workspace-shell"><AdminSidebar /><main className="min-w-0 flex-1 p-5 md:p-8"><div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" /></div></main></div>;
+  if (!data) return <div className="workspace-shell"><AdminSidebar /><main className="min-w-0 flex-1 p-5 md:p-8"><div className="max-w-5xl mx-auto p-6"><p className="text-[var(--color-text-muted)]">Failed to load analytics.</p></div></main></div>;
+  const maxFunnel = Math.max(...(data.funnel || []).map((f) => f.count), 1);
   const LABELS: Record<string, string> = { page_view: "Page Views", funnel_started: "Funnel Started", funnel_step_1: "Step 1: Business Type", funnel_step_2: "Step 2: Problem", funnel_step_3: "Step 3: Channels", funnel_step_4: "Step 4: Team Size", funnel_step_5: "Step 5: Website", funnel_completed: "Funnel Completed", audit_submitted: "Audit Submitted", demo_run: "Demo Run", pricing_viewed: "Pricing Viewed" };
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="workspace-shell">
+      <AdminSidebar />
+      <main className="min-w-0 flex-1 p-5 md:p-8"><div className="max-w-5xl mx-auto p-6">
       <div className="flex items-center gap-3 mb-8">
         <Link href="/admin" className="p-2 rounded-lg hover:bg-[var(--color-surface-raised)] transition-colors"><ArrowLeft className="w-5 h-5 text-[var(--color-text-muted)]" /></Link>
         <div><h1 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Analytics</h1><p className="text-sm text-[var(--color-text-muted)]">Conversion tracking and visitor insights</p></div>
@@ -28,7 +44,7 @@ export default function AnalyticsPage() {
           Conversion Funnel
         </h2>
         <div className="space-y-2">
-          {(data.funnel || []).map((step: any) => {
+          {(data.funnel || []).map((step) => {
             const pct = maxFunnel > 0 ? (step.count / maxFunnel) * 100 : 0;
             return (
               <div key={step.step} className="flex items-center gap-3">
@@ -47,10 +63,10 @@ export default function AnalyticsPage() {
           <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Traffic Sources</h2>
           {Object.keys(data.sources || {}).length === 0 ? <p className="text-xs text-[var(--color-text-muted)]">No traffic data yet.</p> : (
             <div className="space-y-2">
-              {Object.entries(data.sources || {}).sort(([, a]: any, [, b]: any) => b - a).map(([source, count]: any) => (
+              {Object.entries(data.sources || {}).sort(([, a], [, b]) => b - a).map(([source, count]) => (
                 <div key={source} className="flex items-center justify-between text-sm">
                   <span className="text-[var(--color-text-secondary)]">{source}</span>
-                  <span className="font-mono text-[var(--color-text-muted)]">{count}</span>
+                  <span className="font-mono text-[var(--color-text-muted)]">{String(count)}</span>
                 </div>
               ))}
             </div>
@@ -81,11 +97,11 @@ export default function AnalyticsPage() {
           <div className="px-5 py-8 text-center"><p className="text-sm text-[var(--color-text-muted)]">No events yet.</p></div>
         ) : (
           <div className="divide-y divide-[var(--color-border)]">
-            {(data.events || []).slice(-20).reverse().map((event: any, i: number) => (
+            {(data.events || []).slice(-20).reverse().map((event, i) => (
               <div key={i} className="px-5 py-3 flex items-center justify-between text-sm">
                 <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ backgroundColor: "rgba(79,124,255,0.1)", color: "var(--color-accent)" }}>{event.event_type}</span>
-                  {event.metadata?.page && <span className="text-xs text-[var(--color-text-muted)]">{String(event.metadata.page)}</span>}
+                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ backgroundColor: "rgba(79,124,255,0.1)", color: "var(--color-accent)" }}>{event.event_type || "event"}</span>
+                  {typeof event.metadata?.page === "string" && <span className="text-xs text-[var(--color-text-muted)]">{event.metadata.page}</span>}
                 </div>
                 <span className="text-xs text-[var(--color-text-muted)]">{new Date(event.created_at).toLocaleString("en-NG", { timeZone: "Africa/Lagos", hour: "2-digit", minute: "2-digit" })}</span>
               </div>
@@ -93,6 +109,7 @@ export default function AnalyticsPage() {
           </div>
         )}
       </div>
+    </div></main>
     </div>
   );
 }
