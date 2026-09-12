@@ -24,6 +24,50 @@ async function requireAdmin() {
 
 const EDITABLE = ["contact_name", "email", "phone", "company_name", "website", "industry", "primary_problem", "lead_status", "audit_status", "source"];
 
+async function addSalesSummary(supabase: ReturnType<typeof getDataClient>, leads: Array<Record<string, any>>) {
+  const ids = leads.map((lead) => lead.id).filter(Boolean);
+  if (!ids.length) return leads;
+
+  const [auditsRes, proposalsRes, activityRes, clientsRes] = await Promise.all([
+    supabase.from("audits").select("lead_id, status, findings, recommendations, created_at").in("lead_id", ids).order("created_at", { ascending: false }),
+    supabase.from("proposals").select("lead_id, status, created_at").in("lead_id", ids).order("created_at", { ascending: false }),
+    supabase.from("activity_log").select("lead_id, event_type, created_at").in("lead_id", ids).in("event_type", ["conversation_started", "sales_conversation", "call_booked", "meeting_booked"]),
+    supabase.from("clients").select("lead_id, status, onboarding_status").in("lead_id", ids),
+  ]);
+
+  const latestByLead = <T extends Record<string, any>>(rows: T[] | null | undefined) => {
+    const map = new Map<string, T>();
+    for (const row of rows || []) if (row.lead_id && !map.has(row.lead_id)) map.set(row.lead_id, row);
+    return map;
+  };
+  const audits = latestByLead(auditsRes.data);
+  const proposals = latestByLead(proposalsRes.data);
+  const clients = latestByLead(clientsRes.data);
+  const conversations = new Set((activityRes.data || []).map((row) => row.lead_id).filter(Boolean));
+
+  return leads.map((lead) => {
+    const audit = audits.get(lead.id);
+    const proposal = proposals.get(lead.id);
+    const client = clients.get(lead.id);
+    const finding = Array.isArray(audit?.findings) ? audit.findings.find((item: any) => item?.recommendation || item?.recommendedProduct?.name) : null;
+    const recommendations = audit?.recommendations && typeof audit.recommendations === "object" ? audit.recommendations : null;
+    const recommendedSolution = finding?.recommendedProduct?.name || finding?.recommendation || (Array.isArray(recommendations?.needs) ? recommendations.needs[0] : null) || null;
+    const status = String(lead.lead_status || "new");
+    return {
+      ...lead,
+      sales: {
+        audit_status: audit?.status || lead.audit_status || "not_started",
+        opportunity: ["qualified", "proposal", "payment_pending", "paid", "implementation", "completed"].includes(status) ? "qualified" : recommendedSolution ? "review" : "not_recorded",
+        recommended_solution: recommendedSolution,
+        contact_status: ["contacted", "qualified", "proposal", "payment_pending", "paid", "implementation", "completed"].includes(status) ? "contacted" : "not_recorded",
+        conversation_status: conversations.has(lead.id) ? "started" : "not_recorded",
+        proposal_status: proposal?.status || "not_recorded",
+        customer_status: client?.status || (["paid", "implementation", "completed"].includes(status) ? status : "not_recorded"),
+      },
+    };
+  });
+}
+
 export async function GET() {
   const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -35,10 +79,10 @@ export async function GET() {
   if (withArchive.error && /archived_at/.test(withArchive.error.message || "")) {
     const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(500);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ leads: data || [], archiveSupported: false });
+    return NextResponse.json({ leads: await addSalesSummary(supabase, data || []), archiveSupported: false });
   }
   if (withArchive.error) return NextResponse.json({ error: withArchive.error.message }, { status: 500 });
-  return NextResponse.json({ leads: withArchive.data || [], archiveSupported: true });
+  return NextResponse.json({ leads: await addSalesSummary(supabase, withArchive.data || []), archiveSupported: true });
 }
 
 export async function POST(request: Request) {

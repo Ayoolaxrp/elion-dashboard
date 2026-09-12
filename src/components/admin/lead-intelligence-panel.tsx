@@ -233,6 +233,24 @@ export function LeadIntelligencePanel({ leadId }: { leadId: string }) {
                     <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#0A0D14] border border-[#1F2937] text-[#7C8494]">{o.pricingTier.replace(/_/g, " ")}</span>
                   </div>
                   <p className="text-xs text-[#9CA3AF] mt-2">{o.potentialConsequence}</p>
+                  <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                    <div className="rounded-md border border-[#1F2937] bg-[#0A0D14] p-2">
+                      <span className="block text-[10px] uppercase tracking-wide text-[#4B5563]">Observation</span>
+                      <span className="text-[#D1D5DB]">{o.evidence?.length ? o.evidence.map((e) => `${e.category.replace(/_/g, " ")}: ${e.note}`).join(" · ") : "No public observation recorded."}</span>
+                    </div>
+                    <div className="rounded-md border border-[#1F2937] bg-[#0A0D14] p-2">
+                      <span className="block text-[10px] uppercase tracking-wide text-[#4B5563]">Business impact</span>
+                      <span className="text-[#D1D5DB]">{o.potentialConsequence}</span>
+                    </div>
+                    <div className="rounded-md border border-[#1F2937] bg-[#0A0D14] p-2">
+                      <span className="block text-[10px] uppercase tracking-wide text-[#4B5563]">Possible opportunity</span>
+                      <span className="text-[#D1D5DB]">{st.label}; this is not a claim of lost money or guaranteed revenue.</span>
+                    </div>
+                    <div className="rounded-md border border-[#1F2937] bg-[#0A0D14] p-2">
+                      <span className="block text-[10px] uppercase tracking-wide text-[#4B5563]">Recommended solution / next action</span>
+                      <span className="text-[#D1D5DB]">{o.solutionName} · {o.nextBestAction}</span>
+                    </div>
+                  </div>
                   {o.evidence && o.evidence.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {o.evidence.map((e) => (

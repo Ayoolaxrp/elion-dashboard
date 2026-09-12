@@ -36,6 +36,15 @@ interface Lead {
   created_at: string;
   updated_at?: string | null;
   archived_at?: string | null;
+  sales?: {
+    audit_status: string;
+    opportunity: string;
+    recommended_solution: string | null;
+    contact_status: string;
+    conversation_status: string;
+    proposal_status: string;
+    customer_status: string;
+  };
 }
 
 const SC: Record<string, string> = {
@@ -50,6 +59,16 @@ const SC: Record<string, string> = {
 };
 // Must match the leads.lead_status CHECK constraint.
 const STATUSES = ["new", "audited", "contacted", "qualified", "paid", "lost", "proposal"];
+
+function stageValue(leadStatus: string, stage: "opportunity" | "contact" | "conversation" | "proposal" | "customer") {
+  const status = leadStatus.toLowerCase();
+  if (stage === "opportunity") return ["qualified", "proposal", "paid", "implementation", "completed"].includes(status) ? "Qualified" : "Not recorded";
+  if (stage === "contact") return ["contacted", "qualified", "proposal", "paid", "implementation", "completed"].includes(status) ? "Contacted" : "Not recorded";
+  if (stage === "conversation") return "Not recorded";
+  if (stage === "proposal") return ["proposal", "paid", "implementation", "completed"].includes(status) ? "In proposal flow" : "Not recorded";
+  if (stage === "customer") return ["paid", "implementation", "completed"].includes(status) ? (status === "paid" ? "Paid" : "Customer") : "Not recorded";
+  return "Not recorded";
+}
 
 const EMPTY_FORM = {
   contact_name: "",
@@ -362,6 +381,24 @@ export default function LeadsPage() {
                       {expanded === lead.id ? <ChevronUp className="w-3 h-3 text-[#7C8494]" /> : <ChevronDown className="w-3 h-3 text-[#7C8494]" />}
                     </div>
                     <p className="text-xs text-[#7C8494] mt-1">{lead.email}{lead.phone ? " · " + lead.phone : ""}{lead.company_name ? ` · ${lead.company_name}` : ""}</p>
+                    <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-1.5 max-w-3xl" aria-label="Sales workspace status">
+                      {[
+                        ["Prospect", lead.lead_status.replace("_", " ")],
+                        ["Audit", lead.sales?.audit_status || lead.audit_status || "Not recorded"],
+                        ["Opportunity", lead.sales?.opportunity || stageValue(lead.lead_status, "opportunity")],
+                        ["Contact", lead.sales?.contact_status || stageValue(lead.lead_status, "contact")],
+                        ["Conversation", lead.sales?.conversation_status || stageValue(lead.lead_status, "conversation")],
+                        ["Proposal", lead.sales?.proposal_status || stageValue(lead.lead_status, "proposal")],
+                        ["Customer", lead.sales?.customer_status || stageValue(lead.lead_status, "customer")],
+                      ].map(([label, value]) => (
+                        <span key={label} className="rounded-md border border-[#1F2937] bg-[#0A0D14] px-2 py-1 text-[10px] text-[#9CA3AF]">
+                          <span className="block uppercase tracking-wide text-[9px] text-[#4B5563]">{label}</span>
+                          <span className="capitalize text-[#D1D5DB]">{value}</span>
+                        </span>
+                      ))}
+                    </div>
+                    {lead.sales?.recommended_solution && <p className="mt-2 text-[11px] text-[#9CA3AF]"><span className="text-[#4B5563]">Recommended solution:</span> {lead.sales.recommended_solution}</p>}
+
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <select
