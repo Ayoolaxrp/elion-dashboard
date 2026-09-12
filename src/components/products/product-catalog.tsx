@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import {
   PRODUCT_CATALOG,
-  PRODUCT_COMMERCIAL_METADATA,
   getProductCommercialMetadata,
   ProductDefinition,
   fmtNgn,
@@ -72,7 +71,6 @@ function ProductCard({ product }: { product: ProductDefinition }) {
   const meta = getProductCommercialMetadata(product.id);
   const [open, setOpen] = useState(false);
   const [selecting, setSelecting] = useState(false);
-  const [selectedTier, setSelectedTier] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -140,12 +138,25 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           </div>
 
           <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-            <span className="text-[var(--color-text-secondary)] font-medium">The problem: </span>
+            <span className="text-[var(--color-text-secondary)] font-medium">The business problem: </span>
             {meta?.customer_problem || product.description}
           </p>
+          <p className="mt-3 text-sm font-medium text-[var(--color-accent-bright)]">{product.tagline}</p>
 
-          <div className="mt-4">
-            <p className="text-xs text-[var(--color-text-muted)] mb-2">Setup / monthly</p>
+          <div className="mt-5">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">What it does</p>
+            <ul className="space-y-1.5">
+              {product.plain_english.slice(0, 3).map((step) => (
+                <li key={step} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
+                  <CheckCircle2 className="w-4 h-4 text-[var(--color-success)] shrink-0 mt-0.5" />
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-5 pt-4 border-t border-[var(--color-border)]/50">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-1">Implementation from</p>
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">
                 {fmtNgn(pricing.setup)}
@@ -153,7 +164,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
               <span className="text-xs text-[var(--color-text-muted)]">one-time</span>
               {pricing.monthly > 0 && (
                 <span className="ml-auto text-xs text-[var(--color-text-muted)]">
-                  + {fmtNgn(pricing.monthly)}/mo ELION Care
+                  + {fmtNgn(pricing.monthly)}/mo Care
                 </span>
               )}
             </div>
@@ -167,7 +178,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97] disabled:opacity-50"
               disabled={isComingSoon}
             >
-              View Details
+              Check if this fits
               <ChevronDown className="w-4 h-4" />
             </button>
           )}
@@ -472,7 +483,7 @@ export function ProductCatalog() {
 
             <div className="mt-10 rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface)] p-6">
               <p className="text-sm text-[var(--color-text-secondary)]">
-                Voice AI is handled with particular care: it requires a voice provider, metered usage, and strict escalation rules before a client ever hears it. It is not a generic "AI call agent" promise — it is a scoped capability with real infrastructure and real guardrails.
+                Voice AI is handled with particular care: it requires a voice provider, metered usage, and strict escalation rules before a client ever hears it. It is not a generic &quot;AI call agent&quot; promise — it is a scoped capability with real infrastructure and real guardrails.
               </p>
             </div>
           </div>

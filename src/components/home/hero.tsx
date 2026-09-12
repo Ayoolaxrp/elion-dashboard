@@ -178,10 +178,10 @@ export function Hero() {
             </div>
 
             <h1 className="animate-hero-slide mt-8 text-[2.75rem] leading-[1.04] sm:text-6xl md:text-7xl font-bold text-[var(--color-text-primary)] tracking-[-0.03em]">
-              Find the leaks in your business.
-              <br />
+              Find where your business is leaking
+              <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)] bg-clip-text text-transparent">
-                Then automate them.
+                time, leads, and revenue.
               </span>
             </h1>
 
@@ -189,9 +189,7 @@ export function Hero() {
               className="animate-hero-in mt-6 text-base md:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto lg:mx-0 leading-relaxed"
               style={{ animationDelay: "120ms" }}
             >
-              For Nigerian businesses losing leads, time, and revenue to slow responses,
-              forgotten follow-ups, manual bookings, and repetitive operations.
-              ELION audits the leaks first, then builds the systems that fix them.
+              ELION audits your operations, identifies hidden bottlenecks, and builds automation systems around the problems your business actually has.
             </p>
 
             <div className="animate-hero-in mt-9 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4" style={{ animationDelay: "200ms" }}>
@@ -203,11 +201,11 @@ export function Hero() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/demo"
+                href="/#how"
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97] px-7 py-3.5 text-base"
               >
                 <PlayCircle className="w-4 h-4" />
-                See ELION in Action
+                See How It Works
               </Link>
             </div>
 

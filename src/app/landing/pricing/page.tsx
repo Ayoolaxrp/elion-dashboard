@@ -28,6 +28,15 @@ const thirdParty = [
   "AI model usage, which may incur additional third-party charges depending on configuration and volume",
 ];
 
+const afterStart = [
+  { number: "01", title: "Business audit", description: "We inspect the evidence and confirm the operational problem." },
+  { number: "02", title: "System recommendation", description: "We match the leak to the system that fits your business." },
+  { number: "03", title: "Implementation scope", description: "You receive clear deliverables, costs, ownership, and timeline." },
+  { number: "04", title: "Build and deployment", description: "We configure, connect, test, and deploy the agreed workflow." },
+  { number: "05", title: "Ownership handover", description: "Your workflows, data, configurations, and documentation remain yours." },
+  { number: "06", title: "Optional support", description: "Care is available for monitoring, maintenance, and improvements." },
+];
+
 const receives = [
   "Custom automation designed for your workflow",
   "Integration with your existing tools",
@@ -154,6 +163,28 @@ export default function PricingPage() {
               <p className="text-sm text-[var(--color-text-muted)] mt-8 leading-relaxed max-w-2xl">
                 We always clarify which costs are ELION fees and which are third-party service charges before you commit.
               </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* What happens after you start */}
+      <section className="border-t border-[var(--color-border)]/60">
+        <div className="max-w-4xl mx-auto px-6 py-16 md:py-24">
+          <Reveal>
+            <div className="text-center mb-10">
+              <SectionHeading kicker="The delivery path" title="What happens after you start" sub="A clear path from diagnosis to an owned, tested operational system." center />
+            </div>
+            <div className="divide-y divide-[var(--color-border)]/50 border-y border-[var(--color-border)]/50">
+              {afterStart.map((step) => (
+                <div key={step.number} className="grid grid-cols-[2.5rem_1fr] gap-4 py-5 md:grid-cols-[3rem_1fr] md:gap-6">
+                  <span className="text-sm font-bold text-[var(--color-accent)] tabular-nums">{step.number}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--color-text-primary)]">{step.title}</p>
+                    <p className="mt-1 text-sm text-[var(--color-text-muted)] leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>

@@ -224,6 +224,97 @@ export function ProblemSection() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Audit deliverable : make the first conversion outcome explicit.     */
+/* ------------------------------------------------------------------ */
+export function AuditDeliverable() {
+  const deliverables = [
+    { number: "01", title: "Business presence review", description: "We inspect the public digital touchpoints customers use to find and contact you." },
+    { number: "02", title: "Operational leak analysis", description: "We identify observable gaps in response, follow-up, booking, handoff, and operations." },
+    { number: "03", title: "Prioritized findings", description: "You see what matters first, with evidence and clear confidence labels." },
+    { number: "04", title: "Recommended system", description: "We match the problem to the automation system that fits your business." },
+    { number: "05", title: "Implementation discussion", description: "If the fit is right, we scope the build, ownership, costs, and next step." },
+  ];
+
+  return (
+    <section className="py-24 md:py-32 px-6 border-y border-[var(--color-border)]/30 bg-[var(--color-surface-raised)]/35">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-14 lg:gap-20 items-start">
+        <div className="lg:sticky lg:top-28">
+          <SectionTag>What you receive</SectionTag>
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
+            Clarity before a proposal.
+          </h2>
+          <p className="mt-6 text-base text-[var(--color-text-secondary)] leading-relaxed max-w-md">
+            The free audit is not a generic score. It is the first step in understanding where your business is losing opportunities and what should happen next.
+          </p>
+          <div className="mt-8">
+            <PrimaryCta href="/audit">Run Your Free Business Audit</PrimaryCta>
+          </div>
+        </div>
+        <div className="divide-y divide-[var(--color-border)]/50 border-y border-[var(--color-border)]/50">
+          {deliverables.map((item) => (
+            <div key={item.number} className="grid grid-cols-[2.5rem_1fr] gap-4 py-6 md:grid-cols-[3rem_1fr] md:gap-6">
+              <span className="text-sm font-bold text-[var(--color-accent)] tabular-nums">{item.number}</span>
+              <div>
+                <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">{item.title}</h3>
+                <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed max-w-xl">{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Example findings : consulting evidence before product language.      */
+/* ------------------------------------------------------------------ */
+export function FindingsSection() {
+  const findings = [
+    { label: "Missed WhatsApp enquiries", impact: "Customers wait hours before receiving a reply.", opportunity: "AI Sales Employee", action: "Automate enquiry handling, qualification, and human handoff." },
+    { label: "Follow-up disappears", impact: "Interested prospects go quiet after the first conversation.", opportunity: "Follow-Up System", action: "Create a permissioned sequence that stops when a prospect responds." },
+    { label: "Booking requires back-and-forth", impact: "Staff spend time checking availability and confirming appointments.", opportunity: "Booking Automation", action: "Connect availability, confirmation, reminders, and rescheduling." },
+  ];
+
+  return (
+    <section className="py-24 md:py-32 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="max-w-2xl mb-12">
+          <SectionTag>Example findings</SectionTag>
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">The diagnosis comes before the system.</h2>
+          <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">This is how ELION turns a business problem into a scoped automation opportunity. Examples are illustrative, not customer results.</p>
+        </div>
+        <div className="border-t border-[var(--color-border)]/60">
+          {findings.map((finding, index) => (
+            <div key={finding.label} className="grid lg:grid-cols-[1.1fr_1fr_1fr] gap-6 lg:gap-12 py-7 border-b border-[var(--color-border)]/50">
+              <div className="flex gap-4">
+                <span className="text-xs font-bold text-[var(--color-accent)] tabular-nums pt-1">0{index + 1}</span>
+                <div>
+                  <p className="text-base font-semibold text-[var(--color-text-primary)]">{finding.label}</p>
+                  <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">{finding.impact}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-muted)] mb-2">Opportunity</p>
+                <p className="text-sm font-semibold text-[var(--color-accent-bright)]">{finding.opportunity}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-muted)] mb-2">Recommended action</p>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{finding.action}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 flex flex-wrap items-center gap-5">
+          <PrimaryCta href="/audit">Find your business leaks</PrimaryCta>
+          <Link href="/demo" className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-white transition-colors">See an interactive example <ArrowRight className="w-4 h-4" /></Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* One-system pipeline : sticky scroll story (Lead -> Measure).        */
 /* The visual anchors while the visitor scrolls; each stage activates. */
 /* Mobile renders a simple non-sticky progression.                     */
@@ -489,8 +580,8 @@ function ProductStack() {
 export function SystemMap() {
   const reduced = useReducedMotion();
   return (
-    <section id="systems" className="pt-24 md:pt-32 px-6 bg-[var(--color-surface-raised)]/40 border-y border-[var(--color-border)]/30 scroll-mt-20">
-      <div className="max-w-6xl mx-auto">
+    <section id="how" className="pt-24 md:pt-32 px-6 bg-[var(--color-surface-raised)]/40 border-y border-[var(--color-border)]/30 scroll-mt-20">
+      <div id="systems" className="max-w-6xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <motion.div
             initial={reduced ? undefined : { opacity: 0, y: 20 }}
@@ -1165,7 +1256,7 @@ export function PricingSection() {
         >
           <SectionTag>Pricing</SectionTag>
           <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
-            Automation that pays for itself.
+            Automation scoped around measurable business problems.
           </h2>
           <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
             One-time implementation fee. Optional monthly support. Pricing

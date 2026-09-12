@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
       phone,
       website,
       businessType,
+      companyName,
       primaryProblem,
       enquiryChannels,
       teamSize,
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
       contact_name: String(name).trim().slice(0, 100),
       email: String(email).toLowerCase().trim().slice(0, 200),
       phone: phone ? String(phone).slice(0, 30) : null,
-      company_name: businessType ? String(businessType).slice(0, 200) : "Not specified",
+      company_name: companyName ? String(companyName).slice(0, 200) : businessType ? String(businessType).slice(0, 200) : "Not specified",
       website: website ? String(website).slice(0, 300) : null,
       industry: businessType ? String(businessType).slice(0, 100) : null,
       company_size: teamSize ? String(teamSize).slice(0, 50) : null,
@@ -133,6 +134,7 @@ export async function POST(request: NextRequest) {
             phone,
             website,
             businessType,
+            companyName,
             primaryProblem,
             enquiryChannels,
             teamSize,
@@ -160,7 +162,7 @@ export async function POST(request: NextRequest) {
         type: 'new_lead',
         title: 'New Audit Submission',
         message: name + ' (' + email + ') submitted an audit request for ' + (businessType || 'their business'),
-        metadata: { lead_id: leadId, name, email, businessType, source: source || 'funnel' },
+        metadata: { lead_id: leadId, name, email, companyName, businessType, source: source || 'funnel' },
       });
     } catch (e) {
       console.error('Notification insert failed:', e);
@@ -168,7 +170,7 @@ export async function POST(request: NextRequest) {
 
     // Send email to admin
     try {
-      await sendAuditNotification('awodeyiayoola@gmail.com', { name, email, businessType, website, primaryProblem });
+      await sendAuditNotification('awodeyiayoola@gmail.com', { name, email, businessType: companyName || businessType, website, primaryProblem });
     } catch (e) {
       console.error('Email send failed:', e);
     }
