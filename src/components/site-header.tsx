@@ -39,17 +39,17 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-nav">
-      <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-6" aria-label="Primary navigation">
         <Link href="/" aria-label="ELION home" className="flex items-center">
           <ElionLogo size="md" />
         </Link>
 
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden items-center gap-7 md:flex">
           {NAV_LINKS.map((l) => (
             <Link
               key={l.label}
               href={hrefFor(l)}
-              className={`text-sm transition-colors ${
+              className={`text-[13px] transition-colors ${
                 isActive(l)
                   ? "text-white font-medium"
                   : "text-[var(--color-text-secondary)] hover:text-white"
@@ -61,13 +61,13 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Link href="/login" className="text-sm text-[var(--color-text-secondary)] hover:text-white transition-colors">
+          <Link href="/login" className="text-[13px] text-[var(--color-text-secondary)] transition-colors hover:text-white">
             Sign In
           </Link>
           <Link
             href="/audit"
             onClick={ctaAction ? (e) => { e.preventDefault(); ctaAction(); setOpen(false); } : undefined}
-            className="public-primary px-5 py-2 text-sm"
+            className="public-primary px-5 py-2.5 text-[13px]"
           >
             Run Free Audit
           </Link>
@@ -75,7 +75,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
 
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden p-2 rounded-lg text-[var(--color-text-secondary)] hover:text-white transition-colors cursor-pointer"
+          className="tap-highlight-transparent rounded-md p-2 text-[var(--color-text-secondary)] transition-colors hover:text-white md:hidden"
           aria-label="Toggle navigation menu"
           aria-expanded={open}
         >
@@ -86,7 +86,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
       </nav>
 
       {open && (
-        <div className="md:hidden border-b border-[var(--color-border)]/50 bg-[var(--color-surface)]/95 backdrop-blur-xl">
+        <div className="border-b border-[var(--color-border)]/50 bg-[var(--color-surface)]/95 backdrop-blur-xl md:hidden">
           <div className="px-6 py-5 space-y-1">
             {NAV_LINKS.map((l) => (
               <Link

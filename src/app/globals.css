@@ -48,18 +48,23 @@
     background: var(--color-surface);
     color: var(--color-text-primary);
     min-width: 320px;
-    font-family: "Inter", "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Space Grotesk", "Geist", sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-optical-sizing: auto;
   }
 
   a { color: inherit; text-decoration: none; }
 
-  /* Inter + Space Grotesk variable fonts (self-hosted, no CDN/CSP dependency) */
+  /* Self-hosted variable font (no CDN/CSP dependency). The former display
+     alias is kept for older component styles but points to the same restrained
+     reading face so public and private surfaces do not drift apart. */
   @font-face {
     font-family: "Inter";
     src: url("/fonts/Inter-Variable.woff2") format("woff2");
@@ -69,7 +74,7 @@
   }
   @font-face {
     font-family: "Space Grotesk";
-    src: url("/fonts/SpaceGrotesk-Variable.woff2") format("woff2");
+    src: url("/fonts/Inter-Variable.woff2") format("woff2");
     font-weight: 300 700;
     font-style: normal;
     font-display: swap;
@@ -268,6 +273,7 @@ html.lenis, html.lenis body {
   border-radius: 0.75rem;
 }
 
+
 /* Admin pages are composed from an in-flow spacer plus a fixed sidebar. This
    shared rule gives every existing admin route the same content rhythm
    without requiring a risky rewrite of each page's data-fetching component. */
@@ -298,41 +304,32 @@ body:has(aside[data-admin-sidebar]) main > * {
 
 /* ---- Apple-style Glass Materials ---- */
 .glass-nav {
-  background: rgba(10, 13, 20, 0.72);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 13, 20, 0.88);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .glass-cta {
-  background: rgba(10, 13, 20, 0.85);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  background: rgba(10, 13, 20, 0.92);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
+
 
 /* ---- Active/Tap Feedback (zero-latency) ---- */
 .tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
 
-button, a, [role="button"], .tappable {
-  transition: transform 0.1s ease-out, opacity 0.1s ease-out;
-}
-button:active, a:active, [role="button"]:active, .tappable:active {
-  transform: scale(0.97);
-}
-@media (hover: none) {
-  button:active, a:active, [role="button"]:active, .tappable:active {
-    transform: scale(0.98);
-  }
-}
-
-/* ---- Typography Refinement ---- */
+/* ---- Interaction and typography refinement ---- */
+/* Press feedback belongs to the control that owns the interaction. A global
+   scale transform made links, cards, and navigation feel like a component kit
+   rather than a calm, direct product interface. */
 h1, h2, h3 {
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
-p, span, li, td {
-  letter-spacing: 0;
-  line-height: 1.65;
-}
+h4, h5, h6 { letter-spacing: -0.015em; }
+p, li, td { letter-spacing: 0; }
 
 /* Premium animations */
 @keyframes fadeInUp {

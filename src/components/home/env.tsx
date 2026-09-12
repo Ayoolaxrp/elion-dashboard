@@ -14,18 +14,18 @@ export function EnvBackdrop({ className = "" }: { className?: string }) {
       {/* Deep atmosphere */}
       <div
         className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[560px] rounded-full"
-        style={{ background: "radial-gradient(closest-side, rgba(59,102,232,0.16), transparent 72%)" }}
+        style={{ background: "radial-gradient(closest-side, rgba(59,102,232,0.08), transparent 72%)" }}
       />
       <div
         className="absolute top-24 right-[8%] w-[340px] h-[340px] rounded-full"
-        style={{ background: "radial-gradient(closest-side, rgba(0,212,255,0.10), transparent 72%)" }}
+        style={{ background: "radial-gradient(closest-side, rgba(0,212,255,0.04), transparent 72%)" }}
       />
       {/* Operational grid */}
-      <div className="env-grid absolute inset-0" />
+      <div className="env-grid absolute inset-0 opacity-50" />
       {/* Horizon light */}
       <div
         className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-[1200px] h-[380px]"
-        style={{ background: "radial-gradient(ellipse closest-side, rgba(0,212,255,0.06), transparent 72%)" }}
+        style={{ background: "radial-gradient(ellipse closest-side, rgba(0,212,255,0.03), transparent 72%)" }}
       />
     </div>
   );
@@ -35,7 +35,7 @@ export function EnvBackdrop({ className = "" }: { className?: string }) {
 export function EnvRingMotif({ className = "" }: { className?: string }) {
   return (
     <div aria-hidden className={`pointer-events-none absolute ${className}`}>
-      <div className="relative w-full h-full animate-ring-drift">
+      <div className="relative w-full h-full">
         <div className="absolute inset-0 rounded-full border border-[rgba(124,155,255,0.14)]" />
         <div
           className="absolute inset-[18%] rounded-full border border-dashed border-[rgba(0,212,255,0.12)]"

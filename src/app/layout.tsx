@@ -3,6 +3,7 @@ import "./globals.css";
 import { RootShell } from "@/components/root-shell";
 import SmoothScroll from "@/components/smooth-scroll";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { CookieConsent } from "@/components/cookie-consent";
 
 export const metadata: Metadata = {
   title: {
@@ -71,7 +72,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preload" href="/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/SpaceGrotesk-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       
       <script
         type="application/ld+json"
@@ -172,6 +172,7 @@ export default function RootLayout({
         <SmoothScroll>
           <RootShell>{children}</RootShell>
         </SmoothScroll>
+        <CookieConsent />
       </body>
     </html>
   );

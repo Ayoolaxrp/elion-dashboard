@@ -37,9 +37,9 @@ Legacy authenticated pages may use the semantic aliases (`primary`, `card`, `for
 
 ## Typography
 
-- Headings use self-hosted Space Grotesk.
-- Body and controls use self-hosted Inter.
-- Headings are tight and brief; body copy is relaxed and capped by readable max widths.
+- Public and authenticated surfaces use self-hosted Inter with the system UI stack as fallback. The same reading face across contexts is intentional; it removes the synthetic display-font feel and improves continuity.
+- Display headings use size-specific negative tracking (`-0.025em` to `-0.045em`) and tight leading. Body copy stays close to zero tracking with relaxed `1.5` to `1.75` leading and readable max widths.
+- Headings use `text-wrap: balance` where supported so line breaks feel composed rather than accidental.
 - `workspace-kicker` is reserved for product context and document sections, not every heading.
 - Labels sit above inputs. Placeholder text is not a label.
 
@@ -52,18 +52,21 @@ Legacy authenticated pages may use the semantic aliases (`primary`, `card`, `for
 
 ## Motion rules
 
-- Do not add perpetual movement to static information.
+- Do not add perpetual movement to static information. The public hero is intentionally static and typography-led; motion is reserved for meaningful state changes.
 - Keep frequent admin interactions immediate and under 300ms.
 - Keep public reveal motion limited to the first impression and meaningful workflow transitions.
 - All automatic animation must degrade under `prefers-reduced-motion: reduce`.
+- Avoid global transforms on every link and button. Press feedback belongs to the control that owns it and must not make navigation jump.
 - Never animate layout properties or attach scroll listeners that update React state.
 
-## Trust rules
+## Trust and privacy rules
 
 - No fabricated logos, customers, testimonials, metrics, ROI, or outcomes.
 - Sample workflows must be labelled as illustrative or simulated.
 - Admin metrics are real operational records only.
 - Public CTAs follow this hierarchy: **Run Free Business Audit**, **See Interactive Demo**, **Book Discovery Call**.
+- The cookie consent surface stores only the visitor's optional analytics/marketing choice in local storage. No provider is enabled by the preference UI; essential authentication cookies are never blocked.
+- Footer trust links expose About, Contact, Status, Privacy, Terms, Cookie Policy, Audit Guide, Automation Guide, and FAQ without forcing visitors through a card grid.
 
 ## Implemented QA decisions
 
