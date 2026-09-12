@@ -99,3 +99,13 @@
 - **Founder validation surface:** `/admin` now displays businesses reviewed, audits completed, qualified opportunities, conversations started, proposals sent and customers won from existing operational records. No human validation or customer outcome is inferred.
 - **Local verification:** TypeScript PASS; targeted lint PASS; production build PASS; prospecting 7/7; AI foundations 13/13; client boundaries 11/11; admin authorization 30/30; Kora deterministic 27/27; audit fixtures 24/24; audit integration 11/11; `git diff --check` PASS.
 - **Not verified:** authenticated admin/client UI QA, Supabase migrations 034/035 application, Kora provider-backed payment/idempotency, and a real paying customer. These remain operational blockers/actions and are not replaced by public HTTP smoke tests.
+
+## 2026-09-12 — Audit-to-proposal workflow verification and hardening
+
+- **Scope:** Repaired the admin audit detail path and completed the audit-to-proposal document workflow without changing authentication, payments, leads, or the audit engine.
+- **Audit workflow:** Added authenticated `GET /api/admin/audits/[id]`, dynamic `/admin/audits/[id]`, graceful missing-data states, findings/severity/evidence/recommendations rendering, and a completed-audit proposal handoff.
+- **Proposal workflow:** Added standalone migration `036_proposal_document_fields.sql` for additive `currency` and `document_data` fields. The proposal editor now retains client context, executive summary, business challenge, recommended solution, implementation scope, deliverables, technical requirements, phases, timeline, payment terms, support, assumptions, acceptance placeholder, timezone and next steps.
+- **Proposal intelligence:** Audit-created proposals carry only audit-derived findings, evidence levels, impacts, recommendations, recommended systems and implementation reasoning; no unsupported business facts are invented.
+- **Economics hardening:** Proposal create/update accepts only NGN, USD, GBP or EUR. Editing economic fields refreshes the stored margin snapshot so acceptance cannot rely on stale pricing economics. Existing margin guardrails and founder override requirements remain unchanged.
+- **Verification:** `npx tsc --noEmit`, production build (146/146 pages), targeted ESLint, `git diff --check`, margin checks 10/10, admin authorization checks 30/30, and Kora deterministic checks 27/27 passed.
+- **Database/QA boundary:** Migration 036 must be applied to the intended Supabase project before using the new document fields. Authenticated admin CRUD, remote migration application, provider-backed payment, and real customer data were not executed from this environment.

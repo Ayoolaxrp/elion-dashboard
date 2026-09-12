@@ -237,9 +237,9 @@ export default function SalesQueuePage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-surface)]">
+    <div className="workspace-shell">
       <AdminSidebar />
-      <main className="flex-1 p-5 md:p-8">
+      <main className="flex-1 min-w-0 p-5 md:p-8">
         <div className="mx-auto max-w-5xl">
           <header className="mb-9 flex flex-wrap items-end justify-between gap-5">
             <div>

@@ -23,7 +23,7 @@ export function StatCard({ label, value, change, changeLabel, icon, gradient = "
   }[gradient];
 
   return (
-    <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5 hover:border-[var(--color-border-light)] transition-colors">
+    <div className="workspace-card p-5 transition-colors hover:border-[var(--color-border-light)]">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">{label}</p>
@@ -85,11 +85,11 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, icon, actions }: PageHeaderProps) {
   return (
-    <div className="flex items-start justify-between mb-6">
+    <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded-lg bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-secondary)] shrink-0">{icon}</div>
-        <div>
-          <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">{title}</h1>
+        <div className="min-w-0">
+          <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] tracking-tight">{title}</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-0.5">{description}</p>
         </div>
       </div>
@@ -111,7 +111,7 @@ interface ButtonProps {
 
 export function Button({ children, variant = "primary", size = "md", disabled = false, onClick, className, type = "button" }: ButtonProps) {
   const v = {
-    primary: "bg-[var(--color-surface)] text-white hover:bg-[var(--color-surface-raised)]",
+    primary: "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)]",
     secondary: "bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] border border-[var(--color-border)] hover:bg-[var(--color-surface)]",
     danger: "bg-[var(--color-error)] text-white hover:bg-[var(--color-error)]",
     ghost: "bg-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)]",
@@ -127,7 +127,7 @@ export function Button({ children, variant = "primary", size = "md", disabled = 
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 rounded font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]",
         v,
         s,
         className,
@@ -154,7 +154,7 @@ export function Input({ label, placeholder, value, onChange, type = "text", clas
   const autoId = useId();
   const fieldId = label ? `field-${autoId}` : undefined;
   const base = cn(
-    "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors",
+    "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors",
   );
   return (
     <div className="space-y-1">
@@ -202,7 +202,7 @@ export function Select({ label, value, onChange, options, className }: SelectPro
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         className={cn(
-          "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors appearance-none cursor-pointer",
+          "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors appearance-none cursor-pointer",
           className,
         )}
       >
@@ -229,7 +229,7 @@ export function Card({ children, className, hover = false, onClick }: CardProps)
     <div
       onClick={onClick}
       className={cn(
-        "bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-5",
+        "workspace-card p-5",
         hover && "hover:border-[var(--color-border-light)] transition-colors cursor-pointer",
         className,
       )}
@@ -250,7 +250,7 @@ interface EmptyStateProps {
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-14 h-14 rounded-lg bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-muted)] mb-4">{icon}</div>
+      <div className="w-10 h-10 rounded-xl bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-muted)] mb-4">{icon}</div>
       <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">{title}</h3>
       <p className="text-sm text-[var(--color-text-muted)] max-w-sm">{description}</p>
       {action && <div className="mt-4">{action}</div>}
@@ -324,7 +324,7 @@ export function Tabs({ tabs, activeTab, onTabChange }: TabsProps) {
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
           className={cn(
-            "px-3 py-1.5 rounded text-sm font-medium transition-colors cursor-pointer",
+            "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]",
             activeTab === tab.id ? "bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] shadow-sm" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]",
           )}
         >
@@ -347,7 +347,7 @@ interface ProgressBarProps {
 export function ProgressBar({ value, max = 100, color = "primary", size = "sm" }: ProgressBarProps) {
   const pct = Math.min((value / max) * 100, 100);
   const c = {
-    primary: "bg-[var(--color-surface)]",
+    primary: "bg-[var(--color-accent)]",
     success: "bg-[var(--color-success)]/100",
     warning: "bg-[var(--color-warning)]/100",
     danger: "bg-[var(--color-error)]/100",

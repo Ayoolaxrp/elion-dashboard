@@ -63,9 +63,9 @@ export default function ProspectingPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-surface)]">
+    <div className="workspace-shell">
       <AdminSidebar />
-      <main className="flex-1 p-5 md:p-8">
+      <main className="flex-1 min-w-0 p-5 md:p-8">
         <div className="mx-auto max-w-6xl space-y-6">
           <header>
             <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)]">Zero-cost discovery</p>

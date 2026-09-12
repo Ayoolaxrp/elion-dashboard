@@ -98,7 +98,7 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-[var(--color-surface)]">
+      <div className="workspace-shell">
         <AdminSidebar />
         <main className="flex-1 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-[var(--color-accent)]" /></main>
       </div>
@@ -109,9 +109,9 @@ export default function AdminDashboard() {
   const s = stats;
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-surface)]">
+    <div className="workspace-shell">
       <AdminSidebar />
-      <main className="flex-1 p-5 md:p-8">
+      <main className="flex-1 min-w-0 p-5 md:p-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-7 flex items-end justify-between flex-wrap gap-3">

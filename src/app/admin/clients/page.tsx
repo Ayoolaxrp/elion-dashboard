@@ -40,7 +40,8 @@ export default function ClientsPage() {
   }, []);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="workspace-shell min-h-screen p-5 md:p-8">
+      <div className="mx-auto max-w-6xl">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Clients</h1>
@@ -110,6 +111,7 @@ export default function ClientsPage() {
           })}
         </div>
       )}
+      </div>
     </div>
   );
 }

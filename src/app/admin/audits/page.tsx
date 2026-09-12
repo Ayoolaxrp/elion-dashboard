@@ -77,9 +77,9 @@ export default function AdminAuditsPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[var(--color-surface)]">
+    <div className="workspace-shell">
       <AdminSidebar />
-      <main className="flex-1 p-4 md:p-6">
+      <main className="flex-1 min-w-0 p-4 md:p-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Audits</h1>
@@ -116,7 +116,7 @@ export default function AdminAuditsPage() {
                       <div className="flex items-center gap-3 min-w-0">
                         {isOpen ? <ChevronUp className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" /> : <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />}
                         <div className="min-w-0">
-                          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] truncate">{a.company_name}</h3>
+                          <Link href={`/admin/audits/${a.id}`} className="text-sm font-semibold text-[var(--color-text-primary)] truncate hover:text-[var(--color-accent-bright)] hover:underline" onClick={(event) => event.stopPropagation()}>{a.company_name}</Link>
                           <p className="text-xs text-[var(--color-text-muted)] truncate">
                             {a.industry || "-"} · {new Date(a.created_at).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos", year: "numeric", month: "short", day: "numeric" })}
                             {a.leads?.email ? ` · ${a.leads.email}` : " · no contact email"}
@@ -131,6 +131,7 @@ export default function AdminAuditsPage() {
                         <span className="px-2 py-1 rounded-lg text-[10px] font-semibold bg-[var(--color-surface)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
                           {a.critical_leaks || 0} critical · {a.high_leaks || 0} high · {a.leak_count || 0} total
                         </span>
+                        <Link href={`/admin/audits/${a.id}`} onClick={(event) => event.stopPropagation()} className="px-2.5 py-1 rounded-lg text-[10px] font-semibold text-[var(--color-accent-bright)] border border-[var(--color-accent)]/30 hover:bg-[var(--color-accent)]/10">Open detail</Link>
                       </div>
                     </div>
 

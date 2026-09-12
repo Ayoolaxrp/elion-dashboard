@@ -83,19 +83,19 @@ export function AdminSidebar() {
           admin page's <main> would start at x=0 and the sidebar would cover
           (and block clicks on) the left ~240px of content. */}
       <div aria-hidden="true" className={"hidden lg:block shrink-0 transition-all duration-200 " + (collapsed ? "w-16" : "w-60")} />
-      <button onClick={() => setMobileOpen(true)} className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)]" aria-label="Open menu"><Menu className="w-5 h-5 text-[var(--color-text-primary)]" /></button>
+      <button onClick={() => setMobileOpen(true)} className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] shadow-sm focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]" aria-label="Open admin menu"><Menu className="w-5 h-5 text-[var(--color-text-primary)]" /></button>
       {mobileOpen && <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setMobileOpen(false)} />}
-      <aside className={"fixed top-0 left-0 bottom-0 z-50 bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col transition-all duration-200 " + (collapsed ? "w-16" : "w-60") + " " + (mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0")}>
+      <aside data-admin-sidebar="true" className={"fixed top-0 left-0 bottom-0 z-50 bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col transition-all duration-200 " + (collapsed ? "w-16" : "w-60") + " " + (mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0")}>
         <div className={"h-16 flex items-center border-b border-[var(--color-border)] " + (collapsed ? "justify-center px-2" : "px-5 gap-2.5")}>
-          <Link href="/admin" className="flex items-center gap-2.5 shrink-0">
+          <Link href="/admin" className="flex items-center gap-2.5 shrink-0" aria-label="ELION admin home">
             <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)] flex items-center justify-center text-white text-sm font-bold" style={{ fontFamily: "Space Grotesk,sans-serif" }}>E</div>
-            {!collapsed && <span className="text-lg font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION</span>}
+            {!collapsed && <span className="text-lg font-bold tracking-tight text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION</span>}
           </Link>
           <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:flex ml-auto p-1 rounded hover:bg-[var(--color-surface-raised)] transition-colors" aria-label={collapsed ? "Expand" : "Collapse"}>
             <ChevronLeft className={"w-4 h-4 text-[var(--color-text-muted)] transition-transform " + (collapsed ? "rotate-180" : "")} />
           </button>
         </div>
-        <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto" role="navigation" aria-label="Admin navigation">
+        <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto" role="navigation" aria-label="Admin navigation" data-lenis-prevent>
           {SECTION_ORDER.map((section) => {
             const sectionItems = NAV.filter((item) => ITEM_SECTION[item.href] === section);
             if (sectionItems.length === 0) return null;

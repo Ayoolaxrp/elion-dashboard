@@ -19,6 +19,23 @@
   --color-success: #10B981;
   --color-warning: #F59E0B;
   --color-error: #EF4444;
+
+  /* Semantic aliases for the authenticated workspace. Keeping these aliases
+     mapped to the ELION tokens prevents legacy surfaces from becoming a
+     second, unrelated design system. */
+  --color-primary: #3B66E8;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #161C27;
+  --color-secondary-foreground: #F8FAFC;
+  --color-card: #11161F;
+  --color-card-foreground: #F8FAFC;
+  --color-foreground: #F8FAFC;
+  --color-muted: #11161F;
+  --color-muted-foreground: #7C8494;
+  --color-info: #7C9BFF;
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-ring: #3B66E8;
 }
 
 @layer base {
@@ -30,6 +47,7 @@
   body {
     background: var(--color-surface);
     color: var(--color-text-primary);
+    min-width: 320px;
     font-family: "Inter", "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -106,6 +124,13 @@
 @media print {
   nav, aside, .no-print, button, [data-print-hidden] { display: none !important; }
   body { background: white; color: black; }
+  .workspace-shell { min-height: 0; background: white; }
+  .workspace-shell main { padding: 0; }
+  .workspace-shell main > div { max-width: none; }
+  .proposal-preview { color: #111827 !important; }
+  .proposal-preview .workspace-kicker { color: #374151 !important; }
+  .proposal-preview p, .proposal-preview span { color: #374151 !important; }
+  .proposal-preview h2, .proposal-preview strong { color: #111827 !important; }
 }
 
 /* ---- Reduced Motion ---- */
@@ -149,6 +174,54 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
+/* ---- Consolidated workspace language ---- */
+/* Public pages and private workspaces use the same tokens, but private
+   surfaces are intentionally quieter: information first, chrome second. */
+.workspace-shell {
+  min-height: 100vh;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+.workspace-shell main {
+  min-width: 0;
+}
+.workspace-kicker {
+  color: var(--color-accent-bright);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.workspace-card {
+  background: var(--color-surface-raised);
+  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
+  border-radius: 0.75rem;
+}
+.workspace-card-muted {
+  background: color-mix(in srgb, var(--color-surface-raised) 68%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 68%, transparent);
+  border-radius: 0.75rem;
+}
+
+/* Admin pages are composed from an in-flow spacer plus a fixed sidebar. This
+   shared rule gives every existing admin route the same content rhythm
+   without requiring a risky rewrite of each page's data-fetching component. */
+body:has(aside[data-admin-sidebar]) main {
+  min-width: 0;
+  padding: clamp(1rem, 2.5vw, 2rem);
+}
+body:has(aside[data-admin-sidebar]) main > * {
+  min-width: 0;
+}
+
+/* Client routes are composed by RootShell. Keep their private workspace
+   distinct from the public marketing shell even when a route has no data. */
+[data-workspace-shell="client"] {
+  min-height: 100vh;
+  background: var(--color-surface);
+}
+
 /* ---- Apple-style Glass Materials ---- */
 .glass-nav {
   background: rgba(10, 13, 20, 0.72);
@@ -164,7 +237,7 @@ html.lenis, html.lenis body {
 }
 
 /* ---- Active/Tap Feedback (zero-latency) ---- */
-tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
+.tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
 
 button, a, [role="button"], .tappable {
   transition: transform 0.1s ease-out, opacity 0.1s ease-out;
