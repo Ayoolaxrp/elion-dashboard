@@ -189,8 +189,9 @@ export function Hero() {
               className="animate-hero-in mt-6 text-base md:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto lg:mx-0 leading-relaxed"
               style={{ animationDelay: "120ms" }}
             >
-              ELION identifies where leads, follow-ups, bookings, and operational
-              workflows are breaking down, then deploys systems to fix them.
+              For Nigerian businesses losing leads, time, and revenue to slow responses,
+              forgotten follow-ups, manual bookings, and repetitive operations.
+              ELION audits the leaks first, then builds the systems that fix them.
             </p>
 
             <div className="animate-hero-in mt-9 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4" style={{ animationDelay: "200ms" }}>
@@ -208,6 +209,24 @@ export function Hero() {
                 <PlayCircle className="w-4 h-4" />
                 See ELION in Action
               </Link>
+            </div>
+
+            <div
+              className="animate-hero-in mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-[var(--color-text-muted)]"
+              style={{ animationDelay: "240ms" }}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]" />
+                Audit first, not guesswork
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
+                You own what we build
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-text-muted)]" />
+                Nigeria-first, built for how local businesses actually operate
+              </span>
             </div>
 
             <p

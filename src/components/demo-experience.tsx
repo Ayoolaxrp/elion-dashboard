@@ -120,10 +120,10 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
       <div className="bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/30 rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[var(--color-warning)]" />
-          <p className="text-sm font-semibold text-[var(--color-warning)]">Interactive Demo</p>
+          <p className="text-sm font-semibold text-[var(--color-warning)]">Interactive Demo — Sample Business</p>
         </div>
         <p className="text-xs text-[var(--color-warning)] mt-1">
-          Simulated demonstration using sample data. No real messages are sent. No real leads are processed.
+          Simulated demonstration using sample data. No real messages are sent. No real leads are processed. This shows what a configured ELION setup does for an inbound enquiry.
         </p>
       </div>
 
@@ -383,15 +383,22 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
       </div>
 
       {/* CTA */}
-      <div className="mt-8 bg-[var(--color-surface-raised)] rounded-lg p-6 text-center border border-[var(--color-border)]">
-        <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2" style={{ letterSpacing: "-0.02em" }}>What would happen if your business handled every enquiry like this?</h3>
-        <p className="text-sm text-[var(--color-text-muted)] mb-4">Find out with your free audit.</p>
-        <a
-          href={ctaHref}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-semibold rounded hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97]"
-        >
-          Run Free Audit <ArrowRight className="w-4 h-4" />
-        </a>
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 rounded-lg p-5 text-left">
+          <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2" style={{ letterSpacing: "-0.02em" }}>What would happen if your business handled every enquiry like this?</h3>
+          <p className="text-sm text-[var(--color-text-muted)]">A configured ELION setup responds, qualifies, records the lead, and hands it to your team — instead of letting it wait.</p>
+        </div>
+        <div className="bg-[var(--color-surface-raised)] rounded-lg p-5 border border-[var(--color-border)] text-left">
+          <h3 className="text-sm font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">See it on your own business</h3>
+          <p className="text-sm text-[var(--color-text-muted)] mb-4">Tell us about your business and we will run a free audit showing the enquiries you are likely losing right now.</p>
+          <a
+            href={ctaHref}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-white text-sm font-semibold rounded hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97]"
+          >
+            Start Free Audit <ArrowRight className="w-4 h-4" />
+          </a>
+          <p className="mt-3 text-xs text-[var(--color-text-muted)]">No commitment. Evidence-based findings, not a promise.</p>
+        </div>
       </div>
     </>
   );

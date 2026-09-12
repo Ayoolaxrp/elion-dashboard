@@ -45,6 +45,15 @@ const LIMITS = [
   "The audit never submits your forms, never contacts you, and never shares your report publicly.",
 ];
 
+const ROWS = [
+  ["A chatbot or WhatsApp responder you install on your own.", "A business audit that finds the leaks first: slow replies, lost bookings, missed follow-up, manual processes — then recommends what to automate."],
+  ["A tool pitched by features: AI, automation, omnichannel.", "A diagnosis pitched by business outcome: respond faster, qualify leads, reduce manual work, and measure the difference."],
+  ["A subscription you configure yourself.", "Implementation + management: ELION deploys and runs the system, monitors it, and improves it as part of the service."],
+  ["Generic use cases that fit every business the same way.", "A custom inspection of your actual website, customer journey, and process gaps — because a clinic, a real-estate firm, and a law firm lose customers in different ways."],
+  ["A demo that shows the product interface.", "A demo that shows a full lead going through the pipeline — enquiry, qualification, CRM update, follow-up — against a sample business."],
+  ["Surface-level promises about results.", "Evidence-based findings with honest labels: observed, inferred, and estimated — and the questions needed to confirm each one."],
+];
+
 export default function MethodologyPage() {
   return (
     <>
@@ -103,6 +112,36 @@ export default function MethodologyPage() {
           <p className="text-sm text-[var(--color-text-muted)]">
             ELION may publish aggregated statistics across many audited businesses (for example, the share of audited
             sites with online booking). Individual businesses are never named without permission.
+          </p>
+        </section>
+
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold tracking-tight mb-6">How ELION compares</h2>
+          <p className="text-sm text-[var(--color-text-muted)] mb-6">
+            AI automation providers in Nigeria mostly sell a tool: a chatbot, a WhatsApp responder, a booking widget.
+            ELION takes a different approach. The table below is not a competitor list — it is a description of the difference in approach.
+          </p>
+          <div className="overflow-hidden border border-[var(--color-border)] rounded-xl">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-raised)]">
+                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] font-medium">What most AI automation providers sell</th>
+                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] font-medium">What ELION does instead</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--color-border)]">
+                {ROWS.map(([a, b]) => (
+                  <tr key={a.slice(0, 30)} className="hover:bg-[var(--color-surface)]">
+                    <td className="px-4 py-4 text-[var(--color-text-muted)]">{a}</td>
+                    <td className="px-4 py-4"><span className="text-[var(--color-text-primary)]">{b}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-sm text-[var(--color-text-muted)]">
+            ELION is not better because it uses a different AI model. ELION is different because it starts with a business audit —
+            finding what is leaking — and only then recommends the automation that addresses it. That audit is free.
           </p>
         </section>
 

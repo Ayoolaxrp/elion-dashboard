@@ -109,6 +109,23 @@ function renderTruth(obj: unknown) {
   );
 }
 
+function openingMessage(lead: Intel["lead"], opps: OpportunitiesResult | null): string {
+  if (!lead.website && !lead.company_name) return "Hi — I was looking at your business and noticed something worth a quick conversation. Could we chat briefly this week?";
+  const company = lead.company_name || "your business";
+  const what = lead.website
+    ? `I was looking at ${company} and noticed a few gaps in how enquiries get handled — especially outside working hours.`
+    : `I was reviewing ${company} and noticed a few gaps in how enquiries get handled.`;
+  if (opps && opps.opportunities.length) {
+    const top = opps.opportunities[0];
+    if (top.state === "strong_opportunity") {
+      return `${what} One thing stands out: ${top.potentialConsequence}. It is usually quick to fix, and it tends to affect revenue first. Would you be open to a short conversation about it?`;
+    }
+  }
+  return `${what} No pressure — would you be open to a short conversation about it?`;
+}
+
+const OPENING = openingMessage({ company_name: null, contact_name: "", email: "", phone: null, website: null, industry: null, lead_status: "", contact_permission: null, consent_source: null, contact_permissions: null, created_at: "" }, null);
+
 function Section({ title, legend, children }: { title: string; legend?: string; children: React.ReactNode }) {
   return (
     <div className="rounded-xl bg-[#0A0D14] border border-[#1F2937] p-4">
@@ -174,6 +191,15 @@ export function LeadIntelligencePanel({ leadId }: { leadId: string }) {
           {data.observed?.auditDate ? `Audit ${new Date(data.observed.auditDate).toLocaleDateString("en-NG", { timeZone: "Africa/Lagos" })}` : "No audit yet"}
         </span>
       </div>
+
+      {/* ── Suggested opening message ── */}
+      <Section title="Suggested opening" legend="founder editable · review before sending">
+        <div className="rounded-lg bg-[#11161F] border border-[#1F2937] p-3">
+          <p className="text-xs text-white font-medium mb-1">Message that opens the conversation</p>
+          <p className="text-xs text-[#9CA3AF] whitespace-pre-wrap">{openingMessage(data.lead, opps)}</p>
+          <p className="text-[10px] text-[#4B5563] mt-2">Based on observed business evidence. Adapt tone to the prospect. Never send generic spam.</p>
+        </div>
+      </Section>
 
       {/* ── Next Best Action ── */}
       <Section title="Next Best Action">

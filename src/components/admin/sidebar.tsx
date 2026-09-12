@@ -32,6 +32,36 @@ const NAV = [
   { href: "/admin/migrations", label: "Migrations", icon: Database },
 ];
 
+const SECTION_ORDER = ["Overview", "Sales", "Customers", "Operations", "Growth", "Support", "System"];
+
+const ITEM_SECTION: Record<string, string> = {
+  "/admin": "Overview",
+  "/admin/leads": "Sales",
+  "/admin/prospecting": "Sales",
+  "/admin/audits": "Sales",
+  "/admin/proposals": "Sales",
+  "/admin/clients": "Customers",
+  "/admin/deploy/catalog": "Customers",
+  "/admin/deploy": "Customers",
+  "/admin/deployments": "Customers",
+  "/admin/onboarding": "Customers",
+  "/admin/payments": "Customers",
+  "/admin/contracts": "Customers",
+  "/admin/invoices": "Customers",
+  "/admin/documents": "Customers",
+  "/admin/automations": "Operations",
+  "/admin/provisioning": "Operations",
+  "/admin/integrations": "Operations",
+  "/admin/logs": "Operations",
+  "/admin/status": "Operations",
+  "/admin/analytics": "Growth",
+  "/admin/content": "Growth",
+  "/admin/support-chat": "Support",
+  "/admin/templates": "System",
+  "/admin/settings": "System",
+  "/admin/migrations": "System",
+};
+
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -64,13 +94,22 @@ export function AdminSidebar() {
           </button>
         </div>
         <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto" role="navigation" aria-label="Admin navigation">
-          {NAV.map((item) => {
-            const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+          {SECTION_ORDER.map((section) => {
+            const sectionItems = NAV.filter((item) => ITEM_SECTION[item.href] === section);
+            if (sectionItems.length === 0) return null;
             return (
-              <Link key={item.href} href={item.href} className={"flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors " + (active ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)]" : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]") + " " + (collapsed ? "justify-center" : "")} aria-current={active ? "page" : undefined} title={collapsed ? item.label : undefined}>
-                <item.icon className="w-4 h-4 shrink-0" />
-                {!collapsed && <span>{item.label}</span>}
-              </Link>
+              <div key={section}>
+                <div className="px-3 py-1.5"><p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">{section}</p></div>
+                {sectionItems.map((item) => {
+                  const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+                  return (
+                    <Link key={item.href} href={item.href} className={"flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors " + (active ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)]" : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]") + " " + (collapsed ? "justify-center" : "")} aria-current={active ? "page" : undefined} title={collapsed ? item.label : undefined}>
+                      <item.icon className="w-4 h-4 shrink-0" />
+                      {!collapsed && <span>{item.label}</span>}
+                    </Link>
+                  );
+                })}
+              </div>
             );
           })}
         </nav>

@@ -19,7 +19,20 @@ type ContentItem = {
   status: string;
   approved_by?: string | null;
   updated_at: string;
+  blog?: string | null;
+  email?: string | null;
+  script?: string | null;
+  product_idea?: string | null;
 };
+
+const TEMPLATE_TYPES = [
+    { key: "linkedin", label: "LinkedIn post", fields: ["LinkedIn post", "linkedin"] },
+    { key: "x", label: "X thread", fields: ["X thread", "x_post"] },
+    { key: "blog", label: "Blog article", fields: ["Blog article", "blog"] },
+    { key: "email", label: "Email draft", fields: ["Email draft", "email"] },
+    { key: "script", label: "Video script", fields: ["Video script", "script"] },
+    { key: "product", label: "Product improvement", fields: ["Product improvement", "product_idea"] },
+  ] as const;
 
 export default function ContentStudioPage() {
   const [items, setItems] = useState<ContentItem[]>([]);
@@ -69,7 +82,17 @@ export default function ContentStudioPage() {
               </div>
             </div>
             <p className="mt-4 text-sm font-medium text-[var(--color-text-primary)]">{item.hook}</p>
-            <div className="mt-4 grid gap-3 md:grid-cols-3"><div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">LinkedIn</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.linkedin}</p></div><div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">X</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.x_post}</p></div><div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">Instagram</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.instagram_caption}</p></div></div>
+            <div className="mt-4">
+          <div className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-3">Drafts</div>
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">LinkedIn post</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.linkedin || "No draft yet"}</p></div>
+            <div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">X thread</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.x_post || "No draft yet"}</p></div>
+            <div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">Blog article</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.blog || "No draft yet"}</p></div>
+            <div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">Email draft</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.email || "No draft yet"}</p></div>
+            <div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">Video script</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.script || "No draft yet"}</p></div>
+            <div><p className="text-[10px] uppercase text-[var(--color-text-muted)]">Product improvement</p><p className="mt-1 whitespace-pre-wrap text-xs text-[var(--color-text-secondary)]">{item.product_idea || "No draft yet"}</p></div>
+          </div>
+        </div>
             <div className="mt-4 border-t border-[var(--color-border)] pt-3"><p className="text-[10px] uppercase text-[var(--color-text-muted)]">Evidence sources</p><p className="mt-1 text-xs text-[var(--color-text-secondary)]">{item.evidence_sources?.join(" · ") || "None recorded"}</p></div>
           </article>)}
         </div>
