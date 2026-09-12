@@ -31,7 +31,7 @@ async function addSalesSummary(supabase: ReturnType<typeof getDataClient>, leads
   const [auditsRes, proposalsRes, activityRes, clientsRes] = await Promise.all([
     supabase.from("audits").select("lead_id, status, findings, recommendations, created_at").in("lead_id", ids).order("created_at", { ascending: false }),
     supabase.from("proposals").select("lead_id, status, created_at").in("lead_id", ids).order("created_at", { ascending: false }),
-    supabase.from("activity_log").select("lead_id, event_type, created_at").in("lead_id", ids).in("event_type", ["conversation_started", "sales_conversation", "call_booked", "meeting_booked"]),
+    supabase.from("activity_log").select("lead_id, event_type, created_at").in("lead_id", ids).order("created_at", { ascending: false }),
     supabase.from("clients").select("lead_id, status, onboarding_status").in("lead_id", ids),
   ]);
 
@@ -43,7 +43,9 @@ async function addSalesSummary(supabase: ReturnType<typeof getDataClient>, leads
   const audits = latestByLead(auditsRes.data);
   const proposals = latestByLead(proposalsRes.data);
   const clients = latestByLead(clientsRes.data);
-  const conversations = new Set((activityRes.data || []).map((row) => row.lead_id).filter(Boolean));
+  const conversationEvents = new Set(["conversation_started", "sales_conversation", "call_booked", "meeting_booked"]);
+  const conversations = new Set((activityRes.data || []).filter((row) => conversationEvents.has(row.event_type)).map((row) => row.lead_id).filter(Boolean));
+  const latestActivity = latestByLead(activityRes.data);
 
   return leads.map((lead) => {
     const audit = audits.get(lead.id);
@@ -52,6 +54,7 @@ async function addSalesSummary(supabase: ReturnType<typeof getDataClient>, leads
     const finding = Array.isArray(audit?.findings) ? audit.findings.find((item: any) => item?.recommendation || item?.recommendedProduct?.name) : null;
     const recommendations = audit?.recommendations && typeof audit.recommendations === "object" ? audit.recommendations : null;
     const recommendedSolution = finding?.recommendedProduct?.name || finding?.recommendation || (Array.isArray(recommendations?.needs) ? recommendations.needs[0] : null) || null;
+    const mainFinding = finding?.title || finding?.area || finding?.description || finding?.finding || (Array.isArray(audit?.findings) && audit.findings[0]?.description) || null;
     const status = String(lead.lead_status || "new");
     return {
       ...lead,
@@ -59,6 +62,9 @@ async function addSalesSummary(supabase: ReturnType<typeof getDataClient>, leads
         audit_status: audit?.status || lead.audit_status || "not_started",
         opportunity: ["qualified", "proposal", "payment_pending", "paid", "implementation", "completed"].includes(status) ? "qualified" : recommendedSolution ? "review" : "not_recorded",
         recommended_solution: recommendedSolution,
+        main_finding: mainFinding,
+        audit_date: audit?.created_at || null,
+        last_activity: latestActivity.get(lead.id)?.created_at || lead.updated_at || lead.created_at,
         contact_status: ["contacted", "qualified", "proposal", "payment_pending", "paid", "implementation", "completed"].includes(status) ? "contacted" : "not_recorded",
         conversation_status: conversations.has(lead.id) ? "started" : "not_recorded",
         proposal_status: proposal?.status || "not_recorded",

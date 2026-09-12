@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import DemoExperience from "@/components/demo-experience";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function DemoPage() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <DemoExperience ctaHref="/audit" />
       </main>
+      <SiteFooter />
     </div>
   );
 }

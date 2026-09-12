@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, PlayCircle, Activity } from "lucide-react";
+import { ArrowRight, PlayCircle } from "lucide-react";
 import { EnvBackdrop, EnvRingMotif } from "@/components/home/env";
 import { useSafeReduced } from "@/components/home/use-safe-reduced";
 
@@ -43,69 +43,29 @@ function NetworkField() {
 /* Layer 03 , the product layer: a compact ELION Operations console.   */
 /* ------------------------------------------------------------------ */
 function OpsConsole() {
-  const rows = [
-    { name: "Lead Response", state: "LIVE", tone: "success" },
-    { name: "Follow-Up", state: "LIVE", tone: "success" },
-    { name: "Booking", state: "NOT CONFIGURED", tone: "muted" },
+  const observations = [
+    { label: "Observed leak", value: "Enquiries wait for a manual reply", tone: "text-[var(--color-warning)]" },
+    { label: "Recommended system", value: "Lead Response", tone: "text-[var(--color-accent-bright)]" },
+    { label: "Next step", value: "Confirm the opportunity in an audit", tone: "text-[var(--color-success)]" },
   ];
-  return (
-    <div className="relative">
-      {/* soft glow behind the console */}
-      <div
-        aria-hidden
-        className="absolute -inset-8 rounded-[32px] pointer-events-none"
-        style={{ background: "radial-gradient(closest-side, rgba(59,102,232,0.14), transparent 74%)" }}
-      />
-      <div className="relative rounded-2xl border border-[var(--color-border)]/70 bg-[var(--color-surface-raised)]/90 shadow-2xl shadow-black/50 overflow-hidden">
-        {/* window chrome */}
-        <div className="flex items-center gap-1.5 px-4 py-3 border-b border-[var(--color-border)]/60 bg-[var(--color-surface)]/70">
-          <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-border-light)]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-border-light)]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-border-light)]" />
-          <span className="ml-2.5 text-[10px] font-semibold text-[var(--color-text-muted)] tracking-wide">
-            ELION OPERATIONS
-          </span>
-          <span className="ml-auto text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[var(--color-accent)]/10 text-[var(--color-accent-bright)] border border-[var(--color-accent)]/20">
-            Illustrative
-          </span>
-        </div>
 
-        <div className="p-5">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-xs font-semibold text-[var(--color-text-secondary)]">Automation health</p>
-            <span className="flex items-center gap-1.5 text-[10px] text-[var(--color-success)]">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-node-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-success)]" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[var(--color-success)]" />
-              </span>
-              Operational
-            </span>
-          </div>
-          <div className="space-y-2.5">
-            {rows.map((r) => (
-              <div key={r.name} className="flex items-center justify-between px-3 py-2.5 rounded-lg border border-[var(--color-border)]/50 bg-[var(--color-surface)]">
-                <span className="text-xs text-[var(--color-text-secondary)]">{r.name}</span>
-                <span
-                  className={`text-[9px] font-bold tracking-wider px-2 py-1 rounded ${
-                    r.tone === "success"
-                      ? "text-[var(--color-success)] bg-[var(--color-success)]/10"
-                      : "text-[var(--color-text-muted)] bg-[var(--color-border)]/30"
-                  }`}
-                >
-                  {r.state}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 flex items-center justify-between px-3 py-2.5 rounded-lg border border-[var(--color-border)]/50 bg-[var(--color-surface)]">
-            <span className="flex items-center gap-1.5 text-[10px] text-[var(--color-text-muted)]">
-              <Activity className="w-3.5 h-3.5 text-[var(--color-accent-cyan)]" />
-              Leads processed
-            </span>
-            <span className="text-sm font-bold text-[var(--color-text-primary)] tabular-nums">-</span>
-          </div>
-        </div>
+  return (
+    <div className="relative pl-4 md:pl-8">
+      <div aria-hidden className="absolute left-0 top-6 bottom-6 w-px bg-gradient-to-b from-[var(--color-accent)]/70 via-[var(--color-border-light)] to-transparent" />
+      <div className="mb-8">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">Illustrative diagnosis</p>
+        <p className="mt-3 text-2xl font-semibold leading-tight tracking-tight text-[var(--color-text-primary)]">A clearer next action.</p>
+        <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-secondary)]">ELION turns an observable business problem into a scoped system recommendation.</p>
       </div>
+      <div className="divide-y divide-[var(--color-border)]/60 border-y border-[var(--color-border)]/60">
+        {observations.map((observation) => (
+          <div key={observation.label} className="py-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">{observation.label}</p>
+            <p className={`mt-1.5 text-sm font-medium ${observation.tone}`}>{observation.value}</p>
+          </div>
+        ))}
+      </div>
+      <p className="mt-5 text-[11px] text-[var(--color-text-muted)]">Example only · real findings follow an audit</p>
     </div>
   );
 }

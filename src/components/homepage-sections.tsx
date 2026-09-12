@@ -499,7 +499,7 @@ function ProductStack() {
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto space-y-5 md:space-y-0">
+      <div className="max-w-4xl mx-auto border-y border-[var(--color-border)]/60">
         {items.map((s, i) => {
           const Icon = s.icon;
           return (
@@ -513,10 +513,8 @@ function ProductStack() {
                 whileInView={reduced ? undefined : { opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ type: "spring" as const, damping: 28, stiffness: 240 }}
-                className={`rounded-2xl border p-6 md:p-7 bg-[var(--color-surface-raised)] ${
-                  s.custom
-                    ? "border-dashed border-[var(--color-accent)]/30"
-                    : "border-[var(--color-border)]/60 shadow-xl shadow-black/30"
+                className={`border-b last:border-b-0 p-5 md:p-7 bg-transparent ${
+                  s.custom ? "border-dashed border-[var(--color-accent)]/30" : "border-[var(--color-border)]/50"
                 }`}
               >
                 <div className="flex items-start gap-5">
@@ -557,21 +555,8 @@ function ProductStack() {
 
       {/* Stack tail : everything converges on one operational system */}
       <div className="mt-12 text-center">
-        <motion.div
-          initial={reduced ? undefined : { opacity: 0, scale: 0.96 }}
-          whileInView={reduced ? undefined : { opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ type: "spring" as const, damping: 24, stiffness: 200 }}
-          className="inline-flex flex-col items-center gap-3 px-8 py-6 rounded-2xl border border-[var(--color-border)]/60 bg-gradient-to-b from-[var(--color-surface-raised)] to-[var(--color-surface)]"
-        >
-          <Boxes className="w-6 h-6 text-[var(--color-accent-cyan)]" aria-hidden />
-          <p className="text-base md:text-lg text-[var(--color-text-primary)] font-semibold">
-            One architecture. Every leak covered.
-          </p>
-          <p className="text-sm text-[var(--color-text-muted)] max-w-md">
-            The same parts : configured per business, operated as one system you own.
-          </p>
-        </motion.div>
+        <p className="text-sm font-semibold text-[var(--color-text-primary)]">One architecture. Configured around your business.</p>
+        <p className="mt-2 text-sm text-[var(--color-text-muted)]">The systems are focused. The operating view stays connected. You own what is built.</p>
       </div>
     </div>
   );
@@ -816,11 +801,6 @@ export function AuditSection() {
 export function DashboardPreview() {
   const reduced = useReducedMotion();
   const sectionRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const floatY = useTransform(scrollYProgress, [0, 0.5, 1], [26, 0, -26]);
 
   const rows = [
     { name: "Adaeze O.", source: "WhatsApp", status: "Responded", time: "2 min ago" },
@@ -867,7 +847,6 @@ export function DashboardPreview() {
             </p>
           </motion.div>
         </motion.div>          <motion.div
-            style={reduced ? undefined : { y: floatY }}
             className="relative"
           >
           <motion.div
@@ -1474,9 +1453,10 @@ export function FinalCta() {
               See ELION in Action
             </SecondaryCta>
           </div>
-          <p className="mt-8 text-xs text-[var(--color-text-muted)]">
-            One system. Every operational leak. Owned by you.
-          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-[var(--color-text-muted)]">
+            <Link href="/book" className="hover:text-[var(--color-text-primary)] transition-colors">Already know the problem? Book a discovery call →</Link>
+            <Link href="/support" className="hover:text-[var(--color-text-primary)] transition-colors">Already a client? Open support →</Link>
+          </div>
         </motion.div>
       </div>
     </section>

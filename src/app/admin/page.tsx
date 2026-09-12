@@ -39,6 +39,7 @@ const TYPE_UI: Record<string, { icon: LucideIcon; color: string }> = {
 };
 
 const QUICK_LINKS = [
+  { href: "/admin/sales", label: "Morning Queue", icon: TrendingUp, color: "#7C9BFF" },
   { href: "/admin/leads", label: "Leads", icon: Mail, color: "#10B981" },
   { href: "/admin/clients", label: "Clients", icon: Users, color: "#3B66E8" },
   { href: "/admin/proposals", label: "Proposals", icon: FileText, color: "#8B5CF6" },
@@ -264,7 +265,7 @@ export default function AdminDashboard() {
           {/* Quick access */}
           <div className="mb-8">
             <h2 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">Workspace</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
               {QUICK_LINKS.map((link) => (
                 <Link key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/25 transition-all group">
                   <div className="p-1.5 rounded-lg" style={{ backgroundColor: link.color + "15" }}>

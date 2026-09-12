@@ -92,12 +92,8 @@ function ProductCard({ product }: { product: ProductDefinition }) {
 
   return (
     <article
-      className={`rounded-2xl border p-6 md:p-8 bg-[var(--color-surface-raised)] transition-colors ${
-        isActive
-          ? "border-[var(--color-border)]/60 shadow-xl shadow-black/30"
-        : isComingSoon
-        ? "border-dashed border-[var(--color-border)]/40"
-        : "border-[var(--color-border)]/60"
+      className={`border-t p-6 md:p-8 transition-colors ${
+        isComingSoon ? "border-dashed border-[var(--color-border)]/60" : "border-[var(--color-border)]/70"
       }`}
     >
       <div className="flex items-start gap-5">
@@ -155,9 +151,9 @@ function ProductCard({ product }: { product: ProductDefinition }) {
             </ul>
           </div>
 
-          <div className="mt-5 pt-4 border-t border-[var(--color-border)]/50">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-1">Implementation from</p>
-            <div className="flex items-baseline gap-2">
+          <div className="mt-6 pt-4 border-t border-[var(--color-border)]/50">
+            <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-muted)] mb-1">Investment</p>
+            <div className="flex flex-wrap items-baseline gap-2">
               <span className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">
                 {fmtNgn(pricing.setup)}
               </span>
@@ -171,15 +167,15 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           </div>
         </div>
 
-        <div className="shrink-0">
+        <div className="shrink-0 pt-1">
           {!open && (
             <button
               onClick={() => setOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[var(--color-accent)] text-white text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors active:scale-[0.97] disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-accent-bright)] transition-colors hover:text-[var(--color-text-primary)] disabled:cursor-not-allowed disabled:opacity-40"
               disabled={isComingSoon}
             >
-              Check if this fits
-              <ChevronDown className="w-4 h-4" />
+              Explore fit
+              <ChevronDown className="h-4 w-4" />
             </button>
           )}
         </div>
@@ -247,7 +243,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           </div>
 
           {meta && (
-            <div className="rounded-lg border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-4">
+            <div className="border-t border-[var(--color-border)]/50 pt-5">
               <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Commercial rules</p>
               <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
                 <li className="flex items-start gap-2">
@@ -270,7 +266,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
             </div>
           )}
 
-          <div className="rounded-lg border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-4">
+          <div className="border-t border-[var(--color-border)]/50 pt-5">
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">What you need</p>
             <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
               {(meta?.client_requirements || []).map((r) => (
@@ -283,13 +279,13 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           </div>
 
           {isComingSoon ? (
-            <div className="rounded-lg border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-4">
+            <div className="border-t border-[var(--color-border)]/50 pt-5">
               <p className="text-sm text-[var(--color-text-secondary)]">
                 This product is on the roadmap. ELION does not claim it is available until it is configured, tested, and activated for a client.
               </p>
             </div>
           ) : (
-            <div className="rounded-lg border border-[var(--color-border)]/50 bg-[var(--color-surface)] p-4">
+            <div className="border-t border-[var(--color-border)]/50 pt-5">
               {!selecting ? (
                 <button
                   onClick={() => setSelecting(true)}
@@ -446,7 +442,7 @@ export function ProductCatalog() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="border-b border-[var(--color-border)]/70">
             {active.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -475,7 +471,7 @@ export function ProductCatalog() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="border-b border-[var(--color-border)]/70">
               {upcoming.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

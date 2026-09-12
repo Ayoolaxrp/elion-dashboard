@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ChevronDown, ArrowRight, Check, Sparkles } from "lucide-react";
+import { ChevronDown, ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import TierCards from "@/components/pricing/tier-cards";
 
@@ -88,16 +88,16 @@ export default function PricingPage() {
             viewport={reduced ? undefined : { once: true }}
             transition={reduced ? undefined : { duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/[0.06] mb-8">
-              <Sparkles className="w-3.5 h-3.5 text-[var(--color-accent)]" />
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">Transparent · No hidden fees · You own everything</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
-              Pricing
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--color-accent)] mb-5">Investment in the operating system</p>
+            <h1 className="text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-[var(--color-text-primary)] md:text-6xl" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
+              Automation built around your actual business leaks.
             </h1>
-            <p className="text-base text-[var(--color-text-muted)] mt-4 max-w-xl mx-auto leading-relaxed">
-              One transparent implementation fee. Optional ongoing support. What we build is yours to keep.
+            <p className="text-base text-[var(--color-text-secondary)] mt-6 max-w-2xl mx-auto leading-relaxed md:text-lg">
+              ELION pricing reflects the complexity of the problem, the implementation required, and the system your business needs — not seats, usage gimmicks, or a generic subscription.
             </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-[var(--color-text-muted)]">
+              <span>One-time implementation</span><span>Transparent third-party costs</span><span>You own what we build</span>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -108,8 +108,8 @@ export default function PricingPage() {
           <Reveal>
             <SectionHeading
               kicker="One-time implementation"
-              title="Choose the level of automation your operation needs"
-              sub="Pay once to design, build, configure, and deploy. The automation is yours to keep : no hidden renewals."
+              title="Start with the problem, not a tier"
+              sub="The free audit confirms the leak first. Then we scope, build, deploy, and hand over the system that fits."
               center
             />
           </Reveal>
@@ -123,7 +123,7 @@ export default function PricingPage() {
       <section className="border-t border-[var(--color-border)]/60">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <Reveal>
-            <SectionHeading kicker="Add-ons" title="Single integrations, added to any setup" center />
+            <SectionHeading              kicker="Additional scope" title="Add a focused integration when the audit calls for it" center />
           </Reveal>
           <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {addOns.map((addon, i) => (
@@ -173,7 +173,7 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-6 py-16 md:py-24">
           <Reveal>
             <div className="text-center mb-10">
-              <SectionHeading kicker="The delivery path" title="What happens after you start" sub="A clear path from diagnosis to an owned, tested operational system." center />
+              <SectionHeading kicker="The delivery path"              title="From diagnosis to an owned system" sub="A clear path from evidence to implementation, deployment, and handover." center />
             </div>
             <div className="divide-y divide-[var(--color-border)]/50 border-y border-[var(--color-border)]/50">
               {afterStart.map((step) => (
@@ -195,7 +195,7 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-6 py-16 md:py-24">
           <Reveal>
             <div className="text-center mb-10">
-              <SectionHeading kicker="Ownership" title="What you receive" sub="Every implementation is delivered as a system you own : built around how your business actually operates." center />
+              <SectionHeading kicker="Ownership"              title="What your investment gives you" sub="Every implementation is delivered as a system you own, built around how your business actually operates." center />
             </div>
             <div className="grid sm:grid-cols-2 gap-x-10 gap-y-4 max-w-2xl mx-auto">
               {receives.map((item) => (
@@ -245,10 +245,10 @@ export default function PricingPage() {
         <div className="relative max-w-2xl mx-auto px-6 py-20 md:py-28 text-center">
           <Reveal>
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] tracking-tight mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
-              Not sure which tier fits?
+              Not sure where the leak is?
             </h2>
             <p className="text-base text-[var(--color-text-muted)] mb-8 leading-relaxed max-w-lg mx-auto">
-              Run a free audit. We will find the leaks and recommend the exact system your business needs : no guesswork.
+              Run a free audit. We will identify the operational problem first, then recommend the system and scope that fit : no guesswork.
             </p>
             <Link
               href="/audit"

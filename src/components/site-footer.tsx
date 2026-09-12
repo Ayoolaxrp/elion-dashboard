@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ElionLogo } from "@/components/elion-logo";
+import { ArrowRight, CalendarDays, LifeBuoy, SearchCheck } from "lucide-react";
 
 interface FooterLink {
   label: string;
@@ -64,8 +65,39 @@ export function SiteFooter() {
             </p>
           </div>
 
-          {/* Link columns */}
-          {FOOTER_COLUMNS.map((col) => (
+        {/* Commercial decision path */}
+        <section className="col-span-2 mb-2 border-y border-[var(--color-border)]/70 py-8" aria-labelledby="footer-next-step">
+          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-bright)]">Choose your next step</p>
+              <h2 id="footer-next-step" className="mt-2 text-xl font-semibold tracking-tight text-[var(--color-text-primary)]">Start where you are.</h2>
+            </div>
+            <p className="max-w-md text-sm leading-relaxed text-[var(--color-text-muted)]">Not sure what you need? Start with diagnosis. Already know the problem? Talk implementation. Already a client? Get support.</p>
+          </div>
+          <div className="mt-6 grid gap-px overflow-hidden border border-[var(--color-border)]/70 bg-[var(--color-border)]/70 md:grid-cols-3">
+            <Link href="/audit" className="group bg-[var(--color-surface-raised)] p-4 transition-colors hover:bg-[var(--color-surface-elevated)]">
+              <SearchCheck className="h-4 w-4 text-[var(--color-accent-bright)]" />
+              <p className="mt-3 text-sm font-semibold text-[var(--color-text-primary)]">I need clarity</p>
+              <p className="mt-1 text-xs text-[var(--color-text-muted)]">Run the free business audit.</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-accent-bright)]">Find the leak <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" /></span>
+            </Link>
+            <Link href="/book" className="group bg-[var(--color-surface-raised)] p-4 transition-colors hover:bg-[var(--color-surface-elevated)]">
+              <CalendarDays className="h-4 w-4 text-[var(--color-accent-bright)]" />
+              <p className="mt-3 text-sm font-semibold text-[var(--color-text-primary)]">I know the problem</p>
+              <p className="mt-1 text-xs text-[var(--color-text-muted)]">Book a discovery call.</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-accent-bright)]">Discuss implementation <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" /></span>
+            </Link>
+            <Link href="/support" className="group bg-[var(--color-surface-raised)] p-4 transition-colors hover:bg-[var(--color-surface-elevated)]">
+              <LifeBuoy className="h-4 w-4 text-[var(--color-text-secondary)]" />
+              <p className="mt-3 text-sm font-semibold text-[var(--color-text-primary)]">I am already a client</p>
+              <p className="mt-1 text-xs text-[var(--color-text-muted)]">Get help from support.</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-accent-bright)]">Open support <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" /></span>
+            </Link>
+          </div>
+        </section>
+
+        {/* Link columns */}
+        {FOOTER_COLUMNS.map((col) => (
             <div key={col.title} className="md:col-span-2">
               <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-primary)] mb-4">
                 {col.title}

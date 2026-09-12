@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, Bell, Database, Rocket, SearchCheck, MessageCircle } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, Bell, Database, Rocket, SearchCheck, MessageCircle, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { href: "/admin/deploy/catalog", label: "System Catalog", icon: Layers },
   { href: "/admin/deploy", label: "Deploy Systems", icon: Rocket },
   { href: "/admin/deployments", label: "Deployments & Costs", icon: CreditCard },
+  { href: "/admin/sales", label: "Morning Queue", icon: Sparkles },
   { href: "/admin/leads", label: "Leads", icon: UserPlus },
   { href: "/admin/prospecting", label: "Prospecting", icon: SearchCheck },
   { href: "/admin/audits", label: "Audits", icon: SearchCheck },
@@ -36,6 +37,7 @@ const SECTION_ORDER = ["Overview", "Sales", "Customers", "Operations", "Growth",
 
 const ITEM_SECTION: Record<string, string> = {
   "/admin": "Overview",
+  "/admin/sales": "Sales",
   "/admin/leads": "Sales",
   "/admin/prospecting": "Sales",
   "/admin/audits": "Sales",

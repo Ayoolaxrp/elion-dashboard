@@ -13,6 +13,7 @@ export function LandingShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[var(--color-surface-raised)]">
       <SiteHeader />
       <main>{children}</main>
+      <SiteFooter />
     </div>
   );
 }
