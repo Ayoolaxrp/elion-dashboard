@@ -179,12 +179,13 @@ export default function DeploymentsPage() {
   return (
     <div className="workspace-page">
       <AdminSidebar />
-      <main className="flex-1 p-4 md:p-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+      <main className="min-w-0 flex-1 p-5 md:p-8">
+        <div className="admin-content-gutter">
+          <header className="workspace-header mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">Deployments &amp; Vendor Costs</h1>
-              <p className="text-sm text-[var(--color-text-muted)] mt-1">Client-owned n8n model · who owns, who pays · never finance infrastructure by accident</p>
+              <p className="workspace-kicker">Delivery ownership</p>
+              <h1 className="page-title mt-3 text-[var(--color-text-primary)]">Deployments &amp; vendor costs</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-secondary)]">Client-owned infrastructure, vendor ownership, and go-live readiness in one operational view.</p>
             </div>
             <select value={clientId} onChange={(e) => { setClientId(e.target.value); load(e.target.value); }} className={inputCls}>
               <option value="">Select client…</option>
@@ -192,13 +193,12 @@ export default function DeploymentsPage() {
                 <option key={c.id} value={c.id}>{c.company_name || c.contact_name || c.email || c.id}</option>
               ))}
             </select>
-          </div>
-
-          {error && <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">{error}</div>}
-          {msg && <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-300 text-sm">{msg}</div>}
+          </header>
+          {error && <div role="alert" className="mb-4 border-l-2 border-[var(--color-error)] bg-[var(--color-error)]/5 p-3 pl-4 text-sm text-[var(--color-error)]">{error}</div>}
+          {msg && <div role="status" className="mb-4 border-l-2 border-[var(--color-accent)] bg-[var(--color-accent)]/5 p-3 pl-4 text-sm text-[var(--color-accent-bright)]">{msg}</div>}
 
           {!clientId ? (
-            <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)] text-sm text-[var(--color-text-muted)]">
+            <div className="border-y border-dashed border-[var(--color-border)] py-20 text-center text-sm text-[var(--color-text-muted)]">
               Select a client to see deployment ownership and vendor costs.
             </div>
           ) : loading ? (
@@ -206,7 +206,7 @@ export default function DeploymentsPage() {
           ) : (
             <div className="space-y-6">
               {/* n8n execution estimate */}
-              <div className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4">
+              <div className="border-b border-[var(--color-border)]/70 py-6">
                 <h3 className="text-sm font-semibold text-white mb-1 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-[var(--color-accent)]" /> n8n execution estimate</h3>
                 <p className="text-xs text-[var(--color-text-muted)] mb-3">Estimate demand before choosing a plan — never pick a plan from workflow count.</p>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
@@ -230,7 +230,7 @@ export default function DeploymentsPage() {
               </div>
 
               {/* Deployments */}
-              <div className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4">
+              <div className="border-b border-[var(--color-border)]/70 py-6">
                 <h3 className="text-sm font-semibold text-white mb-3">Deployments <span className="text-[var(--color-text-muted)] font-normal">({deployments.length})</span></h3>
                 {deployments.length === 0 ? (
                   <p className="text-xs text-[var(--color-text-muted)]">No automations deployed for this client yet (use Deploy Systems).</p>
@@ -300,7 +300,7 @@ export default function DeploymentsPage() {
               </div>
 
               {/* Vendor costs */}
-              <div className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4">
+              <div className="border-b border-[var(--color-border)]/70 py-6">
                 <h3 className="text-sm font-semibold text-white mb-1">Vendor-cost register</h3>
                 {register && (
                   <div className="flex flex-wrap gap-2 my-2 text-xs">

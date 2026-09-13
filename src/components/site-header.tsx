@@ -16,6 +16,7 @@ import { ElionLogo } from "@/components/elion-logo";
 const NAV_LINKS = [
   { label: "Solutions", anchor: "systems" },
   { label: "How It Works", anchor: "how" },
+  { label: "Products", href: "/products" },
   { label: "Audits", href: "/audit" },
   { label: "Demo", href: "/demo" },
   { label: "Pricing", href: "/pricing" },
@@ -38,7 +39,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
     "href" in l && (pathname === l.href || pathname.startsWith(l.href + "/"));
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-nav">
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[var(--color-border)]/70 bg-[var(--color-surface)]/95 backdrop-blur-md">
       <nav className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-6" aria-label="Primary navigation">
         <Link href="/" aria-label="ELION home" className="flex items-center">
           <ElionLogo size="md" />
@@ -75,7 +76,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
 
         <button
           onClick={() => setOpen(!open)}
-          className="tap-highlight-transparent rounded-md p-2 text-[var(--color-text-secondary)] transition-colors hover:text-white md:hidden"
+          className="tap-highlight-transparent rounded-[var(--radius-control)] px-2 py-2 text-[var(--color-text-secondary)] transition-colors hover:text-white md:hidden"
           aria-label="Toggle navigation menu"
           aria-expanded={open}
         >
@@ -86,7 +87,7 @@ export function SiteHeader({ ctaAction }: SiteHeaderProps) {
       </nav>
 
       {open && (
-        <div className="border-b border-[var(--color-border)]/50 bg-[var(--color-surface)]/95 backdrop-blur-xl md:hidden">
+        <div className="border-b border-[var(--color-border)] bg-[var(--color-surface)] md:hidden">
           <div className="px-6 py-5 space-y-1">
             {NAV_LINKS.map((l) => (
               <Link

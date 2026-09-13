@@ -22,12 +22,13 @@ export async function GET() {
   const { db: sb, client } = session;
 
   // Everything below is scoped to THIS client id only.
-  const [projectRes, formRes, docsRes, reportsRes, accessRes] = await Promise.all([
+  const [projectRes, formRes, docsRes, reportsRes, accessRes, invoicesRes] = await Promise.all([
     sb.from("portal_projects").select("*").eq("client_id", client.id).order("created_at", { ascending: false }).limit(1).maybeSingle(),
     sb.from("portal_onboarding_form").select("*").eq("client_id", client.id).maybeSingle(),
     sb.from("client_documents").select("id, title, category, version, status, created_at").eq("client_id", client.id).order("created_at", { ascending: false }).limit(10),
     sb.from("portal_reports").select("id, title, period_start, period_end, metrics, narrative, data_source, last_updated_at, created_at").eq("client_id", client.id).order("created_at", { ascending: false }).limit(6),
     sb.from("portal_access_requests").select("id, service_name, access_kind, instructions, status, updated_at").eq("client_id", client.id).order("created_at"),
+    sb.from("invoices").select("id, invoice_number, title, amount, currency, status, due_at").eq("client_id", client.id).in("status", ["draft", "sent", "overdue"]).order("created_at", { ascending: false }).limit(20),
   ]);
 
   const project = projectRes.data || null;
@@ -55,7 +56,7 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    client: { company_name: client.company_name, contact_name: client.contact_name, plan_name: client.plan_name, onboarding_status: client.onboarding_status },
+    client: { company_name: client.company_name, contact_name: client.contact_name, email: client.email, plan_name: client.plan_name, onboarding_status: client.onboarding_status },
     project,
     tasks,
     nextAction,
@@ -64,6 +65,7 @@ export async function GET() {
       : null,
     documents: docsRes.data || [],
     reports: reportsRes.data || [],
+    invoices: invoicesRes.data || [],
     accessRequests: accessRes.data || [],
   });
 }

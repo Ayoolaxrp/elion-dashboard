@@ -79,16 +79,17 @@ export default function AdminAuditsPage() {
   return (
     <div className="workspace-shell">
       <AdminSidebar />
-      <main className="flex-1 min-w-0 p-4 md:p-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Audits</h1>
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">{audits.length} audits captured from the public audit experience</p>
-          </div>
+      <main className="min-w-0 flex-1 p-5 md:p-8">
+        <div className="admin-content-gutter">
+          <header className="workspace-header mb-7">
+            <p className="workspace-kicker">Pipeline evidence</p>
+            <h1 className="page-title mt-3 text-[var(--color-text-primary)]">Audits</h1>
+            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">{audits.length} audit{audits.length === 1 ? "" : "s"} captured from the public audit experience.</p>
+          </header>
 
           {error && <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">{error}</div>}
 
-          <div className="relative mb-4">
+          <div className="relative mb-6 border-b border-[var(--color-border)]/70 pb-5">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
             <input
               value={query}
@@ -99,7 +100,7 @@ export default function AdminAuditsPage() {
           </div>
 
           {filtered.length === 0 ? (
-            <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)]">
+            <div className="border-y border-dashed border-[var(--color-border)] py-20 text-center">
               <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">{audits.length === 0 ? "No audits yet" : "No audits match your search"}</p>
               <p className="text-sm text-[var(--color-text-muted)]">
                 {audits.length === 0 ? "When visitors run the public audit, results are stored here with their findings." : "Try a different search term."}
@@ -111,7 +112,7 @@ export default function AdminAuditsPage() {
                 const isOpen = expanded === a.id;
                 const score = a.overall_score ?? null;
                 return (
-                  <div key={a.id} className="rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] p-4 hover:border-[var(--color-accent)]/30 transition-colors">
+              <div key={a.id} className="border-b border-[var(--color-border)]/70 py-5 transition-colors first:border-t hover:bg-[var(--color-surface-raised)]">
                     <div className="flex flex-wrap items-center justify-between gap-3 cursor-pointer" onClick={() => setExpanded(isOpen ? null : a.id)}>
                       <div className="flex items-center gap-3 min-w-0">
                         {isOpen ? <ChevronUp className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" /> : <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />}

@@ -2,11 +2,10 @@
 // Run: node tests/commercial/run-kora.cjs
 //
 // Covers:
-//   - initialize: naira→kobo conversion at the API edge, checkout_url parse
-//   - verify: kobo→naira, status mapping (success/failed/pending)
-//   - webhook signature: accepts webhook secret or secret key, rejects wrong
-//   - entitlement unlock: invoice only flipped from unpaid states; lead only
-//     promoted from pre-paid stages; lost leads untouched; idempotent no-ops
+//   - initialize: documented major-unit amount, checkout_url and notification_url
+//   - verify: charge query endpoint, status mapping and currency
+//   - webhook signature: documented HMAC-SHA256 contract
+//   - amount/currency reconciliation and deterministic unlock behavior
 
 const { execFileSync } = require("child_process");
 const { createHmac } = require("crypto");
@@ -55,13 +54,13 @@ const jsonRes = (body, ok = true, status = 200) => ({
     );
   });
   const p = new kora.KoraProvider({ secretKey: "sk_test" });
-  p.createCheckout({ amountNaira: 150000, reference: "elion_inv_1", redirectUrl: "https://elion.com.ng/admin/payments" })
+  p.createCheckout({ amount: 150000, currency: "NGN", customerEmail: "client@example.com", reference: "elion_inv_1", redirectUrl: "https://elion.com.ng/admin/payments", notificationUrl: "https://elion.com.ng/api/webhooks/kora", metadata: { payment_id: "p1" } })
     .then((res) => {
-      check("initialize posts amount in kobo", captured && captured.body.amount === 15000000, JSON.stringify(captured && captured.body.amount));
+      check("initialize posts major-unit amount", captured && captured.body.amount === 150000, JSON.stringify(captured && captured.body.amount));
       check("initialize uses the reference", captured && captured.body.reference === "elion_inv_1", JSON.stringify(captured && captured.body.reference));
-      check("initialize carries redirect_url", captured && captured.body.redirect_url === "https://elion.com.ng/admin/payments", JSON.stringify(captured && captured.body.redirect_url));
+      check("initialize carries notification_url", captured && captured.body.notification_url === "https://elion.com.ng/api/webhooks/kora", JSON.stringify(captured && captured.body.notification_url));
       check("initialize returns checkout_url", res.checkoutUrl === "https://checkout.korapay.com/x", res.checkoutUrl);
-      return p.createCheckout({ amountNaira: 0, reference: "r", redirectUrl: "u" })
+      return p.createCheckout({ amount: 0, currency: "NGN", customerEmail: "client@example.com", reference: "r", redirectUrl: "u", notificationUrl: "n" })
         .then(() => { check("initialize rejects zero amount", false, "resolved unexpectedly"); })
         .catch(() => { check("initialize rejects zero amount", true); });
     })
@@ -75,25 +74,25 @@ function next1() {
     fetchMock((url, opts) => {
       captured = { url, auth: (opts.headers || {}).Authorization };
       return Promise.resolve(
-        jsonRes({ status: true, message: "ok", data: { reference: "ref_123", amount: 15000000, currency: "NGN", status: "success", paid_at: "2026-09-10T00:00:00Z", fee: 150000 } })
+        jsonRes({ status: true, message: "ok", data: { reference: "ref_123", amount: 150000, currency: "NGN", status: "success", paid_at: "2026-09-10T00:00:00Z", fee: 1500 } })
       );
     });
     const p = new kora.KoraProvider({ secretKey: "sk_test" });
     p.verifyTransaction("ref_123")
       .then((t) => {
-        check("verify hits the transaction endpoint", captured && /\/transactions\/ref_123$/.test(captured.url), captured && captured.url);
+        check("verify hits the charge endpoint", captured && /\/charges\/ref_123$/.test(captured.url), captured && captured.url);
         check("verify sends bearer auth", captured && captured.auth === "Bearer sk_test", captured && captured.auth);
         check("verify maps success status", t.status === "success", t.status);
-        check("verify converts kobo to naira", t.amountNaira === 150000, String(t.amountNaira));
-        check("verify converts fee to naira", t.feeNaira === 1500, String(t.feeNaira));
+        check("verify reads major-unit amount", t.amount === 150000, String(t.amount));
+        check("verify maps currency", t.currency === "NGN", t.currency);
       })
       .then(() => {
-        fetchMock(() => Promise.resolve(jsonRes({ status: true, message: "ok", data: { reference: "r2", amount: 5000, status: "failed" } })));
+        fetchMock(() => Promise.resolve(jsonRes({ status: true, message: "ok", data: { reference: "r2", amount: 50, status: "failed" } })));
         return new kora.KoraProvider({ secretKey: "s" }).verifyTransaction("r2");
       })
       .then((t) => {
         check("verify maps failed status", t.status === "failed", t.status);
-        check("verify converts small kobo to naira", t.amountNaira === 50, String(t.amountNaira));
+        check("verify preserves failed amount", t.amount === 50, String(t.amount));
       })
       .then(next2)
       .catch((e) => { failures.push("verify threw: " + e.message); next2(); });
@@ -116,10 +115,10 @@ function next2() {
   }
 
   // ── 3b. payment amount comparison ──
-  const exact = { status: "success", reference: "r", amountNaira: 150000, currency: "NGN" };
+  const exact = { status: "success", reference: "r", amount: 150000, currency: "NGN" };
   check("exact payment amount matches", kora.comparePaymentAmount(150000, "NGN", exact) === "exact", "");
-  check("underpayment is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, amountNaira: 149999 }) === "underpaid", "");
-  check("overpayment is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, amountNaira: 150001 }) === "overpaid", "");
+  check("underpayment is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, amount: 149999 }) === "underpaid", "");
+  check("overpayment is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, amount: 150001 }) === "overpaid", "");
   check("currency mismatch is distinct", kora.comparePaymentAmount(150000, "NGN", { ...exact, currency: "USD" }) === "currency_mismatch", "");
 
   // ── 4. entitlement unlock (fake Supabase client) ──
@@ -134,12 +133,26 @@ function next2() {
           eq: (k, v) => { builder._eq = [k, v]; return api(builder); },
           in: (k, v) => { builder._in = [k, v]; return api(builder); },
           select: (s) => { builder._select = s; return api(builder); },
+          insert: (row) => ({
+            then: (resolve) => {
+              calls.push({ table: builder._table, insert: row });
+              resolve({ data: [{ id: "inserted" }], error: null });
+              return Promise.resolve();
+            },
+          }),
         };
         function api(b) {
           return {
             eq: (k, v) => { b._eq = [k, v]; return api(b); },
             in: (k, v) => { b._in = [k, v]; return api(b); },
             select: (s) => { b._select = s; return api(b); },
+            insert: (row) => ({
+              then: (resolve) => {
+                calls.push({ table: b._table, insert: row });
+                resolve({ data: [{ id: "inserted" }], error: null });
+                return Promise.resolve();
+              },
+            }),
             then: (resolve, reject) => {
               calls.push({ table: b._table, update: b._update, eq: b._eq, in: b._in, select: b._select });
               // Simulate: update succeeded when a row matched.
@@ -166,6 +179,7 @@ function next2() {
       const fakeSb2 = {
         from: () => ({
           update: (u) => ({ eq: () => ({ in: () => ({ select: () => ({ then: (resolve) => { calls.push({ t: "noop" }); resolve({ data: [], error: null }); return Promise.resolve(); } }) }) }) }),
+          insert: () => ({ then: (resolve) => { resolve({ data: [], error: null }); return Promise.resolve(); } }),
         }),
       };
       return unlock.unlockAfterPayment(fakeSb2, { id: "p2", lead_id: null, client_id: null, invoice_id: "i2" });

@@ -34,8 +34,19 @@
   --color-muted-foreground: #7C8494;
   --color-info: #7C9BFF;
   --color-destructive: #EF4444;
-  --color-destructive-foreground: #FFFFFF;
-  --color-ring: #3B66E8;
+  --color-destructive-foreground: #FFFFFF;  /* Type scale: display for marketing statements, UI titles for workspaces,
+     and small labels for system metadata. */
+  --text-display: clamp(2.75rem, 6vw, 5.5rem);
+  --text-page-title: clamp(1.875rem, 3vw, 2.75rem);
+  --text-section-title: clamp(1.5rem, 2.4vw, 2.25rem);
+  --text-body: 0.9375rem;
+  --text-meta: 0.8125rem;
+  --text-label: 0.6875rem;
+
+  --radius-control: 0.625rem;
+  --radius-surface: 0.875rem;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @layer base {
@@ -56,15 +67,14 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Space Grotesk", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-optical-sizing: auto;
   }
 
   a { color: inherit; text-decoration: none; }
 
-  /* Self-hosted variable font (no CDN/CSP dependency). The former display
-     alias is kept for older component styles but points to the same restrained
-     reading face so public and private surfaces do not drift apart. */
+  /* Self-hosted variable fonts. Keep display and reading faces distinct so
+     hierarchy comes from type, not decorative containers. */
   @font-face {
     font-family: "Inter";
     src: url("/fonts/Inter-Variable.woff2") format("woff2");
@@ -74,7 +84,7 @@
   }
   @font-face {
     font-family: "Space Grotesk";
-    src: url("/fonts/Inter-Variable.woff2") format("woff2");
+    src: url("/fonts/SpaceGrotesk-Variable.woff2") format("woff2");
     font-weight: 300 700;
     font-style: normal;
     font-display: swap;
@@ -109,7 +119,50 @@
 }
 .animate-status-pulse { animation: status-pulse 2s ease-in-out infinite; }
 
-/* ---- Scrollbar ---- */
+/* ---- Shared hierarchy primitives ---- */
+.display-type {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: var(--text-display);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+.page-title {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: var(--text-page-title);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+.section-title {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: var(--text-section-title);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+.body-copy { font-size: var(--text-body); line-height: 1.7; }
+.meta-copy { font-size: var(--text-meta); line-height: 1.55; }
+.system-label {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.content-gutter { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+.admin-content-gutter { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+@media (min-width: 768px) {
+  .content-gutter, .admin-content-gutter { width: min(100% - 4rem, 72rem); }
+}
+.surface-divider { border-top: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent); }
+
+/* ---- Shared control language ---- */
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button, [role="button"] { touch-action: manipulation; }
+button:active, [role="button"]:active { transform: translateY(1px); }
+
+
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #2A3548; border-radius: 3px; }
@@ -302,18 +355,18 @@ body:has(aside[data-admin-sidebar]) main > * {
   background: var(--color-surface);
 }
 
-/* ---- Apple-style Glass Materials ---- */
+/* The public header uses a restrained solid material; keep this alias for
+   older consumers without introducing a second visual treatment. */
 .glass-nav {
-  background: rgba(10, 13, 20, 0.88);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 13, 20, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
 }
+/* Reserved for the fixed action rail; keep the material quiet. */
 .glass-cta {
-  background: rgba(10, 13, 20, 0.92);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 13, 20, 0.96);
+  border-top: 1px solid var(--color-border);
 }
 
 
@@ -324,11 +377,8 @@ body:has(aside[data-admin-sidebar]) main > * {
 /* Press feedback belongs to the control that owns the interaction. A global
    scale transform made links, cards, and navigation feel like a component kit
    rather than a calm, direct product interface. */
-h1, h2, h3 {
-  letter-spacing: -0.025em;
-  text-wrap: balance;
-}
-h4, h5, h6 { letter-spacing: -0.015em; }
+h1, h2, h3 { text-wrap: balance; }
+h4, h5, h6 { text-wrap: balance; }
 p, li, td { letter-spacing: 0; }
 
 /* Premium animations */

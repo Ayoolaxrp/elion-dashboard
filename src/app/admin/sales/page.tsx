@@ -132,7 +132,7 @@ function QueueCard({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: 
   };
 
   return (
-    <article className="border-b border-[var(--color-border)]/70 py-7 first:pt-1 last:border-0">
+    <article className="border-b border-[var(--color-border)]/70 py-8 first:pt-1 last:border-0">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -241,16 +241,16 @@ export default function SalesQueuePage() {
       <AdminSidebar />
       <main className="flex-1 min-w-0 p-5 md:p-8">
         <div className="mx-auto max-w-5xl">
-          <header className="mb-9 flex flex-wrap items-end justify-between gap-5">
+          <header className="workspace-header mb-9 flex flex-wrap items-end justify-between gap-5">
             <div>
               <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-bright)]"><Sparkles className="h-3.5 w-3.5" /> Founder cockpit</p>
-              <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[var(--color-text-primary)] md:text-4xl">Who should I contact today?</h1>
+              <h1 className="page-title mt-3 text-[var(--color-text-primary)] md:text-4xl">Who should I contact today?</h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-text-secondary)]">A focused view of leads that need a decision. Review the evidence, adapt the opening, and send manually when you are ready.</p>
             </div>
             <button type="button" onClick={() => void load()} className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] px-3 py-2 text-xs font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"><RefreshCw className="h-3.5 w-3.5" /> Refresh</button>
           </header>
 
-          <div className="mb-7 border-y border-[var(--color-border)]/70 py-3">
+          <div className="mb-7 border-b border-[var(--color-border)]/70 py-3">
             <div className="flex flex-wrap items-center gap-2">
               {[{ key: "today", label: "Today's queue" }, { key: "all", label: "All leads" }, { key: "recent", label: "Recently updated" }].map((item) => <button key={item.key} type="button" onClick={() => setView(item.key as View)} className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${view === item.key ? "bg-[var(--color-accent)]/10 text-[var(--color-accent-bright)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"}`}>{item.label}</button>)}
               <span className="ml-auto text-xs text-[var(--color-text-muted)]">{visible.length} lead{visible.length === 1 ? "" : "s"}</span>

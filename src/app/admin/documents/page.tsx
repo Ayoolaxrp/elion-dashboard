@@ -30,71 +30,6 @@ interface ClientPipeline {
   }[];
 }
 
-const samplePipelines: ClientPipeline[] = [
-  {
-    id: "client_001",
-    company: "ABC Properties",
-    contact: "Adebayo Okonkwo",
-    email: "adebayo@abcproperties.ng",
-    current_stage: "thankyou",
-    documents: [
-      { type: "proposal", status: "accepted", sent_at: "2026-08-16", viewed_at: "2026-08-16" },
-      { type: "contract", status: "signed", sent_at: "2026-08-21", viewed_at: "2026-08-21" },
-      { type: "invoice", status: "paid", sent_at: "2026-08-22", viewed_at: "2026-08-22" },
-      { type: "welcome", status: "completed", sent_at: "2026-08-23", viewed_at: "2026-08-23" },
-      { type: "portal", status: "completed", sent_at: "2026-08-24", viewed_at: "2026-08-25" },
-      { type: "thankyou", status: "completed", sent_at: "2026-09-01", viewed_at: "2026-09-01" },
-    ],
-  },
-  {
-    id: "client_002",
-    company: "Fresh Ventures",
-    contact: "Tunde Bakare",
-    email: "tunde@freshventures.ng",
-    current_stage: "invoice",
-    documents: [
-      { type: "proposal", status: "accepted", sent_at: "2026-08-25", viewed_at: "2026-08-25" },
-      { type: "contract", status: "signed", sent_at: "2026-08-27", viewed_at: "2026-08-27" },
-      { type: "invoice", status: "sent", sent_at: "2026-08-28", viewed_at: null },
-      { type: "welcome", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "portal", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "thankyou", status: "not_started", sent_at: null, viewed_at: null },
-    ],
-  },
-  {
-    id: "client_003",
-    company: "Chidi & Sons",
-    contact: "Chidi Nwosu",
-    email: "chidi@chidiandsons.ng",
-    current_stage: "proposal",
-    documents: [
-      { type: "proposal", status: "draft", sent_at: null, viewed_at: null },
-      { type: "contract", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "invoice", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "welcome", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "portal", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "thankyou", status: "not_started", sent_at: null, viewed_at: null },
-    ],
-  },
-  {
-    id: "client_004",
-    company: "Dewdrops Hotel",
-    contact: "Ngozi Eze",
-    email: "ngozi@dewdropshotel.ng",
-    current_stage: "proposal",
-    documents: [
-      { type: "proposal", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "contract", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "invoice", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "welcome", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "portal", status: "not_started", sent_at: null, viewed_at: null },
-      { type: "thankyou", status: "not_started", sent_at: null, viewed_at: null },
-    ],
-  },
-];
-
-void samplePipelines;
-
 const STATUS_CONFIG: Record<string, { color: string; label: string; bg: string }> = {
   not_started: { color: "text-gray-500", label: "Not Started", bg: "bg-gray-500/10 border border-gray-500/20" },
   draft: { color: "text-amber-400", label: "Draft", bg: "bg-amber-400/10 border border-amber-500/20" },
@@ -151,23 +86,20 @@ export default function AdminDocumentsPage() {
   return (
     <div className="workspace-page">
       <AdminSidebar />
-      <main className="flex-1 p-6">
-        <div className="max-w-6xl mx-auto">
+      <main className="min-w-0 flex-1 p-5 md:p-8">
+        <div className="admin-content-gutter">
           <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-white mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Admin
           </Link>
 
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
-              Document Pipeline
-            </h1>
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">
-              Generate, send, and track the 6 onboarding documents for each client.
-            </p>
-          </div>
+          <header className="workspace-header mb-8">
+            <p className="workspace-kicker">Client delivery</p>
+            <h1 className="page-title mt-3 text-[var(--color-text-primary)]">Document pipeline</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-secondary)]">Generate, send, and track the six onboarding documents for each real client record.</p>
+          </header>
 
           {/* System Overview */}
-          <div className="mb-8 p-4 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)]">
+          <div className="mb-8 border-y border-[var(--color-border)] py-5">
             <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-wider mb-3">The 6-Document System</p>
             <div className="flex flex-wrap gap-2">
               {DOC_TYPES.map((doc, i) => (
@@ -182,17 +114,17 @@ export default function AdminDocumentsPage() {
           </div>
 
           {/* Client Pipelines */}
-          <div className="space-y-4">
+          <div className="space-y-0 border-y border-[var(--color-border)]">
             {pipelines.map(client => {
               const isExpanded = expandedClient === client.id;
               const completedCount = client.documents.filter((d) => ["accepted", "signed", "paid", "completed"].includes(d.status)).length;
               const progress = (completedCount / 6) * 100;
 
               return (
-                <div key={client.id} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl overflow-hidden">
+                <div key={client.id} className="border-b border-[var(--color-border)]/70 transition-colors last:border-0 hover:bg-[var(--color-surface-raised)]">
                   {/* Client Header */}
                   <div
-                    className="p-5 cursor-pointer hover:bg-[var(--color-surface-elevated)] transition-colors"
+                    className="cursor-pointer p-5 md:p-6"
                     onClick={() => setExpandedClient(isExpanded ? null : client.id)}
                   >
                     <div className="flex items-center justify-between">
@@ -219,7 +151,7 @@ export default function AdminDocumentsPage() {
 
                   {/* Expanded Document Pipeline */}
                   {isExpanded && (
-                    <div className="border-t border-[var(--color-border)] p-5">
+                    <div className="border-t border-[var(--color-border)] p-5 md:p-6">
                       {/* Pipeline Visual */}
                       <div className="flex items-center gap-1 mb-6 overflow-x-auto pb-2">
                         {DOC_TYPES.map((doc, i) => {

@@ -253,24 +253,23 @@ export default function LeadsPage() {
   return (
     <div className="workspace-page">
       <AdminSidebar />
-      <main className="flex-1 min-w-0 p-4 md:p-8">
-        <div className="max-w-6xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+      <main className="min-w-0 flex-1 p-5 md:p-8">
+        <div className="admin-content-gutter">
+      <header className="workspace-header mb-8 flex flex-wrap items-end justify-between gap-4">
         <div className="flex items-center gap-3">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">Leads</h1>
+            <h1 className="page-title text-[var(--color-text-primary)]">Leads</h1>
             <p className="text-sm text-[var(--color-text-muted)] mt-1">{visible.length} shown · {leads.length} total{archivedCount ? ` · ${archivedCount} archived` : ""}</p>
           </div>
         </div>
         <button onClick={() => setShowAdd(!showAdd)} className="workspace-action workspace-action-primary">
           <Plus className="w-4 h-4" /> Add Lead
         </button>
-      </div>
-
+      </header>
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-start justify-between gap-3">
+        <div className="mb-6 flex items-start justify-between gap-3 border-l-2 border-[var(--color-error)] bg-[var(--color-error)]/5 p-3 pl-4 text-sm text-[var(--color-error)]">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="text-red-400/70 hover:text-red-300"><X className="w-4 h-4" /></button>
+          <button onClick={() => setError(null)} className="text-[var(--color-error)]/70 hover:text-[var(--color-error)]"><X className="h-4 w-4" /></button>
         </div>
       )}
 
@@ -308,8 +307,8 @@ export default function LeadsPage() {
       )}
 
       {/* Toolbar */}
-      <div className="mb-4 flex flex-col md:flex-row gap-3 items-stretch md:items-center">
-        <div className="relative flex-1">
+      <div className="mb-6 flex flex-col gap-3 border-b border-[var(--color-border)]/70 pb-5 md:flex-row md:items-center">
+        <div className="relative min-w-0 flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
           <input
             value={query}
@@ -342,10 +341,6 @@ export default function LeadsPage() {
           <option value="desc">Newest first</option>
           <option value="asc">Oldest first</option>
         </select>
-        <label className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] cursor-pointer select-none">
-          <input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} className="accent-[var(--color-accent)]" />
-          Show archived
-        </label>
       </div>
 
       {visible.length === 0 ? (

@@ -72,6 +72,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preload" href="/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/SpaceGrotesk-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       
       <script
         type="application/ld+json"

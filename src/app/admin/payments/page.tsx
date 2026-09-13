@@ -5,7 +5,7 @@ import { CheckCircle, Clock, AlertCircle, Loader2, Plus, CreditCard } from "luci
 import { AdminSidebar } from "@/components/admin/sidebar";
 
 type IconType = ComponentType<{ className?: string }>;
-type InvoiceOption = { id: string; invoice_number: string | null; title: string | null; amount: number; status: string; company_name: string | null };
+type InvoiceOption = { id: string; invoice_number: string | null; title: string | null; amount: number; currency: string; status: string; company_name: string | null };
 
 interface Payment {
   id: string;
@@ -15,6 +15,7 @@ interface Payment {
   client_name: string | null;
   method: string | null;
   reference: string | null;
+  provider_reference?: string | null;
   status: string;
   paid_at: string | null;
   notes: string | null;
@@ -30,6 +31,8 @@ const STATUS_CONFIG: Record<string, { color: string; icon: IconType; label: stri
   failed: { color: "text-red-400 bg-red-400/10", icon: AlertCircle, label: "Failed" },
   abandoned: { color: "text-gray-400 bg-gray-400/10", icon: AlertCircle, label: "Abandoned" },
   refunded: { color: "text-gray-400 bg-gray-400/10", icon: AlertCircle, label: "Refunded" },
+  processing: { color: "text-blue-400 bg-blue-400/10", icon: Clock, label: "Processing" },
+  cancelled: { color: "text-gray-400 bg-gray-400/10", icon: AlertCircle, label: "Cancelled" },
 };
 
 export default function PaymentsPage() {
@@ -45,7 +48,7 @@ export default function PaymentsPage() {
   const [showKora, setShowKora] = useState(false);
   const [koraBusy, setKoraBusy] = useState(false);
   const [koraMsg, setKoraMsg] = useState<string | null>(null);
-  const [koraForm, setKoraForm] = useState({ invoice_id: "", amount: "", company_name: "", customer_email: "" });
+  const [koraForm, setKoraForm] = useState({ invoice_id: "", amount: "", currency: "NGN", company_name: "", customer_email: "" });
   const [invoices, setInvoices] = useState<InvoiceOption[]>([]);
 
   const load = () => {
@@ -106,6 +109,7 @@ export default function PaymentsPage() {
         body: JSON.stringify({
           invoice_id: koraForm.invoice_id || null,
           amount: invoice ? undefined : Number(koraForm.amount),
+          currency: invoice ? undefined : koraForm.currency,
           company_name: (koraForm.company_name.trim() || invoice?.company_name || null),
           customer_email: koraForm.customer_email.trim() || null,
         }),
@@ -203,11 +207,17 @@ export default function PaymentsPage() {
                   <option value="">— Unpaid invoice (optional) —</option>
                   {invoices.map((inv) => (
                     <option key={inv.id} value={inv.id}>
-                      {inv.invoice_number || inv.title || inv.id} · ₦{(inv.amount || 0).toLocaleString()} · {inv.company_name || ""}
+                      {inv.invoice_number || inv.title || inv.id} · {inv.currency} {new Intl.NumberFormat("en-NG", { maximumFractionDigits: 2 }).format(inv.amount || 0)} · {inv.company_name || ""}
                     </option>
                   ))}
                 </select>
-                <input className={inputCls} placeholder="Amount (₦) — used only without an invoice" type="number" value={koraForm.amount} onChange={(e) => setKoraForm({ ...koraForm, amount: e.target.value })} />
+                <select className={inputCls} value={koraForm.currency} onChange={(e) => setKoraForm({ ...koraForm, currency: e.target.value })} disabled={Boolean(koraForm.invoice_id)}>
+                  <option value="NGN">NGN</option>
+                  <option value="USD">USD</option>
+                  <option value="GBP">GBP</option>
+                  <option value="EUR">EUR</option>
+                </select>
+                <input className={inputCls} placeholder="Amount — used only without an invoice" type="number" value={koraForm.amount} onChange={(e) => setKoraForm({ ...koraForm, amount: e.target.value })} />
                 <input className={inputCls} placeholder="Company name (optional)" value={koraForm.company_name} onChange={(e) => setKoraForm({ ...koraForm, company_name: e.target.value })} />
                 <input className={inputCls} placeholder="Customer email (optional)" type="email" value={koraForm.customer_email} onChange={(e) => setKoraForm({ ...koraForm, customer_email: e.target.value })} />
               </div>
@@ -286,9 +296,9 @@ export default function PaymentsPage() {
                         <p className="font-medium text-[var(--color-text-primary)] truncate">{company}</p>
                         <p className="text-xs text-[var(--color-text-muted)] truncate">{client || p.invoices?.invoice_number || "-"}</p>
                       </div>
-                      <span className="font-semibold text-[var(--color-text-primary)]">₦{(p.amount || 0).toLocaleString()}</span>
+                      <span className="font-semibold text-[var(--color-text-primary)]">{p.currency || "NGN"} {new Intl.NumberFormat("en-NG", { maximumFractionDigits: 2 }).format(p.amount || 0)}</span>
                       <span className="text-[var(--color-text-secondary)] capitalize">{(p.method || "bank_transfer").replace("_", " ")}</span>
-                      <span className="hidden sm:block text-xs font-mono text-[var(--color-text-muted)] truncate">{p.reference || "-"}</span>
+                      <span className="hidden sm:block text-xs font-mono text-[var(--color-text-muted)] truncate">{p.provider_reference || p.reference || "-"}</span>
                       <span className="hidden lg:block text-xs text-[var(--color-text-muted)]">{(p.paid_at || p.created_at) ? new Date(p.paid_at || p.created_at).toLocaleDateString("en-NG") : "-"}</span>
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold justify-self-start ${sc.color}`}>
                         <Icon className="w-3 h-3" />
@@ -308,6 +318,10 @@ export default function PaymentsPage() {
                               <p className="text-[var(--color-text-secondary)]">{p.invoices.invoice_number || p.invoices.title || "-"}</p>
                             </div>
                           )}
+                          <div>
+                            <p className="text-[var(--color-text-muted)] mb-1">Transaction reference</p>
+                            <p className="font-mono text-[var(--color-text-secondary)]">{p.provider_reference || p.reference || "-"}</p>
+                          </div>
                           <div>
                             <p className="text-[var(--color-text-muted)] mb-1">Currency</p>
                             <p className="text-[var(--color-text-secondary)]">{p.currency || "NGN"}</p>

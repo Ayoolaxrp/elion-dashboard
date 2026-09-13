@@ -38,7 +38,7 @@ function Badge({ status }: { status: string }) {
 }
 
 interface PortalData {
-  client: { company_name: string; contact_name: string; plan_name: string | null; onboarding_status: string };
+  client: { company_name: string; contact_name: string; email: string; plan_name: string | null; onboarding_status: string };
   project: { id: string; name: string; description: string | null; phase: string } | null;
   tasks: { id: string; title: string; details: string | null; owner: string; status: string; due_date: string | null }[];
   nextAction: { title: string; detail: string } | null;
@@ -46,6 +46,7 @@ interface PortalData {
   documents: { id: string; title: string; category: string; status: string; created_at: string }[];
   reports: { id: string; title: string; period_start: string; period_end: string; data_source: string | null }[];
   accessRequests: { id: string; service_name: string; status: string }[];
+  invoices: { id: string; invoice_number: string | null; title: string; amount: number; currency: string; status: string; due_at: string | null }[];
 }
 
 export default function ClientPortal() {
@@ -53,12 +54,53 @@ export default function ClientPortal() {
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
 
+  const [payingInvoice, setPayingInvoice] = useState<string | null>(null);
+  const [paymentMessage, setPaymentMessage] = useState("");
+
   useEffect(() => {
     fetch("/api/client/portal")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => { setFailed(true); setLoading(false); });
   }, []);
+
+  useEffect(() => {
+    const paymentId = new URLSearchParams(window.location.search).get("payment");
+    if (!paymentId) return;
+    (async () => {
+      setPaymentMessage("Verifying payment with Kora…");
+      try {
+        const response = await fetch(`/api/payments/kora/verify?payment=${encodeURIComponent(paymentId)}`);
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(body.error || "Verification failed");
+        setPaymentMessage(body.verified ? "Payment confirmed. Your invoice and onboarding status have been updated." : `Payment is ${body.status || "pending"} — it has not been marked paid.`);
+      } catch (error) {
+        setPaymentMessage(error instanceof Error ? error.message : "Payment verification failed");
+      } finally {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("payment");
+        window.history.replaceState({}, "", url.toString());
+      }
+    })();
+  }, []);
+
+  const payInvoice = async (invoiceId: string) => {
+    setPayingInvoice(invoiceId);
+    setPaymentMessage("");
+    try {
+      const response = await fetch("/api/payments/kora/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ invoice_id: invoiceId }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.error || "Could not open checkout");
+      window.location.assign(body.checkoutUrl);
+    } catch (error) {
+      setPaymentMessage(error instanceof Error ? error.message : "Could not open checkout");
+      setPayingInvoice(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -82,7 +124,7 @@ export default function ClientPortal() {
     );
   }
 
-  const { client, project, tasks, nextAction, onboardingForm, documents, reports, accessRequests } = data;
+  const { client, project, tasks, nextAction, onboardingForm, documents, reports, accessRequests, invoices } = data;
 
   const cardStyle = { background: T.surface, border: "1px solid " + T.border } as const;
 
@@ -99,6 +141,8 @@ export default function ClientPortal() {
           </div>
           <Link href="/dashboard" className="text-sm underline" style={{ color: T.textSecondary }}>Operations dashboard</Link>
         </div>
+
+        {paymentMessage && <div className="mb-4 rounded-md px-4 py-3 text-sm" style={{ background: T.accentSoft, border: "1px solid " + T.border, color: T.textSecondary }} role="status">{paymentMessage}</div>}
 
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="lg:w-[280px] shrink-0 space-y-3">
@@ -204,7 +248,25 @@ export default function ClientPortal() {
             </div>
 
             <div className="rounded-lg overflow-hidden" style={cardStyle}>
-              <div className="px-4 py-3 font-semibold" style={{ background: T.surfaceMuted, fontSize: 15 }}>Recent deliverables</div>
+              <div className="px-4 py-3 font-semibold" style={{ background: T.surfaceMuted, fontSize: 15 }}>Invoices</div>
+              {invoices.length === 0 ? (
+                <p className="px-4 py-3 text-xs" style={{ color: T.textMuted }}>No outstanding invoices.</p>
+              ) : (
+                <ul>
+                  {invoices.map((invoice) => (
+                    <li key={invoice.id} className="px-4 py-3 flex flex-wrap items-center justify-between gap-3" style={{ borderTop: "1px solid " + T.border }}>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{invoice.invoice_number || invoice.title}</p>
+                        <p className="text-xs" style={{ color: T.textMuted }}>{invoice.currency} {invoice.amount.toLocaleString()}{invoice.due_at ? " · due " + invoice.due_at : ""}</p>
+                      </div>
+                      <button type="button" onClick={() => payInvoice(invoice.id)} disabled={payingInvoice === invoice.id} className="rounded-md font-semibold disabled:opacity-60" style={{ background: T.accent, color: "#fff", height: 40, padding: "0 14px", fontSize: 13 }}>{payingInvoice === invoice.id ? "Opening…" : "Pay invoice"}</button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="rounded-lg overflow-hidden" style={cardStyle}>
               {documents.length === 0 ? (
                 <p className="px-4 py-4 text-sm" style={{ color: T.textMuted }}>No documents yet. Your scope and agreement will appear here.</p>
               ) : (

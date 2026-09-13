@@ -44,10 +44,10 @@ export default function ClientsPage() {
     <div className="workspace-shell">
       <AdminSidebar />
       <main className="min-w-0 flex-1 p-5 md:p-8">
-      <div className="mx-auto max-w-6xl">
-      <header className="workspace-header mb-8 flex items-end justify-between gap-4 flex-wrap">
+      <div className="admin-content-gutter">
+      <header className="workspace-header mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Clients</h1>
+          <h1 className="page-title text-[var(--color-text-primary)]">Clients</h1>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Manage client accounts, automations, and onboarding.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ export default function ClientsPage() {
       {loading ? (
         <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-[var(--color-accent)]" /></div>
       ) : clients.length === 0 ? (
-        <div className="text-center py-20 bg-[var(--color-surface-raised)] rounded-xl border border-[var(--color-border)]/50">
+        <div className="border-y border-dashed border-[var(--color-border)] py-20 text-center">
           <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">No clients yet</p>
           <p className="text-sm text-[var(--color-text-muted)]">Clients appear here after a lead converts and is onboarded.</p>
           <div className="flex gap-2 justify-center mt-4">
@@ -74,7 +74,7 @@ export default function ClientsPage() {
           {clients.map((c) => {
             const st = sentState[c.id];
             return (
-              <div key={c.id} className="p-5 bg-[var(--color-surface-raised)] border border-[var(--color-border)]/50 rounded-xl hover:border-[var(--color-border)] transition-all">
+              <div key={c.id} className="border-b border-[var(--color-border)]/70 py-6 transition-colors first:border-t hover:bg-[var(--color-surface-raised)]">
                 <div className="flex items-start justify-between gap-4 mb-3 flex-wrap">
                   <Link href={`/admin/clients/${c.id}`} className="min-w-0 flex-1 group">
                     <h3 className="text-base font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors">{c.company_name}</h3>

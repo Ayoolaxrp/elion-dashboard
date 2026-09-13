@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
+import { normalizeKoraCurrency } from "@/lib/payments/kora";
 
 // Data client: plain service-role client so queries bypass RLS.
 const data = () =>
@@ -55,8 +56,10 @@ export async function POST(req: Request) {
   const amount = Number(body.amount) || 0;
   if (amount <= 0) return NextResponse.json({ error: "Invoice amount must be greater than zero" }, { status: 400 });
 
+  const invoiceCurrency = normalizeKoraCurrency(body.currency === undefined ? "NGN" : body.currency);
+  if (!invoiceCurrency) return NextResponse.json({ error: "Currency must be NGN, USD, GBP, or EUR" }, { status: 400 });
+
   const supabase = data();
-  // Auto-generate a human-friendly invoice number if none provided.
   const invoiceNumber =
     typeof body.invoice_number === "string" && body.invoice_number.trim()
       ? body.invoice_number.trim()
@@ -73,7 +76,7 @@ export async function POST(req: Request) {
       client_name: body.client_name || null,
       items: Array.isArray(body.items) ? body.items : [],
       amount,
-      currency: body.currency || "NGN",
+      currency: invoiceCurrency,
       status: "draft",
       due_at: body.due_at || null,
     })

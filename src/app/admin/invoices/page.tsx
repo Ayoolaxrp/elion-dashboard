@@ -42,7 +42,7 @@ export default function InvoicesPage() {
   const [busy, setBusy] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
-  const [form, setForm] = useState({ title: "", company_name: "", client_name: "", amount: "", due_at: "" });
+  const [form, setForm] = useState({ title: "", company_name: "", client_name: "", amount: "", currency: "NGN", due_at: "" });
 
   const load = () => {
     fetch("/api/admin/invoices")
@@ -86,13 +86,14 @@ export default function InvoicesPage() {
           company_name: form.company_name.trim() || null,
           client_name: form.client_name.trim() || null,
           amount: Number(form.amount),
+          currency: form.currency,
           due_at: form.due_at || null,
         }),
       });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || "Request failed");
       setShowCreate(false);
-      setForm({ title: "", company_name: "", client_name: "", amount: "", due_at: "" });
+      setForm({ title: "", company_name: "", client_name: "", amount: "", currency: "NGN", due_at: "" });
       load();
     } catch (e: any) {
       alert("Failed: " + (e.message || "unknown error"));
@@ -130,7 +131,13 @@ export default function InvoicesPage() {
                 <input className={inputCls} placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
                 <input className={inputCls} placeholder="Company name" value={form.company_name} onChange={(e) => setForm({ ...form, company_name: e.target.value })} />
                 <input className={inputCls} placeholder="Client name" value={form.client_name} onChange={(e) => setForm({ ...form, client_name: e.target.value })} />
-                <input className={inputCls} placeholder="Amount (₦) *" type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} />
+                <input className={inputCls} placeholder="Amount *" type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} />
+                <select className={inputCls} value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })}>
+                  <option value="NGN">NGN</option>
+                  <option value="USD">USD</option>
+                  <option value="GBP">GBP</option>
+                  <option value="EUR">EUR</option>
+                </select>
                 <input className={inputCls} placeholder="Due date" type="date" value={form.due_at} onChange={(e) => setForm({ ...form, due_at: e.target.value })} />
               </div>
               <div className="flex gap-2 mt-4">
@@ -176,7 +183,7 @@ export default function InvoicesPage() {
                         {inv.contracts && <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">Contract: {inv.contracts.title}</p>}
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="text-lg font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>₦{(inv.amount || 0).toLocaleString()}</p>
+                        <p className="text-lg font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{inv.currency} {(inv.amount || 0).toLocaleString()}</p>
                         {inv.due_at && <p className="text-xs text-[var(--color-text-muted)]">Due: {new Date(inv.due_at).toLocaleDateString("en-NG")}</p>}
                       </div>
                     </div>
@@ -190,12 +197,12 @@ export default function InvoicesPage() {
                               {(inv.items || []).map((item, i) => (
                                 <div key={i} className="flex items-center justify-between py-2 px-3 rounded-lg bg-[var(--color-surface)]">
                                   <span className="text-sm text-[var(--color-text-secondary)]">{item.description || "Line item"}</span>
-                                  {item.amount ? <span className="text-sm font-medium text-[var(--color-text-primary)]">₦{item.amount.toLocaleString()}</span> : null}
+                                  {item.amount ? <span className="text-sm font-medium text-[var(--color-text-primary)]">{inv.currency} {item.amount.toLocaleString()}</span> : null}
                                 </div>
                               ))}
                               <div className="flex items-center justify-between py-2 px-3 rounded-lg bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20">
                                 <span className="text-sm font-semibold text-[var(--color-text-primary)]">Total</span>
-                                <span className="text-sm font-bold text-[var(--color-accent)]">₦{(inv.amount || 0).toLocaleString()}</span>
+                                <span className="text-sm font-bold text-[var(--color-accent)]">{inv.currency} {(inv.amount || 0).toLocaleString()}</span>
                               </div>
                             </div>
                           </>

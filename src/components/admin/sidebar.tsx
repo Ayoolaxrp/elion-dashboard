@@ -1,68 +1,98 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, UserPlus, Zap, FileText, Settings, LogOut, ChevronLeft, Menu, BarChart3, CheckCircle, FileSignature, Receipt, CreditCard, Wrench, Layers, Activity, Globe, Bell, Database, Rocket, SearchCheck, MessageCircle, Sparkles } from "lucide-react";
-import { useState, useEffect } from "react";
+import {
+  Activity,
+  BarChart3,
+  Bell,
+  CheckCircle,
+  ChevronLeft,
+  Database,
+  FileSignature,
+  FileText,
+  Globe,
+  Layers,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  MessageCircle,
+  Plus,
+  Receipt,
+  Rocket,
+  SearchCheck,
+  Settings,
+  Sparkles,
+  UserPlus,
+  Users,
+  Wrench,
+  X,
+  Zap,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { ElionLogo } from "@/components/elion-logo";
 
-const NAV = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/clients", label: "Clients", icon: Users },
-  { href: "/admin/deploy/catalog", label: "System Catalog", icon: Layers },
-  { href: "/admin/deploy", label: "Deploy Systems", icon: Rocket },
-  { href: "/admin/deployments", label: "Deployments & Costs", icon: CreditCard },
-  { href: "/admin/sales", label: "Morning Queue", icon: Sparkles },
-  { href: "/admin/leads", label: "Leads", icon: UserPlus },
-  { href: "/admin/prospecting", label: "Prospecting", icon: SearchCheck },
-  { href: "/admin/audits", label: "Audits", icon: SearchCheck },
-  { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
-  { href: "/admin/contracts", label: "Contracts", icon: FileText },
-  { href: "/admin/invoices", label: "Invoices", icon: Receipt },
-  { href: "/admin/documents", label: "Documents", icon: FileText },
-  { href: "/admin/payments", label: "Payments", icon: CreditCard },
-  { href: "/admin/templates", label: "Templates", icon: Layers },
-  { href: "/admin/content", label: "Content Studio", icon: FileText },
-  { href: "/admin/provisioning", label: "Provisioning", icon: Wrench },
-  { href: "/admin/automations", label: "Automations", icon: Zap },
-  { href: "/admin/onboarding", label: "Onboarding", icon: Receipt },
-  { href: "/admin/integrations", label: "Integrations", icon: Globe },
-  { href: "/admin/logs", label: "Logs", icon: Activity },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/admin/status", label: "Status", icon: CheckCircle },
-  { href: "/admin/support-chat", label: "Support Chat", icon: MessageCircle },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
-  { href: "/admin/migrations", label: "Migrations", icon: Database },
+type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
+
+type NavSection = { label: string; items: NavItem[] };
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    label: "Today",
+    items: [
+      { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/admin/sales", label: "Morning Queue", icon: Sparkles },
+      { href: "/admin/notifications", label: "Notifications", icon: Bell },
+    ],
+  },
+  {
+    label: "Pipeline",
+    items: [
+      { href: "/admin/leads", label: "Leads", icon: UserPlus },
+      { href: "/admin/audits", label: "Audits", icon: SearchCheck },
+      { href: "/admin/proposals", label: "Proposals", icon: FileSignature },
+      { href: "/admin/contracts", label: "Contracts", icon: FileText },
+      { href: "/admin/invoices", label: "Invoices", icon: Receipt },
+      { href: "/admin/payments", label: "Payments", icon: Receipt },
+    ],
+  },
+  {
+    label: "Clients",
+    items: [
+      { href: "/admin/clients", label: "Clients", icon: Users },
+      { href: "/admin/onboarding", label: "Onboarding", icon: CheckCircle },
+      { href: "/admin/documents", label: "Documents", icon: FileText },
+    ],
+  },
+  {
+    label: "Delivery",
+    items: [
+      { href: "/admin/deployments", label: "Deployments", icon: Rocket },
+      { href: "/admin/automations", label: "Automations", icon: Zap },
+      { href: "/admin/integrations", label: "Integrations", icon: Globe },
+      { href: "/admin/logs", label: "Logs", icon: Activity },
+    ],
+  },
+  {
+    label: "Growth",
+    items: [
+      { href: "/admin/prospecting", label: "Prospecting", icon: SearchCheck },
+      { href: "/admin/content", label: "Content Studio", icon: FileText },
+      { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { href: "/admin/status", label: "Status", icon: CheckCircle },
+      { href: "/admin/templates", label: "Templates", icon: Layers },
+      { href: "/admin/settings", label: "Settings", icon: Settings },
+      { href: "/admin/migrations", label: "Migrations", icon: Database },
+      { href: "/admin/provisioning", label: "Provisioning", icon: Wrench },
+      { href: "/admin/support-chat", label: "Support Chat", icon: MessageCircle },
+    ],
+  },
 ];
-
-const SECTION_ORDER = ["Overview", "Sales", "Customers", "Operations", "Growth", "Support", "System"];
-
-const ITEM_SECTION: Record<string, string> = {
-  "/admin": "Overview",
-  "/admin/sales": "Sales",
-  "/admin/leads": "Sales",
-  "/admin/prospecting": "Sales",
-  "/admin/audits": "Sales",
-  "/admin/proposals": "Sales",
-  "/admin/clients": "Customers",
-  "/admin/deploy/catalog": "Customers",
-  "/admin/deploy": "Customers",
-  "/admin/deployments": "Customers",
-  "/admin/onboarding": "Customers",
-  "/admin/payments": "Customers",
-  "/admin/contracts": "Customers",
-  "/admin/invoices": "Customers",
-  "/admin/documents": "Customers",
-  "/admin/automations": "Operations",
-  "/admin/provisioning": "Operations",
-  "/admin/integrations": "Operations",
-  "/admin/logs": "Operations",
-  "/admin/status": "Operations",
-  "/admin/analytics": "Growth",
-  "/admin/content": "Growth",
-  "/admin/support-chat": "Support",
-  "/admin/templates": "System",
-  "/admin/settings": "System",
-  "/admin/migrations": "System",
-};
 
 export function AdminSidebar() {
   const pathname = usePathname();
@@ -72,64 +102,88 @@ export function AdminSidebar() {
   const [unread, setUnread] = useState(0);
 
   useEffect(() => {
-    fetch("/api/admin/notifications").then(r => r.json()).then(d => setUnread(d.unread || 0)).catch(() => {});
+    fetch("/api/admin/notifications")
+      .then((response) => response.json())
+      .then((data) => setUnread(data.unread || 0))
+      .catch(() => {});
   }, []);
-  const handleSignOut = async () => { await fetch("/api/auth/logout", { method: "POST" }); router.push("/login"); };
+
+  const handleSignOut = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+  };
+
+  const isActive = (href: string) => href === "/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+
+  const sidebarContent = (
+    <>
+      <div className={`flex h-16 shrink-0 items-center border-b border-[var(--color-border)] ${collapsed ? "justify-center px-2" : "gap-2.5 px-5"}`}>
+        <Link href="/admin" className="shrink-0" aria-label="ELION admin home" onClick={() => setMobileOpen(false)}>
+          <ElionLogo size={collapsed ? "sm" : "md"} variant={collapsed ? "symbol" : "full"} />
+        </Link>
+        <button
+          type="button"
+          onClick={() => setCollapsed((value) => !value)}
+          className="ml-auto hidden rounded-md p-1.5 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] lg:flex"
+          aria-label={collapsed ? "Expand admin navigation" : "Collapse admin navigation"}
+        >
+          <ChevronLeft className={`h-4 w-4 transition-transform duration-200 ${collapsed ? "rotate-180" : ""}`} />
+        </button>
+        <button type="button" onClick={() => setMobileOpen(false)} className="ml-auto rounded-md p-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] lg:hidden" aria-label="Close admin menu">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      <nav className="min-h-0 flex-1 overflow-y-auto px-2 py-4" aria-label="Admin workspace navigation" data-lenis-prevent>
+        {NAV_SECTIONS.map((section) => (
+          <div key={section.label} className="mb-5 last:mb-0">
+            {!collapsed && <p className="system-label px-3 pb-2 text-[var(--color-text-muted)]">{section.label}</p>}
+            <div className="space-y-0.5">
+              {section.items.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    title={collapsed ? item.label : undefined}
+                    className={`group relative flex items-center gap-3 rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${collapsed ? "justify-center" : ""} ${active ? "bg-[var(--color-accent)]/10 text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]"}`}
+                  >
+                    {active && <span className="absolute bottom-2 left-0 top-2 w-0.5 rounded-r-full bg-[var(--color-accent)]" aria-hidden />}
+                    <item.icon className={`h-4 w-4 shrink-0 ${active ? "text-[var(--color-accent-bright)]" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text-secondary)]"}`} />
+                    {!collapsed && <span className="truncate">{item.label}</span>}
+                    {!collapsed && item.href === "/admin/notifications" && unread > 0 && <span className="ml-auto min-w-5 rounded-full bg-[var(--color-error)] px-1.5 py-0.5 text-center text-[10px] font-semibold leading-4 text-white">{unread > 9 ? "9+" : unread}</span>}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+
+      <div className="shrink-0 border-t border-[var(--color-border)] p-2">
+        <Link href="/" onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] ${collapsed ? "justify-center" : ""}`} title={collapsed ? "View site" : undefined}>
+          <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+          {!collapsed && <span>View site</span>}
+        </Link>
+        <button type="button" onClick={handleSignOut} className={`flex w-full items-center gap-3 rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-error)]/10 hover:text-[var(--color-error)] ${collapsed ? "justify-center" : ""}`} title={collapsed ? "Sign out" : undefined}>
+          <LogOut className="h-4 w-4 shrink-0" />
+          {!collapsed && <span>Sign out</span>}
+        </button>
+      </div>
+    </>
+  );
 
   return (
     <>
-      {/* In-flow spacer so the fixed sidebar never overlaps page content.
-          The aside below is position:fixed, so without this offset every
-          admin page's <main> would start at x=0 and the sidebar would cover
-          (and block clicks on) the left ~240px of content. */}
-      <div aria-hidden="true" className={"hidden lg:block shrink-0 transition-all duration-200 " + (collapsed ? "w-16" : "w-60")} />
-      <button onClick={() => setMobileOpen(true)} className="lg:hidden fixed top-3 left-3 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] shadow-lg shadow-black/20 focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]" aria-label="Open admin menu" aria-expanded={mobileOpen} aria-controls="admin-sidebar"><Menu className="w-5 h-5 text-[var(--color-text-primary)]" /></button>
-      {mobileOpen && <div className="lg:hidden fixed inset-0 z-40 bg-black/60" onClick={() => setMobileOpen(false)} aria-hidden="true" />}
-      <aside id="admin-sidebar" data-admin-sidebar="true" aria-label="Admin workspace navigation" className={"fixed top-0 left-0 bottom-0 z-50 bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col transition-all duration-200 " + (collapsed ? "w-16" : "w-60") + " " + (mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0")}>
-        <div className={"h-16 flex items-center border-b border-[var(--color-border)] " + (collapsed ? "justify-center px-2" : "px-5 gap-2.5")}>
-          <Link href="/admin" className="flex items-center gap-2.5 shrink-0" aria-label="ELION admin home">
-            <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)] flex items-center justify-center text-white text-sm font-bold" style={{ fontFamily: "Space Grotesk,sans-serif" }}>E</div>
-            {!collapsed && <span className="text-lg font-bold tracking-tight text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>ELION</span>}
-          </Link>
-          <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:flex ml-auto p-1 rounded hover:bg-[var(--color-surface-raised)] transition-colors" aria-label={collapsed ? "Expand" : "Collapse"}>
-            <ChevronLeft className={"w-4 h-4 text-[var(--color-text-muted)] transition-transform " + (collapsed ? "rotate-180" : "")} />
-          </button>
-        </div>
-        <nav className="flex-1 min-h-0 py-4 px-2 space-y-1 overflow-y-auto overscroll-contain" role="navigation" aria-label="Admin navigation" data-lenis-prevent>
-          {SECTION_ORDER.map((section) => {
-            const sectionItems = NAV.filter((item) => ITEM_SECTION[item.href] === section);
-            if (sectionItems.length === 0) return null;
-            return (
-              <div key={section}>
-                <div className="px-3 py-1.5"><p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">{section}</p></div>
-                {sectionItems.map((item) => {
-                  const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
-                  return (
-                    <Link key={item.href} href={item.href} className={"flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors " + (active ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)]" : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]") + " " + (collapsed ? "justify-center" : "")} aria-current={active ? "page" : undefined} title={collapsed ? item.label : undefined}>
-                      <item.icon className="w-4 h-4 shrink-0" />
-                      {!collapsed && <span>{item.label}</span>}
-                    </Link>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </nav>
-        <div className="p-2 border-t border-[var(--color-border)]">
-          <Link href="/admin/notifications" className={"flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] transition-colors relative " + (collapsed ? "justify-center" : "")}>
-            <Bell className="w-4 h-4 shrink-0" />
-            {unread > 0 && <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[var(--color-error)] text-white text-[9px] font-bold flex items-center justify-center">{unread > 9 ? "9+" : unread}</span>}
-            {!collapsed && <span>Notifications</span>}
-          </Link>
-          <Link href="/" className={"flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] transition-colors " + (collapsed ? "justify-center" : "")}>
-            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-            {!collapsed && <span>View Site</span>}
-          </Link>
-          <button onClick={handleSignOut} className={"flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-error)]/10 hover:text-[var(--color-error)] transition-colors " + (collapsed ? "justify-center" : "")} aria-label="Sign out">
-            <LogOut className="w-4 h-4 shrink-0" />
-            {!collapsed && <span>Sign Out</span>}
-          </button>
-        </div>
+      <div aria-hidden="true" className={`hidden shrink-0 transition-all duration-200 lg:block ${collapsed ? "w-16" : "w-60"}`} />
+      <button type="button" onClick={() => setMobileOpen(true)} className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] shadow-lg shadow-black/20 lg:hidden" aria-label="Open admin menu" aria-expanded={mobileOpen} aria-controls="admin-sidebar">
+        <Menu className="h-5 w-5" />
+      </button>
+      {mobileOpen && <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setMobileOpen(false)} aria-hidden="true" />}
+      <aside id="admin-sidebar" data-admin-sidebar="true" aria-label="Admin workspace navigation" className={`fixed bottom-0 left-0 top-0 z-50 flex flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] transition-transform duration-200 lg:translate-x-0 ${collapsed ? "w-16" : "w-60"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        {sidebarContent}
       </aside>
     </>
   );

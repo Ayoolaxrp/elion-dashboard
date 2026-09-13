@@ -24,10 +24,10 @@ export function StatCard({ label, value, change, changeLabel, icon, gradient = "
 
   return (
     <div className="workspace-card p-5 transition-colors hover:border-[var(--color-border-light)]">
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">{label}</p>
-          <p className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{value}</p>
+          <p className="system-label text-[var(--color-text-muted)] mb-2">{label}</p>
+          <p className="text-2xl font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{value}</p>
           {change !== undefined && (
             <div className="flex items-center gap-1.5 mt-2">
               {change > 0 ? (
@@ -85,12 +85,12 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, icon, actions }: PageHeaderProps) {
   return (
-    <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
+    <div className="flex flex-wrap items-start justify-between gap-5 border-b border-[var(--color-border)]/70 pb-7">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-lg bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-secondary)] shrink-0">{icon}</div>
+        <div className="h-10 w-10 rounded-[var(--radius-control)] bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-secondary)] shrink-0">{icon}</div>
         <div className="min-w-0">
-          <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] tracking-tight">{title}</h1>
-          <p className="text-sm text-[var(--color-text-muted)] mt-0.5">{description}</p>
+          <h1 className="text-xl font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{title}</h1>
+          <p className="text-sm leading-6 text-[var(--color-text-muted)] mt-1">{description}</p>
         </div>
       </div>
       {actions && <div className="flex items-center gap-2">{actions}</div>}

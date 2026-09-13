@@ -12,6 +12,9 @@ export interface ConfirmedPayment {
   lead_id: string | null;
   client_id: string | null;
   invoice_id: string | null;
+  amount?: number;
+  currency?: string;
+  provider_reference?: string | null;
 }
 
 const PRE_PAID_LEAD_STAGES = ["new", "audited", "contacted", "qualified", "proposal"];
@@ -72,6 +75,29 @@ export async function unlockAfterPayment(
       .eq("id", payment.client_id)
       .eq("onboarding_status", "pending");
   }
+
+  // This is intentionally downstream of the atomic payment confirmation.
+  // Replayed provider events therefore cannot create duplicate admin alerts.
+  await sb.from("activity_log").insert({
+    client_id: payment.client_id,
+    lead_id: payment.lead_id,
+    event_type: "payment_verified",
+    event_data: {
+      payment_id: payment.id,
+      invoice_id: payment.invoice_id,
+      provider_reference: payment.provider_reference || null,
+      amount: payment.amount ?? null,
+      currency: payment.currency || null,
+    },
+    performed_by: "system",
+  });
+  await sb.from("notifications").insert({
+    type: "payment_recorded",
+    client_id: payment.client_id,
+    title: "Payment verified",
+    message: `A ${payment.currency || "NGN"} ${Number(payment.amount || 0).toLocaleString()} payment was verified${payment.provider_reference ? ` · ${payment.provider_reference}` : ""}.`,
+    metadata: { payment_id: payment.id, invoice_id: payment.invoice_id, provider_reference: payment.provider_reference || null },
+  });
 
   return { invoiceUpdated, leadUpdated, organizationActivated };
 }

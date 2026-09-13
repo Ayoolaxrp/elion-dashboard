@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { ElionLogo } from "@/components/elion-logo";
 import {
   LayoutDashboard, Search, Zap, Mail, RotateCcw, Calendar,
   Settings, ChevronLeft, ChevronRight, Globe, X, Menu,
@@ -109,9 +109,9 @@ export function RootShell({ children }: { children: React.ReactNode }) {
 
   const sidebarContent = (
     <>
-      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-[var(--color-border)] shrink-0">
+      <div className="flex items-center gap-2.5 border-b border-[var(--color-border)] px-4 h-14 shrink-0">
         <div className="flex items-center gap-2">
-          <Link href="/" aria-label="ELION home"><Image src="/brand/elion-e-icon.svg" alt="ELION" width={24} height={24} priority /></Link>
+          <Link href="/" aria-label="ELION home"><ElionLogo size="sm" variant="symbol" /></Link>
           {!collapsed && (
             <div>
               <span className="font-bold text-[var(--color-text-primary)] tracking-tight text-sm">ELION</span>
@@ -185,7 +185,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
     <div className="workspace-shell" data-workspace-shell="client">
       <button
         onClick={() => setMobileOpen(true)}
-        className="md:hidden fixed top-3 left-3 z-50 p-2 rounded-lg bg-[var(--color-surface-raised)] border border-[var(--color-border)] shadow-sm cursor-pointer hover:bg-[var(--color-surface)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
+        className="md:hidden fixed top-3 left-3 z-50 p-2 rounded-[var(--radius-control)] bg-[var(--color-surface-raised)] border border-[var(--color-border)] shadow-sm cursor-pointer hover:bg-[var(--color-surface)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
         aria-label="Open workspace menu"
       >
         <Menu className="w-5 h-5 text-[var(--color-text-secondary)]" />
@@ -215,7 +215,7 @@ export function RootShell({ children }: { children: React.ReactNode }) {
 
       <main
         className={cn(
-          "min-h-screen transition-all duration-200 px-4 pb-6 pt-16 md:px-6 md:pb-8 md:pt-6",
+          "min-h-screen transition-all duration-200 px-4 pb-6 pt-16 md:px-8 md:pb-8 md:pt-8",
           collapsed ? "md:ml-[64px]" : "md:ml-[256px]"
         )}
       >

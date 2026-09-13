@@ -305,7 +305,7 @@ export async function PATCH(req: Request) {
   // 404 for unknown records.
   const { data: existing, error: gErr } = await supabase
     .from("proposals")
-    .select("id, status, tier, estimated_delivery_hours, labour_rate_per_hour, contractor_cost, client_infrastructure_monthly, api_setup_cost, onboarding_cost, contingency_percent, total_setup, total_monthly, margin_check, margin_status")
+    .select("id, title, company_name, client_name, client_email, client_id, lead_id, currency, items, total_setup, total_monthly, status, tier, estimated_delivery_hours, labour_rate_per_hour, contractor_cost, client_infrastructure_monthly, api_setup_cost, onboarding_cost, contingency_percent, margin_check, margin_status")
     .eq("id", id)
     .maybeSingle();
   if (gErr) return NextResponse.json({ error: gErr.message }, { status: 500 });
@@ -386,5 +386,41 @@ export async function PATCH(req: Request) {
     .select()
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ proposal: row });
+
+  let invoice: Record<string, unknown> | null = null;
+  if (status === "accepted") {
+    // Accepted proposals enter the existing commercial flow by creating one
+    // draft invoice. proposal_id plus the additive unique index makes this
+    // safe on retries and keeps invoice currency tied to the proposal.
+    const { data: existingInvoice, error: invoiceLookupError } = await supabase
+      .from("invoices")
+      .select("id, invoice_number, amount, currency, status")
+      .eq("proposal_id", existing.id)
+      .maybeSingle();
+    if (invoiceLookupError) return NextResponse.json({ proposal: row, invoiceWarning: invoiceLookupError.message });
+
+    if (existingInvoice) {
+      invoice = existingInvoice;
+    } else {
+      const { data: createdInvoice, error: invoiceError } = await supabase
+        .from("invoices")
+        .insert({
+          proposal_id: existing.id,
+          client_id: existing.client_id || null,
+          company_name: existing.company_name || null,
+          client_name: existing.client_name || null,
+          title: `Invoice · ${existing.title}`,
+          items: Array.isArray(existing.items) ? existing.items : [],
+          amount: Number(existing.total_setup) || 0,
+          currency: existing.currency || "NGN",
+          status: "draft",
+        })
+        .select("id, invoice_number, amount, currency, status")
+        .single();
+      if (invoiceError) return NextResponse.json({ proposal: row, invoiceWarning: invoiceError.message });
+      invoice = createdInvoice;
+    }
+  }
+
+  return NextResponse.json({ proposal: row, invoice });
 }

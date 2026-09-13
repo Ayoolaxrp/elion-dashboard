@@ -111,12 +111,12 @@ export default function AdminDashboard() {
   return (
     <div className="workspace-shell">
       <AdminSidebar />
-      <main className="flex-1 min-w-0 p-5 md:p-8">
-        <div className="max-w-6xl mx-auto">
+      <main className="min-w-0 flex-1 p-5 md:p-8">
+        <div className="admin-content-gutter">
           {/* Header */}
-          <div className="mb-7 flex items-end justify-between flex-wrap gap-3">
+          <div className="workspace-header mb-8 flex items-end justify-between flex-wrap gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Operations</h1>
+              <h1 className="page-title text-[var(--color-text-primary)]">Operations</h1>
               <p className="text-sm text-[var(--color-text-muted)] mt-1">
                 {new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}  · what needs you today.
               </p>
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Stat cards */}
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-8">
+          <div className="mb-10 grid grid-cols-2 gap-px overflow-hidden border-y border-[var(--color-border)] bg-[var(--color-border)] md:grid-cols-3 xl:grid-cols-6">
             {[
               { label: "Active clients", value: s?.activeClients ?? 0, sub: `${s?.totalClients ?? 0} total`, icon: Users, color: "text-emerald-400", href: "/admin/clients" },
               { label: "Contract value (est.)", value: naira(s?.totalRevenue ?? 0), sub: "one-time setups", icon: FileText, color: "text-blue-400", href: "/admin/proposals" },
@@ -140,12 +140,12 @@ export default function AdminDashboard() {
               { label: "Total leads", value: s?.totalLeads ?? 0, sub: `${s?.todayLeads ?? 0} today · ${s?.conversionRate ?? 0}% → client`, icon: Mail, color: "text-cyan-400", href: "/admin/leads" },
               { label: "Unread alerts", value: unread, sub: "inbox", icon: Bell, color: unread > 0 ? "text-amber-400" : "text-[var(--color-text-muted)]", href: "/admin/notifications" },
             ].map((stat) => (
-              <Link key={stat.label} href={stat.href} className="group bg-[var(--color-surface-raised)] rounded-xl p-4 border border-[var(--color-border)] hover:border-[var(--color-accent)]/25 transition-all">
+              <Link key={stat.label} href={stat.href} className="group bg-[var(--color-surface)] p-4 transition-colors hover:bg-[var(--color-surface-raised)]">
                 <div className="flex items-center justify-between mb-3">
                   <stat.icon className={`w-4 h-4 ${stat.color}`} />
                   <ArrowRight className="w-3.5 h-3.5 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-                <p className="text-lg font-bold text-[var(--color-text-primary)] leading-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{stat.value}</p>
+                <p className="text-lg font-semibold tracking-[-0.04em] text-[var(--color-text-primary)] leading-tight">{stat.value}</p>
                 <p className="text-[11px] text-[var(--color-text-muted)] mt-1">{stat.label}</p>
                 <p className="text-[10px] text-[var(--color-text-muted)]/60 mt-0.5 truncate">{stat.sub}</p>
               </Link>

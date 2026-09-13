@@ -64,8 +64,8 @@ const NEXT_STEPS = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface-raised)]">
-      <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20">
+    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+      <div className="content-gutter py-16 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[minmax(240px,1.25fr)_minmax(0,2fr)] lg:gap-20">
           <div>
             <ElionLogo size="md" className="mb-5" />
