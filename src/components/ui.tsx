@@ -15,11 +15,11 @@ interface StatCardProps {
 }
 
 export function StatCard({ label, value, change, changeLabel, icon, gradient = "primary" }: StatCardProps) {
-  const iconBg = {
-    primary: "bg-[var(--color-accent)]/10 text-[var(--color-accent)]",
-    success: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    warning: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    danger: "bg-[var(--color-error)]/10 text-[var(--color-error)]",
+  const iconTone = {
+    primary: "text-[var(--color-accent-bright)]",
+    success: "text-[var(--color-success)]",
+    warning: "text-[var(--color-warning)]",
+    danger: "text-[var(--color-error)]",
   }[gradient];
 
   return (
@@ -27,7 +27,7 @@ export function StatCard({ label, value, change, changeLabel, icon, gradient = "
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="system-label text-[var(--color-text-muted)] mb-2">{label}</p>
-          <p className="text-2xl font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{value}</p>
+          <p className="text-[1.75rem] font-semibold leading-none tracking-[-0.04em] text-[var(--color-text-primary)]">{value}</p>
           {change !== undefined && (
             <div className="flex items-center gap-1.5 mt-2">
               {change > 0 ? (
@@ -44,7 +44,7 @@ export function StatCard({ label, value, change, changeLabel, icon, gradient = "
             </div>
           )}
         </div>
-        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0", iconBg)}>
+        <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center border-l border-[var(--color-border-light)]", iconTone)}>
           {icon}
         </div>
       </div>
@@ -69,7 +69,7 @@ export function Badge({ children, variant = "default", className }: BadgeProps) 
     outline: "bg-transparent border border-[var(--color-border)] text-[var(--color-text-muted)]",
   }[variant];
   return (
-    <span className={cn("inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold uppercase tracking-wider", v, className)}>
+    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-[0.25rem] text-[10px] font-medium tracking-[0.06em]", v, className)}>
       {children}
     </span>
   );
@@ -87,9 +87,9 @@ export function PageHeader({ title, description, icon, actions }: PageHeaderProp
   return (
     <div className="flex flex-wrap items-start justify-between gap-5 border-b border-[var(--color-border)]/70 pb-7">
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 rounded-[var(--radius-control)] bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-secondary)] shrink-0">{icon}</div>
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center border-l border-[var(--color-border-light)] text-[var(--color-text-secondary)]">{icon}</div>
         <div className="min-w-0">
-          <h1 className="text-xl font-semibold tracking-[-0.04em] text-[var(--color-text-primary)]">{title}</h1>
+          <h1 className="page-title text-[var(--color-text-primary)]">{title}</h1>
           <p className="text-sm leading-6 text-[var(--color-text-muted)] mt-1">{description}</p>
         </div>
       </div>
@@ -127,7 +127,7 @@ export function Button({ children, variant = "primary", size = "md", disabled = 
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]",
+        "inline-flex items-center justify-center gap-1.5 rounded-[var(--radius-control)] font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]",
         v,
         s,
         className,
@@ -154,7 +154,7 @@ export function Input({ label, placeholder, value, onChange, type = "text", clas
   const autoId = useId();
   const fieldId = label ? `field-${autoId}` : undefined;
   const base = cn(
-    "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors",
+    "w-full px-3 py-2.5 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-[var(--radius-control)] text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors",
   );
   return (
     <div className="space-y-1">
@@ -202,7 +202,7 @@ export function Select({ label, value, onChange, options, className }: SelectPro
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         className={cn(
-          "w-full px-3 py-2 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors appearance-none cursor-pointer",
+          "w-full px-3 py-2.5 bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-[var(--radius-control)] text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors appearance-none cursor-pointer",
           className,
         )}
       >
@@ -250,7 +250,7 @@ interface EmptyStateProps {
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-10 h-10 rounded-xl bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-muted)] mb-4">{icon}</div>
+      <div className="mb-4 flex h-8 w-8 items-center justify-center border-l border-[var(--color-border-light)] text-[var(--color-text-muted)]">{icon}</div>
       <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">{title}</h3>
       <p className="text-sm text-[var(--color-text-muted)] max-w-sm">{description}</p>
       {action && <div className="mt-4">{action}</div>}
@@ -324,7 +324,7 @@ export function Tabs({ tabs, activeTab, onTabChange }: TabsProps) {
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
           className={cn(
-            "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]",
+            "px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]",
             activeTab === tab.id ? "bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] shadow-sm" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]",
           )}
         >

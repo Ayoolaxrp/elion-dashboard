@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowRight, Check, Minus, Sparkles, Search, SlidersHorizontal,
+  ArrowRight, Check, Minus, Search, SlidersHorizontal,
   Hammer, FlaskConical, Rocket, KeyRound, ShieldCheck,
 } from "lucide-react";
 import { ELION_TIERS, ELION_IMPLEMENTATION, ELION_SUPPORT_PLANS, type PricingTier } from "@/lib/pricing";
@@ -40,7 +40,7 @@ function TierCard({ tier, ctaHref, detailed, ctaLabel, reduced, index }: { tier:
       whileInView={reduced ? {} : { opacity: 1, y: 0 }}
       viewport={reduced ? undefined : { once: true, amount: 0.12 }}
       transition={reduced ? undefined : { duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-      className={`relative flex flex-col rounded-2xl border p-6 sm:p-7 transition-all ${tier.popular ? "border-[var(--color-accent)]/50 bg-[var(--color-accent)]/[0.04] shadow-xl shadow-[var(--color-accent)]/10" : "border-[var(--color-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent)]/30"}`}
+      className={`relative flex flex-col rounded-[var(--radius-surface)] border p-6 sm:p-7 transition-colors ${tier.popular ? "border-[var(--color-accent)]/60 bg-[var(--color-surface)]" : "border-[var(--color-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-border-light)]"}`}
     >
       {tier.popular && (
         <motion.span
@@ -48,15 +48,15 @@ function TierCard({ tier, ctaHref, detailed, ctaLabel, reduced, index }: { tier:
           whileInView={reduced ? {} : { opacity: 1, scale: 1 }}
           viewport={reduced ? undefined : { once: true }}
           transition={reduced ? undefined : { delay: 0.15 + index * 0.08, type: "spring" as const, stiffness: 320, damping: 22 }}
-          className="absolute -top-3 left-6 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--color-accent)] text-white text-[10px] font-bold uppercase tracking-wider"
+          className="absolute -top-3 left-6 bg-[var(--color-accent)] px-2.5 py-1 text-[10px] font-semibold tracking-[0.06em] text-white"
         >
-          <Sparkles className="w-3 h-3" /> Most popular
+          Most popular
         </motion.span>
       )}
-      <h3 className="text-lg font-bold text-[var(--color-text-primary)]">{tier.name}</h3>
+      <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{tier.name}</h3>
       <p className="text-xs text-[var(--color-text-muted)] mt-1">{tier.bestFor}</p>
       <div className="mt-4 flex items-end gap-1.5">
-        <span className={`text-3xl font-bold tracking-tight ${tier.popular ? "text-[var(--color-accent-bright)]" : "text-[var(--color-text-primary)]"}`} style={{ fontFamily: "Space Grotesk,sans-serif" }}>
+        <span className={`display-face text-3xl font-semibold tracking-tight ${tier.popular ? "text-[var(--color-accent-bright)]" : "text-[var(--color-text-primary)]"}`}>
           {tier.price}
         </span>
         <span className="text-[10px] text-[var(--color-text-muted)] pb-1 uppercase tracking-wider">{tier.period}</span>
@@ -102,7 +102,7 @@ export default function TierCards({ ctaHref = "/audit", showPayment = false, det
         whileInView={reduced ? {} : { opacity: 1, y: 0 }}
         viewport={reduced ? undefined : { once: true, amount: 0.25 }}
         transition={reduced ? undefined : { duration: 0.5, ease: "easeOut" }}
-        className="mt-10 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-6 sm:p-8 overflow-hidden"
+        className="mt-10 border-y border-[var(--color-border)] bg-transparent py-6 sm:py-8 overflow-hidden"
       >
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)] mb-5 text-center">
           Every ELION implementation includes
@@ -119,7 +119,7 @@ export default function TierCards({ ctaHref = "/audit", showPayment = false, det
                     whileInView={reduced ? {} : { opacity: 1, scaleX: 1 }}
                     viewport={reduced ? undefined : { once: true }}
                     transition={reduced ? undefined : { delay: 0.12 + i * 0.1, duration: 0.3 }}
-                    className="hidden sm:flex w-6 lg:w-8 h-px bg-gradient-to-r from-[var(--color-border)] via-[var(--color-accent)]/50 to-[var(--color-border)] mx-0.5 origin-left"
+                    className="hidden sm:flex w-6 lg:w-8 h-px bg-[var(--color-border-light)] mx-0.5 origin-left"
                     aria-hidden="true"
                   />
                 )}
@@ -129,7 +129,7 @@ export default function TierCards({ ctaHref = "/audit", showPayment = false, det
                   viewport={reduced ? undefined : { once: true, amount: 0.4 }}
                   transition={reduced ? undefined : { delay: i * 0.1, duration: 0.4, ease: "easeOut" }}
                   whileHover={reduced ? undefined : { y: -2 }}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[11px] sm:text-xs font-semibold text-[var(--color-text-primary)]"
+                  className="inline-flex items-center gap-1.5 border-b border-[var(--color-border-light)] px-3 py-2 text-[11px] font-medium text-[var(--color-text-primary)] sm:text-xs"
                 >
                   <StepIcon className={`w-3.5 h-3.5 ${meta.color}`} />
                   {step}
@@ -181,13 +181,13 @@ export default function TierCards({ ctaHref = "/audit", showPayment = false, det
               whileInView={reduced ? {} : { opacity: 1, y: 0 }}
               viewport={reduced ? undefined : { once: true, amount: 0.15 }}
               transition={reduced ? undefined : { duration: 0.45, delay: i * 0.1, ease: "easeOut" }}
-              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-6"
+              className="border-t border-[var(--color-border)] bg-transparent pt-6"
             >
               <div className="flex items-end gap-1.5">
-                <span className="text-2xl font-bold text-[var(--color-text-primary)]">{s.price}</span>
+                <span className="display-face text-2xl font-semibold text-[var(--color-text-primary)]">{s.price}</span>
                 <span className="text-[10px] text-[var(--color-text-muted)] pb-1 uppercase tracking-wider">{s.period}</span>
               </div>
-              <h4 className="text-sm font-bold text-[var(--color-text-primary)] mt-2">{s.name}</h4>
+              <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mt-2">{s.name}</h4>
               <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">{s.description}</p>
               <ul className="mt-4 space-y-1.5 text-xs text-[var(--color-text-secondary)]">
                 {s.features.map((f, i) => (

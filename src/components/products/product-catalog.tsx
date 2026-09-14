@@ -37,7 +37,7 @@ function PrimaryCta({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="public-primary group px-8 py-4 text-base"
+      className="public-primary group px-7 py-3 text-sm"
     >
       {children}
       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -49,7 +49,7 @@ function SecondaryCta({ href, children }: { href: string; children: React.ReactN
   return (
     <Link
       href={href}
-      className="public-secondary px-8 py-4 text-base"
+      className="public-secondary px-7 py-3 text-sm"
     >
       {children}
     </Link>
@@ -98,14 +98,8 @@ function ProductCard({ product }: { product: ProductDefinition }) {
     >
       <div className="flex items-start gap-5">
         <div className="flex flex-col items-center gap-2 shrink-0">
-          <div
-            className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-              isActive ? "bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20" : "bg-[var(--color-surface)] border border-[var(--color-border)]/50"
-            }`}
-          >
-            <Icon
-              className={isActive ? "w-6 h-6 text-[var(--color-accent)]" : "w-6 h-6 text-[var(--color-text-muted)]"}
-            />
+          <div className={`flex h-9 w-9 items-center justify-center border-l ${isActive ? "border-[var(--color-accent)] text-[var(--color-accent-bright)]" : "border-[var(--color-border-light)] text-[var(--color-text-muted)]"}`}>
+            <Icon className="h-5 w-5" aria-hidden="true" />
           </div>
           <span
             className={`text-[10px] font-bold tabular-nums ${
@@ -122,12 +116,12 @@ function ProductCard({ product }: { product: ProductDefinition }) {
               {product.name}
             </h3>
             {isComingSoon && (
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[var(--color-text-muted)]/10 text-[var(--color-text-muted)] border border-[var(--color-border)]/30">
+              <span className="text-[11px] font-medium text-[var(--color-text-muted)]">
                 Roadmap
               </span>
             )}
             {!isComingSoon && (
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20">
+              <span className="text-[11px] font-medium text-[var(--color-success)]">
                 Available
               </span>
             )}
@@ -140,7 +134,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           <p className="mt-3 text-sm font-medium text-[var(--color-accent-bright)]">{product.tagline}</p>
 
           <div className="mt-5">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">What it does</p>
+            <p className="system-label mb-2">What it does</p>
             <ul className="space-y-1.5">
               {product.plain_english.slice(0, 3).map((step) => (
                 <li key={step} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
@@ -152,7 +146,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           </div>
 
           <div className="mt-6 pt-4 border-t border-[var(--color-border)]/50">
-            <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-muted)] mb-1">Investment</p>
+            <p className="system-label mb-1">Investment</p>
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">
                 {fmtNgn(pricing.setup)}
@@ -193,11 +187,11 @@ function ProductCard({ product }: { product: ProductDefinition }) {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Ideal for</p>
+              <p className="system-label mb-2">Ideal for</p>
               <p className="text-sm text-[var(--color-text-secondary)]">{meta?.ideal_customer || "Businesses with this operational problem."}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">What ELION builds</p>
+              <p className="system-label mb-2">What ELION builds</p>
               <ul className="space-y-1">
                 {(meta?.implementation_scope || []).map((s) => (
                   <li key={s} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
@@ -211,7 +205,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Plain-English flow</p>
+              <p className="system-label mb-2">Plain-English flow</p>
               <ol className="space-y-2">
                 {(product.plain_english || []).map((s) => (
                   <li key={s} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
@@ -222,7 +216,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
               </ol>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Infrastructure & costs</p>
+              <p className="system-label mb-2">Infrastructure & costs</p>
               <ul className="space-y-1.5 text-sm text-[var(--color-text-secondary)]">
                 {(product.infrastructure?.notes || []).map((n) => (
                   <li key={n} className="flex items-start gap-2">
@@ -244,7 +238,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
 
           {meta && (
             <div className="border-t border-[var(--color-border)]/50 pt-5">
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Commercial rules</p>
+              <p className="system-label mb-2">Commercial rules</p>
               <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
                 <li className="flex items-start gap-2">
                   <span className="text-[var(--color-accent)] font-medium shrink-0">Setup:</span>
@@ -267,7 +261,7 @@ function ProductCard({ product }: { product: ProductDefinition }) {
           )}
 
           <div className="border-t border-[var(--color-border)]/50 pt-5">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)] mb-2">What you need</p>
+            <p className="system-label mb-2">What you need</p>
             <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
               {(meta?.client_requirements || []).map((r) => (
                 <li key={r} className="flex items-start gap-2">
@@ -376,11 +370,11 @@ export function ProductCatalog() {
   return (
     <>
       {/* Header */}
-      <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-20 px-6">
+      <section className="relative overflow-hidden border-b border-[var(--color-border)] pt-28 pb-16 md:pt-36 md:pb-20 px-6">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,124,255,0.08),transparent_55%)]" />
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
-          <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-bright)]">AI employees & automation systems</p>
-          <h1 className="text-4xl font-semibold leading-[1.06] tracking-[-0.04em] text-[var(--color-text-primary)] md:text-6xl">
+        <div className="relative max-w-4xl mx-auto text-center">
+            <p className="mb-5 system-label text-[var(--color-accent-bright)]">AI employees & automation systems</p>
+          <h1 className="page-title max-w-3xl mx-auto text-[var(--color-text-primary)]">
             Each leak gets its own system.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
@@ -402,7 +396,7 @@ export function ProductCatalog() {
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <PrimaryCta href="#systems">See the systems</PrimaryCta>
-            <SecondaryCta href="/audit">Run Free Audit</SecondaryCta>
+            <SecondaryCta href="/audit">Get AI Audit</SecondaryCta>
           </div>
         </div>
       </section>
@@ -410,7 +404,7 @@ export function ProductCatalog() {
       {/* Promise strip */}
       <section className="border-t border-[var(--color-border)]/60 bg-[var(--color-surface-raised)]/40">
         <div className="max-w-4xl mx-auto px-6 py-10">
-          <div className="rounded-xl border border-[var(--color-border)]/60 bg-[var(--color-surface)] p-6">
+            <div className="border-y border-[var(--color-border)]/60 py-6">
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
               Every product below has a commercial contract: the problem it solves, the customer it fits, the setup and monthly price, the third-party costs, the provisioning checklist, and the rules that govern what it can and cannot do.
               Nothing is marked live unless it passes that check.
@@ -419,7 +413,7 @@ export function ProductCatalog() {
             <p className="mt-3 text-xs text-[var(--color-text-muted)]">
               This page reflects the current product catalogue. Pricing and availability are confirmed during the audit and proposal process.
             </p>
-          </div>
+            </div>
         </div>
       </section>
 
@@ -436,7 +430,7 @@ export function ProductCatalog() {
             </p>
           </div>
 
-          <div className="border-b border-[var(--color-border)]/70">
+          <div className="border-y border-[var(--color-border)]/70">
             {active.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -465,7 +459,7 @@ export function ProductCatalog() {
               </p>
             </div>
 
-            <div className="border-b border-[var(--color-border)]/70">
+            <div className="border-y border-[var(--color-border)]/70">
               {upcoming.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

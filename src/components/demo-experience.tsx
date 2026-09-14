@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2, Loader2, RotateCcw, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, Loader2, RotateCcw, ShieldCheck } from "lucide-react";
 
 const SCENARIOS = {
   "Real Estate": {
@@ -62,8 +62,7 @@ function StageRail({ stage, onReset }: { stage: Stage; onReset: () => void }) { 
     <div className="mb-12 flex items-center justify-between gap-4 border-y border-[var(--color-border)]/60 py-4">
       <ol className="flex min-w-0 flex-1 items-center gap-2 text-xs text-[var(--color-text-muted)] sm:gap-3">
         {stages.map((label, index) => (
-          <li key={label} className={`flex min-w-0 items-center gap-2 ${index <= current ? "text-[var(--color-text-primary)]" : ""}`}>
-            <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold ${index < current ? "border-[var(--color-success)] bg-[var(--color-success)]/10 text-[var(--color-success)]" : index === current ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-accent-bright)]" : "border-[var(--color-border)]"}`}>{index < current ? "✓" : index + 1}</span>
+          <li key={label} className={`flex min-w-0 items-center gap-2 ${index <= current ? "text-[var(--color-text-primary)]" : ""}`}>              <span className="text-xs font-semibold tabular-nums text-[var(--color-accent-bright)]">{index < current ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : index + 1}</span>
             <span className="hidden truncate sm:inline">{label}</span>
             {index < stages.length - 1 && <span className="hidden text-[var(--color-border-light)] md:inline">/</span>}
           </li>
@@ -132,7 +131,7 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
 
       <div className="mb-12 max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-bright)]">See the diagnosis</p>
-        <h1 className="mt-4 text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-[var(--color-text-primary)] md:text-6xl">Watch an ELION employee handle the first reply.</h1>
+        <h1 className="display-type mt-4 max-w-3xl text-[var(--color-text-primary)]">Watch an ELION employee handle the first reply.</h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">The value is not the reply alone. It is what happens next: qualification, a clear handoff, and a system designed around the leak.</p>
       </div>
 
@@ -220,7 +219,7 @@ export default function DemoExperience({ ctaHref = "/audit" }: { ctaHref?: strin
       )}
 
       {scenario && stage === "complete" && (
-        <section className="max-w-2xl border-l-2 border-[var(--color-success)] pl-6" aria-live="polite"><CheckCircle2 className="h-8 w-8 text-[var(--color-success)]" /><h2 className="mt-5 text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">Request received.</h2><p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--color-text-secondary)]">The ELION team can now review your business context and follow up. The simulation is complete; no real customer interaction was triggered.</p><div className="mt-7 flex flex-wrap gap-3"><a href={ctaHref} className="public-primary px-5 py-3 text-sm">Run the full business audit <ArrowRight className="h-4 w-4" /></a><button type="button" onClick={reset} className="rounded-xl border border-[var(--color-border)] px-5 py-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-white">Try another scenario</button></div></section>
+        <section className="max-w-2xl border-l-2 border-[var(--color-success)] pl-6" aria-live="polite"><CheckCircle2 className="h-8 w-8 text-[var(--color-success)]" /><h2 className="mt-5 text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">Request received.</h2><p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--color-text-secondary)]">The ELION team can now review your business context and follow up. The simulation is complete; no real customer interaction was triggered.</p><div className="mt-7 flex flex-wrap gap-3"><a href={ctaHref} className="public-primary px-5 py-3 text-sm">Run the full business audit <ArrowRight className="h-4 w-4" /></a><button type="button" onClick={reset} className="public-secondary px-5 py-3 text-sm">Try another scenario</button></div></section>
       )}
     </div>
   );

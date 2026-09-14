@@ -983,7 +983,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                   )}
 
                   {/* CTA */}
-                  <div className="rounded-2xl border border-[var(--color-accent)]/20 bg-gradient-to-b from-[var(--color-accent)]/[0.08] to-transparent p-7 md:p-9 text-center">
+                <div className="border border-[var(--color-accent)]/20 bg-[var(--color-surface-raised)] p-7 md:p-9 text-center">
                     <h3 className="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Ready to fix these gaps?</h3>
                     <p className="text-sm text-[var(--color-text-muted)] mb-6 max-w-md mx-auto leading-relaxed">
                       Book a free discovery call. We will implement the top-priority automation for your business.
@@ -997,7 +997,7 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                       </button>
                       <a
                         href="/support"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm font-medium hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97]"
+                        className="public-secondary px-6 py-3 text-sm"
                       >
                         <Mail className="w-4 h-4" /> Email Us
                       </a>

@@ -34,17 +34,19 @@
   --color-muted-foreground: #7C8494;
   --color-info: #7C9BFF;
   --color-destructive: #EF4444;
-  --color-destructive-foreground: #FFFFFF;  /* Type scale: display for marketing statements, UI titles for workspaces,
+  --color-destructive-foreground: #FFFFFF;
+
+  /* Type scale: display for marketing statements, UI titles for workspaces,
      and small labels for system metadata. */
-  --text-display: clamp(2.75rem, 6vw, 5.5rem);
+  --text-display: clamp(2.75rem, 5vw, 4.75rem);
   --text-page-title: clamp(1.875rem, 3vw, 2.75rem);
   --text-section-title: clamp(1.5rem, 2.4vw, 2.25rem);
-  --text-body: 0.9375rem;
-  --text-meta: 0.8125rem;
+  --text-body: 1rem;
+  --text-meta: 0.875rem;
   --text-label: 0.6875rem;
 
-  --radius-control: 0.625rem;
-  --radius-surface: 0.875rem;
+  --radius-control: 0.5625rem;
+  --radius-surface: 0.75rem;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
@@ -62,6 +64,8 @@
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 16px;
     line-height: 1.5;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -120,42 +124,82 @@
 .animate-status-pulse { animation: status-pulse 2s ease-in-out infinite; }
 
 /* ---- Shared hierarchy primitives ---- */
+.display-face {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-optical-sizing: auto;
+}
 .display-type {
   font-family: "Space Grotesk", Inter, sans-serif;
   font-size: var(--text-display);
   font-weight: 600;
-  letter-spacing: -0.055em;
-  line-height: 0.98;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
 }
 .page-title {
   font-family: "Space Grotesk", Inter, sans-serif;
   font-size: var(--text-page-title);
   font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1.05;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
 }
 .section-title {
   font-family: "Space Grotesk", Inter, sans-serif;
   font-size: var(--text-section-title);
   font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.1;
+  letter-spacing: -0.025em;
+  line-height: 1.16;
 }
 .body-copy { font-size: var(--text-body); line-height: 1.7; }
 .meta-copy { font-size: var(--text-meta); line-height: 1.55; }
 .system-label {
+  color: var(--color-text-muted);
   font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.public-eyebrow {
+  color: var(--color-accent-bright);
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   line-height: 1.4;
   text-transform: uppercase;
 }
-.content-gutter { width: min(100% - 2rem, 72rem); margin-inline: auto; }
-.admin-content-gutter { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+.public-lede {
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.7;
+  max-width: 42rem;
+}
+.content-gutter {  width: min(100% - 2rem, 76rem);
+  margin-inline: auto; }
+.admin-content-gutter {  width: min(100% - 2rem, 76rem);
+  margin-inline: auto; }
 @media (min-width: 768px) {
-  .content-gutter, .admin-content-gutter { width: min(100% - 4rem, 72rem); }
+  .content-gutter, .admin-content-gutter {  width: min(100% - 4rem, 76rem); }
 }
 .surface-divider { border-top: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent); }
+
+/* ---- Shared public layout language ---- */
+.public-section {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+.public-section-tight {
+  padding-block: clamp(3.5rem, 7vw, 5.5rem);
+}
+.public-tertiary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-accent-bright);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: color 160ms var(--ease-out);
+}
+.public-tertiary:hover { color: var(--color-text-primary); }
+.public-tertiary:active { transform: translateY(1px); }
 
 /* ---- Shared control language ---- */
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
@@ -190,6 +234,23 @@ button:active, [role="button"]:active { transform: translateY(1px); }
   .proposal-preview p, .proposal-preview span { color: #374151 !important; }
   .proposal-preview h2, .proposal-preview h3, .proposal-preview strong { color: #111827 !important; }
   .proposal-preview .border-\[var\(--color-border\)\] { border-color: #d1d5db !important; }
+}
+
+/* ---- Premium restraint pass ---- */
+/* Decorative paint should never compete with the operational message. These
+   selectors normalize legacy utility classes without changing layout or
+   interaction behavior. */
+[class*="bg-gradient-"] {
+  background-image: none !important;
+}
+[class*="shadow-xl"], [class*="shadow-2xl"], [class*="shadow-lg"] {
+  box-shadow: none !important;
+}
+[class*="rounded-3xl"], [class*="rounded-2xl"] {
+  border-radius: var(--radius-surface) !important;
+}
+.animate-ring-drift, .animate-node-ping, .animate-glow-pulse {
+  animation: none !important;
 }
 
 /* ---- Reduced Motion ---- */
@@ -241,11 +302,13 @@ html.lenis, html.lenis body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0.625rem;
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
   background: var(--color-accent);
   color: #fff;
   font-weight: 600;
-  transition: background-color 160ms ease-out, transform 160ms ease-out;
+  transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .public-primary:hover { background: var(--color-accent-hover); }
 .public-primary:active { transform: translateY(1px); }
@@ -254,10 +317,11 @@ html.lenis, html.lenis body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  min-height: 2.75rem;
   border: 1px solid var(--color-border-light);
-  border-radius: 0.625rem;
+  border-radius: var(--radius-control);
   color: var(--color-text-secondary);
-  transition: border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out;
+  transition: border-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .public-secondary:hover { border-color: var(--color-accent-bright); color: var(--color-text-primary); }
 .public-secondary:active { transform: translateY(1px); }
@@ -310,15 +374,15 @@ html.lenis, html.lenis body {
 .workspace-kicker {
   color: var(--color-accent-bright);
   font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   line-height: 1.4;
   text-transform: uppercase;
 }
 .workspace-card {
   background: var(--color-surface-raised);
   border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-surface);
 }
 .workspace-card-muted {
   background: color-mix(in srgb, var(--color-surface-raised) 68%, transparent);
@@ -377,7 +441,12 @@ body:has(aside[data-admin-sidebar]) main > * {
 /* Press feedback belongs to the control that owns the interaction. A global
    scale transform made links, cards, and navigation feel like a component kit
    rather than a calm, direct product interface. */
-h1, h2, h3 { text-wrap: balance; }
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+h1, h2, h3 {
+  font-weight: 600;
+}
 h4, h5, h6 { text-wrap: balance; }
 p, li, td { letter-spacing: 0; }
 

@@ -125,7 +125,7 @@ const FAQ_CATEGORIES = [
 
 function SectionTag({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold text-[var(--color-accent-bright)] uppercase tracking-[0.2em] mb-4">
+    <p className="public-eyebrow mb-4">
       {children}
     </p>
   );
@@ -135,7 +135,7 @@ function PrimaryCta({ href, children, size = "lg" }: { href: string; children: R
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-all shadow-lg shadow-[var(--color-accent)]/20 active:scale-[0.97] ${
+      className={`group inline-flex items-center justify-center gap-2 rounded-[var(--radius-control)] bg-[var(--color-accent)] text-white font-semibold hover:bg-[var(--color-accent-hover)] transition-colors active:translate-y-px ${
         size === "lg" ? "px-8 py-4 text-base" : "px-6 py-3 text-sm"
       }`}
     >
@@ -149,7 +149,7 @@ function SecondaryCta({ href, children, size = "lg" }: { href: string; children:
   return (
     <Link
       href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-light)] hover:text-white transition-all active:scale-[0.97] ${
+      className={`inline-flex items-center justify-center gap-2 rounded-[var(--radius-control)] border border-[var(--color-border-light)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent-bright)] hover:text-[var(--color-text-primary)] transition-colors active:translate-y-px ${
         size === "lg" ? "px-8 py-4 text-base" : "px-6 py-3 text-sm"
       }`}
     >
@@ -173,7 +173,7 @@ export function ProblemSection() {
         >
           <motion.div variants={{ hidden: reveal, visible: show }}>
             <SectionTag>The Problem</SectionTag>
-            <h2 className="text-4xl md:text-6xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
+            <h2 className="text-4xl md:text-6xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
               Revenue doesn&apos;t always disappear loudly.
             </h2>
           </motion.div>
@@ -190,7 +190,7 @@ export function ProblemSection() {
               >
                 <span
                   aria-hidden
-                  className="w-8 h-px shrink-0 translate-y-[-4px] bg-gradient-to-r from-[var(--color-accent)]/70 to-transparent group-hover:w-12 transition-all duration-500"
+                  className="w-8 h-px shrink-0 translate-y-[-4px] bg-[var(--color-border-light)] group-hover:w-12 transition-all duration-500"
                 />
                 <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] leading-relaxed">
                   {l.text}
@@ -240,20 +240,20 @@ export function AuditDeliverable() {
       <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-14 lg:gap-20 items-start">
         <div className="lg:sticky lg:top-28">
           <SectionTag>What you receive</SectionTag>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
             Clarity before a proposal.
           </h2>
           <p className="mt-6 text-base text-[var(--color-text-secondary)] leading-relaxed max-w-md">
             The free audit is not a generic score. It is the first step in understanding where your business is losing opportunities and what should happen next.
           </p>
           <div className="mt-8">
-            <PrimaryCta href="/audit">Run Your Free Business Audit</PrimaryCta>
+            <PrimaryCta href="/audit">Start AI Assessment</PrimaryCta>
           </div>
         </div>
         <div className="divide-y divide-[var(--color-border)]/50 border-y border-[var(--color-border)]/50">
           {deliverables.map((item) => (
             <div key={item.number} className="grid grid-cols-[2.5rem_1fr] gap-4 py-6 md:grid-cols-[3rem_1fr] md:gap-6">
-              <span className="text-sm font-bold text-[var(--color-accent)] tabular-nums">{item.number}</span>
+              <span className="text-sm font-semibold text-[var(--color-accent)] tabular-nums">{item.number}</span>
               <div>
                 <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">{item.title}</h3>
                 <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed max-w-xl">{item.description}</p>
@@ -281,14 +281,14 @@ export function FindingsSection() {
       <div className="max-w-6xl mx-auto">
         <div className="max-w-2xl mb-12">
           <SectionTag>Example findings</SectionTag>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">The diagnosis comes before the system.</h2>
+          <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">The diagnosis comes before the system.</h2>
           <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">This is how ELION turns a business problem into a scoped automation opportunity. Examples are illustrative, not customer results.</p>
         </div>
         <div className="border-t border-[var(--color-border)]/60">
           {findings.map((finding, index) => (
             <div key={finding.label} className="grid lg:grid-cols-[1.1fr_1fr_1fr] gap-6 lg:gap-12 py-7 border-b border-[var(--color-border)]/50">
               <div className="flex gap-4">
-                <span className="text-xs font-bold text-[var(--color-accent)] tabular-nums pt-1">0{index + 1}</span>
+                <span className="text-xs font-semibold text-[var(--color-accent)] tabular-nums pt-1">0{index + 1}</span>
                 <div>
                   <p className="text-base font-semibold text-[var(--color-text-primary)]">{finding.label}</p>
                   <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">{finding.impact}</p>
@@ -341,7 +341,7 @@ function OneSystemPipeline() {
           <ul className="mt-6 space-y-4">
             {SYSTEM_FLOW.map((s) => (
               <li key={s.label} className="flex gap-4">
-                <span className="text-[11px] font-bold text-[var(--color-accent-bright)] pt-0.5 tabular-nums">
+                <span className="text-[11px] font-semibold text-[var(--color-accent-bright)] pt-0.5 tabular-nums">
                   {String(SYSTEM_FLOW.indexOf(s) + 1).padStart(2, "0")}
                 </span>
                 <div>
@@ -374,10 +374,10 @@ function OneSystemPipeline() {
                 transition={{ duration: 0.22 }}
               >
                 <div className="flex items-baseline gap-3 mb-4">
-                  <span className="text-5xl font-bold text-[var(--color-accent)]/15 tabular-nums tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                  <span className="text-5xl font-semibold text-[var(--color-accent)]/15 tabular-nums tracking-tight">
                     {String(active + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] tracking-[-0.02em]">
+                  <h3 className="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)] tracking-[-0.02em]">
                     {active >= 0 ? SYSTEM_FLOW[active].label : "Lead"}
                   </h3>
                 </div>
@@ -390,7 +390,7 @@ function OneSystemPipeline() {
             <div className="mt-8 max-w-xs">
               <div className="h-1 rounded-full bg-[var(--color-border)]/40 overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)] origin-left"
+                  className="h-full rounded-full bg-[var(--color-accent)] origin-left"
                   style={{ scaleX: scrollYProgress }}
                 />
               </div>
@@ -501,7 +501,6 @@ function ProductStack() {
 
       <div className="max-w-4xl mx-auto border-y border-[var(--color-border)]/60">
         {items.map((s, i) => {
-          const Icon = s.icon;
           return (
             <div
               key={s.title}
@@ -518,11 +517,8 @@ function ProductStack() {
                 }`}
               >
                 <div className="flex items-start gap-5">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-11 h-11 rounded-xl bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-[var(--color-accent)]" />
-                    </div>
-                    <span className="text-[10px] font-bold text-[var(--color-text-muted)] tabular-nums">
+                  <div className="flex w-8 shrink-0 flex-col items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center border-l border-[var(--color-border-light)] text-[var(--color-accent-bright)] text-[10px] font-semibold tabular-nums">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -532,7 +528,7 @@ function ProductStack() {
                         {s.title}
                       </h3>
                       {s.custom && (
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent-bright)] border border-[var(--color-accent)]/20">
+                        <span className="text-[10px] font-semibold text-[var(--color-text-muted)] tabular-nums">
                           Custom
                         </span>
                       )}
@@ -575,7 +571,7 @@ export function SystemMap() {
             transition={{ type: "spring" as const, damping: 30, stiffness: 260 }}
           >
             <SectionTag>One System</SectionTag>
-            <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
+            <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em]">
               Every operational leak, covered.
             </h2>
             <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
@@ -599,7 +595,7 @@ export function SystemMap() {
               transition={{ type: "spring" as const, damping: 28, stiffness: 250 }}
               className="flex gap-4 py-4 border-b border-[var(--color-border)]/30 last:border-0"
             >
-              <span className="text-[11px] font-bold text-[var(--color-accent-bright)] pt-1 tabular-nums">
+              <span className="text-[11px] font-semibold text-[var(--color-accent-bright)] pt-1 tabular-nums">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div>
@@ -662,7 +658,7 @@ export function AuditSection() {
           >
             <motion.div variants={staggerItem(0)}>
               <SectionTag>Free Business Audit</SectionTag>
-              <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
+              <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
                 See what ELION sees.
               </h2>
             </motion.div>
@@ -680,7 +676,7 @@ export function AuditSection() {
               ))}
             </div>
             <motion.div variants={staggerItem(5)} className="mt-10">
-              <PrimaryCta href="/audit">Run Your Free Business Audit</PrimaryCta>
+              <PrimaryCta href="/audit">Start AI Assessment</PrimaryCta>
             </motion.div>
             <motion.div variants={staggerItem(6)} className="mt-6 flex flex-wrap gap-5 text-xs text-[var(--color-text-muted)]">
               <span>No credit card</span>
@@ -718,7 +714,7 @@ export function AuditSection() {
                     <motion.span
                       aria-hidden
                       variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1, transition: { duration: 0.5, delay: 0.2 + i * 0.1 } } }}
-                      className="hidden sm:block flex-1 h-px origin-left bg-gradient-to-r from-[var(--color-accent)]/60 to-[var(--color-border)]"
+                      className="hidden sm:block flex-1 h-px origin-left bg-[var(--color-border-light)]"
                     />
                   )}
                 </div>
@@ -731,21 +727,21 @@ export function AuditSection() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ type: "spring" as const, damping: 28, stiffness: 240 }}
             >
-              <div className="absolute -inset-4 bg-gradient-to-br from-[var(--color-accent)]/[0.06] to-transparent rounded-3xl pointer-events-none" aria-hidden />
+              <div className="absolute -inset-4 rounded-[var(--radius-surface)] border border-[var(--color-border)]/50 pointer-events-none" aria-hidden />
               <div className="relative rounded-2xl border border-[var(--color-border)]/60 bg-[var(--color-surface-raised)] overflow-hidden">
                 <div className="px-6 py-4 border-b border-[var(--color-border)]/50 flex items-center justify-between">
                   <div>
                     <p className="text-[11px] uppercase tracking-wider text-[var(--color-text-muted)]">Business Audit</p>
                     <p className="text-sm font-semibold text-[var(--color-text-primary)]">Lagos Real Estate Agency</p>
                   </div>
-                  <span className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/15 text-[var(--color-accent-bright)] border border-[var(--color-accent)]/25">
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-[var(--color-accent)]/15 text-[var(--color-accent-bright)] border border-[var(--color-accent)]/25">
                     Illustrative
                   </span>
                 </div>
                 <div className="p-6">
                   <div className="flex items-end gap-4 mb-6">
                     <div>
-                      <p className="text-5xl font-bold text-[var(--color-text-primary)] tracking-tight">42</p>
+                      <p className="text-5xl font-semibold text-[var(--color-text-primary)] tracking-tight">42</p>
                       <p className="text-xs text-[var(--color-text-muted)] mt-1">Automation Score / 100</p>
                     </div>
                     <div className="flex-1 h-2 rounded-full bg-[var(--color-border)]/50 overflow-hidden">
@@ -754,7 +750,7 @@ export function AuditSection() {
                         whileInView={{ width: "42%" }}
                         viewport={{ once: true }}
                         transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                        className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)]"
+                        className="h-full rounded-full bg-[var(--color-accent)]"
                       />
                     </div>
                   </div>
@@ -835,7 +831,7 @@ export function DashboardPreview() {
             <SectionTag>Client Experience</SectionTag>
           </motion.div>
           <motion.div variants={staggerItem(1)}>
-            <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
+            <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em]">
               Your business. One operational view.
             </h2>
           </motion.div>
@@ -890,7 +886,7 @@ export function DashboardPreview() {
                       whileInView={reduced ? undefined : { opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.35 + i * 0.12 }}
-                      className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight"
+                      className="text-2xl font-semibold text-[var(--color-text-primary)] tracking-tight"
                     >
                       {m.value}
                     </motion.p>
@@ -917,7 +913,7 @@ export function DashboardPreview() {
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center shrink-0">
-                          <span className="text-xs font-bold text-[var(--color-accent-bright)]">{r.name[0]}</span>
+                          <span className="text-xs font-semibold text-[var(--color-accent-bright)]">{r.name[0]}</span>
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm text-[var(--color-text-primary)] truncate">{r.name}</p>
@@ -1015,7 +1011,7 @@ export function AdminSection() {
                       whileInView={reduced ? undefined : { scaleY: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.45, delay: 0.25 + i * 0.1 }}
-                      className="absolute left-0 top-0 bottom-0 w-[2px] origin-top bg-gradient-to-b from-[var(--color-accent)] to-[var(--color-accent-cyan)]"
+                      className="absolute left-0 top-0 bottom-0 w-[2px] origin-top bg-[var(--color-accent)]"
                     />
                     <span className="text-sm text-[var(--color-text-secondary)] pl-2">{row.label}</span>
                     <span className="text-xs font-semibold" style={{ color: row.tone }}>{row.value}</span>
@@ -1039,7 +1035,7 @@ export function AdminSection() {
               <SectionTag>Built for Operators</SectionTag>
             </motion.div>
             <motion.div variants={staggerItem(1)}>
-              <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
+              <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.08]">
                 The infrastructure behind the automation.
               </h2>
             </motion.div>
@@ -1091,7 +1087,7 @@ export function HowItWorks() {
           className="text-center max-w-2xl mx-auto mb-14"
         >
           <SectionTag>How ELION Works</SectionTag>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em]">
             From finding the leak to fixing it.
           </h2>
           <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
@@ -1104,7 +1100,7 @@ export function HowItWorks() {
           {/* scroll progress rail */}
           <div aria-hidden className="hidden lg:block h-px bg-[var(--color-border)]/40 absolute top-0 left-0 right-0">
             <motion.div
-              className="h-full origin-left bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-cyan)]"
+              className="h-full origin-left bg-[var(--color-accent)]"
               style={{ scaleX: reduced ? 1 : scrollYProgress }}
             />
           </div>
@@ -1122,13 +1118,12 @@ export function HowItWorks() {
               >
                 <span
                   aria-hidden
-                  className="absolute top-4 right-5 text-3xl font-bold text-[var(--color-accent)]/12 tracking-tight group-hover:text-[var(--color-accent)]/25 transition-colors"
-                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                  className="absolute top-4 right-5 text-3xl font-semibold text-[var(--color-accent)]/12 tracking-tight group-hover:text-[var(--color-accent)]/25 transition-colors"
                 >
                   {p.n}
                 </span>
                 <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center mb-4 border border-[var(--color-accent)]/15 group-hover:bg-[var(--color-accent)]/20 transition-colors">
-                  <span className="text-xs font-bold text-[var(--color-accent-bright)]">{i + 1}</span>
+                  <span className="text-xs font-semibold text-[var(--color-accent-bright)]">{i + 1}</span>
                 </div>
                 <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-2">{p.title}</h3>
                 <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{p.desc}</p>
@@ -1162,7 +1157,7 @@ export function OwnershipSection() {
           transition={{ type: "spring" as const, damping: 30, stiffness: 260 }}
         >
           <SectionTag>Ownership</SectionTag>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em]">
             You own the system.
           </h2>
           <p className="mt-6 text-base text-[var(--color-text-secondary)] leading-relaxed max-w-xl mx-auto">
@@ -1234,7 +1229,7 @@ export function PricingSection() {
           className="text-center max-w-2xl mx-auto mb-14"
         >
           <SectionTag>Pricing</SectionTag>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em]">
             Automation scoped around measurable business problems.
           </h2>
           <p className="mt-5 text-base text-[var(--color-text-secondary)] leading-relaxed">
@@ -1260,12 +1255,12 @@ export function PricingSection() {
               } ${p.featured ? "md:-translate-y-2" : ""}`}
             >
               {p.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-[var(--color-accent)] text-white text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-[var(--color-accent)]/30">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md bg-[var(--color-accent)] text-white text-[10px] font-semibold uppercase tracking-wider shadow-lg shadow-[var(--color-accent)]/30">
                   Most Common
                 </span>
               )}
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">{p.name}</h3>
-              <p className="mt-2 text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">{p.price}</p>
+              <p className="mt-2 text-2xl font-semibold text-[var(--color-text-primary)] tracking-tight">{p.price}</p>
               <p className="mt-3 text-xs text-[var(--color-text-muted)] leading-relaxed">{p.note}</p>
               <Link
                 href="/pricing"
@@ -1323,7 +1318,7 @@ export function FaqSection() {
           className="text-center mb-14"
         >
           <SectionTag>FAQ</SectionTag>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em]">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em]">
             Questions, answered.
           </h2>
         </motion.div>
@@ -1425,11 +1420,6 @@ export function FinalCta() {
           <EnvRingMotif className="left-[6%] top-1/3 w-64 h-64 hidden lg:block" />
         </motion.div>
       )}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none bg-gradient-to-b from-transparent to-[var(--color-surface)]"
-      />
-
       <div className="relative max-w-3xl mx-auto text-center">
         <motion.div
           initial={reduced ? undefined : { opacity: 0, y: 24 }}
@@ -1440,14 +1430,14 @@ export function FinalCta() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--color-accent-bright)] mb-6">
             Back where we started
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.06]">
+          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--color-text-primary)] tracking-[-0.025em] leading-[1.06]">
             Your next operational leak is probably already costing you money.
           </h2>
           <p className="mt-7 text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed max-w-xl mx-auto">
             See what&apos;s breaking. Fix what matters. Automate what repeats.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <PrimaryCta href="/audit">Run Your Free Business Audit</PrimaryCta>
+            <PrimaryCta href="/audit">Start AI Assessment</PrimaryCta>
             <SecondaryCta href="/demo">
               <PlayCircle className="w-4 h-4" />
               See ELION in Action

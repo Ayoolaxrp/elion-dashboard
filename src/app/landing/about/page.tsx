@@ -39,8 +39,8 @@ export default function AboutPage() {
     <div className="max-w-6xl mx-auto px-6 py-24">
       {/* Hero */}
       <motion.div initial={reveal} animate={show} className="text-center mb-20 pt-8">
-        <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-[0.2em] mb-4">About ELION</p>
-        <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight mb-6 leading-tight" style={{ letterSpacing: "-0.025em" }}>
+        <p className="public-eyebrow mb-4">About ELION</p>
+        <h1 className="display-type mx-auto mb-6 max-w-4xl text-[var(--color-text-primary)]">
           We Fix Operational Leaks<br className="hidden md:block" /> That Cost Businesses Money
         </h1>
         <p className="text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto leading-relaxed">
@@ -51,7 +51,7 @@ export default function AboutPage() {
       {/* What We Do */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-24">
         <div>
-          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">What ELION Does</h2>
+          <h2 className="section-title mb-4 text-[var(--color-text-primary)]">What ELION Does</h2>
           <p className="text-[var(--color-text-muted)] mb-4 leading-relaxed">
             Too many businesses lose leads because nobody responds fast enough. They lose revenue because follow-ups never happen. They waste hours on tasks that should be automated.
           </p>
@@ -62,8 +62,8 @@ export default function AboutPage() {
             Every engagement starts with a free audit. We look at your digital presence, identify operational gaps, and recommend the specific automation that will have the biggest impact on your business.
           </p>
         </div>
-        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-8">
-          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] uppercase tracking-wider mb-4">Our Approach</h3>
+        <div className="border-y border-[var(--color-border)] py-8">
+          <h3 className="public-eyebrow mb-4 text-[var(--color-text-primary)]">Our Approach</h3>
           <div className="space-y-4">
             {[
               { label: "Free audit first", desc: "No commitment required. We analyse your business and show you the gaps." },
@@ -71,8 +71,8 @@ export default function AboutPage() {
               { label: "Fixed-scope implementation", desc: "Clear deliverables, clear timeline, clear cost. No surprises." },
               { label: "You own everything", desc: "No platform lock-in. The automations we build belong to your business." },
             ].map((item) => (
-              <div key={item.label} className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-[var(--color-success)] mt-0.5 shrink-0" />
+              <div key={item.label} className="grid grid-cols-[1.25rem_1fr] gap-3 border-t border-[var(--color-border)] py-4 first:border-t-0">
+                <CheckCircle className="mt-0.5 h-4 w-4 text-[var(--color-success)]" />
                 <div>
                   <p className="text-sm font-medium text-[var(--color-text-primary)]">{item.label}</p>
                   <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.desc}</p>
@@ -85,11 +85,11 @@ export default function AboutPage() {
 
       {/* Values */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-8 text-center">Our Values</h2>
+        <h2 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-8 text-center">Our Values</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((v) => (
-            <div key={v.title} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6">
-              <div className="w-10 h-10 bg-[var(--color-surface-elevated)] rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] mb-3">
+            <div key={v.title} className="border-t border-[var(--color-border)] py-7 first:border-t-0">
+              <div className="mb-4 flex h-7 w-7 items-center justify-center border-l border-[var(--color-border-light)] text-[var(--color-text-secondary)]">
                 {v.icon}
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{v.title}</h3>
@@ -101,11 +101,11 @@ export default function AboutPage() {
 
       {/* How It Works */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-8 text-center">How it works</h2>
+        <h2 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-8 text-center">How it works</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {process_steps.map((s) => (
-            <div key={s.step} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-6 text-center">
-              <div className="w-10 h-10 bg-[var(--color-surface)] text-white rounded-lg flex items-center justify-center text-sm font-bold mx-auto mb-3">
+            <div key={s.step} className="border-t border-[var(--color-border)] py-6 first:border-t-0">
+              <div className="mb-4 flex h-7 w-7 items-center justify-center border-l border-[var(--color-border-light)] text-sm font-semibold tabular-nums text-[var(--color-text-secondary)]">
                 {s.step}
               </div>
               <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{s.title}</h3>
@@ -119,18 +119,18 @@ export default function AboutPage() {
       {/* What This Looks Like In Practice */}
       <div className="mb-24">
         <div className="text-center mb-10">
-          <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Illustrative Example</p>
-          <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">What This Looks Like in Practice</h2>
+        <p className="public-eyebrow mb-2">Illustrative example</p>
+          <h2 className="text-2xl font-semibold text-[var(--color-text-primary)]">What This Looks Like in Practice</h2>
           <p className="text-sm text-[var(--color-text-muted)] mt-2">A representative scenario, not a real client.</p>
         </div>
-        <div className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-lg p-8 md:p-10">
+        <div className="border-y border-[var(--color-border)] py-8 md:py-10">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-[var(--color-accent)]"></div>
             <p className="text-sm font-semibold text-[var(--color-text-secondary)]">Lagos Real Estate Business, Illustrative Scenario</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-sm font-semibold text-[var(--color-error)] mb-4 flex items-center gap-2"><div className="w-5 h-5 rounded bg-[var(--color-error)]/10 flex items-center justify-center"><span className="text-[10px] font-bold">!</span></div>Before ELION</h3>
+              <h3 className="text-sm font-semibold text-[var(--color-error)] mb-4 flex items-center gap-2"><div className="w-5 h-5 rounded bg-[var(--color-error)]/10 flex items-center justify-center"><span className="text-[10px] font-semibold">!</span></div>Before ELION</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">-</span>Leads arrive through WhatsApp and website forms. Responses depend on staff availability.</li>
                 <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-error)] mt-1">-</span>Follow-ups are inconsistent. Some prospects never receive a second message.</li>
@@ -139,7 +139,7 @@ export default function AboutPage() {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-[var(--color-success)] mb-4 flex items-center gap-2"><div className="w-5 h-5 rounded bg-[var(--color-success)]/10 flex items-center justify-center"><span className="text-[10px] font-bold">✓</span></div>After ELION</h3>
+              <h3 className="text-sm font-semibold text-[var(--color-success)] mb-4 flex items-center gap-2"><div className="w-5 h-5 rounded bg-[var(--color-success)]/10 flex items-center justify-center"><span className="text-[10px] font-semibold">✓</span></div>After ELION</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">-</span>New leads trigger an immediate automated response across WhatsApp and email.</li>
                 <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"><span className="text-[var(--color-success)] mt-1">-</span>Follow-ups happen on a defined schedule. No lead falls through the cracks.</li>
@@ -152,7 +152,7 @@ export default function AboutPage() {
       </div>
       {/* Integrations */}
       <div className="mb-24">
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4 text-center">Integrations</h2>
+        <h2 className="section-title mb-4 text-center text-[var(--color-text-primary)]">Integrations</h2>
         <p className="text-sm text-[var(--color-text-muted)] text-center mb-8 max-w-xl mx-auto">
           ELION can integrate with your existing tools. Here is what we currently support.
         </p>
@@ -179,21 +179,21 @@ export default function AboutPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-[var(--color-surface)] rounded-lg p-8 md:p-12 text-center">
-        <h2 className="text-2xl font-bold text-white mb-3">Ready to find your leaks?</h2>
+        <div className="border-t border-[var(--color-border)] py-8 text-center">
+        <h2 className="section-title mb-3 text-[var(--color-text-primary)]">Ready to find your leaks?</h2>
         <p className="text-sm text-[var(--color-text-muted)] mb-6 max-w-md mx-auto">
-          Run a free audit. See exactly where your business is losing leads, time, and money.
+          Run AI Assessment. See exactly where your business is losing leads, time, and money.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/demo"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] rounded font-semibold text-sm hover:bg-[var(--color-surface-elevated)] transition-colors"
+            className="public-secondary inline-flex items-center justify-center gap-2 px-6 py-3"
           >
             See ELION In Action
           </Link>
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-surface-raised)] text-[var(--color-text-muted)] rounded font-semibold text-sm hover:bg-zinc-700 transition-colors"
+            className="public-secondary inline-flex items-center justify-center gap-2 px-6 py-3"
           >
             View Pricing
           </Link>

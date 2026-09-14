@@ -9,6 +9,7 @@ import {
   CheckCircle,
   ChevronLeft,
   Database,
+  ExternalLink,
   FileSignature,
   FileText,
   Globe,
@@ -17,12 +18,11 @@ import {
   LogOut,
   Menu,
   MessageCircle,
-  Plus,
   Receipt,
   Rocket,
   SearchCheck,
   Settings,
-  Sparkles,
+  ListChecks,
   UserPlus,
   Users,
   Wrench,
@@ -41,7 +41,7 @@ const NAV_SECTIONS: NavSection[] = [
     label: "Today",
     items: [
       { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/admin/sales", label: "Morning Queue", icon: Sparkles },
+      { href: "/admin/sales", label: "Morning Queue", icon: ListChecks },
       { href: "/admin/notifications", label: "Notifications", icon: Bell },
     ],
   },
@@ -164,7 +164,7 @@ export function AdminSidebar() {
 
       <div className="shrink-0 border-t border-[var(--color-border)] p-2">
         <Link href="/" onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)] ${collapsed ? "justify-center" : ""}`} title={collapsed ? "View site" : undefined}>
-          <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+          <ExternalLink className="h-4 w-4 shrink-0" />
           {!collapsed && <span>View site</span>}
         </Link>
         <button type="button" onClick={handleSignOut} className={`flex w-full items-center gap-3 rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-error)]/10 hover:text-[var(--color-error)] ${collapsed ? "justify-center" : ""}`} title={collapsed ? "Sign out" : undefined}>
@@ -178,7 +178,7 @@ export function AdminSidebar() {
   return (
     <>
       <div aria-hidden="true" className={`hidden shrink-0 transition-all duration-200 lg:block ${collapsed ? "w-16" : "w-60"}`} />
-      <button type="button" onClick={() => setMobileOpen(true)} className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] shadow-lg shadow-black/20 lg:hidden" aria-label="Open admin menu" aria-expanded={mobileOpen} aria-controls="admin-sidebar">
+      <button type="button" onClick={() => setMobileOpen(true)} className="fixed left-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] lg:hidden" aria-label="Open admin menu" aria-expanded={mobileOpen} aria-controls="admin-sidebar">
         <Menu className="h-5 w-5" />
       </button>
       {mobileOpen && <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setMobileOpen(false)} aria-hidden="true" />}

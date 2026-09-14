@@ -64,20 +64,20 @@ export function CookieConsent() {
         <div className="fixed inset-x-4 bottom-4 z-[70] sm:inset-x-auto sm:right-6 sm:w-[min(440px,calc(100vw-3rem))]" role="dialog" aria-label="Cookie consent">
         <div className="border border-[var(--color-border-light)] bg-[var(--color-surface-raised)] px-5 py-5 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
           <p className="text-sm leading-6 text-[var(--color-text-secondary)]">
-            ELION uses cookies to improve site performance, understand usage, and provide a better experience.
+            We use cookies to improve your experience and understand how ELION is used.
           </p>
           <p className="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">
             Essential cookies are always active. You can choose whether to allow optional analytics or marketing cookies.
           </p>
           <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
             <button type="button" onClick={() => save({ analytics: true, marketing: true })} className="public-primary px-4 py-2.5 text-sm">
-              Accept all
+              Accept cookies
             </button>
             <button type="button" onClick={() => setManageOpen(true)} className="public-secondary px-4 py-2.5 text-sm">
               Manage preferences
             </button>
             <button type="button" onClick={() => save(DEFAULT_CONSENT)} className="px-2 py-2 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)]">
-              Reject non-essential
+              Decline optional
             </button>
           </div>
           <p className="mt-4 text-[11px] leading-5 text-[var(--color-text-muted)]">

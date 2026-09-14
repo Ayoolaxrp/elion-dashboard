@@ -13,7 +13,7 @@ function OpsConsole() {
   return (
     <div className="border-l border-[var(--color-border-light)] pl-6 md:pl-8">
       <div className="mb-8">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">Illustrative diagnosis</p>
+        <p className="public-eyebrow">Illustrative diagnosis</p>
         <p className="mt-3 text-2xl font-semibold leading-tight tracking-[-0.025em] text-[var(--color-text-primary)]">A clearer next action.</p>
         <p className="mt-3 max-w-sm text-sm leading-7 text-[var(--color-text-secondary)]">ELION turns an observable business problem into a scoped system recommendation.</p>
       </div>
@@ -44,7 +44,7 @@ export function Hero() {
               </span>
             </div>
 
-            <h1 className="animate-hero-slide mt-8 max-w-4xl text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.045em] text-[var(--color-text-primary)] sm:text-6xl md:text-[4.75rem]">
+            <h1 className="animate-hero-slide mt-8 display-type max-w-4xl text-[var(--color-text-primary)]">
               Find where your business is leaking
               <br className="hidden sm:block" />
               <span className="text-[var(--color-text-secondary)]"> time, leads, and revenue.</span>
@@ -56,7 +56,7 @@ export function Hero() {
 
             <div className="animate-hero-in mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:items-start lg:justify-start">
               <Link href="/audit" className="public-primary group w-full px-7 py-3.5 text-base sm:w-auto">
-                Run Your Free Business Audit
+                Start AI Assessment
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link href="/#how" className="public-secondary w-full px-7 py-3.5 text-base sm:w-auto">

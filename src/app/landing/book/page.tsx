@@ -100,7 +100,7 @@ export default function BookPage() {
             <div className="w-16 h-16 rounded-2xl bg-[var(--color-success)]/10 flex items-center justify-center mx-auto mb-5">
               <CheckCircle2 className="w-8 h-8 text-[var(--color-success)]" />
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Your call is booked.</h1>
+            <h1 className="display-face text-2xl font-semibold text-[var(--color-text-primary)] tracking-tight">Your call is booked.</h1>
             <p className="text-sm text-[var(--color-text-muted)] mt-2">A calendar event was created and a Google Meet link generated for your call.</p>
           </div>
           <div className="rounded-2xl border border-[var(--color-border)]/70 bg-[var(--color-surface-raised)] p-6 space-y-4">
@@ -146,11 +146,11 @@ export default function BookPage() {
         <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]/70 flex items-center justify-center mx-auto mb-5">
           <CalendarDays className="w-7 h-7 text-[var(--color-text-muted)]" />
         </div>
-        <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Book a strategy call</h1>
+        <h1 className="section-title mb-3 text-[var(--color-text-primary)]">Book a strategy call</h1>
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-6">Live scheduling is being switched on : our team is preparing the calendar. In the meantime, run a free business audit or reach out on the support page and we will arrange your call directly.</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/audit" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity">Run Your Free Business Audit</Link>
-          <Link href="/support" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">Contact ELION</Link>
+          <Link href="/audit" className="public-primary inline-flex items-center gap-2 px-5 py-2.5">Run Your Free Business Audit</Link>
+          <Link href="/support" className="public-secondary inline-flex items-center gap-2 px-5 py-2.5">Contact ELION</Link>
         </div>
       </div>
     );
@@ -163,8 +163,8 @@ export default function BookPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
       <div className="mb-8">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)] mb-2">ELION · Strategy call</p>
-        <h1 className="text-3xl font-bold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>Book a call with ELION</h1>
+        <p className="public-eyebrow mb-2">ELION · Strategy call</p>
+        <h1 className="display-face text-3xl font-semibold text-[var(--color-text-primary)] tracking-tight">Book a call with ELION</h1>
         <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-xl leading-relaxed">
           Choose a time that works for you. Availability is read live from our calendar , a Google Meet link is created the moment you confirm.
         </p>

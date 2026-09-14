@@ -57,8 +57,7 @@ export function ElionLogo({ size = "md", variant = "full", className = "" }: Eli
         priority
       />
       <span
-        className={`font-bold text-[var(--color-text-primary)] tracking-wider ${s.text}`}
-        style={{ fontFamily: "Space Grotesk, sans-serif" }}
+        className={`display-face font-semibold tracking-[0.12em] text-[var(--color-text-primary)] ${s.text}`}
       >
         ELION
       </span>

@@ -65,8 +65,8 @@ function Reveal({ children, delay = 0, className }: { children: React.ReactNode;
 function SectionHeading({ kicker, title, sub, center }: { kicker: string; title: string; sub?: string; center?: boolean }) {
   return (
     <div className={center ? "text-center mx-auto" : ""}>
-      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--color-accent)] mb-3">{kicker}</p>
-      <h2 className="text-2xl md:text-[28px] font-bold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{title}</h2>
+      <p className="public-eyebrow mb-3">{kicker}</p>
+      <h2 className="text-2xl md:text-[28px] font-semibold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{title}</h2>
       {sub && <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-2xl">{sub}</p>}
     </div>
   );
@@ -88,8 +88,8 @@ export default function PricingPage() {
             viewport={reduced ? undefined : { once: true }}
             transition={reduced ? undefined : { duration: 0.5, ease: "easeOut" }}
           >
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--color-accent)] mb-5">Investment in the operating system</p>
-            <h1 className="text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-[var(--color-text-primary)] md:text-6xl" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
+            <p className="public-eyebrow mb-5">Investment in the operating system</p>
+            <h1 className="page-title mx-auto max-w-3xl text-[var(--color-text-primary)] md:text-[3.75rem]">
               Automation built around your actual business leaks.
             </h1>
             <p className="text-base text-[var(--color-text-secondary)] mt-6 max-w-2xl mx-auto leading-relaxed md:text-lg">
@@ -128,11 +128,11 @@ export default function PricingPage() {
           <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {addOns.map((addon, i) => (
               <Reveal key={addon.name} delay={i * 0.08}>
-                <div className="h-full border border-[var(--color-border)] rounded-2xl p-7 bg-[var(--color-surface-raised)] hover:border-[var(--color-accent)]/25 transition-all">
+                <div className="h-full border-t border-[var(--color-border)] p-7 transition-colors hover:border-[var(--color-border-light)]">
                   <div className="flex items-start justify-between gap-6 mb-3 flex-wrap">
                     <h3 className="text-base font-semibold text-[var(--color-text-primary)]">{addon.name}</h3>
                     <div className="text-right shrink-0">
-                      <p className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight" style={{ fontFamily: "Space Grotesk,sans-serif" }}>{addon.price}</p>
+                      <p className="display-face text-xl font-semibold text-[var(--color-text-primary)] tracking-tight">{addon.price}</p>
                       <p className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider mt-0.5">one-time</p>
                     </div>
                   </div>
@@ -147,8 +147,7 @@ export default function PricingPage() {
       {/* Third-party costs */}
       <section className="border-t border-[var(--color-border)]/60">
         <div className="max-w-4xl mx-auto px-6 py-16 md:py-24">
-          <Reveal>
-            <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)]/60 p-8 md:p-10">
+          <Reveal>              <div className="border-y border-[var(--color-border)] py-8">
               <div className="max-w-2xl">
                 <SectionHeading kicker="Clarity" title="About third-party costs" sub="ELION implementation fees cover the design, build, configuration, and deployment of your automation systems. Some automations connect to third-party services that have their own pricing:" />
               </div>
@@ -178,7 +177,7 @@ export default function PricingPage() {
             <div className="divide-y divide-[var(--color-border)]/50 border-y border-[var(--color-border)]/50">
               {afterStart.map((step) => (
                 <div key={step.number} className="grid grid-cols-[2.5rem_1fr] gap-4 py-5 md:grid-cols-[3rem_1fr] md:gap-6">
-                  <span className="text-sm font-bold text-[var(--color-accent)] tabular-nums">{step.number}</span>
+                  <span className="text-sm font-semibold text-[var(--color-accent)] tabular-nums">{step.number}</span>
                   <div>
                     <p className="text-sm font-semibold text-[var(--color-text-primary)]">{step.title}</p>
                     <p className="mt-1 text-sm text-[var(--color-text-muted)] leading-relaxed">{step.description}</p>
@@ -217,7 +216,7 @@ export default function PricingPage() {
           <SectionHeading kicker="FAQ" title="Frequently asked questions" center />
           <div className="mt-10 space-y-3">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-[var(--color-surface-raised)] border border-[var(--color-border)] rounded-xl overflow-hidden">
+              <div key={i} className="border-t border-[var(--color-border)] py-5 first:border-t-0">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   aria-expanded={openFaq === i}
@@ -244,17 +243,17 @@ export default function PricingPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(79,124,255,0.09),transparent_55%)]" />
         <div className="relative max-w-2xl mx-auto px-6 py-20 md:py-28 text-center">
           <Reveal>
-            <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] tracking-tight mb-4" style={{ fontFamily: "Space Grotesk,sans-serif" }}>
+            <h2 className="section-title mb-4 text-[var(--color-text-primary)]">
               Not sure where the leak is?
             </h2>
             <p className="text-base text-[var(--color-text-muted)] mb-8 leading-relaxed max-w-lg mx-auto">
-              Run a free audit. We will identify the operational problem first, then recommend the system and scope that fit : no guesswork.
+              Run AI Assessment. We will identify the operational problem first, then recommend the system and scope that fit : no guesswork.
             </p>
             <Link
               href="/audit"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-accent)] text-white rounded-xl font-semibold text-sm hover:bg-[var(--color-accent-hover)] shadow-lg shadow-[var(--color-accent)]/20 transition-all"
+              className="public-primary px-8 py-4 text-sm"
             >
-              Run Free Business Audit <ArrowRight className="w-4 h-4" />
+              Run AI Assessment <ArrowRight className="w-4 h-4" />
             </Link>
           </Reveal>
         </div>

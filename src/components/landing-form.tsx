@@ -104,7 +104,7 @@ export function LandingForm({
             value={form[f.name] || ""}
             onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
             required={f.required}
-            className={`w-full px-4 py-3 bg-[var(--color-surface)]/80 border rounded-lg text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-colors ${
+            className={`w-full px-4 py-3 bg-transparent border-b rounded-none text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-0 focus:border-[var(--color-accent)] transition-colors ${
               errors[f.name] ? "border-[var(--color-error)]/40" : "border-[var(--color-border)]"
             }`}
           />
@@ -129,7 +129,7 @@ export function LandingForm({
       <button
         type="submit"
         disabled={status === "loading" || !isValid}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[var(--color-accent)] text-white font-medium text-sm hover:bg-[var(--color-accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+        className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-[var(--radius-control)] bg-[var(--color-accent)] text-white font-medium text-sm hover:bg-[var(--color-accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {status === "loading" ? (
           <>
