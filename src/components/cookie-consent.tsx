@@ -61,22 +61,22 @@ export function CookieConsent() {
   return (
     <>
       {!consent && (
-        <div className="fixed inset-x-4 bottom-4 z-[70] sm:inset-x-auto sm:right-6 sm:w-[min(440px,calc(100vw-3rem))]" role="dialog" aria-label="Cookie consent">
-        <div className="border border-[var(--color-border-light)] bg-[var(--color-surface-raised)] px-5 py-5 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
+        <div className="fixed inset-x-0 bottom-0 z-[70] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-[min(440px,calc(100vw-3rem))] sm:p-0" role="dialog" aria-label="Cookie consent">
+        <div className="border border-[var(--color-border-light)] bg-[var(--color-surface-raised)] px-4 py-4 shadow-[0_18px_50px_rgba(0,0,0,0.35)] sm:px-5 sm:py-5">
           <p className="text-sm leading-6 text-[var(--color-text-secondary)]">
             We use cookies to improve your experience and understand how ELION is used.
           </p>
           <p className="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">
             Essential cookies are always active. You can choose whether to allow optional analytics or marketing cookies.
           </p>
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-            <button type="button" onClick={() => save({ analytics: true, marketing: true })} className="public-primary px-4 py-2.5 text-sm">
+          <div className="mt-4 grid grid-cols-1 gap-2 sm:mt-5 sm:flex sm:flex-row sm:flex-wrap sm:items-center">
+            <button type="button" onClick={() => save({ analytics: true, marketing: true })} className="public-primary min-h-11 px-4 py-2.5 text-sm">
               Accept cookies
             </button>
-            <button type="button" onClick={() => setManageOpen(true)} className="public-secondary px-4 py-2.5 text-sm">
+            <button type="button" onClick={() => setManageOpen(true)} className="public-secondary min-h-11 px-4 py-2.5 text-sm">
               Manage preferences
             </button>
-            <button type="button" onClick={() => save(DEFAULT_CONSENT)} className="px-2 py-2 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)]">
+            <button type="button" onClick={() => save(DEFAULT_CONSENT)} className="min-h-11 px-2 py-2 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)]">
               Decline optional
             </button>
           </div>

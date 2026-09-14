@@ -668,6 +668,11 @@ ${r.automationRecommendations ? `<h2>Recommended automations</h2><ul>${r.automat
                 </div>
 
                 <div className="p-6 md:p-8 space-y-8">
+                  <div className="border-l-2 border-[var(--color-success)] bg-[var(--color-success)]/5 px-4 py-3" role="status" aria-live="polite">
+                    <p className="text-sm font-semibold text-[var(--color-success)]">Your audit has been completed successfully.</p>
+                    <p className="mt-1 text-xs text-[var(--color-text-secondary)]">Your operational intelligence report is ready to review below.</p>
+                  </div>
+
                   {/* Score hero */}
                   <div className="flex flex-col sm:flex-row items-center gap-8">
                     <div className="relative shrink-0">
